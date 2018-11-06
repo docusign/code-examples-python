@@ -1,0 +1,46 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    {{data.intro|safe}}
+    <h5>Request URL: {{data.url}}</h5>
+    
+    <h2>Response</h2>
+    
+    <div id="response-editor" style="height:400px;"></div>    
+{% endblock %}
+
+{% block footer_content %}
+
+    <script id="json_response" type="text/json">{{data.response|safe}}</script>
+
+    <script type='text/javascript'>
+        (function ($) {
+            var ace_cdn = "https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/"; // Where ACE loads optional JS from
+            
+        	$(document).ready(function() {
+                ace.config.set("workerPath", ace_cdn);
+    
+                ace_editor = ace.edit("response-editor");
+                ace_editor.setReadOnly(true);
+                ace_editor.setTheme("ace/theme/chrome");
+                ace_editor.setOption("wrap", "free");
+                ace_editor.$blockScrolling = Infinity;
+                var XMLMode = ace.require("ace/mode/xml").Mode,
+                    JSONMode = ace.require("ace/mode/json").Mode,
+                ace_session = ace_editor.getSession();
+                // ace_session.setMode(new XMLMode());
+                ace_session.setMode(new JSONMode());
+
+                // ace_session.setMode("ace/mode/json");
+                ace_session.setUseWrapMode(true);
+                ace_session.setFoldStyle("markbeginend");
+    
+                ace_editor.setValue($("#json_response").html());
+                ace_editor.getSelection().clearSelection();
+                ace_editor.getSelection().moveCursorToScreen(0,0,true);
+        	})
+        }(jQuery));
+    </script>
+
+{% endblock %}
