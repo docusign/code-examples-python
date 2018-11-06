@@ -2,6 +2,8 @@ from flask import render_template, url_for, redirect, session
 from flask_oauthlib.client import OAuth
 from app import app
 from app import ds_config
+from datetime import datetime, timedelta
+import requests
 
 
 oauth = OAuth(app)
@@ -18,19 +20,21 @@ docusign = oauth.remote_app(
 )
 
 
-@app.route('/login')
+@app.route('/ds/login')
 def login():
     return docusign.authorize(callback=url_for('ds_callback', _external=True))
 
 
 @app.route('/logout')
 def logout():
-    session.pop('docusign_token', None)
+    session.pop('docusign_access_token', None)
+    session.pop('docusign_refresh_token', None)
+    session.pop('docusign_expiration', None)
     return redirect(url_for('index'))
 
 
-@app.route('/login/ds_callback')
-def authorized():
+@app.route('/ds/callback')
+def ds_callback():
     resp = docusign.authorized_response()
     if resp is None or resp.get('access_token') is None:
         return 'Access denied: reason=%s error=%s resp=%s' % (
@@ -38,9 +42,17 @@ def authorized():
             request.args['error_description'],
             resp
         )
-    session['docusign_token'] = (resp['access_token'], '')
-    me = github.get('user')
-    return jsonify(me.data)
+    session['docusign_access_token'] = resp['access_token']
+    session['docusign_refresh_token'] = resp['refresh_token']
+    session['docusign_expiration'] = datetime.utcnow() + timedelta(seconds=resp['expires_in'])
+
+    # Determine user, account_id, base_url by calling OAuth::getUserInfo
+    # See https://developers.docusign.com/esign-rest-api/guides/authentication/user-info-endpoints
+    url = ds_config.DS_CONFIG['authorization_server'] + '/oauth/userinfo'
+    auth = {"Authorization": "Bearer " + session['docusign_access_token']}
+    response = requests.get(url, headers=auth).json()
+
+    return redirect(url_for('index'))
 
 
 @docusign.tokengetter
@@ -55,7 +67,7 @@ def index():
 
 @app.route('/index')
 def r_index():
-    return redirect(url_for('/'))
+    return redirect(url_for('index'))
 
 
 
