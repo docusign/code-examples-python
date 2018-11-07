@@ -26,7 +26,7 @@
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>
 
-          {% if user %}
+          {% if session['ds_user_name'] %}
             <li>
               <a class="nav-link" href="/ds/logout" id="logout"
                  data-busy="href">Logout <span class="sr-only">(current)</span></a>
@@ -39,9 +39,9 @@
           {% endif %}
         </ul>
 
-        {% if user %}
+        {% if session['ds_user_name'] %}
           <span class="navbar-text">
-            Welcome {{ user.name }}
+            Welcome {{ session['ds_user_name'] }}
           </span>
         {% endif %}
 
@@ -49,8 +49,8 @@
     </nav>
 
     <div class="container">
-      {% if accountName %}
-      <p>DocuSign Account: {{ accountName }}.</p>
+      {% if session['ds_account_name'] %}
+          <p>DocuSign Account: {{ session['ds_account_name'] }}.</p>
       {% endif %}
 
       <div class="col-md-12 feedback" id="feedback">
@@ -88,7 +88,10 @@
     <script src="{{ url_for('static', filename='assets/eg_03.js') }}"></script>
     
     <!-- Data from the server -->
-    <div id="server_data" data-server-data='{"flash": {{ messages | safe }}'
-      class="hidden"></div>
+    {% set json_messages = get_flashed_messages() | tojson %}
+    <div id="server_data"
+         data-server-data='{"flash": {"info": {{ json_messages | safe }} } }'
+         class="hidden">
+    </div>
   </body>
 </html>
