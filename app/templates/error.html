@@ -1,0 +1,16 @@
+{% set title = "Error" %}
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h2>Problem: an error occurred</h2>
+<p>Error information:</p>
+
+{% if errorCode %}
+  <p>{{ errorCode }}: {{ errorMessage }}</p>
+{% else %}
+  <p><pre>{{ err }}</pre></p>
+{% endif %}
+
+
+<p><a href="/">Continue</a></p>
+  
+{% endblock %}

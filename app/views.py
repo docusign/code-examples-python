@@ -1,19 +1,76 @@
-from flask import render_template, url_for, redirect, session, flash
+"""Defines the app's routes. Includes OAuth2 support for DocuSign"""
+
+from flask import render_template, url_for, redirect, session, flash, request
 from flask_oauthlib.client import OAuth
-from app import app
-from app import ds_config
 from datetime import datetime, timedelta
 import requests
+import uuid
+from app import app, ds_config, eg001_embedded_signing
+
+
+@app.route('/')
+def index():
+    return render_template('home.html', title='Home - Python Code Examples')
+
+
+@app.route('/index')
+def r_index():
+    return redirect(url_for('index'))
+
+
+@app.route('/ds/must_authenticate')
+def ds_must_authenticate():
+    return render_template('must_authenticate.html', title='Must authenticate')
+
+
+@app.route('/eg001', methods=['GET', 'POST'])
+def eg001():
+    return eg001_embedded_signing.controller()
+
+
+@app.route('/ds_return')
+def ds_return():
+    event = request.args.get('event')
+    state = request.args.get('state')
+    envelope_id = request.args.get('envelopeId')
+    return render_template('ds_return.html',
+        title = "Return from DocuSign",
+        event =  event,
+        envelope_id = envelope_id,
+        state = state
+    )
+
+
+################################################################################
+#
+# OAuth support for DocuSign
+#
+
+
+def ds_token_ok(buffer_min=60):
+    """
+    :param buffer_min: buffer time needed in minutes
+    :return: true iff the user has an access token that will be good for another buffer min
+    """
+
+    ok = 'ds_access_token' in session and 'ds_expiration' in session
+    ok = ok and (session['ds_expiration'] - timedelta(minutes=buffer_min)) > datetime.utcnow()
+    return ok
+
 
 base_uri_suffix = '/restapi'
 oauth = OAuth(app)
+request_token_params = {'scope': 'signature',
+                        'state': lambda: uuid.uuid4().hex.upper()}
+if not ds_config.DS_CONFIG['allow_silent_authentication']:
+    request_token_params['prompt'] = 'login'
 docusign = oauth.remote_app(
     'docusign',
     consumer_key=ds_config.DS_CONFIG['ds_client_id'],
     consumer_secret=ds_config.DS_CONFIG['ds_client_secret'],
     access_token_url=ds_config.DS_CONFIG['authorization_server'] + '/oauth/token',
     authorize_url=ds_config.DS_CONFIG['authorization_server'] + '/oauth/auth',
-    request_token_params={'scope': 'signature'},
+    request_token_params=request_token_params,
     base_url=None,
     request_token_url=None,
     access_token_method='POST'
@@ -21,12 +78,12 @@ docusign = oauth.remote_app(
 
 
 @app.route('/ds/login')
-def login():
+def ds_login():
     return docusign.authorize(callback=url_for('ds_callback', _external=True))
 
 
-@app.route('/logout')
-def logout():
+@app.route('/ds/logout')
+def ds_logout():
     # remove the keys and their values from the session
     session.pop('ds_access_token', None)
     session.pop('ds_refresh_token', None)
@@ -35,8 +92,9 @@ def logout():
     session.pop('ds_expiration', None)
     session.pop('ds_account_id', None)
     session.pop('ds_account_name', None)
-    session.pop('ds_basePath', None)
+    session.pop('ds_base_path', None)
 
+    flash('You have logged out from DocuSign.')
     return redirect(url_for('index'))
 
 
@@ -71,7 +129,7 @@ def ds_callback():
         if not account:
             # Panic! The user does not have the targeted account. They should not log in!
             raise Exception("No access to target account")
-    else:
+    else: # get the default account
         account = next((a for a in accounts if a["is_default"]), None)
         if not account:
             # Panic! Every user should always have a default account
@@ -80,24 +138,17 @@ def ds_callback():
     # Save the account information
     session['ds_account_id'] = account["account_id"]
     session['ds_account_name'] = account["account_name"]
-    session['ds_basePath'] = account["base_uri"] + base_uri_suffix
+    session['ds_base_path'] = account["base_uri"] + base_uri_suffix
 
-    return redirect(url_for('index'))
-
-
-@app.route('/')
-def index():
-    return render_template('home.html', title='Home - Python Code Examples')
-
-@app.route('/index')
-def r_index():
-    return redirect(url_for('index'))
-
-
+    if 'eg' in session:
+        # Redirect to the saved location
+        redirect_url = session['eg']
+        session.pop('eg', None)
+    else:
+        redirect_url = url_for('index')
+    return redirect(redirect_url)
 
 ################################################################################
-################################################################################
-
 
 @app.errorhandler(404)
 def not_found_error(error):

@@ -28,12 +28,12 @@
 
           {% if session['ds_user_name'] %}
             <li>
-              <a class="nav-link" href="/ds/logout" id="logout"
+              <a class="nav-link" href="{{ url_for('ds_logout') }}" id="logout"
                  data-busy="href">Logout <span class="sr-only">(current)</span></a>
             </li>
           {% else %}
             <li>
-              <a class="nav-link" href="/ds/login" id="login"
+              <a class="nav-link" href="{{ url_for('ds_login') }}" id="login"
                  data-busy="href">Login <span class="sr-only">(current)</span></a>
             </li>
           {% endif %}
