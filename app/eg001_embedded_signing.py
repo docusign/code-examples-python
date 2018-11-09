@@ -2,11 +2,14 @@
 
 from flask import render_template, url_for, redirect, session, flash, request
 from os import path
+import json
 from app import app, ds_config, views
 import base64
-from docusign_esign import ApiClient, EnvelopesApi, EnvelopeDefinition, Signer, SignHere, Tabs, Recipients, Document, RecipientViewRequest
+import re
+from docusign_esign import *
+from docusign_esign.rest import ApiException
 
-eg = "eg001"  # reference (and url) for this exampl
+eg = "eg001"  # reference (and url) for this example
 signer_client_id = 1000 # Used to indicate that the signer will use an embedded
                         # Signing Ceremony. Represents the signer's userId within
                         # your application.
@@ -36,9 +39,11 @@ def create_controller():
     minimum_buffer_min = 3
     if views.ds_token_ok(minimum_buffer_min):
         # 2. Call the worker method
-        # Data validation would be a good idea here
-        signer_email = request.form.get('signer_email')
-        signer_name = request.form.get('signer_name')
+        # More data validation would be a good idea here
+        # Strip anything other than characters listed
+        pattern = re.compile('([^\w \-\@\.\,])+')
+        signer_email = pattern.sub('', request.form.get('signer_email'))
+        signer_name  = pattern.sub('', request.form.get('signer_name'))
         envelope_args = {
             'signer_email': signer_email,
             'signer_name': signer_name,
@@ -54,16 +59,16 @@ def create_controller():
 
         try:
             results = worker(args)
-        except ImportError as error:
-            error_body = error and 'response' in error and error['response']['body']
+        except ApiException as err:
+            error_body_json = err and hasattr(err, 'body') and err.body
             # we can pull the DocuSign error code and message from the response body
+            error_body = json.loads(error_body_json)
             error_code = error_body and 'errorCode' in error_body and error_body['errorCode']
             error_message = error_body and 'message' in error_body and error_body['message']
-
             # In production, may want to provide customized error messages and
             # remediation advice to the user.
             return render_template('error.html',
-                                   err=error,
+                                   err=err,
                                    error_code=error_code,
                                    error_message=error_message
                                    )

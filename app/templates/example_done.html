@@ -1,14 +1,14 @@
-<% include ../partials/head %>
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h2><%= h1 %></h2>
-<p><%- message %></p>
+<h2>{{ h1 }}</h2>
+<p>{{ message | safe }}</p>
 
-<% if (locals.json) { %>
+{% if json %}
   <!-- Data from the server -->
-  <div id="server_json_data" data-server-json-data='{"json":<%- JSON.stringify(json) %>}' class="hidden"></div>
+  <div id="server_json_data" data-server-json-data='{"json": {{ json | safe }} }' class="hidden"></div>
   <p><pre class="json-display"><code id="json-display"></code></pre></p>
-<% } %>
+{%  endif %}
 
 <p><a href="/">Continue</a></p>
   
-<% include ../partials/foot %>
+{% endblock %}

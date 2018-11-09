@@ -5,7 +5,7 @@ from flask_oauthlib.client import OAuth
 from datetime import datetime, timedelta
 import requests
 import uuid
-from app import app, ds_config, eg001_embedded_signing
+from app import app, ds_config, eg001_embedded_signing, eg002_signing_via_email
 
 
 @app.route('/')
@@ -26,6 +26,11 @@ def ds_must_authenticate():
 @app.route('/eg001', methods=['GET', 'POST'])
 def eg001():
     return eg001_embedded_signing.controller()
+
+
+@app.route('/eg002', methods=['GET', 'POST'])
+def eg002():
+    return eg002_signing_via_email.controller()
 
 
 @app.route('/ds_return')
@@ -93,6 +98,7 @@ def ds_logout():
     session.pop('ds_account_id', None)
     session.pop('ds_account_name', None)
     session.pop('ds_base_path', None)
+    session.pop('envelope_id', None)
 
     flash('You have logged out from DocuSign.')
     return redirect(url_for('index'))
