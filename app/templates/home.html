@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    {% if not user %}
+    {% if not 'ds_user_name' in session %}
     <!-- IF not signed in -->
     <div class="jumbotron">
         <h1 class="display-4">Welcome!</h1>

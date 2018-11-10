@@ -5,7 +5,9 @@ from flask_oauthlib.client import OAuth
 from datetime import datetime, timedelta
 import requests
 import uuid
-from app import app, ds_config, eg001_embedded_signing, eg002_signing_via_email
+from app import app, ds_config, eg001_embedded_signing, eg002_signing_via_email,  \
+            eg003_list_envelopes, eg004_envelope_info, eg005_envelope_recipients, \
+            eg006_envelope_docs
 
 
 @app.route('/')
@@ -31,6 +33,26 @@ def eg001():
 @app.route('/eg002', methods=['GET', 'POST'])
 def eg002():
     return eg002_signing_via_email.controller()
+
+
+@app.route('/eg003', methods=['GET', 'POST'])
+def eg003():
+    return eg003_list_envelopes.controller()
+
+
+@app.route('/eg004', methods=['GET', 'POST'])
+def eg004():
+    return eg004_envelope_info.controller()
+
+
+@app.route('/eg005', methods=['GET', 'POST'])
+def eg005():
+    return eg005_envelope_recipients.controller()
+
+
+@app.route('/eg006', methods=['GET', 'POST'])
+def eg006():
+    return eg006_envelope_docs.controller()
 
 
 @app.route('/ds_return')
@@ -89,6 +111,12 @@ def ds_login():
 
 @app.route('/ds/logout')
 def ds_logout():
+    ds_logout_internal()
+    flash('You have logged out from DocuSign.')
+    return redirect(url_for('index'))
+
+
+def ds_logout_internal():
     # remove the keys and their values from the session
     session.pop('ds_access_token', None)
     session.pop('ds_refresh_token', None)
@@ -99,13 +127,18 @@ def ds_logout():
     session.pop('ds_account_name', None)
     session.pop('ds_base_path', None)
     session.pop('envelope_id', None)
-
-    flash('You have logged out from DocuSign.')
-    return redirect(url_for('index'))
+    session.pop('eg', None)
+    session.pop('envelope_documents', None)
 
 
 @app.route('/ds/callback')
 def ds_callback():
+    """Called via a redirect from DocuSign authentication service """
+    # Save the redirect eg if present
+    redirect_url = session.pop('eg', None)
+    # reset the session
+    ds_logout_internal()
+
     resp = docusign.authorized_response()
     if resp is None or resp.get('access_token') is None:
         return 'Access denied: reason=%s error=%s resp=%s' % (
@@ -146,11 +179,7 @@ def ds_callback():
     session['ds_account_name'] = account["account_name"]
     session['ds_base_path'] = account["base_uri"] + base_uri_suffix
 
-    if 'eg' in session:
-        # Redirect to the saved location
-        redirect_url = session['eg']
-        session.pop('eg', None)
-    else:
+    if not redirect_url:
         redirect_url = url_for('index')
     return redirect(redirect_url)
 

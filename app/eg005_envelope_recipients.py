@@ -1,129 +1,113 @@
-/**
- * @file
- * Example 005: envelope list recipients
- * @author DocuSign
- */
+"""005: List an envelope's recipients and status"""
 
-const path = require('path')
-    , docusign = require('docusign-esign')
-    , {promisify} = require('util') // http://2ality.com/2017/05/util-promisify.html
-    , dsConfig = require('../../ds_configuration.js').config
-    ;
+from flask import render_template, url_for, redirect, session, flash, request
+from os import path
+import json
+from app import ds_config, views
+from docusign_esign import *
+from docusign_esign.rest import ApiException
 
-const eg005EnvelopeRecipients = exports
-    , eg = 'eg005' // This example reference.
-    , mustAuthenticate = '/ds/mustAuthenticate'
-    , minimumBufferMin = 3
-    ;
+eg = "eg005"  # reference (and url) for this example
 
-/**
- * Form page for this application
- */
-eg005EnvelopeRecipients.getController = (req, res) => {
-    // Check that the authentication token is ok with a long buffer time.
-    // If needed, now is the best time to ask the user to authenticate
-    // since they have not yet entered any information into the form.
-    let tokenOK = req.dsAuthCodeGrant.checkToken();
-    if (tokenOK) {
-        res.render('pages/examples/eg005EnvelopeRecipients', {
-            csrfToken: req.csrfToken(), 
-            title: "List envelope recipients",
-            envelopeOk: req.session.envelopeId,
-            sourceFile: path.basename(__filename),
-            sourceUrl: dsConfig.githubExampleUrl + path.basename(__filename),
-            documentation: dsConfig.documentation + eg,
-            showDoc: dsConfig.documentation
-        });
-    } else {
-        // Save the current operation so it will be resumed after authentication
-        req.dsAuthCodeGrant.setEg(req, eg);
-        res.redirect(mustAuthenticate);
-    }
-}  
+def controller():
+    """Controller router using the HTTP method"""
+    if request.method == 'GET':
+        return get_controller()
+    elif request.method == 'POST':
+        return create_controller()
+    else:
+        return render_template('404.html'), 404
 
-/**
- * List the envelope recipients
- * @param {object} req Request obj 
- * @param {object} res Response obj
- */
-eg005EnvelopeRecipients.createController = async (req, res) => {
-    // Step 1. Check the token
-    // At this point we should have a good token. But we
-    // double-check here to enable a better UX to the user.
-    let tokenOK = req.dsAuthCodeGrant.checkToken(minimumBufferMin);
-    if (! tokenOK) {
-        req.flash('info', 'Sorry, you need to re-authenticate.');
-        // We could store the parameters of the requested operation 
-        // so it could be restarted automatically.
-        // But since it should be rare to have a token issue here,
-        // we'll make the user re-enter the form data after 
-        // authentication.
-        req.dsAuthCodeGrant.setEg(req, eg);
-        res.redirect(mustAuthenticate);
-    }
-    if (! req.session.envelopeId) {
-        res.render('pages/examples/eg005EnvelopeRecipients', {
-            csrfToken: req.csrfToken(), 
-            title: "List envelope recipients",
-            envelopeOk: req.session.envelopeId,
-            sourceFile: path.basename(__filename),
-            sourceUrl: dsConfig.githubExampleUrl + path.basename(__filename),
-            documentation: dsConfig.documentation + eg,
-            showDoc: dsConfig.documentation
-        });
-    }
 
-    // Step 2. Call the worker method
-    let accountId = req.dsAuthCodeGrant.getAccountId()
-      , dsAPIclient = req.dsAuthCodeGrant.getDSApi()
-      , args = {
-          dsAPIclient: dsAPIclient,
-          accountId: accountId,
-          envelopeId: req.session.envelopeId
+def create_controller():
+    """
+    1. Check the token
+    2. Call the worker method
+    3. Show results
+    """
+    minimum_buffer_min = 3
+    token_ok = views.ds_token_ok(minimum_buffer_min)
+    if token_ok and 'envelope_id' in session:
+        # 2. Call the worker method
+        args = {
+            'account_id': session['ds_account_id'],
+            'envelope_id': session['envelope_id'],
+            'base_path': session['ds_base_path'],
+            'ds_access_token': session['ds_access_token'],
         }
-      , results = null
-      ;
 
-    try {
-        results = await eg005EnvelopeRecipients.worker (args)
-    }
-    catch (error) {
-        let errorBody = error && error.response && error.response.body
-            // we can pull the DocuSign error code and message from the response body
-        , errorCode = errorBody && errorBody.errorCode
-        , errorMessage = errorBody && errorBody.message
-        ;
-        // In production, may want to provide customized error messages and 
-        // remediation advice to the user.
-        res.render('pages/error', {err: error, errorCode: errorCode, errorMessage: errorMessage});
-    }
-    if (results) {
-        res.render('pages/example_done', {
-            title: "List envelope recipients result",
-            h1: "List envelope recipients result",
-            message: `Results from the EnvelopeRecipients::list method:`,
-            json: JSON.stringify(results)
-        });
-    }
-}
+        try:
+            results = worker(args)
+        except ApiException as err:
+            error_body_json = err and hasattr(err, 'body') and err.body
+            # we can pull the DocuSign error code and message from the response body
+            error_body = json.loads(error_body_json)
+            error_code = error_body and 'errorCode' in error_body and error_body['errorCode']
+            error_message = error_body and 'message' in error_body and error_body['message']
+            # In production, may want to provide customized error messages and
+            # remediation advice to the user.
+            return render_template('error.html',
+                                   err=err,
+                                   error_code=error_code,
+                                   error_message=error_message
+                                   )
+        return render_template("example_done.html",
+                                title="Envelope recipients results",
+                                h1="List the envelope's recipients and their status",
+                                message="Results from the EnvelopesRecipients::list method:",
+                                json=json.dumps(json.dumps(results.to_dict()))
+                                )
+    elif not token_ok:
+        flash('Sorry, you need to re-authenticate.')
+        # We could store the parameters of the requested operation
+        # so it could be restarted automatically.
+        # But since it should be rare to have a token issue here,
+        # we'll make the user re-enter the form data after
+        # authentication.
+        session['eg'] = url_for(eg)
+        return redirect(url_for('ds_must_authenticate'))
+    elif not 'envelope_id' in session:
+        return render_template("eg005_envelope_recipients.html",
+                               title="Envelope recipient information",
+                               envelope_ok=False,
+                               source_file=path.basename(__file__),
+                               source_url=ds_config.DS_CONFIG['github_example_url'] + path.basename(__file__),
+                               documentation=ds_config.DS_CONFIG['documentation'] + eg,
+                               show_doc=ds_config.DS_CONFIG['documentation'],
+                               )
 
-/**
- * This function does the work of listing the envelope's recipients
- * @param {object} args An object with the following elements: <br/>
- *   <tt>dsAPIclient</tt>: The DocuSign API Client object, already set with an access token and base url <br/>
- *   <tt>accountId</tt>: Current account Id <br/>
- *   <tt>envelopeId</tt>: envelope Id <br/>
- */
-// ***DS.worker.start ***DS.snippet.1.start
-eg005EnvelopeRecipients.worker = async (args) => {
-    let envelopesApi = new docusign.EnvelopesApi(args.dsAPIclient)
-      , listRecipientsP = promisify(envelopesApi.listRecipients).bind(envelopesApi)
-      , results = null
-      ;
 
-    // Step 1. EnvelopeRecipients::list.
-    // Exceptions will be caught by the calling function
-    results = await listRecipientsP(args.accountId, args.envelopeId, null);
-    return results;
-}
-// ***DS.worker.end ***DS.snippet.1.end
+def worker(args):
+    """
+    1. Call the envelope recipients list method
+    """
+
+    # Exceptions will be caught by the calling function
+    api_client = ApiClient()
+    api_client.host = args['base_path']
+    api_client.set_default_header("Authorization", "Bearer " + args['ds_access_token'])
+    envelope_api = EnvelopesApi(api_client)
+    results = envelope_api.list_recipients(args['account_id'], args['envelope_id'])
+
+    return results
+
+# ***DS.worker.end ***DS.snippet.1.end
+
+
+def get_controller():
+    """responds with the form for the example"""
+
+    if views.ds_token_ok():
+        return render_template("eg005_envelope_recipients.html",
+                               title="Envelope recipient information",
+                               envelope_ok='envelope_id' in session,
+                               source_file=path.basename(__file__),
+                               source_url=ds_config.DS_CONFIG['github_example_url'] + path.basename(__file__),
+                               documentation=ds_config.DS_CONFIG['documentation'] + eg,
+                               show_doc=ds_config.DS_CONFIG['documentation'],
+                               )
+    else:
+        # Save the current operation so it will be resumed after authentication
+        session['eg'] = url_for(eg)
+        return redirect(url_for('ds_must_authenticate'))
+
