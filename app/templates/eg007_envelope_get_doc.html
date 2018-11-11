@@ -24,7 +24,7 @@
     View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
 </p>
 
-<% if (! envelope_ok) { %>
+{% if not envelope_ok %}
   <p>Problem: please first create an envelope using <a href="eg002">example 2.</a> <br/>
     You will then need to use example 6 to create the list of documents.<br/>
     Thank you.</p>
@@ -32,7 +32,7 @@
  <form class="eg" action="eg002" method="get">
      <button type="submit" class="btn btn-primary">Continue</button>
  </form>
-<% } else if (!documentsOk) { %>
+{%  elif not documents_ok %}
   <p>Problem: please first create a list of the envelope's documents using 
     <a href="eg006">example 6.</a> <br/>
     Thank you.</p>
@@ -47,11 +47,11 @@
   <form class="eg" action="" method="post" data-busy="form-download">
     <div class="form-group">
         <label for="docSelect">Document selection</label>
-        <select class="custom-select" id="docSelect" 
-          name="docSelect" aria-describedby="emailHelp">
-        <% for (let opt of documentOptions) { %>
-          <option value="<%= opt.documentId %>"><%= opt.text %></option>
-        {% endif %}
+        <select class="custom-select" id="document_id"
+          name="document_id" aria-describedby="emailHelp">
+        {% for opt in document_options %}
+          <option value="{{ opt.document_id | safe }}">{{ opt.text }}</option>
+        {% endfor %}
         </select>
     </div>  
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

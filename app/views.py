@@ -7,7 +7,7 @@ import requests
 import uuid
 from app import app, ds_config, eg001_embedded_signing, eg002_signing_via_email,  \
             eg003_list_envelopes, eg004_envelope_info, eg005_envelope_recipients, \
-            eg006_envelope_docs
+            eg006_envelope_docs, eg007_envelope_get_doc
 
 
 @app.route('/')
@@ -53,6 +53,11 @@ def eg005():
 @app.route('/eg006', methods=['GET', 'POST'])
 def eg006():
     return eg006_envelope_docs.controller()
+
+
+@app.route('/eg007', methods=['GET', 'POST'])
+def eg007():
+    return eg007_envelope_get_doc.controller()
 
 
 @app.route('/ds_return')
