@@ -7,7 +7,7 @@ import requests
 import uuid
 from app import app, ds_config, eg001_embedded_signing, eg002_signing_via_email,  \
             eg003_list_envelopes, eg004_envelope_info, eg005_envelope_recipients, \
-            eg006_envelope_docs, eg007_envelope_get_doc
+            eg006_envelope_docs, eg007_envelope_get_doc, eg008_create_template
 
 
 @app.route('/')
@@ -58,6 +58,11 @@ def eg006():
 @app.route('/eg007', methods=['GET', 'POST'])
 def eg007():
     return eg007_envelope_get_doc.controller()
+
+
+@app.route('/eg008', methods=['GET', 'POST'])
+def eg008():
+    return eg008_create_template.controller()
 
 
 @app.route('/ds_return')
@@ -134,6 +139,7 @@ def ds_logout_internal():
     session.pop('envelope_id', None)
     session.pop('eg', None)
     session.pop('envelope_documents', None)
+    session.pop('template_id', None)
 
 
 @app.route('/ds/callback')
