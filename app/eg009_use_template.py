@@ -1,192 +1,167 @@
-/**
- * @file
- * Example 009: Send envelope using a template
- * @author DocuSign
- */
+"""Example 009: Send envelope using a template"""
 
-const path = require('path')
-    , docusign = require('docusign-esign')
-    , validator = require('validator')
-    , {promisify} = require('util') // http://2ality.com/2017/05/util-promisify.html
-    , dsConfig = require('../../ds_configuration.js').config
-    ;
+from flask import render_template, url_for, redirect, session, flash, request
+from os import path
+import json
+from app import app, ds_config, views
+import base64
+import re
+from docusign_esign import *
+from docusign_esign.rest import ApiException
 
-const eg009UseTemplate = exports
-    , eg = 'eg009' // This example reference.
-    , mustAuthenticate = '/ds/mustAuthenticate'
-    , minimumBufferMin = 3
-    ;
+eg = "eg009"  # reference (and url) for this example
 
-/**
- * Form page for this application
- */
-eg009UseTemplate.getController = (req, res) => {
-    // Check that the authentication token is ok with a long buffer time.
-    // If needed, now is the best time to ask the user to authenticate
-    // since they have not yet entered any information into the form.
-    let tokenOK = req.dsAuthCodeGrant.checkToken();
-    if (tokenOK) {
-        res.render('pages/examples/eg009UseTemplate', {
-            csrfToken: req.csrfToken(), 
-            title: "Send envelope using a template",
-            templateOk: req.session.templateId,
-            sourceFile: path.basename(__filename),
-            sourceUrl: dsConfig.githubExampleUrl + path.basename(__filename),
-            documentation: dsConfig.documentation + eg,
-            showDoc: dsConfig.documentation
-        });
-    } else {
-        // Save the current operation so it will be resumed after authentication
-        req.dsAuthCodeGrant.setEg(req, eg);
-        res.redirect(mustAuthenticate);
-    }
-}  
 
-/**
- * Send envelope with a template
- * @param {object} req Request obj 
- * @param {object} res Response obj
- */
-eg009UseTemplate.createController = async (req, res) => {
-    // Step 1. Check the token
-    // At this point we should have a good token. But we
-    // double-check here to enable a better UX to the user.
-    let tokenOK = req.dsAuthCodeGrant.checkToken(minimumBufferMin);
-    if (! tokenOK) {
-        req.flash('info', 'Sorry, you need to re-authenticate.');
-        // We could store the parameters of the requested operation 
-        // so it could be restarted automatically.
-        // But since it should be rare to have a token issue here,
-        // we'll make the user re-enter the form data after 
-        // authentication.
-        req.dsAuthCodeGrant.setEg(req, eg);
-        res.redirect(mustAuthenticate);
-    }
+def controller():
+    """Controller router using the HTTP method"""
+    if request.method == 'GET':
+        return get_controller()
+    elif request.method == 'POST':
+        return create_controller()
+    else:
+        return render_template('404.html'), 404
 
-    if (!req.session.templateId) {
-        res.render('pages/examples/eg009UseTemplate', {
-            csrfToken: req.csrfToken(), 
-            title: "Send envelope using a template",
-            templateOk: req.session.templateId,
-            sourceFile: path.basename(__filename),
-            sourceUrl: dsConfig.githubExampleUrl + path.basename(__filename),
-            documentation: dsConfig.documentation + eg,
-            showDoc: dsConfig.documentation
-        });
-    }
 
-    // Step 2. Call the worker method
-    let body = req.body
-        // Additional data validation might also be appropriate
-      , signerEmail = validator.escape(body.signerEmail)
-      , signerName = validator.escape(body.signerName)
-      , cc_email = validator.escape(body.cc_email)
-      , cc_name = validator.escape(body.cc_name)
-      , envelopeArgs = {
-            templateId: req.session.templateId,
-            signerEmail: signerEmail, 
-            signerName: signerName, 
-            cc_email: cc_email, 
-            cc_name: cc_name }
-      , accountId = req.dsAuthCodeGrant.getAccountId()
-      , dsAPIclient = req.dsAuthCodeGrant.getDSApi()
-      , args = {
-            dsAPIclient: dsAPIclient,
-            accountId: accountId,
-            envelopeArgs: envelopeArgs
+def create_controller():
+    """
+    1. Check the token
+    2. Call the worker method
+    """
+    minimum_buffer_min = 3
+    token_ok = views.ds_token_ok(minimum_buffer_min)
+    if token_ok and 'template_id' in session:
+        # 2. Call the worker method
+        # More data validation would be a good idea here
+        # Strip anything other than characters listed
+        pattern = re.compile('([^\w \-\@\.\,])+')
+        signer_email = pattern.sub('', request.form.get('signer_email'))
+        signer_name  = pattern.sub('', request.form.get('signer_name'))
+        cc_email     = pattern.sub('', request.form.get('cc_email'))
+        cc_name      = pattern.sub('', request.form.get('cc_name'))
+        envelope_args = {
+            'signer_email': signer_email,
+            'signer_name': signer_name,
+            'cc_email': cc_email,
+            'cc_name': cc_name,
+            'template_id': template_id
         }
-      , results = null
-      ;
+        args = {
+            'account_id': session['ds_account_id'],
+            'base_path': session['ds_base_path'],
+            'ds_access_token': session['ds_access_token'],
+            'envelope_args': envelope_args
+        }
 
-    try {
-        results = await eg009UseTemplate.worker (args)
-    }
-    catch (error) {
-        let errorBody = error && error.response && error.response.body
-            // we can pull the DocuSign error code and message from the response body
-          , errorCode = errorBody && errorBody.errorCode
-          , errorMessage = errorBody && errorBody.message
-          ;
-        // In production, may want to provide customized error messages and 
-        // remediation advice to the user.
-        res.render('pages/error', {err: error, errorCode: errorCode, errorMessage: errorMessage});
-    }
-    if (results) {
-        req.session.envelopeId = results.envelopeId; // Save for use by other examples 
-            // which need an envelopeId
-        res.render('pages/example_done', {
-            title: "Envelope sent",
-            h1: "Envelope sent",
-            message: `The envelope has been created and sent!<br/>Envelope ID ${results.envelopeId}.`
-        });
-    }
-}
+        try:
+            results = worker(args)
+        except ApiException as err:
+            error_body_json = err and hasattr(err, 'body') and err.body
+            # we can pull the DocuSign error code and message from the response body
+            error_body = json.loads(error_body_json)
+            error_code = error_body and 'errorCode' in error_body and error_body['errorCode']
+            error_message = error_body and 'message' in error_body and error_body['message']
+            # In production, may want to provide customized error messages and
+            # remediation advice to the user.
+            return render_template('error.html',
+                                   err=err,
+                                   error_code=error_code,
+                                   error_message=error_message
+                                   )
+        if results:
+            return render_template('example_done.html',
+                        title="Envelope sent",
+                        h1="Envelope sent",
+                        message=f"""The envelope has been created and sent!<br/>
+                        Envelope ID {results["envelope_id"]}."""
+            )
+    elsif not token_ok:
+        flash('Sorry, you need to re-authenticate.')
+        # We could store the parameters of the requested operation
+        # so it could be restarted automatically.
+        # But since it should be rare to have a token issue here,
+        # we'll make the user re-enter the form data after
+        # authentication.
+        session['eg'] = url_for(eg)
+        return redirect(url_for('ds_must_authenticate'))
+    elif not 'template_id' in session:
+        return render_template("eg009_use_template.html",
+                               title="Use a template to send an envelope",
+                               template_ok=False,
+                               source_file=path.basename(__file__),
+                               source_url=ds_config.DS_CONFIG['github_example_url'] + path.basename(__file__),
+                               documentation=ds_config.DS_CONFIG['documentation'] + eg,
+                               show_doc=ds_config.DS_CONFIG['documentation'],
+                               )
 
-/**
- * This function does the work of creating the envelope 
- * @param {object} args An object with the following elements: <br/>
- *   <tt>dsAPIclient</tt>: The DocuSign API Client object, already set with an access token and base url <br/>
- *   <tt>accountId</tt>: Current account Id <br/>
- *   <tt>envelopeArgs</tt>: envelopeArgs, an object with elements 
- *      <tt>templateId</tt>, <tt>signerEmail</tt>, <tt>signerName</tt>, 
- *      <tt>cc_email</tt>, <tt>cc_name</tt>
- */
-// ***DS.worker.start ***DS.snippet.1.start
-eg009UseTemplate.worker = async (args) => {
-    let envelopesApi = new docusign.EnvelopesApi(args.dsAPIclient)
-      , createEnvelopeP = promisify(envelopesApi.createEnvelope).bind(envelopesApi)
-      , results = null
-      ;
-    
-    // Step 1. Make the envelope request body
-    let envelope = makeEnvelope(args.envelopeArgs)
 
-    // Step 2. call Envelopes::create API method
-    // Exceptions will be caught by the calling function
-    results = await createEnvelopeP(args.accountId, {envelopeDefinition: envelope});
+def worker(args):
+    """
+    1. Create the envelope request object
+    2. Send the envelope
+    """
+    envelope_args = args["envelope_args"]
+    # 1. Create the envelope request object
+    envelope_definition = make_envelope(envelope_args)
 
-    return results;
-}
-// ***DS.worker.end ***DS.snippet.1.end
+    # 2. call Envelopes::create API method
+    # Exceptions will be caught by the calling function
+    api_client = ApiClient()
+    api_client.host = args['base_path']
+    api_client.set_default_header("Authorization", "Bearer " + args['ds_access_token'])
+    envelope_api = EnvelopesApi(api_client)
+    results = envelope_api.create_envelope(args['account_id'], envelope_definition=envelope_definition)
+    envelope_id = results.envelope_id
+    return {'envelope_id': envelope_id}
 
-// ***DS.snippet.2.start
-/**
- * Creates envelope from the template
- * @function
- * @param {Object} args parameters for the envelope:
- *   <tt>signerEmail</tt>, <tt>signerName</tt>, <tt>cc_email</tt>, <tt>cc_name</tt>,
- *   <tt>templateId</tt>
- * @returns {Envelope} An envelope definition
- * @private
- */
-function makeEnvelope(args){
-    // The envelope has two recipients.
-    // recipient 1 - signer
-    // recipient 2 - cc
+# ***DS.worker.end ***DS.snippet.1.end
 
-    // create the envelope definition
-    let env = new docusign.EnvelopeDefinition();
-    env.templateId = args.templateId;
 
-    // Create template role elements to connect the signer and cc recipients
-    // to the template
-    // We're setting the parameters via the object creation
-    let signer1 = docusign.TemplateRole.constructFromObject({
-        email: args.signerEmail,
-        name: args.signerName,
-        roleName: 'signer'});
+# ***DS.snippet.2.start
+def make_envelope(args):
+    """
+    Creates envelope
+    args -- parameters for the envelope:
+    signer_email, signer_name, signer_client_id
+    returns an envelope definition
+    """
 
+    # create the envelope definition
+    envelope_definition = EnvelopeDefinition(
+        status = "sent" # requests that the envelope be created and sent.
+        templateId = args['template_id']
+    )
+    # Create template role elements to connect the signer and cc recipients
+    # to the template
+    signer = TemplateRole(
+        email = args['signer_email'],
+        name = args['signer_name'],
+        role_name = 'signer')
     // Create a cc template role.
-    // We're setting the parameters via setters
-    let cc1 = new docusign.TemplateRole();
-    cc1.email = args.cc_email;
-    cc1.name = args.cc_name;
-    cc1.roleName = 'cc';
+    cc = TemplateRole(
+        email = args['cc_email'],
+        name = args['cc_name'],
+        role_name = 'cc')
 
-    // Add the TemplateRole objects to the envelope object
-    env.templateRoles = [signer1, cc1];
-    env.status = "sent"; // We want the envelope to be sent
+    # Add the TemplateRole objects to the envelope object
+    envelope_definition.template_roles = [signer, cc]
+    return envelope_definition
 
-    return env;
-}
-// ***DS.snippet.2.end
+# ***DS.snippet.2.end
+def get_controller():
+    """responds with the form for the example"""
+
+    if views.ds_token_ok():
+        return render_template("eg009_use_template.html",
+                               title="Use a template to send an envelope",
+                               template_ok="template_id" in session,
+                               source_file=path.basename(__file__),
+                               source_url=ds_config.DS_CONFIG['github_example_url'] + path.basename(__file__),
+                               documentation=ds_config.DS_CONFIG['documentation'] + eg,
+                               show_doc=ds_config.DS_CONFIG['documentation'],
+                               signer_name=ds_config.DS_CONFIG['signer_name'],
+                               signer_email=ds_config.DS_CONFIG['signer_email']
+        )
+    else:
+        # Save the current operation so it will be resumed after authentication
+        session['eg'] = url_for(eg)
+        return redirect(url_for('ds_must_authenticate'))
