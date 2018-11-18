@@ -1,177 +1,144 @@
-/**
- * @file
- * Example 011: Embedded sending: Remote signer, cc, envelope has three documents
- * @author DocuSign
- */
+"""011: Embedded sending: Remote signer, cc, envelope has three documents"""
 
-const path = require('path')
-    , fs = require('fs-extra')
-    , docusign = require('docusign-esign')
-    , validator = require('validator')
-    , {promisify} = require('util') // http://2ality.com/2017/05/util-promisify.html
-    , dsConfig = require('../../ds_configuration.js').config
-    , eg002 = require('./eg002SigningViaEmail') // used to create envelope
-    ;
+from flask import render_template, url_for, redirect, session, flash, request
+from os import path
+import json
+import re
+from app import app, ds_config, views, eg002_signing_via_email
+from docusign_esign import *
+from docusign_esign.rest import ApiException
 
-const eg011EmbeddedSending = exports
-    , eg = 'eg011' // This example reference.
-    , mustAuthenticate = '/ds/mustAuthenticate'
-    , minimumBufferMin = 3
-    , demoDocsPath = path.resolve(__dirname, '../../demo_documents')
-    , doc2File = 'World_Wide_Corp_Battle_Plan_Trafalgar.docx'
-    , doc3File = 'World_Wide_Corp_lorem.pdf'
-    , dsReturnUrl = dsConfig.appUrl + '/ds-return' 
-    ;
+eg = "eg011"  # reference (and url) for this example
 
-/**
- * Form page for this application
- */
-eg011EmbeddedSending.getController = (req, res) => {
-    // Check that the authentication token is ok with a long buffer time.
-    // If needed, now is the best time to ask the user to authenticate
-    // since they have not yet entered any information into the form.
-    let tokenOK = req.dsAuthCodeGrant.checkToken();
-    if (tokenOK) {
-        res.render('pages/examples/eg011EmbeddedSending', {
-            csrfToken: req.csrfToken(), 
-            title: "Signing request by email",
-            sourceFile: path.basename(__filename),
-            sourceUrl: dsConfig.githubExampleUrl + path.basename(__filename),
-            documentation: dsConfig.documentation + eg,
-            showDoc: dsConfig.documentation
-        });
-    } else {
-        // Save the current operation so it will be resumed after authentication
-        req.dsAuthCodeGrant.setEg(req, eg);
-        res.redirect(mustAuthenticate);
-    }
-}  
+def controller():
+    """Controller router using the HTTP method"""
+    if request.method == 'GET':
+        return get_controller()
+    elif request.method == 'POST':
+        return create_controller()
+    else:
+        return render_template('404.html'), 404
 
-/**
- * Create the envelope
- * @param {object} req Request obj 
- * @param {object} res Response obj
- */
-eg011EmbeddedSending.createController = async (req, res) => {
-    // Step 1. Check the token
-    // At this point we should have a good token. But we
-    // double-check here to enable a better UX to the user.
-    let tokenOK = req.dsAuthCodeGrant.checkToken(minimumBufferMin);
-    if (! tokenOK) {
-        req.flash('info', 'Sorry, you need to re-authenticate.');
-        // We could store the parameters of the requested operation 
-        // so it could be restarted automatically.
-        // But since it should be rare to have a token issue here,
-        // we'll make the user re-enter the form data after 
-        // authentication.
-        req.dsAuthCodeGrant.setEg(req, eg);
-        res.redirect(mustAuthenticate);
-    }
 
-    // Step 2. Call the worker method
-    let body = req.body
-        // Additional data validation might also be appropriate
-      , signerEmail = validator.escape(body.signerEmail)
-      , signerName = validator.escape(body.signerName)
-      , cc_email = validator.escape(body.cc_email)
-      , cc_name = validator.escape(body.cc_name)
-      , startingView = validator.escape(body.startingView)
-      , envelopeArgs = {
-            signerEmail: signerEmail, 
-            signerName: signerName, 
-            cc_email: cc_email, 
-            cc_name: cc_name,
-            dsReturnUrl: dsReturnUrl,
+def create_controller():
+    """
+    1. Check the token
+    2. Call the worker method
+    3. Show results
+    """
+    minimum_buffer_min = 3
+    token_ok = views.ds_token_ok(minimum_buffer_min)
+    if token_ok:
+        # 2. Call the worker method
+        # More data validation would be a good idea here
+        # Strip anything other than characters listed
+        pattern = re.compile('([^\w \-\@\.\,])+')
+        signer_email  = pattern.sub('', request.form.get('signer_email'))
+        signer_name   = pattern.sub('', request.form.get('signer_name'))
+        cc_email      = pattern.sub('', request.form.get('cc_email'))
+        cc_name       = pattern.sub('', request.form.get('cc_name'))
+        starting_view = pattern.sub('', request.form.get('starting_view'))
+
+        envelope_args = {
+            'signer_email': signer_email,
+            'signer_name': signer_name,
+            'cc_email': cc_email,
+            'cc_name': cc_name,
+            'status': 'sent',
         }
-      , accountId = req.dsAuthCodeGrant.getAccountId()
-      , dsAPIclient = req.dsAuthCodeGrant.getDSApi()
-      , args = {
-            dsAPIclient: dsAPIclient,
-            accountId: accountId,
-            startingView: startingView,
-            envelopeArgs: envelopeArgs
+        args = {
+            'starting_view': starting_view,
+            'account_id': session['ds_account_id'],
+            'base_path': session['ds_base_path'],
+            'ds_access_token': session['ds_access_token'],
+            'envelope_args': envelope_args,
+            'ds_return_url': url_for('ds_return', _external=True),
         }
-      , results = null
-      ;
 
-    try {
-        results = await eg011EmbeddedSending.worker (args)
-    }
-    catch (error) {
-        let errorBody = error && error.response && error.response.body
-            // we can pull the DocuSign error code and message from the response body
-          , errorCode = errorBody && errorBody.errorCode
-          , errorMessage = errorBody && errorBody.message
-          ;
-        // In production, may want to provide customized error messages and 
-        // remediation advice to the user.
-        res.render('pages/error', {err: error, errorCode: errorCode, errorMessage: errorMessage});
-    }
-    if (results) {
-        // Redirect the user to the Sender View
-        // Don't use an iFrame!
-        // State can be stored/recovered using the framework's session or a
-        // query parameter on the returnUrl (see the makeSenderViewRequest method)
-        res.redirect(results.redirectUrl);
-    }
-}
+        try:
+            results = worker(args)
+        except ApiException as err:
+            error_body_json = err and hasattr(err, 'body') and err.body
+            # we can pull the DocuSign error code and message from the response body
+            error_body = json.loads(error_body_json)
+            error_code = error_body and 'errorCode' in error_body and error_body['errorCode']
+            error_message = error_body and 'message' in error_body and error_body['message']
+            # In production, may want to provide customized error messages and
+            # remediation advice to the user.
+            return render_template('error.html',
+                                   err=err,
+                                   error_code=error_code,
+                                   error_message=error_message
+                                   )
+        if results:
+            # Redirect the user to the NDSE view
+            # Don't use an iFrame!
+            # State can be stored/recovered using the framework's session or a
+            # query parameter on the returnUrl (see the makeRecipientViewRequest method)
+            return redirect(results["redirect_url"])
 
-/**
- * This function does the work of creating the envelope in 
- * draft mode and returning a URL for the sender's view
- * @param {object} args An object with the following elements: <br/>
- *   <tt>dsAPIclient</tt>: The DocuSign API Client object, already set with an access token and base url <br/>
- *   <tt>accountId</tt>: Current account Id <br/>
- *   <tt>senderView</tt>: tagging or recipient
- *   <tt>envelopeArgs</tt>: envelopeArgs, an object with elements 
- *      <tt>signerEmail</tt>, <tt>signerName</tt>, <tt>cc_email</tt>, <tt>cc_name</tt>
- */
-// ***DS.worker.start ***DS.snippet.1.start
-eg011EmbeddedSending.worker = async (args) => {
-    let envelopesApi = new docusign.EnvelopesApi(args.dsAPIclient)
-      , results = null
-      ;
+    elif not token_ok:
+        flash('Sorry, you need to re-authenticate.')
+        # We could store the parameters of the requested operation
+        # so it could be restarted automatically.
+        # But since it should be rare to have a token issue here,
+        # we'll make the user re-enter the form data after
+        # authentication.
+        session['eg'] = url_for(eg)
+        return redirect(url_for('ds_must_authenticate'))
+    elif not 'envelope_id' in session:
+        return render_template("eg011_embedded_sending.html",
+                               title="Embedded Sending",
+                               source_file=path.basename(__file__),
+                               source_url=ds_config.DS_CONFIG['github_example_url'] + path.basename(__file__),
+                               documentation=ds_config.DS_CONFIG['documentation'] + eg,
+                               show_doc=ds_config.DS_CONFIG['documentation'],
+                               )
 
-    // Step 1. Make the envelope with "created" (draft) status 
-    args.envelopeArgs.status = "created"; // We want a draft envelope
-    results = await eg002.worker(args);
-    let envelopeId = results.envelopeId;
 
-    // Step 2. create the sender view
-    let viewRequest = makeSenderViewRequest(args.envelopeArgs)
-      , createSenderViewP = promisify(envelopesApi.createSenderView).bind(envelopesApi)
-      ;
+def worker(args):
+    """
+    This function does the work of creating the envelope in
+    draft mode and returning a URL for the sender's view
+    """
 
-    // Call the CreateSenderView API
-    // Exceptions will be caught by the calling function
-    results = await createSenderViewP(args.accountId, envelopeId,
-        {returnUrlRequest: viewRequest});
-    
-    // Switch to Recipient and Documents view if requested by the user
-    let url = results.url;
-    console.log (`startingView: ${args.startingView}`);
-    if (args.startingView === "recipient") {
-        url = url.replace('send=1', 'send=0');
-    }
-    console.log (`Sender view URL: ${url}`);
+    # Step 1. Create the envelope with "created" (draft) status
+    args["envelope_args"]["status"] = "created"
+    # Using worker from example 002
+    results = eg002_signing_via_email.worker(args)
+    envelope_id = results['envelope_id']
 
-    return ({envelopeId: envelopeId, redirectUrl: url})
-}
-// ***DS.worker.end ***DS.snippet.1.end
+    # Step 2. Create the sender view
+    view_request = ReturnUrlRequest(return_url=args['ds_return_url'])
+    # Exceptions will be caught by the calling function
+    api_client = ApiClient()
+    api_client.host = args['base_path']
+    api_client.set_default_header("Authorization", "Bearer " + args['ds_access_token'])
+    envelope_api = EnvelopesApi(api_client)
+    results = envelope_api.create_sender_view(args['account_id'], envelope_id, return_url_request=view_request)
 
-// ***DS.snippet.3.start
-function makeSenderViewRequest(args) {
-    let viewRequest = new docusign.ReturnUrlRequest();
+    # Switch to Recipient and Documents view if requested by the user
+    url = results.url
+    if args['starting_view'] == "recipient":
+        url = url.replace('send=1', 'send=0')
 
-    // Set the url where you want the recipient to go once they are done signing
-    // should typically be a callback route somewhere in your app.
-    // The query parameter is included as an example of how
-    // to save/recover state information during the redirect to
-    // the DocuSign signing ceremony. It's usually better to use
-    // the session mechanism of your web framework. Query parameters
-    // can be changed/spoofed very easily.
-    viewRequest.returnUrl = args.dsReturnUrl + "?state=123";
-    return viewRequest
-}
-// ***DS.snippet.3.end
+    return {'envelope_id': envelope_id, 'redirect_url': url}
 
+
+def get_controller():
+    """responds with the form for the example"""
+
+    if views.ds_token_ok():
+        return render_template("eg011_embedded_sending.html",
+                               title="Embedded Sending",
+                               source_file=path.basename(__file__),
+                               source_url=ds_config.DS_CONFIG['github_example_url'] + path.basename(__file__),
+                               documentation=ds_config.DS_CONFIG['documentation'] + eg,
+                               show_doc=ds_config.DS_CONFIG['documentation'],
+                               signer_name=ds_config.DS_CONFIG['signer_name'],
+                               signer_email=ds_config.DS_CONFIG['signer_email']
+                               )
+    else:
+        # Save the current operation so it will be resumed after authentication
+        session['eg'] = url_for(eg)
+        return redirect(url_for('ds_must_authenticate'))

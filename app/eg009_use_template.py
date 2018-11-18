@@ -38,6 +38,7 @@ def create_controller():
         signer_name  = pattern.sub('', request.form.get('signer_name'))
         cc_email     = pattern.sub('', request.form.get('cc_email'))
         cc_name      = pattern.sub('', request.form.get('cc_name'))
+        template_id = session['template_id']
         envelope_args = {
             'signer_email': signer_email,
             'signer_name': signer_name,
@@ -74,7 +75,7 @@ def create_controller():
                         message=f"""The envelope has been created and sent!<br/>
                         Envelope ID {results["envelope_id"]}."""
             )
-    elsif not token_ok:
+    elif not token_ok:
         flash('Sorry, you need to re-authenticate.')
         # We could store the parameters of the requested operation
         # so it could be restarted automatically.
@@ -127,8 +128,8 @@ def make_envelope(args):
 
     # create the envelope definition
     envelope_definition = EnvelopeDefinition(
-        status = "sent" # requests that the envelope be created and sent.
-        templateId = args['template_id']
+        status = "sent", # requests that the envelope be created and sent.
+        template_id = args['template_id']
     )
     # Create template role elements to connect the signer and cc recipients
     # to the template
@@ -136,7 +137,7 @@ def make_envelope(args):
         email = args['signer_email'],
         name = args['signer_name'],
         role_name = 'signer')
-    // Create a cc template role.
+    # Create a cc template role.
     cc = TemplateRole(
         email = args['cc_email'],
         name = args['cc_name'],

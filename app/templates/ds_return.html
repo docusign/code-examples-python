@@ -7,18 +7,18 @@
   <p><b>event: {{ event }}.</b> This event parameter is supplied by DocuSign.
     Since it could have been spoofed, don't make business decisions based on
     its value. Instead, query DocuSign as appropriate.</p>
-{%  endif %}
+{% endif %}
 
 {% if envelope_id %}
-  <p><b>envelopeId: {{ envelopeId }}.</b> The envelopeId parameter is supplied by DocuSign.
+  <p><b>envelopeId: {{ envelope_id }}.</b> The envelopeId parameter is supplied by DocuSign.
     Since it could have been spoofed, don't make business decisions based on
     its value. Instead, query DocuSign as appropriate.</p>
-{%  endif %}
+{% endif %}
 
 {% if state %}
   <p><b>state: {{ state }}.</b> This example state was sent to DocuSign and has now been received back.
      It is usually better to store state in your web framework's session.</p>
-{%  endif %}
+{% endif %}
 
 <p><a href="/">Continue</a></p>
   

@@ -22,17 +22,17 @@
     View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
 </p>
 
-<% if (!envelope_ok) { %>
+{% if not envelope_ok %}
     <p><b>Optional:</b> to use the <i>Envelope's document view</i> please first create an envelope using 
         <a href="eg002">example 2.</a></p>
 {% endif %}
 
 <form class="eg" action="" method="post" data-busy="form">
     <div class="form-group">
-        <label for="startingView">Starting View</label>
-        <select id="startingView" name="startingView" class="form-control">
-                <option value="frontPage" selected>Front page</option>
-                <option value="envelope" <%= envelope_ok ? '' : 'disabled="true"' %> >
+        <label for="starting_view">Starting View</label>
+        <select id="starting_view" name="starting_view" class="form-control">
+                <option value="front_page" selected>Front page</option>
+                <option value="envelope" {% if not envelope_ok %}disabled="true"{% endif %} >
                     The envelope's documents view</option>
         </select>
     </div>
