@@ -5,11 +5,14 @@ from flask_oauthlib.client import OAuth
 from datetime import datetime, timedelta
 import requests
 import uuid
-from app import app, ds_config, eg001_embedded_signing, eg002_signing_via_email,  \
-            eg003_list_envelopes, eg004_envelope_info, eg005_envelope_recipients, \
-            eg006_envelope_docs, eg007_envelope_get_doc, eg008_create_template,   \
-            eg009_use_template, eg010_send_binary_docs, eg011_embedded_sending,   \
-            eg012_embedded_console
+from app import app, ds_config, eg001_embedded_signing, \
+            eg002_signing_via_email, eg003_list_envelopes, \
+            eg004_envelope_info, eg005_envelope_recipients, \
+            eg006_envelope_docs, eg007_envelope_get_doc, \
+            eg008_create_template, eg009_use_template, \
+            eg010_send_binary_docs, eg011_embedded_sending, \
+            eg012_embedded_console, eg013_add_doc_to_template, \
+            eg014_collect_payment
 
 
 @app.route('/')
@@ -85,6 +88,16 @@ def eg011():
 @app.route('/eg012', methods=['GET', 'POST'])
 def eg012():
     return eg012_embedded_console.controller()
+
+
+@app.route('/eg013', methods=['GET', 'POST'])
+def eg013():
+    return eg013_add_doc_to_template.controller()
+
+
+@app.route('/eg014', methods=['GET', 'POST'])
+def eg014():
+    return eg014_collect_payment.controller()
 
 
 @app.route('/ds_return')

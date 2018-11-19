@@ -25,7 +25,7 @@
     View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
 </p>
 
-<% if (gatewayOk) { %>
+{% if gateway_ok %}
   <form class="eg" action="" method="post" data-busy="form">
       <div class="form-group">
         <label for="signer_email">Signer Email</label>

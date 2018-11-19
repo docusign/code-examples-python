@@ -1,305 +1,249 @@
-/**
- * @file
- * Example 013: Embedded Signing Ceremony from template with added document
- * @author DocuSign
- */
+"""Example 013: Embedded Signing Ceremony from template with added document"""
 
-const path = require('path')
-    , fs = require('fs-extra')
-    , docusign = require('docusign-esign')
-    , validator = require('validator')
-    , {promisify} = require('util') // http://2ality.com/2017/05/util-promisify.html
-    , dsConfig = require('../../ds_configuration.js').config
-    ;
+from flask import render_template, url_for, redirect, session, flash, request
+from os import path
+import json
+from app import app, ds_config, views
+import base64
+import re
+from docusign_esign import *
+from docusign_esign.rest import ApiException
 
-const eg013AddDocToTemplate = exports
-    , eg = 'eg013' // This example reference.
-    , mustAuthenticate = '/ds/mustAuthenticate'
-    , minimumBufferMin = 3
-    , signerClientId = 1000 // The id of the signer within this application.
-    , demoDocsPath = path.resolve(__dirname, '../../demo_documents')
-    , dsReturnUrl = dsConfig.appUrl + '/ds-return' 
-    , dsPingUrl = dsConfig.appUrl + '/' // Url that will be pinged by the DocuSign Signing Ceremony via Ajax
-    ;
+eg = "eg013"  # reference (and url) for this example
+signer_client_id = 1000 # The id of the signer within this application.
 
-/**
- * Form page for this application
- */
-eg013AddDocToTemplate.getController = (req, res) => {
-    // Check that the authentication token is ok with a long buffer time.
-    // If needed, now is the best time to ask the user to authenticate
-    // since they have not yet entered any information into the form.
-    let tokenOK = req.dsAuthCodeGrant.checkToken();
-    if (tokenOK) {
-        res.render('pages/examples/eg013AddDocToTemplate', {
-            csrfToken: req.csrfToken(), 
-            title: "Embedded Signing Ceremony from template and extra doc",
-            templateOk: req.session.templateId,
-            sourceFile: path.basename(__filename),
-            sourceUrl: dsConfig.githubExampleUrl + path.basename(__filename),
-            documentation: dsConfig.documentation + eg,
-            showDoc: dsConfig.documentation
-        });
-    } else {
-        // Save the current operation so it will be resumed after authentication
-        req.dsAuthCodeGrant.setEg(req, eg);
-        res.redirect(mustAuthenticate);
-    }
-}  
 
-/**
- * Create the envelope, the Signing Ceremony, and then redirect to the Signing Ceremony
- * @param {object} req Request obj 
- * @param {object} res Response obj
- */
-eg013AddDocToTemplate.createController = async (req, res) => {
-    // Step 1. Check the token
-    // At this point we should have a good token. But we
-    // double-check here to enable a better UX to the user.
-    let tokenOK = req.dsAuthCodeGrant.checkToken(minimumBufferMin);
-    if (! tokenOK) {
-        req.flash('info', 'Sorry, you need to re-authenticate.');
-        // We could store the parameters of the requested operation 
-        // so it could be restarted automatically.
-        // But since it should be rare to have a token issue here,
-        // we'll make the user re-enter the form data after 
-        // authentication.
-        req.dsAuthCodeGrant.setEg(req, eg);
-        res.redirect(mustAuthenticate);
-    }
+def controller():
+    """Controller router using the HTTP method"""
+    if request.method == 'GET':
+        return get_controller()
+    elif request.method == 'POST':
+        return create_controller()
+    else:
+        return render_template('404.html'), 404
 
-    if (!req.session.templateId) {
-        res.render('pages/examples/eg013AddDocToTemplate', {
-            csrfToken: req.csrfToken(), 
-            title: "Embedded Signing Ceremony from template and extra doc",
-            templateOk: req.session.templateId,
-            sourceFile: path.basename(__filename),
-            sourceUrl: dsConfig.githubExampleUrl + path.basename(__filename),
-            documentation: dsConfig.documentation + eg,
-            showDoc: dsConfig.documentation
-        });
-    }
 
-    // Step 2. Call the worker method
-    let body = req.body
-        // Additional data validation might also be appropriate
-      , signerEmail = validator.escape(body.signerEmail)
-      , signerName = validator.escape(body.signerName)
-      , cc_email = validator.escape(body.cc_email)
-      , cc_name = validator.escape(body.cc_name)
-      , item = validator.escape(body.item)
-      , quantity = validator.isInt(body.quantity) && body.quantity
-
-      , envelopeArgs = {
-            templateId: req.session.templateId,
-            signerEmail: signerEmail, 
-            signerName: signerName, 
-            signerClientId: signerClientId,
-            cc_email: cc_email,
-            cc_name: cc_name,
-            item: item, 
-            quantity: quantity,
-            dsReturnUrl: dsReturnUrl,
-            dsPingUrl: dsPingUrl
+def create_controller():
+    """
+    1. Check the token and presence of a saved template_id
+    2. Call the worker method
+    """
+    minimum_buffer_min = 3
+    token_ok = views.ds_token_ok(minimum_buffer_min)
+    if token_ok and 'template_id' in session:
+        # 2. Call the worker method
+        # More data validation would be a good idea here
+        # Strip anything other than characters listed
+        pattern = re.compile('([^\w \-\@\.\,])+')
+        signer_email = pattern.sub('', request.form.get('signer_email'))
+        signer_name  = pattern.sub('', request.form.get('signer_name'))
+        cc_email     = pattern.sub('', request.form.get('cc_email'))
+        cc_name      = pattern.sub('', request.form.get('cc_name'))
+        item         = pattern.sub('', request.form.get('item'))
+        quantity     = pattern.sub('', request.form.get('quantity'))
+        quantity     = int(quantity)
+        template_id = session['template_id']
+        envelope_args = {
+            'signer_email': signer_email,
+            'signer_name': signer_name,
+            'cc_email': cc_email,
+            'cc_name': cc_name,
+            'template_id': template_id,
+            'signer_client_id': signer_client_id,
+            'item': item,
+            'quantity': quantity,
+            'ds_return_url': url_for('ds_return', _external=True)
         }
-      , accountId = req.dsAuthCodeGrant.getAccountId()
-      , dsAPIclient = req.dsAuthCodeGrant.getDSApi()
-      , args = {
-            dsAPIclient: dsAPIclient,
-            accountId: accountId,
-            envelopeArgs: envelopeArgs
+        args = {
+            'account_id': session['ds_account_id'],
+            'base_path': session['ds_base_path'],
+            'ds_access_token': session['ds_access_token'],
+            'envelope_args': envelope_args
         }
-      , results = null
-      ;
 
-    try {
-        results = await eg013AddDocToTemplate.worker (args)
-    }
-    catch (error) {
-        let errorBody = error && error.response && error.response.body
-            // we can pull the DocuSign error code and message from the response body
-          , errorCode = errorBody && errorBody.errorCode
-          , errorMessage = errorBody && errorBody.message
-          ;
-        // In production, may want to provide customized error messages and 
-        // remediation advice to the user.
-        res.render('pages/error', {err: error, errorCode: errorCode, errorMessage: errorMessage});
-    }
-    if (results) {
-        // Redirect the user to the Signing Ceremony
-        // Don't use an iFrame!
-        // State can be stored/recovered using the framework's session or a
-        // query parameter on the returnUrl (see the makeRecipientViewRequest method)
-        res.redirect(results.redirectUrl);
-    }
-}
+        try:
+            results = worker(args)
+        except ApiException as err:
+            error_body_json = err and hasattr(err, 'body') and err.body
+            # we can pull the DocuSign error code and message from the
+            # response body
+            error_body = json.loads(error_body_json)
+            error_code = error_body and 'errorCode' in error_body and \
+                         error_body['errorCode']
+            error_message = error_body and 'message' in error_body and \
+                            error_body['message']
+            # In production, may want to provide customized error messages and
+            # remediation advice to the user.
+            return render_template('error.html',
+                                   err=err,
+                                   error_code=error_code,
+                                   error_message=error_message
+                                   )
+        if results:
+            # Redirect the user to the Signing Ceremony
+            # Don't use an iFrame!
+            # State can be stored/recovered using the framework's session
+            return redirect(results["redirect_url"])
 
-/**
- * This function does the work of creating the envelope and the 
- * embedded Signing Ceremony
- * @param {object} args An object with the following elements: <br/>
- *   <tt>dsAPIclient</tt>: The DocuSign API Client object, already set with an access token and base url <br/>
- *   <tt>accountId</tt>: Current account Id <br/>
- *   <tt>envelopeArgs</tt>: envelopeArgs, an object with elements 
- *      <tt>templateId</tt>, <tt>item</tt>, <tt>quantity</tt>
- *      <tt>signerEmail</tt>, <tt>signerName</tt>, <tt>signerClientId</tt>
- *      <tt>cc_email</tt>, <tt>cc_name</tt>
- */
-// ***DS.worker.start ***DS.snippet.1.start
-eg013AddDocToTemplate.worker = async (args) => {
-    let envelopesApi = new docusign.EnvelopesApi(args.dsAPIclient)
-      , createEnvelopeP = promisify(envelopesApi.createEnvelope).bind(envelopesApi)
-      , results = null
-      ;
+    elif not token_ok:
+        flash('Sorry, you need to re-authenticate.')
+        # We could store the parameters of the requested operation
+        # so it could be restarted automatically.
+        # But since it should be rare to have a token issue here,
+        # we'll make the user re-enter the form data after
+        # authentication.
+        session['eg'] = url_for(eg)
+        return redirect(url_for('ds_must_authenticate'))
+    elif not 'template_id' in session:
+        return render_template("eg013_add_doc_to_template.html",
+            title="Embedded Signing Ceremony from template and extra doc",
+            template_ok=False,
+            source_file=path.basename(__file__),
+            source_url=ds_config.DS_CONFIG['github_example_url'] +
+                       path.basename(__file__),
+            documentation=ds_config.DS_CONFIG['documentation'] + eg,
+            show_doc=ds_config.DS_CONFIG['documentation'],
+            )
 
-    // Step 1. Make the envelope request body
-    let envelope = makeEnvelope(args.envelopeArgs)
 
-    // Step 2. call Envelopes::create API method
-    // Exceptions will be caught by the calling function
-    results = await createEnvelopeP(args.accountId, {envelopeDefinition: envelope});
-    
-    let envelopeId = results.envelopeId;
-    console.log(`Envelope was created. EnvelopeId ${envelopeId}`);
+def worker(args):
+    """
+    Create the envelope and the embedded Signing Ceremony
+    1. Create the envelope request object using composite template to
+       add the new document
+    2. Send the envelope
+    3. Make the recipient view request object
+    4. Get the recipient view (Signing Ceremony) url
+    """
+    envelope_args = args["envelope_args"]
+    # 1. Create the envelope request object
+    envelope_definition = make_envelope(envelope_args)
 
-    // Step 3. create the recipient view, the Signing Ceremony
-    let viewRequest = makeRecipientViewRequest(args.envelopeArgs)
-      , createRecipientViewP = promisify(envelopesApi.createRecipientView).bind(envelopesApi)
-      ;
+    # 2. call Envelopes::create API method
+    # Exceptions will be caught by the calling function
+    api_client = ApiClient()
+    api_client.host = args['base_path']
+    api_client.set_default_header("Authorization",
+                                  "Bearer " + args['ds_access_token'])
+    envelope_api = EnvelopesApi(api_client)
+    results = envelope_api.create_envelope(args['account_id'],
+                                envelope_definition=envelope_definition)
+    envelope_id = results.envelope_id
 
-    // Call the CreateRecipientView API
-    // Exceptions will be caught by the calling function
-    results = await createRecipientViewP(args.accountId, envelopeId,
-        {recipientViewRequest: viewRequest});
+    # 3. Create the Recipient View request object
+    authentication_method = 'None'  # How is this application authenticating
+    # the signer? See the `authenticationMethod' definition
+    # https://goo.gl/qUhGTm
+    recipient_view_request = RecipientViewRequest(
+        authentication_method=authentication_method,
+        client_user_id=envelope_args['signer_client_id'],
+        recipient_id='1',
+        return_url=envelope_args['ds_return_url'],
+        user_name=envelope_args['signer_name'],
+        email=envelope_args['signer_email']
+    )
+    # 4. Obtain the recipient_view_url for the signing ceremony
+    # Exceptions will be caught by the calling function
+    results = envelope_api.create_recipient_view(args['account_id'],
+                envelope_id,
+                recipient_view_request=recipient_view_request)
 
-    return ({envelopeId: envelopeId, redirectUrl: results.url})
-}
-// ***DS.worker.end ***DS.snippet.1.end
+    return {'envelope_id': envelope_id, 'redirect_url': results.url}
 
-// ***DS.snippet.2.start
-/**
- * Creates envelope
- * @function
- * @param {Object} args parameters for the envelope:
- *      <tt>templateId</tt>, <tt>item</tt>, <tt>quantity</tt>
- *      <tt>signerEmail</tt>, <tt>signerName</tt>, <tt>signerClientId</tt>
- *      <tt>cc_email</tt>, <tt>cc_name</tt>
- * @returns {Envelope} An envelope definition
- * @private
- */
-function makeEnvelope(args){
-    // The envelope request object uses Composite Template to 
-    // include in the envelope:
-    // 1. A template stored on the DocuSign service
-    // 2. An additional document which is a custom HTML source document 
-   
-    // Create Recipients for server template. Note that Recipients object
-    // is used, not TemplateRole
-    //
-    // Create a signer recipient for the signer role of the server template
-    let signer1 = docusign.Signer.constructFromObject({
-            email: args.signerEmail,
-            name: args.signerName, 
-            roleName: "signer",
-            recipientId: "1",
-            // Adding clientUserId transforms the template recipient
-            // into an embedded recipient:
-            clientUserId: args.signerClientId 
-        });
-    // Create the cc recipient
-    let cc1 = docusign.CarbonCopy.constructFromObject({
-        email: args.cc_email,
-        name: args.cc_name, 
-        roleName: "cc",
-        recipientId: "2"
-    });
-    // Recipients object:
-    let recipientsServerTemplate = docusign.Recipients.constructFromObject({
-        carbonCopies: [cc1], signers: [signer1], });
+# ***DS.worker.end ***DS.snippet.1.end
 
-    // create a composite template for the Server Template
-    let compTemplate1 = docusign.CompositeTemplate.constructFromObject({
-          compositeTemplateId: "1",
-          serverTemplates: [
-              docusign.ServerTemplate.constructFromObject({
-                  sequence: "1",
-                  templateId: args.templateId                   
-              })
+
+# ***DS.snippet.2.start
+def make_envelope(args):
+    """
+    Creates envelope
+    Uses compositing templates to add a new document to the existing template
+    returns an envelope definition
+
+    The envelope request object uses Composite Template to
+    include in the envelope:
+    1. A template stored on the DocuSign service
+    2. An additional document which is a custom HTML source document
+    """
+
+    # 1. Create Recipients for server template. Note that Recipients object
+    #    is used, not TemplateRole
+    #
+    # Create a signer recipient for the signer role of the server template
+    signer1 = Signer(email=args['signer_email'], name=args['signer_name'],
+                     role_name="signer", recipient_id="1",
+                     # Adding clientUserId transforms the template recipient
+                     # into an embedded recipient:
+                     client_user_id=args['signer_client_id']
+              )
+    # Create the cc recipient
+    cc1 = CarbonCopy(email=args['cc_email'], name=args['cc_name'],
+                     role_name="cc", recipient_id="2"
+                    )
+    # Recipients object:
+    recipients_server_template = Recipients(
+        carbon_copies=[cc1], signers=[signer1])
+
+    # 2. create a composite template for the Server template + roles
+    comp_template1 = CompositeTemplate(
+          composite_template_id="1",
+          server_templates=[
+              ServerTemplate(sequence="1", template_id=args['template_id'])
           ],
-          // Add the roles via an inlineTemplate
-          inlineTemplates: [
-              docusign.InlineTemplate.constructFromObject({
-                  sequence: "1",
-                  recipients: recipientsServerTemplate
-              })
+          # Add the roles via an inlineTemplate
+          inline_templates=[
+              InlineTemplate(sequence="1",
+                             recipients=recipients_server_template)
           ]
-    })
+    )
 
-    // The signer recipient for the added document with
-    // a tab definition:
-    let signHere1 = docusign.SignHere.constructFromObject({
-        anchorString: '**signature_1**',
-        anchorYOffset: '10', anchorUnits: 'pixels',
-        anchorXOffset: '20'})
-    ;
-    let signer1Tabs = docusign.Tabs.constructFromObject({
-        signHereTabs: [signHere1]});
+    # Next, create the second composite template that will
+    # include the new document.
+    #
+    # 3. Create the signer recipient for the added document
+    #    starting with the tab definition:
+    sign_here1 = SignHere(anchor_string='**signature_1**',
+                    anchor_y_offset='10', anchor_units='pixels',
+                    anchor_x_offset='20')
+    signer1_tabs = Tabs(sign_here_tabs=[sign_here1])
 
-    // Signer definition for the added document
-    let signer1AddedDoc = docusign.Signer.constructFromObject({
-        email: args.signerEmail,
-        name: args.signerName,
-        clientId: args.signerClientId,
-        roleName: "signer",
-        recipientId: "1",
-        tabs: signer1Tabs
-    });
-    // Recipients object for the added document:
-    let recipientsAddedDoc = docusign.Recipients.constructFromObject({
-        carbonCopies: [cc1], signers: [signer1AddedDoc]});
-    // create the HTML document
-    let doc1 = new docusign.Document()
-      , doc1b64 = Buffer.from(document1(args)).toString('base64');
-    doc1.documentBase64 = doc1b64;
-    doc1.name = 'Appendix 1--Sales order'; // can be different from actual file name
-    doc1.fileExtension = 'html';
-    doc1.documentId = '1';
-
-    // create a composite template for the added document
-    let compTemplate2 = docusign.CompositeTemplate.constructFromObject({
-        compositeTemplateId: "2",
-        // Add the recipients via an inlineTemplate
-        inlineTemplates: [
-            docusign.InlineTemplate.constructFromObject({
-                sequence: "2",
-                recipients: recipientsAddedDoc
-            })
+    # 4. Create Signer definition for the added document
+    signer1AddedDoc = Signer(email=args['signer_email'],
+                     name=args['signer_name'],
+                     role_name="signer", recipient_id="1",
+                     client_user_id=args['signer_client_id'],
+                     tabs=signer1_tabs)
+    # 5. The Recipients object for the added document.
+    #    Using cc1 definition from above.
+    recipients_added_doc = Recipients(
+        carbon_copies=[cc1], signers=[signer1AddedDoc])
+    # 6. Create the HTML document that will be added to the envelope
+    doc1_b64 = base64.b64encode(bytes(create_document1(args), 'utf-8'))\
+               .decode('ascii')
+    doc1 = Document(document_base64=doc1_b64,
+            name='Appendix 1--Sales order', # can be different from
+                                            # actual file name
+            file_extension='html', document_id='1'
+    )
+    # 6. create a composite template for the added document
+    comp_template2 = CompositeTemplate(composite_template_id="2",
+        # Add the recipients via an inlineTemplate
+        inline_templates=[
+            InlineTemplate(sequence="2", recipients=recipients_added_doc)
         ],
-        document: doc1
-    })
+        document=doc1
+    )
+    # 7. create the envelope definition with the composited templates
+    envelope_definition = EnvelopeDefinition(
+                            status="sent",
+                            composite_templates=[comp_template1, comp_template2]
+    )
 
-    // create the envelope definition
-    let env = docusign.EnvelopeDefinition.constructFromObject({
-        status: "sent",
-        compositeTemplates: [compTemplate1, compTemplate2]
-    })
+    return envelope_definition
 
-    return env;
-}
-// ***DS.snippet.2.end
 
-// ***DS.snippet.3.start
-/**
- * Creates document 1
- * @function
- * @private
- * @param {Object} args parameters for the envelope:
- *   <tt>signerEmail</tt>, <tt>signerName</tt>, <tt>cc_email</tt>, <tt>cc_name</tt>
- * @returns {string} A document in HTML format
- */
-
-function document1(args) {
-    return `
+def create_document1(args):
+    return f"""
     <!DOCTYPE html>
     <html>
         <head>
@@ -311,10 +255,10 @@ function document1(args) {
         <h2 style="font-family: 'Trebuchet MS', Helvetica, sans-serif;
           margin-top: 0px;margin-bottom: 3.5em;font-size: 1em;
           color: darkblue;">Order Processing Division</h2>
-        <h4>Ordered by ${args.signerName}</h4>
-        <p style="margin-top:0em; margin-bottom:0em;">Email: ${args.signerEmail}</p>
-        <p style="margin-top:0em; margin-bottom:0em;">Copy to: ${args.cc_name}, ${args.cc_email}</p>
-        <p style="margin-top:3em; margin-bottom:0em;">Item: <b>${args.item}</b>, quantity: <b>${args.quantity}</b> at market price.</p>
+        <h4>Ordered by {args['signer_name']}</h4>
+        <p style="margin-top:0em; margin-bottom:0em;">Email: {args['signer_email']}</p>
+        <p style="margin-top:0em; margin-bottom:0em;">Copy to: {args['cc_name']}, {args['cc_email']}</p>
+        <p style="margin-top:3em; margin-bottom:0em;">Item: <b>{args['item']}</b>, quantity: <b>{args['quantity']}</b> at market price.</p>
         <p style="margin-top:3em;">
   Candy bonbon pastry jujubes lollipop wafer biscuit biscuit. Topping brownie sesame snaps sweet roll pie. Croissant danish biscuit soufflé caramels jujubes jelly. Dragée danish caramels lemon drops dragée. Gummi bears cupcake biscuit tiramisu sugar plum pastry. Dragée gummies applicake pudding liquorice. Donut jujubes oat cake jelly-o. Dessert bear claw chocolate cake gummies lollipop sugar plum ice cream gummies cheesecake.
         </p>
@@ -322,46 +266,25 @@ function document1(args) {
         <h3 style="margin-top:3em;">Agreed: <span style="color:white;">**signature_1**/</span></h3>
         </body>
     </html>
-  `
-  }
-// ***DS.snippet.3.end
+  """
 
 
-// ***DS.snippet.4.start
-function makeRecipientViewRequest(args) {
-    let viewRequest = new docusign.RecipientViewRequest();
+# ***DS.snippet.2.end
+def get_controller():
+    """responds with the form for the example"""
 
-    // Set the url where you want the recipient to go once they are done signing
-    // should typically be a callback route somewhere in your app.
-    // The query parameter is included as an example of how
-    // to save/recover state information during the redirect to
-    // the DocuSign signing ceremony. It's usually better to use
-    // the session mechanism of your web framework. Query parameters
-    // can be changed/spoofed very easily.
-    viewRequest.returnUrl = args.dsReturnUrl + "?state=123";
-
-    // How has your app authenticated the user? In addition to your app's
-    // authentication, you can include authenticate steps from DocuSign.
-    // Eg, SMS authentication
-    viewRequest.authenticationMethod = 'none';
-    
-    // Recipient information must match embedded recipient info
-    // we used to create the envelope.
-    viewRequest.email = args.signerEmail;
-    viewRequest.userName = args.signerName;
-    viewRequest.clientUserId = args.signerClientId;
-
-    // DocuSign recommends that you redirect to DocuSign for the
-    // Signing Ceremony. There are multiple ways to save state.
-    // To maintain your application's session, use the pingUrl
-    // parameter. It causes the DocuSign Signing Ceremony web page
-    // (not the DocuSign server) to send pings via AJAX to your
-    // app,
-    viewRequest.pingFrequency = 600; // seconds
-    // NOTE: The pings will only be sent if the pingUrl is an https address
-    viewRequest.pingUrl = args.dsPingUrl; // optional setting
-
-    return viewRequest
-}
-// ***DS.snippet.4.end
-
+    if views.ds_token_ok():
+        return render_template("eg013_add_doc_to_template.html",
+                               title="Embedded Signing Ceremony from template and extra doc",
+                               template_ok="template_id" in session,
+                               source_file=path.basename(__file__),
+                               source_url=ds_config.DS_CONFIG['github_example_url'] + path.basename(__file__),
+                               documentation=ds_config.DS_CONFIG['documentation'] + eg,
+                               show_doc=ds_config.DS_CONFIG['documentation'],
+                               signer_name=ds_config.DS_CONFIG['signer_name'],
+                               signer_email=ds_config.DS_CONFIG['signer_email']
+        )
+    else:
+        # Save the current operation so it will be resumed after authentication
+        session['eg'] = url_for(eg)
+        return redirect(url_for('ds_must_authenticate'))

@@ -1,392 +1,337 @@
-/**
- * @file
- * Example 014: Remote signer, cc, envelope has an order form
- * @author DocuSign
- */
+""" Example 014: Remote signer, cc; envelope has an order form """
 
-const path = require('path')
-    , fs = require('fs-extra')
-    , docusign = require('docusign-esign')
-    , validator = require('validator')
-    , {promisify} = require('util') // http://2ality.com/2017/05/util-promisify.html
-    , dsConfig = require('../../ds_configuration.js').config
-    ;
+from flask import render_template, url_for, redirect, session, flash, request
+from os import path
+from app import app, ds_config, views
+import base64
+import re
+import json
+from docusign_esign import *
+from docusign_esign.rest import ApiException
 
-const eg014CollectPayment = exports
-    , eg = 'eg014' // This example reference.
-    , mustAuthenticate = '/ds/mustAuthenticate'
-    , minimumBufferMin = 3
-    , demoDocsPath = path.resolve(__dirname, '../../demo_documents')
-    , doc1File = 'order_form.html'
-    ;
+eg = "eg014"  # reference (and url) for this example
+demo_docs_path = path.abspath(path.join(path.dirname(path.realpath(__file__)), 'static/demo_documents'))
 
-/**
- * Form page for this application
- */
-eg014CollectPayment.getController = (req, res) => {
-    // Check that the authentication token is ok with a long buffer time.
-    // If needed, now is the best time to ask the user to authenticate
-    // since they have not yet entered any information into the form.
-    let tokenOK = req.dsAuthCodeGrant.checkToken();
-    if (tokenOK) {
-        res.render('pages/examples/eg014CollectPayment', {
-            csrfToken: req.csrfToken(), 
-            title: "Order form with payment by email",
-            gatewayOk: dsConfig.gatewayAccountId && dsConfig.gatewayAccountId.length > 25,
-            sourceFile: path.basename(__filename),
-            sourceUrl: dsConfig.githubExampleUrl + path.basename(__filename),
-            documentation: dsConfig.documentation + eg,
-            showDoc: dsConfig.documentation
-        });
-    } else {
-        // Save the current operation so it will be resumed after authentication
-        req.dsAuthCodeGrant.setEg(req, eg);
-        res.redirect(mustAuthenticate);
-    }
-}  
 
-/**
- * Create the envelope
- * @param {object} req Request obj 
- * @param {object} res Response obj
- */
-eg014CollectPayment.createController = async (req, res) => {
-    // Step 1. Check the token
-    // At this point we should have a good token. But we
-    // double-check here to enable a better UX to the user.
-    let tokenOK = req.dsAuthCodeGrant.checkToken(minimumBufferMin);
-    if (! tokenOK) {
-        req.flash('info', 'Sorry, you need to re-authenticate.');
-        // We could store the parameters of the requested operation 
-        // so it could be restarted automatically.
-        // But since it should be rare to have a token issue here,
-        // we'll make the user re-enter the form data after 
-        // authentication.
-        req.dsAuthCodeGrant.setEg(req, eg);
-        res.redirect(mustAuthenticate);
-    }
+def controller():
+    """Controller router using the HTTP method"""
+    if request.method == 'GET':
+        return get_controller()
+    elif request.method == 'POST':
+        return create_controller()
+    else:
+        return render_template('404.html'), 404
 
-    // Step 2. Call the worker method
-    let body = req.body
-        // Additional data validation might also be appropriate
-      , signerEmail = validator.escape(body.signerEmail)
-      , signerName = validator.escape(body.signerName)
-      , cc_email = validator.escape(body.cc_email)
-      , cc_name = validator.escape(body.cc_name)
-      , envelopeArgs = {
-            signerEmail: signerEmail, 
-            signerName: signerName, 
-            cc_email: cc_email, 
-            cc_name: cc_name,
-            status: "sent",
-            gatewayAccountId: dsConfig.gatewayAccountId,
-            gatewayName: dsConfig.gatewayName,
-            gatewayDisplayName: dsConfig.gatewayDisplayName
+
+def create_controller():
+    """
+    1. Check the token
+    2. Call the worker method
+    """
+    minimum_buffer_min = 3
+    if views.ds_token_ok(minimum_buffer_min):
+        # 2. Call the worker method
+        # More data validation would be a good idea here
+        # Strip anything other than characters listed
+        pattern = re.compile('([^\w \-\@\.\,])+')
+        signer_email = pattern.sub('', request.form.get('signer_email'))
+        signer_name  = pattern.sub('', request.form.get('signer_name'))
+        cc_email     = pattern.sub('', request.form.get('cc_email'))
+        cc_name      = pattern.sub('', request.form.get('cc_name'))
+        envelope_args = {
+            'signer_email': signer_email,
+            'signer_name': signer_name,
+            'cc_email': cc_email,
+            'cc_name': cc_name,
+            'status': 'sent',
+            'gateway_account_id': ds_config.DS_CONFIG['gateway_account_id'],
+            'gateway_name': ds_config.DS_CONFIG['gateway_name'],
+            'gateway_display_name': ds_config.DS_CONFIG['gateway_display_name']
         }
-      , accountId = req.dsAuthCodeGrant.getAccountId()
-      , dsAPIclient = req.dsAuthCodeGrant.getDSApi()
-      , args = {
-            dsAPIclient: dsAPIclient,
-            accountId: accountId,
-            envelopeArgs: envelopeArgs
+        args = {
+            'account_id': session['ds_account_id'],
+            'base_path': session['ds_base_path'],
+            'ds_access_token': session['ds_access_token'],
+            'envelope_args': envelope_args
         }
-      , results = null
-      ;
 
-    try {
-        results = await eg014CollectPayment.worker (args)
-    }
-    catch (error) {
-        let errorBody = error && error.response && error.response.body
-            // we can pull the DocuSign error code and message from the response body
-          , errorCode = errorBody && errorBody.errorCode
-          , errorMessage = errorBody && errorBody.message
-          ;
-        // In production, may want to provide customized error messages and 
-        // remediation advice to the user.
-        res.render('pages/error', {err: error, errorCode: errorCode, errorMessage: errorMessage});
-    }
-    if (results) {
-        req.session.envelopeId = results.envelopeId; // Save for use by other examples 
-            // which need an envelopeId
-        res.render('pages/example_done', {
-            title: "Envelope sent",
-            h1: "Envelope sent",
-            message: `The envelope has been created and sent!<br/>Envelope ID ${results.envelopeId}.`
-        });
-    }
-}
+        try:
+            results = worker(args)
+        except ApiException as err:
+            error_body_json = err and hasattr(err, 'body') and err.body
+            # we can pull the DocuSign error code and message from the response body
+            error_body = json.loads(error_body_json)
+            error_code = error_body and 'errorCode' in error_body and error_body['errorCode']
+            error_message = error_body and 'message' in error_body and error_body['message']
+            # In production, may want to provide customized error messages and
+            # remediation advice to the user.
+            return render_template('error.html',
+                                   err=err,
+                                   error_code=error_code,
+                                   error_message=error_message
+                                   )
+        if results:
+            return render_template('example_done.html',
+                        title="Envelope sent",
+                        h1="Envelope sent",
+                        message=f"""The envelope has been created and sent!<br/>
+                        Envelope ID {results["envelope_id"]}."""
+            )
 
-/**
- * This function does the work of creating the envelope 
- * @param {object} args An object with the following elements: <br/>
- *   <tt>dsAPIclient</tt>: The DocuSign API Client object, already set with an access token and base url <br/>
- *   <tt>accountId</tt>: Current account Id <br/>
- *   <tt>envelopeArgs</tt>: envelopeArgs, an object with elements 
- *      <tt>status</tt>: envelope status: "sent" | "created"
- *      <tt>signerEmail</tt>, <tt>signerName</tt>, <tt>cc_email</tt>, <tt>cc_name</tt>
- *      <tt>paymentGatewayId</tt>
- */
-// ***DS.worker.start ***DS.snippet.1.start
-eg014CollectPayment.worker = async (args) => {
-    let envelopesApi = new docusign.EnvelopesApi(args.dsAPIclient)
-      , createEnvelopeP = promisify(envelopesApi.createEnvelope).bind(envelopesApi)
-      , results = null
-      ;
-
-    // Step 1. Make the envelope request body
-    let envelope = makeEnvelope(args.envelopeArgs)
-
-    // Step 2. call Envelopes::create API method
-    // Exceptions will be caught by the calling function
-    results = await createEnvelopeP(args.accountId, {envelopeDefinition: envelope});
-    let envelopeId = results.envelopeId;
-
-    console.log(`Envelope was created. EnvelopeId ${envelopeId}`);
-    return ({envelopeId: envelopeId})
-}
-// ***DS.worker.end ***DS.snippet.1.end
-
-// ***DS.snippet.2.start
-/**
- * Creates envelope
- * <br>Document 1: An HTML document.
- * <br>DocuSign will convert all of the documents to the PDF format.
- * <br>The recipients' field tags are placed using <b>anchor</b> strings.
- * @function
- * @param {Object} args parameters for the envelope:
- *   <tt>status</tt>: envelope status: "sent" | "created"
- *   <tt>signerEmail</tt>, <tt>signerName</tt>, <tt>cc_email</tt>, <tt>cc_name</tt>
- *   <tt>paymentGatewayId</tt>
- * @returns {Envelope} An envelope definition
- * @private
- */
-function makeEnvelope(args){
-    // document 1 (html) has multiple tags:
-    // /l1q/ and /l2q/ -- quantities: drop down
-    // /l1e/ and /l2e/ -- extended: payment lines 
-    // /l3t/ -- total -- formula
-    //
-    // The envelope has two recipients.
-    // recipient 1 - signer
-    // recipient 2 - cc
-    // The envelope will be sent first to the signer.
-    // After it is signed, a copy is sent to the cc person.
-
-    ///////////////////////////////////////////////////////////////////
-    //                                                               //
-    // NOTA BENA: This method programmatically constructs the        //
-    //            order form. For many use cases, it would be        //
-    //            better to create the order form as a template      //
-    //            using the DocuSign web tool as WYSIWYG             //
-    //            form designer.                                     //
-    //                                                               //
-    ///////////////////////////////////////////////////////////////////
-
-    // Order form constants
-    let l1Name = "Harmonica"
-      , l1Price = 5
-      , l1Description = `$${l1Price} each`
-      , l2Name = "Xylophone"
-      , l2Price = 150
-      , l2Description = `$${l2Price} each`
-      , currencyMultiplier = 100 
-      ; 
-
-    // read file from a local directory
-    // The read could raise an exception if the file is not available!
-    let doc1HTML1 = fs.readFileSync(path.resolve(demoDocsPath, doc1File),
-                    {encoding: 'utf8'});
-
-    // Substitute values into the HTML
-    // Substitute for: {signerName}, {signerEmail}, {cc_name}, {cc_email}
-    let doc1HTML2 = doc1HTML1.replace('{signerName}', args.signerName)
-    .replace('{signerEmail}', args.signerEmail)
-    .replace('{cc_name}', args.cc_name)
-    .replace('{cc_email}', args.cc_email);
-
-    // create the envelope definition
-    let env = new docusign.EnvelopeDefinition();
-    env.emailSubject = 'Please complete your order';
-
-    // add the documents
-    let doc1 = new docusign.Document()
-      , doc1b64 = Buffer.from(doc1HTML2).toString('base64')
-      ;
-
-    doc1.documentBase64 = doc1b64;
-    doc1.name = 'Order form'; // can be different from actual file name
-    doc1.fileExtension = 'html'; // Source data format. Signed docs are always pdf.
-    doc1.documentId = '1'; // a label used to reference the doc
-    env.documents = [doc1];
-
-    // create a signer recipient to sign the document, identified by name and email
-    // We're setting the parameters via the object creation
-    let signer1 = docusign.Signer.constructFromObject({
-        email: args.signerEmail,
-        name: args.signerName,
-        recipientId: '1',
-        routingOrder: '1'});
-    // routingOrder (lower means earlier) determines the order of deliveries
-    // to the recipients. Parallel routing order is supported by using the
-    // same integer as the order for two or more recipients.
-
-    // create a cc recipient to receive a copy of the documents, identified by name and email
-    // We're setting the parameters via setters
-    let cc1 = new docusign.CarbonCopy();
-    cc1.email = args.cc_email;
-    cc1.name = args.cc_name;
-    cc1.routingOrder = '2';
-    cc1.recipientId = '2';
-
-    // Create signHere fields (also known as tabs) on the documents,
-    // We're using anchor (autoPlace) positioning
-    let signHere1 = docusign.SignHere.constructFromObject({
-            anchorString: '/sn1/',
-            anchorYOffset: '10', anchorUnits: 'pixels',
-            anchorXOffset: '20'})
-      
-      , listItem0 = docusign.ListItem.constructFromObject({
-            text: "none", value: "0"})
-      , listItem1 = docusign.ListItem.constructFromObject({
-            text: "1", value: "1"})
-      , listItem2 = docusign.ListItem.constructFromObject({
-            text: "2", value: "2"})
-      , listItem3 = docusign.ListItem.constructFromObject({
-            text: "3", value: "3"})
-      , listItem4 = docusign.ListItem.constructFromObject({
-            text: "4", value: "4"})
-      , listItem5 = docusign.ListItem.constructFromObject({
-            text: "5", value: "5"})
-      , listItem6 = docusign.ListItem.constructFromObject({
-            text: "6", value: "6"})
-      , listItem7 = docusign.ListItem.constructFromObject({
-            text: "7", value: "7"})
-      , listItem8 = docusign.ListItem.constructFromObject({
-            text: "8", value: "8"})
-      , listItem9 = docusign.ListItem.constructFromObject({
-            text: "9", value: "9"})
-      , listItem10 = docusign.ListItem.constructFromObject({
-            text: "10", value: "10"})
-                                    
-      , listl1q = docusign.List.constructFromObject({
-            font: "helvetica",
-            fontSize: "size11",
-            anchorString: '/l1q/',
-            anchorYOffset: '-10', anchorUnits: 'pixels',
-            anchorXOffset: '0',
-            listItems: [listItem0, listItem1, listItem2,
-                listItem3, listItem4, listItem5, listItem6,
-                listItem7, listItem8, listItem9, listItem10],
-            required: "true",
-            tabLabel: "l1q"
-            })
-      , listl2q = docusign.List.constructFromObject({
-            font: "helvetica",
-            fontSize: "size11",
-            anchorString: '/l2q/',
-            anchorYOffset: '-10', anchorUnits: 'pixels',
-            anchorXOffset: '0',
-            listItems: [listItem0, listItem1, listItem2,
-                listItem3, listItem4, listItem5, listItem6,
-                listItem7, listItem8, listItem9, listItem10],
-            required: "true",
-            tabLabel: "l2q"
-            })
-        // create two formula tabs for the extended price on the line items
-      , formulal1e = docusign.FormulaTab.constructFromObject({
-            font: "helvetica",
-            fontSize: "size11",
-            anchorString: '/l1e/',
-            anchorYOffset: '-8', anchorUnits: 'pixels',
-            anchorXOffset: '105',
-            tabLabel: "l1e",
-            formula: `[l1q] * ${l1Price}`,
-            roundDecimalPlaces: "0",
-            required: "true",
-            locked: "true",
-            disableAutoSize: "false",
-            })  
-      , formulal2e = docusign.FormulaTab.constructFromObject({
-            font: "helvetica",
-            fontSize: "size11",
-            anchorString: '/l2e/',
-            anchorYOffset: '-8', anchorUnits: 'pixels',
-            anchorXOffset: '105',
-            tabLabel: "l2e",
-            formula: `[l2q] * ${l2Price}`,
-            roundDecimalPlaces: "0",
-            required: "true",
-            locked: "true",
-            disableAutoSize: "false",
-            }) 
-        // Formula for the total 
-      , formulal3t = docusign.FormulaTab.constructFromObject({
-            font: "helvetica",
-            bold: "true",
-            fontSize: "size12",
-            anchorString: '/l3t/',
-            anchorYOffset: '-8', anchorUnits: 'pixels',
-            anchorXOffset: '50',
-            tabLabel: "l3t",
-            formula: `[l1e] + [l2e]`,
-            roundDecimalPlaces: "0",
-            required: "true",
-            locked: "true",
-            disableAutoSize: "false",
-            })
-        // Payment line items
-      , paymentLineIteml1 = docusign.PaymentLineItem.constructFromObject({
-            name: l1Name, description: l1Description, amountReference: "l1e"
-            })
-      , paymentLineIteml2 = docusign.PaymentLineItem.constructFromObject({
-            name: l2Name, description: l2Description, amountReference: "l2e"
-            })
-      , paymentDetails = docusign.PaymentDetails.constructFromObject({
-            gatewayAccountId: args.gatewayAccountId,
-            currencyCode: "USD",
-            gatewayName: args.gatewayName,
-            gatewayDisplayName: args.gatewayDisplayName,
-            lineItems: [paymentLineIteml1, paymentLineIteml2]
-            })
-        // Hidden formula for the payment itself
-      , formulaPayment = docusign.FormulaTab.constructFromObject({
-            tabLabel: "payment",
-            formula: `([l1e] + [l2e]) * ${currencyMultiplier}`,
-            roundDecimalPlaces: "0",
-            paymentDetails: paymentDetails,
-            hidden: "true",
-            required: "true",
-            locked: "true",
-            documentId: "1",
-            pageNumber: "1",
-            xPosition: "0",
-            yPosition: "0"
-            })  
-      ;
-
-    // Tabs are set per recipient / signer
-    let signer1Tabs = docusign.Tabs.constructFromObject({
-            signHereTabs: [signHere1],
-            listTabs: [listl1q, listl2q],
-            formulaTabs: [formulal1e, formulal2e, formulal3t, formulaPayment]
-        });
-    signer1.tabs = signer1Tabs;
-
-    // Add the recipients to the envelope object
-    let recipients = docusign.Recipients.constructFromObject({
-    signers: [signer1],
-    carbonCopies: [cc1]});
-    env.recipients = recipients;
-
-    // Request that the envelope be sent by setting |status| to "sent".
-    // To request that the envelope be created as a draft, set to "created"
-    env.status = args.status;
-
-    return env;
-}
-// ***DS.snippet.2.end
+    else:
+        flash('Sorry, you need to re-authenticate.')
+        # We could store the parameters of the requested operation
+        # so it could be restarted automatically.
+        # But since it should be rare to have a token issue here,
+        # we'll make the user re-enter the form data after
+        # authentication.
+        session['eg'] = url_for(eg)
+        return redirect(url_for('ds_must_authenticate'))
 
 
+def worker(args):
+    """
+    1. Create the envelope request object
+    2. Send the envelope
+    """
+    envelope_args = args["envelope_args"]
+    # 1. Create the envelope request object
+    envelope_definition = make_envelope(envelope_args)
+
+    # 2. call Envelopes::create API method
+    # Exceptions will be caught by the calling function
+    api_client = ApiClient()
+    api_client.host = args['base_path']
+    api_client.set_default_header("Authorization", "Bearer " + args['ds_access_token'])
+
+    envelope_api = EnvelopesApi(api_client)
+    results = envelope_api.create_envelope(args['account_id'], envelope_definition=envelope_definition)
+
+    envelope_id = results.envelope_id
+    # app.logger.info(f'Envelope was created. EnvelopeId {envelope_id}')
+
+    return {'envelope_id': envelope_id}
 
 
+# ***DS.worker.end ***DS.snippet.1.end
+
+
+# ***DS.snippet.2.start
+def make_envelope(args):
+    """
+    This function creates the envelope definition for the
+    order form.
+    document 1 (html) has multiple tags:
+     /l1q/ and /l2q/ -- quantities: drop down
+     /l1e/ and /l2e/ -- extended: payment lines
+     /l3t/ -- total -- formula
+
+    The envelope has two recipients.
+      recipient 1 - signer
+      recipient 2 - cc
+    The envelope will be sent first to the signer.
+    After it is signed, a copy is sent to the cc person.
+
+    #################################################################
+    #                                                               #
+    # NOTA BENA: This method programmatically constructs the        #
+    #            order form. For many use cases, it would be        #
+    #            better to create the order form as a template      #
+    #            using the DocuSign web tool as WYSIWYG             #
+    #            form designer.                                     #
+    #                                                               #
+    #################################################################
+
+    """
+
+    # Order form constants
+    l1_name = "Harmonica"
+    l1_price = 5
+    l1_description = f"${l1_price} each"
+    l2_name = "Xylophone"
+    l2_price = 150
+    l2_description = f"${l2Price} each"
+    currency_multiplier = 100
+
+    # read the html file from a local directory
+    # The read could raise an exception if the file is not available!
+    doc1_file = 'order_form.html'
+    with open(path.join(demo_docs_path, doc1_file), "r") as file:
+        doc1_html_v1 = file.read()
+
+    # Substitute values into the HTML
+    # Substitute for: {signerName}, {signerEmail}, {cc_name}, {cc_email}
+    doc1_html_v2 = doc1_html_v1.replace('{signer_name}', args['signer_name']) \
+                        .replace('{signer_email}', args['signer_email'])      \
+                        .replace('{cc_name}', args['cc_name'])               \
+                        .replace('{cc_email}', args['cc_email'])
+
+    # create the envelope definition
+    envelope_definition = EnvelopeDefinition(
+                            email_subject='Please complete your order')
+    # add the document
+    doc1_b64 = base64.b64encode(bytes(doc1_html_v2, 'utf-8')).decode('ascii')
+    doc1 = Document(document_base64=doc1_b64,
+                    name='Order form', # can be different from actual file name
+                    file_extension='html', # Source data format.
+                    document_id='1' # a label used to reference the doc
+                    )
+    envelope_definition.documents = [doc1]
+    # create a signer recipient to sign the document
+    signer1 = Signer(email=args['signer_email'], name=args['signer_name'],
+                     recipient_id="1", routing_order="1")
+    # create a cc recipient to receive a copy of the documents
+    cc1 = CarbonCopy(email=args['cc_email'], name=args['cc_name'],
+                     recipient_id="2", routing_order="2")
+    # Create signHere fields (also known as tabs) on the documents,
+    # We're using anchor (autoPlace) positioning
+    sign_here1 = SignHere(
+            anchor_string='/sn1/',
+            anchor_y_offset='10', anchor_units='pixels',
+            anchor_x_offset='20')
+    list_item0 = ListItem(text="none", value="0")
+    list_item1 = ListItem(text="1", value="1")
+    list_item2 = ListItem(text="2", value="2")
+    list_item3 = ListItem(text="3", value="3")
+    list_item4 = ListItem(text="4", value="4")
+    list_item5 = ListItem(text="5", value="5")
+    list_item6 = ListItem(text="6", value="6")
+    list_item7 = ListItem(text="7", value="7")
+    list_item8 = ListItem(text="8", value="8")
+    list_item9 = ListItem(text="9", value="9")
+    list_item10 = ListItem(text="10", value="10")
+
+    listl1q = List(
+            font="helvetica",
+            font_size="size11",
+            anchor_string='/l1q/',
+            anchor_y_offset='-10', anchor_units='pixels',
+            anchor_x_offset='0',
+            list_items=[list_item0, list_item1, list_item2,
+                list_item3, list_item4, list_item5, list_item6,
+                list_item7, list_item8, list_item9, list_item10],
+            required="true",
+            tab_label="l1q"
+            )
+    listl2q = List(
+            font="helvetica",
+            font_size="size11",
+            anchor_string='/l2q/',
+            anchor_y_offset='-10', anchor_units='pixels',
+            anchor_x_offset='0',
+            list_items=[list_item0, list_item1, list_item2,
+                list_item3, list_item4, list_item5, list_item6,
+                list_item7, list_item8, list_item9, list_item10],
+            required="true",
+            tab_label="l2q"
+            )
+    # create two formula tabs for the extended price on the line items
+    formulal1e = FormulaTab(
+            font="helvetica",
+            font_size="size11",
+            anchor_string='/l1e/',
+            anchor_y_offset='-8', anchor_units='pixels',
+            anchor_x_offset='105',
+            tab_label="l1e",
+            formula=f'[l1q] * {l1_price}',
+            round_decimal_places="0",
+            required="true",
+            locked="true",
+            disable_auto_size="false",
+            )
+    formulal2e = FormulaTab(
+            font="helvetica",
+            font_size="size11",
+            anchor_string='/l2e/',
+            anchor_y_offset='-8', anchor_units='pixels',
+            anchor_x_offset='105',
+            tab_label="l2e",
+            formula=f'[l2q] * {l2_price}',
+            round_decimal_places="0",
+            required="true",
+            locked="true",
+            disable_auto_size="false",
+            )
+    # Formula for the total
+    formulal3t = FormulaTab(
+            font="helvetica",
+            bold="true",
+            font_size="size12",
+            anchor_string='/l3t/',
+            anchor_y_offset='-8', anchor_units='pixels',
+            anchor_x_offset='50',
+            tab_label="l3t",
+            formula='[l1e] + [l2e]',
+            round_decimal_places="0",
+            required="true",
+            locked="true",
+            disable_auto_size="false",
+            )
+    # Payment line items
+    payment_line_iteml1 = PaymentLineItem(
+            name=l1_name, description=l1_description, amount_reference="l1e"
+            )
+    payment_line_iteml2 = PaymentLineItem(
+            name=l2_name, description=l2_description, amount_reference="l2e"
+            )
+    payment_details = PaymentDetails(
+            gateway_account_id=args['gateway_account_id'],
+            currency_code="USD",
+            gateway_name=args['gateway_name'],
+            line_items=[payment_line_iteml1, payment_line_iteml2]
+            )
+    # Hidden formula for the payment itself
+    formula_payment = FormulaTab(
+            tab_label="payment",
+            formula=f'([l1e] + [l2e]) * {currency_multiplier}',
+            round_decimal_places="0",
+            payment_details=payment_details,
+            hidden="true",
+            required="true",
+            locked="true",
+            document_id="1",
+            page_number="1",
+            x_position="0",
+            y_position="0"
+            )
+
+    # Tabs are set per recipient / signer
+    signer1_tabs = Tabs(
+            sign_here_tabs=[sign_here1],
+            list_tabs=[listl1q, listl2q],
+            formula_tabs=[formulal1e, formulal2e, formulal3t, formula_payment]
+        )
+    signer1.tabs = signer1_tabs
+
+    # Add the recipients to the envelope object
+    recipients = Recipients(signers=[signer1], carbon_copies=[cc1]);
+    envelope_definition.recipients = recipients
+
+    # Request that the envelope be sent by setting |status| to "sent".
+    # To request that the envelope be created as a draft, set to "created"
+    envelope_definition.status = args['status']
+
+    return envelope_definition
+
+
+def get_controller():
+    """responds with the form for the example"""
+
+    if views.ds_token_ok():
+        gateway = ds_config.DS_CONFIG['gateway_account_id']
+        gateway_ok = gateway and len(gateway) > 25
+
+        return render_template("eg014_collect_payment.html",
+                               title="Order form with payment",
+                               source_file=path.basename(__file__),
+                               source_url=ds_config.DS_CONFIG['github_example_url'] + path.basename(__file__),
+                               documentation=ds_config.DS_CONFIG['documentation'] + eg,
+                               show_doc=ds_config.DS_CONFIG['documentation'],
+                               signer_name=ds_config.DS_CONFIG['signer_name'],
+                               signer_email=ds_config.DS_CONFIG['signer_email'],
+                               gateway_ok=gateway_ok
+        )
+    else:
+        # Save the current operation so it will be resumed after authentication
+        session['eg'] = url_for(eg)
+        return redirect(url_for('ds_must_authenticate'))
