@@ -8,7 +8,7 @@ DS_CONFIG = {
     'ds_client_secret': '{CLIENT_SECRET}', # The app's DocuSign integration key's secret
     'signer_email': '{USER_EMAIL}',
     'signer_name': '{USER_FULLNAME}',
-    'app_url': '{APP_URL}', # The url of the application. Eg http:#localhost:5000
+    'app_url': '{APP_URL}', # The url of the application. Eg http://localhost:5000
     # NOTE: You must add a Redirect URI of appUrl/ds/callback to your Integration Key.
     #       Example: http:#localhost:5000/ds/callback
     'authorization_server': 'https://account-d.docusign.com',
@@ -23,6 +23,6 @@ DS_CONFIG = {
     'gateway_account_id': '{DS_PAYMENT_GATEWAY_ID}',
     'gateway_name': "stripe",
     'gateway_display_name': "Stripe",
-    'github_example_url': 'https:#github.com/docusign/eg-03-python-auth-code-grant/tree/master/lib/examples/',
-    'documentation': None
+    'github_example_url': 'https://github.com/docusign/eg-03-python-auth-code-grant/tree/master/app/',
+    'documentation': '' # Use an empty string to indicate no documentation path.
 }
