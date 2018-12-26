@@ -95,6 +95,7 @@ def create_controller():
                                )
 
 
+# ***DS.snippet.0.start
 def worker(args):
     """
     1. Create the envelope request object
@@ -114,10 +115,7 @@ def worker(args):
     envelope_id = results.envelope_id
     return {'envelope_id': envelope_id}
 
-# ***DS.worker.end ***DS.snippet.1.end
 
-
-# ***DS.snippet.2.start
 def make_envelope(args):
     """
     Creates envelope
@@ -146,8 +144,8 @@ def make_envelope(args):
     # Add the TemplateRole objects to the envelope object
     envelope_definition.template_roles = [signer, cc]
     return envelope_definition
+# ***DS.snippet.0.end
 
-# ***DS.snippet.2.end
 def get_controller():
     """responds with the form for the example"""
 

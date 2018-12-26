@@ -86,6 +86,7 @@ def create_controller():
         return redirect(url_for('ds_must_authenticate'))
 
 
+# ***DS.snippet.0.start
 def worker(args):
     """
     This function does the work of creating the envelope by using
@@ -272,7 +273,7 @@ def create_document1(args):
         </body>
     </html>
   """
-  # ***DS.snippet.3.end
+# ***DS.snippet.0.end
 
 
 def get_controller():

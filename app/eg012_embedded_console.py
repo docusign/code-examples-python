@@ -75,6 +75,7 @@ def create_controller():
         return redirect(url_for('ds_must_authenticate'))
 
 
+# ***DS.snippet.0.start
 def worker(args):
     """
     This function does the work of returning a URL for the NDSE view
@@ -98,6 +99,7 @@ def worker(args):
     results = envelope_api.create_console_view(args['account_id'], console_view_request=view_request)
     url = results.url
     return {'redirect_url': url}
+# ***DS.snippet.0.end
 
 
 def get_controller():

@@ -88,6 +88,7 @@ def create_controller():
         return redirect(url_for('ds_must_authenticate'))
 
 
+# ***DS.snippet.0.start
 def worker(args):
     """
     1. Create the envelope request object
@@ -112,10 +113,6 @@ def worker(args):
     return {'envelope_id': envelope_id}
 
 
-# ***DS.worker.end ***DS.snippet.1.end
-
-
-# ***DS.snippet.2.start
 def make_envelope(args):
     """
     Creates envelope
@@ -216,7 +213,6 @@ def make_envelope(args):
     return env
 
 
-# ***DS.snippet.3.start
 def create_document1(args):
     """ Creates document 1 -- an html document"""
 
@@ -243,7 +239,7 @@ def create_document1(args):
         </body>
     </html>
   """
-  # ***DS.snippet.3.end
+# ***DS.snippet.0.end
 
 
 def get_controller():

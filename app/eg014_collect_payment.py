@@ -88,7 +88,7 @@ def create_controller():
         session['eg'] = url_for(eg)
         return redirect(url_for('ds_must_authenticate'))
 
-
+# ***DS.snippet.0.start
 def worker(args):
     """
     1. Create the envelope request object
@@ -312,6 +312,7 @@ def make_envelope(args):
     envelope_definition.status = args['status']
 
     return envelope_definition
+# ***DS.snippet.0.end
 
 
 def get_controller():

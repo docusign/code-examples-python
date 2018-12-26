@@ -106,6 +106,7 @@ def create_controller():
             )
 
 
+# ***DS.snippet.0.start
 def worker(args):
     """
     Create the envelope and the embedded Signing Ceremony
@@ -150,10 +151,7 @@ def worker(args):
 
     return {'envelope_id': envelope_id, 'redirect_url': results.url}
 
-# ***DS.worker.end ***DS.snippet.1.end
 
-
-# ***DS.snippet.2.start
 def make_envelope(args):
     """
     Creates envelope
@@ -267,9 +265,8 @@ def create_document1(args):
         </body>
     </html>
   """
+# ***DS.snippet.0.end
 
-
-# ***DS.snippet.2.end
 def get_controller():
     """responds with the form for the example"""
 

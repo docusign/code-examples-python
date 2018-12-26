@@ -89,6 +89,7 @@ def create_controller():
                                )
 
 
+# ***DS.snippet.0.start
 def worker(args):
     """
     1. Call the envelope get method
@@ -124,10 +125,7 @@ def worker(args):
         mimetype = 'application/octet-stream'
 
     return {'mimetype': mimetype, 'doc_name': doc_name, 'data': temp_file}
-
-
-# ***DS.worker.end ***DS.snippet.1.end
-
+# ***DS.snippet.0.end
 
 def get_controller():
     """responds with the form for the example"""

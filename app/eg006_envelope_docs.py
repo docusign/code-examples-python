@@ -96,6 +96,7 @@ def create_controller():
                                )
 
 
+# ***DS.snippet.0.start
 def worker(args):
     """
     1. Call the EnvelopeDocuments::list method
@@ -109,8 +110,7 @@ def worker(args):
     results = envelope_api.list_documents(args['account_id'], args['envelope_id'])
 
     return results
-
-# ***DS.worker.end ***DS.snippet.1.end
+# ***DS.snippet.0.end
 
 
 def get_controller():

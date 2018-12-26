@@ -96,6 +96,7 @@ def create_controller():
                                )
 
 
+# ***DS.snippet.0.start
 def worker(args):
     """
     This function does the work of creating the envelope in
@@ -123,6 +124,7 @@ def worker(args):
         url = url.replace('send=1', 'send=0')
 
     return {'envelope_id': envelope_id, 'redirect_url': url}
+# ***DS.snippet.0.end
 
 
 def get_controller():

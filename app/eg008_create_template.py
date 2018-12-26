@@ -76,6 +76,7 @@ def create_controller():
         return redirect(url_for('ds_must_authenticate'))
 
 
+# ***DS.snippet.0.start
 def worker(args):
     """
     1. Check to see if the template already exists
@@ -106,10 +107,7 @@ def worker(args):
         'template_name': results_template_name,
         'created_new_template': created_new_template}
 
-# ***DS.worker.end ***DS.snippet.1.end
 
-
-# ***DS.snippet.2.start
 def make_template_req():
     """Creates template req object"""
 
@@ -195,6 +193,7 @@ def make_template_req():
     )
 
     return template_request
+# ***DS.snippet.0.end
 
 
 def get_controller():

@@ -67,6 +67,7 @@ def create_controller():
         return redirect(url_for('ds_must_authenticate'))
 
 
+# ***DS.snippet.0.start
 def worker(args):
     """
     1. Call the envelope status change method to list the envelopes
@@ -90,8 +91,7 @@ def worker(args):
     results = envelope_api.list_status_changes(args['account_id'], from_date = from_date)
 
     return results
-
-# ***DS.worker.end ***DS.snippet.1.end
+# ***DS.snippet.0.end
 
 
 def get_controller():
