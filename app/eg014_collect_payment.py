@@ -150,7 +150,7 @@ def make_envelope(args):
     l1_description = f"${l1_price} each"
     l2_name = "Xylophone"
     l2_price = 150
-    l2_description = f"${l2Price} each"
+    l2_description = f"${l2_price} each"
     currency_multiplier = 100
 
     # read the html file from a local directory
