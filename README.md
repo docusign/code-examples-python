@@ -68,6 +68,12 @@ The **refresh token** is not used in this example.
 
    If you will not be running the example on your own workstation,
    use the appropriate DNS name and port instead of `localhost`
+   
+   This [**video**](https://www.youtube.com/watch?v=eiRI4fe5HgM)
+   demonstrates how to create an Integration Key (client id) for a
+   user application like this example. Note that the redirect url for your 
+   Integration Key will be `http://localhost:5000/ds/callback` if you
+   use the default Python settings.
 
 1. Python 3.
 1. A name and email for a signer, and a name and email for a cc recipient.
