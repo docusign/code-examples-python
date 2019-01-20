@@ -13,9 +13,11 @@ DS_CONFIG = {
     #       Example: http:#localhost:5000/ds/callback
     'authorization_server': 'https://account-d.docusign.com',
     'session_secret': '{SESSION_SECRET}', # Secret for encrypting session cookie content
+                                          # Use any random string of characters
     'allow_silent_authentication': True, # a user can be silently authenticated if they have an
     # active login session on another tab of the same browser
-    'target_account_id': None, # Set if you want a specific DocuSign AccountId, If null, the user's default account will be used.
+    'target_account_id': None, # Set if you want a specific DocuSign AccountId, 
+                               # If None, the user's default account will be used.
     'demo_doc_path': 'demo_documents',
     'doc_docx': 'World_Wide_Corp_Battle_Plan_Trafalgar.docx',
     'doc_pdf':  'World_Wide_Corp_lorem.pdf',
