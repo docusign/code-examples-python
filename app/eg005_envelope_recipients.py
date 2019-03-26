@@ -1,4 +1,8 @@
-"""005: List an envelope's recipients and status"""
+"""005: List an envelope's recipients and status
+
+Also, for issue 22, lists tabs for the signer recipient.
+See https://github.com/docusign/docusign-python-client/issues/22
+"""
 
 from flask import render_template, url_for, redirect, session, flash, request
 from os import path
@@ -54,7 +58,7 @@ def create_controller():
         return render_template("example_done.html",
                                 title="Envelope recipients results",
                                 h1="List the envelope's recipients and their status",
-                                message="Results from the EnvelopesRecipients::list method:",
+                                message="Results from the EnvelopeRecipientTabs::list method. API method: envelope_api.list_tabs",
                                 json=json.dumps(json.dumps(results.to_dict()))
                                 )
     elif not token_ok:
@@ -90,7 +94,12 @@ def worker(args):
     envelope_api = EnvelopesApi(api_client)
     results = envelope_api.list_recipients(args['account_id'], args['envelope_id'])
 
-    return results
+    recipientId = results.signers[0].recipient_id
+    # Call the EnvelopeRecipientTabs: list method
+    envelope_api = EnvelopesApi(api_client)
+    results2 = envelope_api.list_tabs(args['account_id'], args['envelope_id'], recipientId)
+
+    return results2
 # ***DS.snippet.0.end
 
 

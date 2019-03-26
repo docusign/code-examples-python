@@ -197,10 +197,19 @@ def make_envelope(args):
     sign_here2 = SignHere(
         anchor_string = '/sn1/', anchor_units = 'pixels',
         anchor_y_offset = '10', anchor_x_offset = '20')
+    date1 = Date(
+        anchor_string = '**signature_1**', anchor_units = 'pixels',
+        anchor_y_offset = '10', anchor_x_offset = '100',
+        width = 75, tab_label = 'Date tab', name = 'Date tab'  )
+    dateSigned1 = DateSigned(
+        anchor_string = '**signature_1**', anchor_units = 'pixels',
+        anchor_y_offset = '10', anchor_x_offset = '220',
+        tab_label = 'Date signed tab' )
 
     # Add the tabs model (including the sign_here tabs) to the signer
     # The Tabs object wants arrays of the different field/tab types
-    signer1.tabs = Tabs(sign_here_tabs=[sign_here1, sign_here2])
+    signer1.tabs = Tabs(sign_here_tabs=[sign_here1, sign_here2],
+        date_tabs=[date1], date_signed_tabs=[dateSigned1])
 
     # Add the recipients to the envelope object
     recipients = Recipients(signers=[signer1], carbon_copies=[cc1])
