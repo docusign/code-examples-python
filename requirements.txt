@@ -28,7 +28,7 @@ pytzdata==2018.5
 requests>=2.20.1
 requests-oauthlib==1.0.0
 six==1.11.0
-urllib3==1.23
+urllib3>=1.24.2
 virtualenv==16.0.0
 virtualenv-clone==0.3.0
 Werkzeug==0.14.1
