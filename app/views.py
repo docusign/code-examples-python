@@ -12,7 +12,9 @@ from app import app, ds_config, eg001_embedded_signing, \
             eg008_create_template, eg009_use_template, \
             eg010_send_binary_docs, eg011_embedded_sending, \
             eg012_embedded_console, eg013_add_doc_to_template, \
-            eg014_collect_payment
+            eg014_collect_payment, eg019_access_code_authentication, \
+            eg020_sms_authentication, eg021_phone_authentication, \
+            eg022_kba_authentication
 
 
 @app.route('/')
@@ -98,6 +100,27 @@ def eg013():
 @app.route('/eg014', methods=['GET', 'POST'])
 def eg014():
     return eg014_collect_payment.controller()
+
+@app.route('/eg019', methods=['GET', 'POST'])
+def eg019():
+    return eg019_access_code_authentication.controller()
+
+
+
+@app.route('/eg020', methods=['GET', 'POST'])
+def eg020():
+    return eg020_sms_authentication.controller()
+
+
+@app.route('/eg021', methods=['GET', 'POST'])
+def eg021():
+    return eg021_phone_authentication.controller()
+
+
+@app.route('/eg022', methods=['GET', 'POST'])
+def eg022():
+    return eg022_kba_authentication.controller()
+
 
 
 @app.route('/ds_return')
