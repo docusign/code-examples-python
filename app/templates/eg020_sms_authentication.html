@@ -10,10 +10,6 @@
   {% if show_doc %}
     <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
   {% endif %}
-  
-<p>
-  The phone-number to utilize the example provided is: <strong>415-555-1212</strong>
-</p> 
 
   <p>API method used: 
    <a target='_blank' href="https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create">Envelopes::create</a>.
@@ -24,6 +20,16 @@
 </p>
 
 <form class="eg" action="" method="post" data-busy="form">
+
+    
+    <div class="form-group">
+        <label for="phoneNumber">SMS Number</label>
+        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber"
+               aria-describedby="accessHelp" placeholder="415-555-1212" required
+               value="415-555-1212">
+        <small id="accessHelp" class="form-text text-muted">Send a text message to this phone number to verify recipient.</small>
+      </div>
+
     <div class="form-group">
       <label for="signer_email">Signer Email</label>
       <input type="email" class="form-control" id="signer_email" name="signer_email"

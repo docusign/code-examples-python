@@ -10,6 +10,7 @@ from docusign_esign import *
 from docusign_esign.rest import ApiException
 
 eg = "eg019"  # reference (and url) for this example
+# access_code = "NJ9@D1"
 demo_docs_path = path.abspath(path.join(path.dirname(path.realpath(__file__)), 'static/demo_documents'))
 
 
@@ -36,6 +37,7 @@ def create_controller():
         pattern = re.compile('([^\w \-\@\.\,])+')
         signer_email = pattern.sub('', request.form.get('signer_email'))
         signer_name  = pattern.sub('', request.form.get('signer_name'))
+        recip_access_code = request.form.get('accessCode')
         envelope_args = {
             'signer_email': signer_email,
             'signer_name': signer_name,
@@ -72,7 +74,7 @@ def create_controller():
             signer1 = Signer(
                 email=args["envelope_args"]["signer_email"], # represents your {signer_name}
                 name=signer_name, # represents your {signer_email}
-                access_code="NJ9@D1",
+                access_code=recip_access_code, # represents your {ACCESS_CODE} for your recipient to access the envelope
                 recipient_id="1", 
                 routing_order="1"
             )
@@ -99,6 +101,7 @@ def create_controller():
             envelope_api = EnvelopesApi(api_client)
             results = envelope_api.create_envelope(args['account_id'], envelope_definition=envelope_definition)
             envelope_id = results.envelope_id
+
             app.logger.info(f'Envelope was created. EnvelopeId {envelope_id} ')
 
             return render_template('example_done.html',

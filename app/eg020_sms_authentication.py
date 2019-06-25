@@ -34,6 +34,8 @@ def create_controller():
         # More data validation would be a good idea here
         # Strip anything other than characters listed
         pattern = re.compile('([^\w \-\@\.\,])+')
+        phonePattern = re.compile('^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$')
+        phoneNumber = phonePattern.sub('', request.form.get("phoneNumber"))
         signer_email = pattern.sub('', request.form.get('signer_email'))
         signer_name  = pattern.sub('', request.form.get('signer_name'))
         envelope_args = {
@@ -72,7 +74,7 @@ def create_controller():
             signer1 = Signer(
                 email=args["envelope_args"]["signer_email"], # represents your {signer_email}
                 name=args["envelope_args"]["signer_name"], # represents your {signer_name}
-                sms_authentication={ "senderProvidedNumbers": ['415-555-1212']},
+                sms_authentication={ "senderProvidedNumbers": [phoneNumber]},
 	            id_check_configuration_name='SMS Auth $',
                 require_id_lookup='true',
                 recipient_id="1", 

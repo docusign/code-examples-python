@@ -72,7 +72,7 @@ def create_controller():
             signer1 = Signer(
                 email=args["envelope_args"]["signer_email"], # represents your {signer_email}
                 name=args["envelope_args"]["signer_name"], # represents your {signer_name}
-	            id_check_configuration_name='ID Check',
+	            id_check_configuration_name='ID Check', # configuration name for KBA based Verification
                 require_id_lookup='true',
                 recipient_id="1", 
                 routing_order="1"
