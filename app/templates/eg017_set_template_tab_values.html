@@ -1,14 +1,12 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>9. Send an envelope using a template</h4>
-<p>The envelope is defined by the template.
-   The signer and cc recipient name and email are used to fill in the template's <i>roles</i>.</p>
 
-<p>This example demonstrates a common pattern for DocuSign integrations: envelopes will
-  be sent programmatically, based on a template. If the template definition needs to be
-  updated, the DocuSign web tool can be used to easily update the template, thus 
-  avoiding the need to make software changes.
+<h4>17. Set template tab values</h4>
+<p>
+    This example sets the value of a template's tabs. It includes setting
+    radio button and checkbox tabs.
 </p>
+<p>The example also sets custom metadata in the envelope via the envelope custom fields feature.</p>
 
 {% if show_doc %}
   <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
@@ -45,13 +43,14 @@
       </div>
       <div class="form-group">
         <label for="cc_name">CC Name</label>
-        <input type="text" class="form-control" id="cc_name" placeholder="Pat Johnson" name="cc_name"
-               required>
+        <input type="text" class="form-control" id="cc_name" placeholder="Pat Johnson" name="cc_name" required />
       </div>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>  
 
+
+    
 {% else %}
   <p>Problem: please first create the template using <a href="eg008">example 8.</a> <br/>
      Thank you.</p>

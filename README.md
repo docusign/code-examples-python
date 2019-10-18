@@ -53,6 +53,34 @@ The **refresh token** is not used in this example.
    feature.
 1. **Payments example: an order form, with online payment by credit card.**
    [Source.](https://github.com/docusign/eg-03-python-auth-code-grant/blob/master/app/eg014_collect_payment.py)
+1. **Get the envelope tab data.**
+   Retrieve the tab (field) values for all of the envelope's recipients.
+   [Source.](./app/eg015_envelope_tab_data.py)
+1. **Set envelope tab values.**
+   The example creates an envelope and sets the initial values for its tabs (fields). Some of the tabs
+   are set to be read-only, others can be updated by the recipient. The example also stores
+   metadata with the envelope.
+   [Source.](./app/eg016_set_tab_values.py)
+1. **Set template tab values.**
+   The example creates an envelope using a template and sets the initial values for its tabs (fields).
+   The example also stores metadata with the envelope.
+   [Source.](./app/eg017_set_template_tab_values.py)
+1. **Get the envelope custom field data (metadata).**
+   The example retrieves the custom metadata (custom data fields) stored with the envelope.
+   [Source.](./app/eg018_envelope_custom_field_data.py)
+1. **Requiring an Access Code for a Recipient**
+   [Source.](./app/eg019_access_code_authentication.py)
+   This example sends an envelope that requires an access-code for the purpose of multi-factor authentication.   
+1. **Requiring SMS authentication for a recipient**
+   [Source.](./app/eg020_sms_authentication.py)
+   This example sends an envelope that requires entering in a six digit code from an text message for the purpose of multi-factor authentication.   
+1. **Requiring Phone authentication for a recipient**
+   [Source.](./app/eg013_add_doc_to_template.py)
+   This example sends an envelope that requires entering in a voice-based response code for the purpose of multi-factor authentication.  
+1. **Requiring Knowledge-Based Authentication (KBA) for a Recipient**
+   [Source.](./app/eg022_kba_authentication.py)
+   This example sends an envelope that requires passing a Public records check to validate identity for the purpose of multi-factor authentication.    
+
 
 ## Installation
 
