@@ -1,4 +1,4 @@
-"""004: Get an envelope's basic information and status"""
+"""015: Get an envelope's tab information data"""
 
 from flask import render_template, url_for, redirect, session, flash, request
 from os import path
@@ -7,7 +7,7 @@ from app import app, ds_config, views
 from docusign_esign import *
 from docusign_esign.rest import ApiException
 
-eg = "eg004"  # reference (and url) for this example
+eg = "eg015"  # Reference (and URL) for this example
 
 def controller():
     """Controller router using the HTTP method"""
@@ -17,7 +17,6 @@ def controller():
         return create_controller()
     else:
         return render_template("404.html"), 404
-
 
 def create_controller():
     """
@@ -40,42 +39,39 @@ def create_controller():
             results = worker(args)
         except ApiException as err:
             error_body_json = err and hasattr(err, "body") and err.body
-            # we can pull the DocuSign error code and message from the response body
+            # We can pull the DocuSign error code and message from the response body
             error_body = json.loads(error_body_json)
             error_code = error_body and "errorCode" in error_body and error_body["errorCode"]
             error_message = error_body and "message" in error_body and error_body["message"]
-            # In production, may want to provide customized error messages and
-            # remediation advice to the user.
+            # In production, you may want to provide customized error messages and
+            # remediation advice to the user
             return render_template("error.html",
                                    err=err,
                                    error_code=error_code,
                                    error_message=error_message
                                    )
         return render_template("example_done.html",
-                                title="Get envelope status results",
-                                h1="Get envelope status results",
-                                message="Results from the Envelopes::get method:",
+                                title="Get envelope tab data results",
+                                h1="Get envelope tab data results",
+                                message="Results from the Envelopes::formData GET method:",
                                 json=json.dumps(json.dumps(results.to_dict()))
                                 )
     elif not token_ok:
         flash("Sorry, you need to re-authenticate.")
-        # We could store the parameters of the requested operation
-        # so it could be restarted automatically.
-        # But since it should be rare to have a token issue here,
-        # we"ll make the user re-enter the form data after
-        # authentication.
+        # We could store the parameters of the requested operation so it could be restarted
+        # automatically. But since it should be rare to have a token issue here,
+        # we'll make the user re-enter the form data after authentication.
         session["eg"] = url_for(eg)
         return redirect(url_for("ds_must_authenticate"))
     elif not "envelope_id" in session:
-        return render_template("eg004_envelope_info.html",
-                               title="Envelope information",
+        return render_template("eg015_envelope_tab_data.html",
+                               title="Envelope Tab Data",
                                envelope_ok=False,
                                source_file=path.basename(__file__),
                                source_url=ds_config.DS_CONFIG["github_example_url"] + path.basename(__file__),
                                documentation=ds_config.DS_CONFIG["documentation"] + eg,
                                show_doc=ds_config.DS_CONFIG["documentation"],
                                )
-
 
 # ***DS.snippet.0.start
 def worker(args):
@@ -87,18 +83,17 @@ def worker(args):
     api_client = ApiClient()
     api_client.host = args["base_path"]
     api_client.set_default_header("Authorization", "Bearer " + args["ds_access_token"])
-    envelope_api = EnvelopesApi(api_client)
-    results = envelope_api.get_envelope(args["account_id"], args["envelope_id"])
+    envelopes_api = EnvelopesApi(api_client)
+    results = envelopes_api.get_form_data(args["account_id"], args["envelope_id"])
 
     return results
 # ***DS.snippet.0.end
-
 
 def get_controller():
     """responds with the form for the example"""
 
     if views.ds_token_ok():
-        return render_template("eg004_envelope_info.html",
+        return render_template("eg015_envelope_tab_data.html",
                                title="Envelope information",
                                envelope_ok="envelope_id" in session,
                                source_file=path.basename(__file__),
@@ -109,5 +104,4 @@ def get_controller():
     else:
         # Save the current operation so it will be resumed after authentication
         session["eg"] = url_for(eg)
-        return redirect(url_for("ds_must_authenticate"))
-
+        return redirect(url_for("ds_must_authenticate")) 

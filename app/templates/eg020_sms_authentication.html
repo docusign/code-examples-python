@@ -1,17 +1,16 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>2. Send an envelope with a remote (email) signer and cc recipient</h4>
-<p>The envelope includes a pdf, Word, and HTML document. Anchor text 
+<h4>20. Send an envelope using an Sms-code for multi-factor recipient authentication</h4>
+<p> Anchor text 
   (<a href="https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience">AutoPlace</a>)
   is used to position the signing fields in the documents.
 </p>
-<p>This is a general example of creating and sending an envelope (a signing request) to multiple recipients,
-  with multiple documents, and with signature fields for the documents.</p>
+<p>This is a general example of creating and sending an envelope (a signing request) to a recipient that requires an authorization pin sent from a text message to provide multi-factor authentication on sent envelopes.</p>
 
   {% if show_doc %}
     <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
   {% endif %}
-  
+
   <p>API method used: 
    <a target='_blank' href="https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create">Envelopes::create</a>.
 </p>
@@ -21,28 +20,27 @@
 </p>
 
 <form class="eg" action="" method="post" data-busy="form">
+
+    
+    <div class="form-group">
+        <label for="phoneNumber">SMS Number</label>
+        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber"
+               aria-describedby="accessHelp" placeholder="415-555-1212" required
+               value="415-555-1212">
+        <small id="accessHelp" class="form-text text-muted">Send a text message to this phone number to verify recipient.</small>
+      </div>
+
     <div class="form-group">
       <label for="signer_email">Signer Email</label>
       <input type="email" class="form-control" id="signer_email" name="signer_email"
              aria-describedby="emailHelp" placeholder="pat@example.com" required
-             value="{{ signer_email }}" />
+             value="{{ signer_email }}">
       <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
       <label for="signer_name">Signer Name</label>
       <input type="text" class="form-control" id="signer_name" placeholder="Pat Johnson" name="signer_name"
-             value="{{ signer_name }}" required />
-    </div>
-    <div class="form-group">
-      <label for="cc_email">CC Email</label>
-      <input type="email" class="form-control" id="cc_email" name="cc_email"
-             aria-describedby="emailHelp" placeholder="pat@example.com" required />
-      <small id="emailHelp" class="form-text text-muted">The email for the cc recipient must be different from the signer's email.</small>
-    </div>
-    <div class="form-group">
-      <label for="cc_name">CC Name</label>
-      <input type="text" class="form-control" id="cc_name" placeholder="Pat Johnson" name="cc_name"
-             required />
+             value="{{ signer_name }}" required>
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <button type="submit" class="btn btn-primary">Submit</button>

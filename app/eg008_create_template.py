@@ -211,4 +211,3 @@ def get_controller():
         # Save the current operation so it will be resumed after authentication
         session['eg'] = url_for(eg)
         return redirect(url_for('ds_must_authenticate'))
-
