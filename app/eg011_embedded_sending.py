@@ -6,7 +6,7 @@ import json
 import re
 from app import app, ds_config, views, eg002_signing_via_email
 from docusign_esign import *
-from docusign_esign.rest import ApiException
+from docusign_esign.client.api_exception import ApiException
 
 eg = "eg011"  # reference (and url) for this example
 

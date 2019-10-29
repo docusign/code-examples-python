@@ -155,7 +155,7 @@ def worker(args):
     
     # Step 2. call Envelopes::create API method
     # Exceptions will be caught by the calling function
-    results = requests.post(f"{args['base_path']}/v2/accounts/{args['account_id']}/envelopes",
+    results = requests.post(f"{args['base_path']}/v2.1/accounts/{args['account_id']}/envelopes",
         headers = {
             "Authorization": "bearer " + args["ds_access_token"],
             "Accept": "application/json",
