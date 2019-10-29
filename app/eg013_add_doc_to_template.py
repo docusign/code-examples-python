@@ -7,7 +7,7 @@ from app import app, ds_config, views
 import base64
 import re
 from docusign_esign import *
-from docusign_esign.client.api_exception import ApiException
+from docusign_esign.rest import ApiException
 
 eg = "eg013"  # reference (and url) for this example
 signer_client_id = 1000 # The id of the signer within this application.

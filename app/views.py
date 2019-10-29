@@ -16,7 +16,7 @@ from app import app, ds_config, eg001_embedded_signing, \
             eg016_set_tab_values, eg017_set_template_tab_values, \
             eg018_envelope_custom_field_data, eg019_access_code_authentication, \
             eg020_sms_authentication, eg021_phone_authentication, \
-            eg022_kba_authentication, eg023_idv_authentication
+            eg022_kba_authentication
 
 
 @app.route("/")
@@ -143,10 +143,6 @@ def eg021():
 def eg022():
     return eg022_kba_authentication.controller()
 
-
-@app.route("/eg023", methods=["GET", "POST"])
-def eg023():
-    return eg023_idv_authentication.controller()
 
 
 @app.route("/ds_return")
