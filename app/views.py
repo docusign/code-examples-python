@@ -17,7 +17,8 @@ from app import app, ds_config, eg001_embedded_signing, \
             eg018_envelope_custom_field_data, eg019_access_code_authentication, \
             eg020_sms_authentication, eg021_phone_authentication, \
             eg022_kba_authentication, eg023_idv_authentication, \
-            eg024_brand_creating, eg025_brands_apply_to_envelope
+            eg024_brand_creating, eg025_brands_apply_to_envelope, \
+            eg026_brands_apply_to_template
 
 
 @app.route("/")
@@ -158,6 +159,11 @@ def eg024():
 @app.route("/eg025", methods=["GET", "POST"])
 def eg025():
     return eg025_brands_apply_to_envelope.controller()
+
+
+@app.route("/eg026", methods=["GET", "POST"])
+def eg026():
+    return eg026_brands_apply_to_template.controller()
 
 
 @app.route("/ds_return")
