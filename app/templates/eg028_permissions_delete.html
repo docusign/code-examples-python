@@ -1,0 +1,43 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+    <h4>28. {{ title }}</h4>
+    <p>
+         This code example demonstrates how to delete a permission profile.
+    </p>
+
+    {% if show_doc %}
+      <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+    {% endif %}
+
+    <p>
+        API methods used:
+        <a href="https://developers.docusign.com/esign-rest-api/reference/Accounts/AccountPermissionProfiles/delete" target="_blank">Accounts::deletePermissionProfile</a>
+        <a href="https://developers.docusign.com/esign-rest-api/reference/Accounts/AccountPermissionProfiles/list" target="_blank">Accounts::listPermissions</a>
+    </p>
+
+    <p>
+        View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+    </p>
+
+    {% if permission_profiles %}
+        <form class="eg" action="" method="post" data-busy="form">
+            <div class="form-group">
+                <label for="permission_profile">Permission profile</label>
+                <br>
+                <select id="permission_profile" name="permission_profile">
+                    {% for profile in permission_profiles %}
+                        <option value="{{ profile.permission_profile_id }}">{{ profile.permission_profile_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    {% else %}
+        <p>You don't have any profile permissions<p>
+        <p>To create one, follow this <a href="eg027">link</a></p>
+    {% endif %}
+{% endblock %}

@@ -18,7 +18,8 @@ from app import app, ds_config, eg001_embedded_signing, \
             eg020_sms_authentication, eg021_phone_authentication, \
             eg022_kba_authentication, eg023_idv_authentication, \
             eg024_brand_creating, eg025_brands_apply_to_envelope, \
-            eg026_brands_apply_to_template, eg027_permissions_creating
+            eg026_brands_apply_to_template, eg027_permissions_creating, \
+            eg028_permissions_delete
 
 
 @app.route("/")
@@ -169,6 +170,11 @@ def eg026():
 @app.route("/eg027", methods=["GET", "POST"])
 def eg027():
     return eg027_permissions_creating.controller()
+
+
+@app.route("/eg028", methods=["GET", "POST"])
+def eg028():
+    return eg028_permissions_delete.controller()
 
 
 @app.route("/ds_return")
