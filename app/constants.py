@@ -1,0 +1,28 @@
+# Settings for permission profile
+settings = {
+    'enableSequentialSigningInterface': '',
+    'allowBulkSending': '',
+    'allowEnvelopeSending': '',
+    'allowSignerAttachments': '',
+    'allowTaggingInSendAndCorrect': '',
+    'allowWetSigningOverride': '',
+    'allowedAddressBookAccess': '',
+    'allowedTemplateAccess': '',
+    'enableRecipientViewingNotifications': '',
+    'receiveCompletedSelfSignedDocumentsAsEmailLinks': '',
+    'signingUiVersion': '',
+    'useNewSendingInterface': '',
+    'allowApiAccess': "true",
+    'allowApiAccessToAccount': '',
+    'allowApiSendingOnBehalfOfOthers': '',
+    'allowApiSequentialSigning': '',
+    'enableApiRequestLogging': '',
+    'allowDocuSignDesktopClient': '',
+    'allowSendersToSetRecipientEmailLanguage': '',
+    'allowVaulting': "false",
+    'allowedToBeEnvelopeTransferRecipient': '',
+    'enableTransactionPointIntegration': '',
+    'powerFormRole': '',
+    'useNewDocuSignExperienceInterface': 'optional',
+    'vaultingMode': 'none'
+}
