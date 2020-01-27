@@ -1,0 +1,78 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+    <h4>26. {{ title }}</h4>
+
+    <p>
+        This code example demonstrates how to apply a brand to a template.
+    </p>
+
+    {% if show_doc %}
+        <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+    {% endif %}
+
+    <p>
+        Api method used:
+        <a href="https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create" target="_blank">Envelopes::Create</a>,
+        <a href="https://developers.docusign.com/esign-rest-api/reference/Accounts/AccountBrands/list" target="_blank">AccountBrands::List</a> and
+        <a href="https://developers.docusign.com/esign-rest-api/reference/Templates/Templates/list" target="_blank">Templates::List</a>
+    </p>
+
+    <p>
+        View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+    </p>
+
+    <form class="eg" action="" method="post" data-busy="form">
+        <div class="form-group">
+            <label for="signer_email">Signer Email</label>
+            <input type="email" class="form-control" id="signer_email" name="signer_email"
+                   aria-describedby="emailHelp" placeholder="pat@example.com" required
+                   value="{{ signer_email }}">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+
+
+        <div class="form-group">
+            <label for="signer_name">Signer Name</label>
+            <input type="text" class="form-control" id="signer_name" placeholder="Pat Johnson" name="signer_name"
+                   value="{{ signer_name }}" required>
+        </div>
+
+
+        <div class="form-group">
+            <label for="cc_email">CC Email</label>
+            <input type="email" class="form-control" id="signer_email" name="signer_email"
+                   aria-describedby="emailHelp" placeholder="pat@example.com">
+            <small id="emailHelp" class="form-text text-muted">The email and/or name for the cc recipient must be different from yhe signer.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="cc_name">CC Name</label>
+            <input type="text" class="form-control" id="signer_name" placeholder="Pat Johnson" name="signer_name">
+        </div>
+
+        <div class="form-group">
+            <label for="envelope_template">Envelope template</label>
+            <br>
+            <select id="envelope_template" name="envelope_template">
+                {% for template in templates %}
+                    <option value="{{ template.template_id }}">{{ template.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="brand">Brand</label>
+            <br>
+            <select id="brand" name="brand">
+                {% for brand in brands %}
+                    <option value="{{ brand.brand_id }}">{{ brand.brand_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+{% endblock %}
