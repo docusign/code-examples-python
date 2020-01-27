@@ -2,7 +2,7 @@
 
 from flask import render_template, url_for, redirect, session, flash, request
 from os import path
-from app import app, ds_config, views, constants
+from app import app, ds_config, views, consts
 import json
 from docusign_esign import ApiClient, AccountsApi, PermissionProfile
 from docusign_esign.client.api_exception import ApiException
@@ -28,7 +28,7 @@ def create_controller():
     """
     minimum_buffer_min = 3
     if views.ds_token_ok(minimum_buffer_min):
-        settings = constants.settings
+        settings = consts.settings
         # Map all settings except defaults to apply values from UI
         for setting in settings:
             value = request.form.get(setting)
