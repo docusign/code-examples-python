@@ -1,0 +1,47 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+    <h4>25. {{ title }}</h4>
+    <p>
+         Updates the group name and modifies, or sets, the permission profile for the group
+    </p>
+
+    {% if show_doc %}
+      <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+    {% endif %}
+
+    <p>
+        API method used:
+        <a href="https://developers.docusign.com/esign-rest-api/reference/UserGroups/Groups/update" target="_blank">UserGroups::updateGroups</a>
+    </p>
+
+    <p>
+        View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+    </p>
+
+        <form class="eg" action="" method="post" data-busy="form">
+            <div class="form-group">
+                <label for="permission_profile">Permission profile</label>
+                <br>
+                <select id="permission_profile" name="permission_profile">
+                    {% for profile in permission_profiles %}
+                        <option value="{{ profile.permission_profile_id }}">{{ profile.permission_profile_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="group">User group</label>
+                <br>
+                <select id="group" name="group">
+                    {% for group in groups %}
+                        <option value="{{ group.group_id }}">{{ group.group_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+{% endblock %}

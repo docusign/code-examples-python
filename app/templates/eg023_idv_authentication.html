@@ -23,21 +23,27 @@
     View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
 </p>
 
-<form class="eg" action="" method="post" data-busy="form">
-    <div class="form-group">
-      <label for="signer_email">Signer Email</label>
-      <input type="email" class="form-control" id="signer_email" name="signer_email"
-             aria-describedby="emailHelp" placeholder="pat@example.com" required
-             value="{{ signer_email }}">
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div class="form-group">
-      <label for="signer_name">Signer Name</label>
-      <input type="text" class="form-control" id="signer_name" placeholder="Pat Johnson" name="signer_name"
-             value="{{ signer_name }}" required>
-    </div>
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+{% if workflow_id %}
+    <form class="eg" action="" method="post" data-busy="form">
+        <div class="form-group">
+          <label for="signer_email">Signer Email</label>
+          <input type="email" class="form-control" id="signer_email" name="signer_email"
+                 aria-describedby="emailHelp" placeholder="pat@example.com" required
+                 value="{{ signer_email }}">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="signer_name">Signer Name</label>
+          <input type="text" class="form-control" id="signer_name" placeholder="Pat Johnson" name="signer_name"
+                 value="{{ signer_name }}" required>
+        </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+{% else %}
+    <b>ID verification is available to develop API integration in sandbox (demo) accounts,
+    but is not enabled by default. To enable IDV in your sandbox and/or production accounts,
+    contact your DocuSign Account Manager or Partner Account Manager</b>
+{% endif %}
   
 {% endblock %}

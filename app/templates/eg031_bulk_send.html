@@ -1,0 +1,88 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+    <h4>31. {{ title }}</h4>
+
+    <p>
+        Method BulkEnvelopes::createBulkSendList creates a bulk send list that you can use to send an envelope to up to
+        1,000 recipients at once
+    </p>
+
+    {% if show_doc %}
+        <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+    {% endif %}
+
+    <p>
+        API method used:
+        <a href="https://developers.docusign.com/esign-rest-api/reference/Envelopes/EnvelopeRecipients/create" target="_blank">Envelopes::createRecipient</a>,
+        <a href="https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create" target="_blank">Envelopes::createEnvelope</a>,
+        <a href="https://developers.docusign.com/esign-rest-api/reference/BulkEnvelopes/BulkEnvelopes/get" target="_blank">BulkEnvelopes::get</a>,
+        <a href="https://developers.docusign.com/esign-rest-api/reference/Envelopes/EnvelopeCustomFields/create" target="_blank">Envelopes::createCustomFields</a>,
+        <a href="https://developers.docusign.com/esign-rest-api/reference/BulkEnvelopes/BulkSend/createBulkSendList" target="_blank">BulkEnvelopes::createBulkSendList</a>
+    </p>
+
+    <p>
+        View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+    </p>
+
+    <form class="eg" action="" method="post" data-busy="form">
+         <div class="row">
+            <div class="col-md-6">
+                <h5>Bulk copy #1</h5>
+                <div class="form-group">
+                    <label for="signer_name_1">Signer Name</label>
+                    <input type="text" class="form-control" id="signer_name_1" placeholder="Pat Johnson" name="signer_name_1"
+                           value="{{ signer_name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signer_email_1">Signer Email</label>
+                    <input type="email" class="form-control" id="signer_email_1" name="signer_email_1"
+                           aria-describedby="emailHelp" placeholder="pat@example.com" required
+                           value="{{ signer_email }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="cc_name_1">CC Name</label>
+                    <input type="text" class="form-control" id="cc_name_1" placeholder="Pat Johnson" name="cc_name_1"
+                    required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cc_email_1">CC Email</label>
+                    <input type="email" class="form-control" id="cc_email_1" name="cc_email_1"
+                           aria-describedby="emailHelp" placeholder="pat@example.com" required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h5>Bulk copy #2</h5>
+                 <div class="form-group">
+                    <label for="signer_name_2">Signer Name</label>
+                    <input type="text" class="form-control" id="signer_name_2" placeholder="Pat Johnson" name="signer_name_2" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signer_email_2">Signer Email</label>
+                    <input type="email" class="form-control" id="signer_email_2" name="signer_email_2"
+                           aria-describedby="emailHelp" placeholder="pat@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cc_name_2">CC Name</label>
+                    <input type="text" class="form-control" id="cc_name_2" placeholder="Pat Johnson" name="cc_name_2"
+                    required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cc_email_2">CC Email</label>
+                    <input type="email" class="form-control" id="cc_email_2" name="cc_email_2"
+                           aria-describedby="emailHelp" placeholder="pat@example.com" required>
+                </div>
+            </div>
+            </div>
+        <div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+{% endblock %}

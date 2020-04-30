@@ -9,6 +9,14 @@
   <p><pre class="json-display"><code id="json-display"></code></pre></p>
 {%  endif %}
 
+{% if changed_settings %}
+    <ul>
+        {% for k, v in changed_settings.items() %}
+            <li><b>{{ k }}:</b> {{ v }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <p><a href="/">Continue</a></p>
   
 {% endblock %}
