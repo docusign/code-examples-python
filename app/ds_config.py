@@ -9,7 +9,7 @@ DS_CONFIG = {
     "signer_name": "{USER_FULLNAME}",
     "app_url": "{APP_URL}",  # The url of the application. Eg http://localhost:5000
     # NOTE: You must add a Redirect URI of appUrl/ds/callback to your Integration Key.
-    #       Example: http:#localhost:5000/ds/callback
+    #       Example: http://localhost:5000/ds/callback
     "authorization_server": "https://account-d.docusign.com",
     "allow_silent_authentication": True,  # a user can be silently authenticated if they have an
     # active login session on another tab of the same browser
@@ -31,5 +31,5 @@ DS_JWT = {
     "ds_client_id": "{CLIENT_ID}",
     "ds_impersonated_user_id": "{IMPERSONATED_USER_ID}",  # the id of the user
     "private_key_file": "./private.key", # create a new file named private.key in the app directory
-    "authorization_server": "account-d.docusign.com",
+    "authorization_server": "account-d.docusign.com"
 }
