@@ -151,8 +151,9 @@ When the token expires, it updates automatically.
 1. Download or clone this repository to your workstation to directory **eg-03-python-auth-code-grant**
 1. **cd eg-03-python-auth-code-grant**
 1. **pip3 install -r requirements.txt**  (or pipenv can be used)
-1. Update the file **app/ds_config.py**
-     with the Integration Key and other settings.
+1. Make a copy of the **app/ds_config_sample.py** and name it **ds_config.py** 
+1. Update this new file **app/ds_config.py**
+     with your Integration Key and other settings.
 
    **Note:** Protect your Integration Key and secret--you
    should ensure that ds_config.py file will not be stored in your source code
