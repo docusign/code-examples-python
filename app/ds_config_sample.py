@@ -29,7 +29,7 @@ DS_CONFIG = {
 
 DS_JWT = {
     "ds_client_id": "{CLIENT_ID}",
-    "ds_impersonated_user_id": "{IMPERSONATED_USER_ID}",  # the id of the user
-    "private_key_file": "./private.key", # create a new file named private.key in the app directory
+    "ds_impersonated_user_id": "{IMPERSONATED_USER_ID}",  # The id of the user.
+    "private_key_file": "./private.key", # Create a new file in your repo source folder named private.key then copy and paste your RSA private key there and save it.
     "authorization_server": "account-d.docusign.com"
 }

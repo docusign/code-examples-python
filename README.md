@@ -130,7 +130,7 @@ When the token expires, it updates automatically.
 ### Prerequisites
 1. A DocuSign Developer Sandbox account (email and password) on [demo.docusign.net](https://demo.docusign.net).
    Create a [free account](https://go.docusign.com/sandbox/productshot/?elqCampaignId=16535).
-1. A DocuSign Integration Key (a client ID). To use Authorization code grant, you will need the **Integration Key** itself, and its **secret**. To use Json Web token, you will need the **Integration Key** itself, the **RSA Secret Key** and an API user ID for the user you are impersonating.  
+1. A DocuSign Integration Key (a client ID). To use Authorization code grant, you will need the **Integration Key** itself, and its **secret**. To use JSON Web token, you will need the **Integration Key** itself, the **RSA Secret Key** and an API user ID for the user you are impersonating.  
 
    If you use this example on your own workstation,
    the Integration key must include a **Redirect URI** of `http://localhost:5000/ds/callback`
@@ -171,7 +171,7 @@ When the token expires, it updates automatically.
 5. Create a new file in your repo source folder named **private.key**, and paste in that copied RSA private key, then save it.
 6. Update the file **app/ds_config.py** and include the newly created API key from step 2 as well as your account user id GUID which is also found on the Admin panel: `https://admindemo.docusign.com/api-integrator-key`.
 
-From there you should be able to run the launcher using **python run.py** then selecting **Json Web Token** when authenticaing your account.
+From there you should be able to run the launcher using **python run.py** then selecting **JSON Web Token** when authenticaing your account.
 
 #### Payments code example
 To use the payments example, create a
@@ -189,7 +189,7 @@ Then add the payment gateway account id to the **app/ds_config.py** file.
 
 ### Implicit Grant
 
-The examples in this repository can also be used the
+The examples in this repository can also be used with the
 Implicit Grant OAuth flow.
 See the [Authentication guide](https://developers.docusign.com/esign-rest-api/guides/authentication)
 for information on choosing the right authentication flow for your application.
