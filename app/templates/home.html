@@ -7,8 +7,7 @@
     <!-- IF not signed in -->
     <div class="jumbotron">
         <h1 class="display-4">Welcome!</h1>
-        <p class="Xlead">Welcome to the DocuSign Python code examples with
-        OAuth Authorization Code Grant.</p>
+        <p class="Xlead">Welcome to the DocuSign Python examples using multiple OAuth flows (JWT and Authorization Code Grant).</p>
     </div>
     {% endif %}
 
@@ -18,12 +17,10 @@
 
     <div id="index-page">
         <h2>Welcome</h2>
-        <p>This launcher both demonstrates use of the OAuth Authorization Code Grant flow and includes multiple 
-            usage examples for the DocuSign eSignature REST API.</p>
+        <p>This launcher includes the following examples for the DocuSign eSignature REST API.</p>
 
         {% if show_doc %}
-            <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> on using OAuth Authorization Code Grant from a 
-                Python Flask application.</p>
+            <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> on using JWT or Authorization Code Grant from a Python Flask application.</p>
         {% endif %}
 
         <h2>Basic Examples</h2>

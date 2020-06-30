@@ -1,15 +1,10 @@
-# Python: Authorization Code Grant Examples
+# Python Launcher Code Examples
 
-### Github repo: eg-03-python-auth-code-grant
+### Github repo: [code-examples-python](./)
 ## Introduction
 This repo is a Python 3 application that demonstrates:
 
-* Authentication with DocuSign via the
-[Authorization Code Grant flow](https://developers.docusign.com/esign-rest-api/guides/authentication/oauth2-code-grant).
-When the token expires, the user is asked to re-authenticate.
-The **refresh token** is not used in this example.
-* Authentication with DocuSign via the [JSON Web Token (JWT) Grant](https://developers.docusign.com/esign-rest-api/guides/authentication/oauth2-jsonwebtoken).
-When the token expires, it updates automatically.
+
 1. **Embedded Signing Ceremony.**
    [Source.](./app/examples/eg001_embedded_signing/controller.py)
    This example sends an envelope, and then uses an embedded signing ceremony for the first signer.
@@ -119,14 +114,23 @@ When the token expires, it updates automatically.
    Firstly, creates a bulk send recipients list, and then creates an envelope. 
    After that, initiates bulk envelope sending.
 
+
+## Included OAuth grant types:
+
+* Authentication with Docusign via [Authorization Code Grant flow](https://developers.docusign.com/esign-rest-api/guides/authentication/oauth2-code-grant) .
+When the token expires, the user is asked to re-authenticate.
+The **refresh token** is not used in this example.
+
+* Authentication with DocuSign via the [JSON Web Token (JWT) Grant](https://developers.docusign.com/esign-rest-api/guides/authentication/oauth2-jsonwebtoken).
+When the token expires, it updates automatically.
+
+
 ## Installation
 
 ### Prerequisites
 1. A DocuSign Developer Sandbox account (email and password) on [demo.docusign.net](https://demo.docusign.net).
    Create a [free account](https://go.docusign.com/sandbox/productshot/?elqCampaignId=16535).
-1. A DocuSign Integration Key (a client ID) that is configured to use the
-   OAuth Authorization Code flow.
-   You will need the **Integration Key** itself, and its **secret**.
+1. A DocuSign Integration Key (a client ID). To use Authorization code grant, you will need the **Integration Key** itself, and its **secret**. To use JSON Web token, you will need the **Integration Key** itself, the **RSA Secret Key** and an API user ID for the user you are impersonating.  
 
    If you use this example on your own workstation,
    the Integration key must include a **Redirect URI** of `http://localhost:5000/ds/callback`
@@ -147,15 +151,27 @@ When the token expires, it updates automatically.
 1. Download or clone this repository to your workstation to directory **eg-03-python-auth-code-grant**
 1. **cd eg-03-python-auth-code-grant**
 1. **pip3 install -r requirements.txt**  (or pipenv can be used)
-1. Update the file **app/ds_config.py**
-     with the Integration Key and other settings.
+1. Make a copy of the **app/ds_config_sample.py** and name it **ds_config.py** 
+1. Update this new file **app/ds_config.py**
+     with your Integration Key and other settings.
 
    **Note:** Protect your Integration Key and secret--you
    should ensure that ds_config.py file will not be stored in your source code
    repository.
 
-1. **python3 run.py**
+1. **python run.py**
 1. Open a browser to **http://localhost:5000**
+
+### Configuring JWT
+
+1. Create a developer sandbox account on developers.docusign.com if you don't already have one.
+2. Create a new API key in the Admin panel: https://admindemo.docusign.com/api-integrator-key, take note of the public key.
+3. Set a redirect URI of `http://localhost:5000/ds/callback` as mentioned in the installation steps above for the API key you make in step 2.
+4. Generate an RSA keypair in the administrator console on the DocuSign developer sandbox and copy the private key to a secure location.
+5. Create a new file in your repo source folder named **private.key**, and paste in that copied RSA private key, then save it.
+6. Update the file **app/ds_config.py** and include the newly created API key from step 2 as well as your account user id GUID which is also found on the Admin panel: `https://admindemo.docusign.com/api-integrator-key`.
+
+From there you should be able to run the launcher using **python run.py** then selecting **JSON Web Token** when authenticaing your account.
 
 #### Payments code example
 To use the payments example, create a
@@ -167,14 +183,16 @@ file for instructions.
 
 Then add the payment gateway account id to the **app/ds_config.py** file.
 
-## Using the examples with other authentication flows
 
-The examples in this repository can also be used with either the
-Implicit Grant or JWT OAuth flows.
-See the [Authentication guide](https://developers.docusign.com/esign-rest-api/guides/authentication)
-for information on choosing the right authentication flow for your application.
 
 ## License and additional information
+
+### Implicit Grant
+
+The examples in this repository can also be used with the
+Implicit Grant OAuth flow.
+See the [Authentication guide](https://developers.docusign.com/esign-rest-api/guides/authentication)
+for information on choosing the right authentication flow for your application.
 
 ### License
 This repository uses the MIT License. See the LICENSE file for more information.
