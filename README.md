@@ -148,8 +148,8 @@ When the token expires, it updates automatically.
 1. A name and email for a signer, and a name and email for a cc recipient.
 
 ### Installation steps
-1. Download or clone this repository to your workstation to directory **eg-03-python-auth-code-grant**
-1. **cd eg-03-python-auth-code-grant**
+1. Download or clone this repository to your workstation to directory **code-examples-python**
+1. **cd code-examples-python**
 1. **pip3 install -r requirements.txt**  (or pipenv can be used)
 1. Make a copy of the **app/ds_config_sample.py** and name it **ds_config.py** 
 1. Update this new file **app/ds_config.py**
@@ -178,7 +178,7 @@ To use the payments example, create a
 test payments gateway for your developer sandbox account.
 
 See the
-[PAYMENTS_INSTALLATION.md](https://github.com/docusign/eg-03-python-auth-code-grant/blob/master/PAYMENTS_INSTALLATION.md)
+[PAYMENTS_INSTALLATION.md](https://github.com/docusign/code-examples-python/blob/master/PAYMENTS_INSTALLATION.md)
 file for instructions.
 
 Then add the payment gateway account id to the **app/ds_config.py** file.
