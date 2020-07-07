@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="jumbotron">
+    <div style="margin:1% 5%;">
       <h1 class="display-4">Please Authenticate with DocuSign</h1>
 
     <form method="post" data-busy="form" action={{ url_for("ds.ds_login") }}>
@@ -12,7 +12,7 @@
                 <option value="code_grant">Authorization Code Grant</option>
                 <option value="jwt">JSON Web Token</option>
             </select>
-            <p class="lead">
+            <p class="lead" style="padding-top: .5rem;">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <button type="submit" class="btn btn-primary">Authenticate with DocuSign</button>
             </p>
