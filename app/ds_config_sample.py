@@ -5,8 +5,8 @@
 DS_CONFIG = {
     "ds_client_id": "{INTEGRATION_KEY_AUTH_CODE}",  # The app's DocuSign integration key
     "ds_client_secret": "{SECRET_KEY}",  # The app's DocuSign integration key's secret
-    "signer_email": "{USER_EMAIL}",
-    "signer_name": "{USER_FULLNAME}",
+    "signer_email": "{SIGNER_EMAIL}",
+    "signer_name": "{SIGNER_NAME}",
     "app_url": "http://localhost:5000",  # The url of the application. Eg http://localhost:5000
     # NOTE: You must add a Redirect URI of appUrl/ds/callback to your Integration Key.
     #       Example: http://localhost:5000/ds/callback
