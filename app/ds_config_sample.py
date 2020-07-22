@@ -23,7 +23,7 @@ DS_CONFIG = {
     "gateway_account_id": "{DS_PAYMENT_GATEWAY_ID}",
     "gateway_name": "stripe",
     "gateway_display_name": "Stripe",
-    "github_example_url": "https://github.com/docusign/eg-03-python-auth-code-grant/tree/master/app/",
+    "github_example_url": "https://github.com/docusign/code-examples-python/tree/master/app/",
     "documentation": ""  # Use an empty string to indicate no documentation path.
 }
 
