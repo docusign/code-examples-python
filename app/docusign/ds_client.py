@@ -27,7 +27,7 @@ class DSClient:
         """Authorize with the Authorization Code Grant - OAuth 2.0 flow"""
         oauth = OAuth(app)
         request_token_params = {
-            "scope": "signature",
+            "scope": "signature click.manage organization_read room_forms group_read permission_read user_read user_write account_read domain_read identity_provider_read dtr.rooms.read dtr.rooms.write dtr.documents.read dtr.documents.write dtr.profile.read dtr.profile.write dtr.company.read dtr.company.write",
             "state": lambda: uuid.uuid4().hex.upper()
         }
         if not DS_CONFIG["allow_silent_authentication"]:

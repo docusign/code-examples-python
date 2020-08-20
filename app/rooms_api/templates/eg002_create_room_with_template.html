@@ -1,0 +1,40 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>2. Creating a room with a template</h4>
+<p>This code example demonstrates creating a DocuSign Room using a predefined template.</p>
+
+{% if show_doc %}
+  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+
+<p>API methods used:
+    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Rooms/Rooms/CreateRoom">Rooms::CreateRoom</a>,
+    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/RoomTemplates/RoomTemplates/GetRoomTemplates">RoomTemplates::GetRoomTemplates</a> and
+    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Roles/Roles/GetRoles">Roles::GetRoles</a>
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if templates %}
+    <div class="form-group">
+      <label for="room_name">Room Name</label>
+      <input type="text" class="form-control" id="room_name" name="room_name" required>
+    </div>
+    <div class="form-group">
+        <label for="template_id">Template</label>
+            <select class="form-control" id="template_id" name="template_id">
+                {% for template in templates %}
+                    <option value="{{ template.room_template_id }}">{{ template.name }}</option>
+                {% endfor %}
+            </select>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Submit</button>
+    {% else %}
+    <p>Problem: please first
+        <a href="https://developers.docusign.com/rooms-api/guides/templates">create a template.</a>
+        <br/>Thank you.</p>
+    {% endif %}
+  </form>
+  
+{% endblock %}
+

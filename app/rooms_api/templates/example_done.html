@@ -1,0 +1,22 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h2>{{ h1 }}</h2>
+<p>{{ message | safe }}</p>
+
+{% if json %}
+  <!-- Data from the server -->
+  <div id="server_json_data" data-server-json-data='{"json": {{ json | safe }} }' class="hidden"></div>
+  <p><pre class="json-display"><code id="json-display"></code></pre></p>
+{%  endif %}
+
+{% if changed_settings %}
+    <ul>
+        {% for k, v in changed_settings.items() %}
+            <li><b>{{ k }}:</b> {{ v }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<p><a href="/">Continue</a></p>
+  
+{% endblock %}

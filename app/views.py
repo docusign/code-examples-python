@@ -2,12 +2,19 @@
 
 from flask import render_template, url_for, redirect, Blueprint
 
+from .ds_config import ROOMS_API
+
 core = Blueprint("core", __name__)
 
 
 @core.route("/")
 def index():
-    return render_template("home.html", title="Home - Python Code Examples")
+    if ROOMS_API:
+        return render_template(
+            "home_rooms.html", title="Home - Python Rooms API Code Examples"
+        )
+    else:
+        return render_template("home.html", title="Home - Python Code Examples")
 
 
 @core.route("/index")
