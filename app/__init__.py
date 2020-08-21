@@ -27,6 +27,8 @@ app.register_blueprint(ds)
 if ROOMS_API:
     app.register_blueprint(rooms_examples.eg001)
     app.register_blueprint(rooms_examples.eg002)
+    app.register_blueprint(rooms_examples.eg003)
+    app.register_blueprint(rooms_examples.eg005)
 else:
     app.register_blueprint(examples.eg001)
     app.register_blueprint(examples.eg002)

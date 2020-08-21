@@ -1,7 +1,7 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
 <h4>2. Creating a room with a template</h4>
-<p>This code example demonstrates creating a DocuSign Room using a predefined template.</p>
+<p>This example demonstrates creating a DocuSign Room using a predefined template.</p>
 
 {% if show_doc %}
   <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
@@ -16,7 +16,7 @@
 <form class="eg" action="" method="post" data-busy="form">
     {% if templates %}
     <div class="form-group">
-      <label for="room_name">Room Name</label>
+      <label for="room_name">Room name</label>
       <input type="text" class="form-control" id="room_name" name="room_name" required>
     </div>
     <div class="form-group">
