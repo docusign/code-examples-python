@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 
-from . import examples
+from .eSignature import examples
 from .docusign.views import ds
 from .views import core
 
@@ -19,7 +19,7 @@ app.register_blueprint(core)
 # Register OAuth
 app.register_blueprint(ds)
 # Register examples
-app.register_blueprint(examples.eg001)
+app.register_blueprint(eg001_embedded_signing.eg001)
 app.register_blueprint(examples.eg002)
 app.register_blueprint(examples.eg003)
 app.register_blueprint(examples.eg004)
