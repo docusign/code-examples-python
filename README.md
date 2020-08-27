@@ -160,6 +160,9 @@ When the token expires, it updates automatically.
    repository.
 
 1. **python run.py**
+
+   **Note:** You will need to alias the python command to run Python 3 or use **python3 run.py** 
+   
 1. Open a browser to **http://localhost:5000**
 
 ### Configuring JWT
