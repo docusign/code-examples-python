@@ -113,3 +113,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 .vscode/settings.json
+
+# Security key files
+private.key
