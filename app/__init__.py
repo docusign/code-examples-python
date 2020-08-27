@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 
+from .ds_config import DS_CONFIG
 from .eSignature import examples
 from .docusign.views import ds
 from .views import core
@@ -13,6 +14,12 @@ app = Flask(__name__)
 app.config.from_pyfile("config.py")
 # See https://flask-wtf.readthedocs.io/en/stable/csrf.html
 csrf = CSRFProtect(app)
+
+# Set whether this is a quickstart in config
+app.config["quickstart"] = DS_CONFIG["quickstart"]
+
+# Set whether user has logged in
+app.config["isLoggedIn"] = False
 
 # Register home page
 app.register_blueprint(core)

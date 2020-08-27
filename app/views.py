@@ -1,6 +1,6 @@
 """Defines the home page route"""
 
-from flask import render_template, url_for, redirect, Blueprint
+from flask import render_template, url_for, redirect, Blueprint, current_app as app
 from .ds_config import DS_CONFIG
 
 core = Blueprint("core", __name__)
@@ -9,8 +9,8 @@ core = Blueprint("core", __name__)
 @core.route("/")
 def index():
     #if quickstart go to eg001 else go to homepage
-    quickstart=DS_CONFIG["quickstart"]
-    if quickstart  == "true":
+    quickstart=app.config["quickstart"]
+    if quickstart  == True:
         return render_template("eg001_embedded_signing.html", title="Embedded signing ceremony")
     else:
         return render_template("home.html", title="Home - Python Code Examples")
