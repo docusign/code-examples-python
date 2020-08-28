@@ -16,13 +16,14 @@ app.config.from_pyfile("config.py")
 csrf = CSRFProtect(app)
 
 # Set whether this is a quickstart in config
-app.config["quickstart"] = DS_CONFIG["quickstart"]
+#app.config["quickstart"] = DS_CONFIG["quickstart"]
 
 # Set whether user has logged in
-app.config["isLoggedIn"] = False
+#app.config["isLoggedIn"] = False
 
 # Register home page
 app.register_blueprint(core)
+
 # Register OAuth
 app.register_blueprint(ds)
 # Register examples

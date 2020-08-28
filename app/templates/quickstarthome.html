@@ -1,0 +1,53 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if not 'ds_user_name' in session %}
+  <!-- IF not signed in -->
+  <div>
+    <div class="jumbotron jumbotron-fluid"> <table>
+      <tbody>
+      <tr>
+      <td>
+        <h1 class="display-4">Python Launcher</h1>
+      <p class="Xlead">Welcome to the DocuSign Python examples using multiple OAuth flows (JWT and Authorization Code Grant).</p>
+      </td>
+      <td>
+          <img src="/static/assets/banner-code.png" />
+      </td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+    {% endif %}
+
+    <!--  Future: add a table of contents or navigation pane
+          Eg, see https://stackoverflow.com/questions/21868610/make-column-fixed-position-in-bootstrap
+    -->
+
+    <div class="container" style="margin-top: 40px" id="index-page">
+        <h2>Welcome</h2>
+        <p>This launcher includes the following examples for the DocuSign eSignature REST API.</p>
+
+        {% if show_doc %}
+            <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> on using JWT or Authorization Code Grant from a Python Flask application.</p>
+        {% endif %}
+
+        <h2>Basic Examples</h2>
+
+        <h4 id="example001">1. <a href="eg001">Embedded Signing Ceremony</a></h4>
+        <p>This example sends an envelope, and then uses an embedded signing ceremony for the first signer. 
+            With embedded signing, the DocuSign signing ceremony is initiated from your website.
+        </p>
+        <p>API methods used: 
+            <a target ='_blank' href="https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create">Envelopes::create</a> and 
+            <a target ='_blank' href="https://developers.docusign.com/esign-rest-api/reference/Envelopes/EnvelopeViews/createRecipient">EnvelopeViews::createRecipient</a>.
+        </p>
+    </div>
+
+    <!-- anchor-js is only for the index page -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
+    <script>anchors.options.placement = 'left'; anchors.add('h4')</script>
+
+{% endblock %}
