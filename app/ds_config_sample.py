@@ -34,4 +34,7 @@ DS_JWT = {
     "authorization_server": "account-d.docusign.com"
 }
 
-ROOMS_API = True
+EXAMPLES_API_TYPE = {
+        "Rooms": True,
+        "ESignature": False
+}
