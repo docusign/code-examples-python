@@ -1,7 +1,10 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
 <h4>2. Creating a room with a template</h4>
-<p>This example demonstrates creating a DocuSign Room using a predefined template.</p>
+<p>This example demonstrates creating a DocuSign Room using a predefined template.<br/>
+    If you've <a href="https://developers.docusign.com/rooms-api/guides/templates" target="_blank">created a template</a>
+    for your organization in either Rooms for Mortgage<br/>
+    or Rooms for Real Estate, you can create rooms based on this template using the Rooms API.</p>
 
 {% if show_doc %}
   <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
@@ -31,7 +34,7 @@
     <button type="submit" class="btn btn-docu">Submit</button>
     {% else %}
     <p>Problem: please first
-        <a href="https://developers.docusign.com/rooms-api/guides/templates">create a template.</a>
+        <a href="https://developers.docusign.com/rooms-api/guides/templates" target="_blank">create a template.</a>
         <br/>Thank you.</p>
     {% endif %}
   </form>

@@ -1,11 +1,10 @@
 """Example 005: Getting rooms with filters"""
 
 from os import path
-
 from datetime import datetime, timedelta
 import json
 
-from docusign_esign.client.api_exception import ApiException
+from docusign_rooms.client.api_exception import ApiException
 from flask import render_template, Blueprint
 
 from .controller import Eg005Controller
@@ -32,6 +31,7 @@ def get_rooms_with_filters():
         results = Eg005Controller.worker(args)
     except ApiException as err:
         return process_error(err)
+
     # 3. Show filtered rooms
     return render_template(
         "example_done.html",
@@ -55,8 +55,11 @@ def get_view():
     # 1. Get required arguments
     args = Eg005Controller.get_args()
 
-    # 2. Get room templates
-    rooms = Eg005Controller.get_rooms(args)
+    try:
+        # 2. Get room templates
+        rooms = Eg005Controller.get_rooms(args)
+    except ApiException as err:
+        return process_error(err)
 
     # 3. Set filtering parameters
     start_date = datetime.today() - timedelta(days=10)

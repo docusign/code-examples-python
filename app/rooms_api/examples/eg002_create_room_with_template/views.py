@@ -1,8 +1,9 @@
 """Example 002: Creating a room with template"""
 
 from os import path
+import json
 
-from docusign_esign.client.api_exception import ApiException
+from docusign_rooms.client.api_exception import ApiException
 from flask import render_template, current_app, Blueprint
 
 from .controller import Eg002Controller
@@ -26,21 +27,23 @@ def create_room_with_template():
 
     try:
         # 2. Call the worker method to create a new room
-        response = Eg002Controller.worker(args)
-        room_id = response.room_id
+        results = Eg002Controller.worker(args)
+        room_id = results.room_id
         current_app.logger.info(
             f"""Room "{args['room_name']}" has been created! Room ID: {room_id}"""
         )
-
-        # 3. Render the response
-        return render_template(
-            "example_done.html",
-            title="Creating a room with a template",
-            h1="Creating a room with a template",
-            message=f"""The room "{args['room_name']}" has been created!<br/> Room ID: {room_id}.""",
-        )
     except ApiException as err:
         return process_error(err)
+
+    # 3. Render the response
+    return render_template(
+        "example_done.html",
+        title="Creating a room with a template",
+        h1="Creating a room with a template",
+        message=f"""The room "{args['room_name']}" has been created!<br/>
+                        Room ID: {room_id}.""",
+        json=json.dumps(json.dumps(results.to_dict(), default=str))
+    )
 
 
 @eg002.route("/eg002", methods=["GET"])
@@ -54,8 +57,11 @@ def get_view():
     # 1. Get required arguments
     args = Eg002Controller.get_args()
 
-    # 2. Get room templates
-    templates = Eg002Controller.get_templates(args)
+    try:
+        # 2. Get room templates
+        templates = Eg002Controller.get_templates(args)
+    except ApiException as err:
+        return process_error(err)
 
     return render_template(
         "eg002_create_room_with_template.html",

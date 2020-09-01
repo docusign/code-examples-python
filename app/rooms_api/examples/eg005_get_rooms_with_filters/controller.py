@@ -1,6 +1,8 @@
+from docusign_rooms import RoomsApi
 from datetime import datetime
-from docusign_rooms import ApiClient, RoomsApi
 from flask import session, request
+
+from ...utils import create_rooms_api_client
 
 
 class Eg005Controller:
@@ -9,7 +11,6 @@ class Eg005Controller:
         """Get required session and request arguments"""
         return {
             "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
-            "base_path": session["ds_base_path"],
             "access_token": session["ds_access_token"],  # Represents your {ACCESS_TOKEN}
             "start_date": request.form.get("start_date"),
             "end_date": request.form.get("end_date")
@@ -22,9 +23,7 @@ class Eg005Controller:
         2. Get rooms with filter
         """
         # Step 1. Create an API client with headers
-        api_client = ApiClient(host="https://demo.rooms.docusign.com/restapi")
-        api_client.set_default_header(header_name="Authorization",
-                                      header_value=f"Bearer {args['access_token']}")
+        api_client = create_rooms_api_client(access_token=args["access_token"])
 
         # Step 2. Get room templates
         rooms_api = RoomsApi(api_client)
@@ -38,9 +37,7 @@ class Eg005Controller:
         2. Get room field data using SDK
         """
         # Step 1. Create an API client with headers
-        api_client = ApiClient(host="https://demo.rooms.docusign.com/restapi")
-        api_client.set_default_header(header_name="Authorization",
-                                      header_value=f"Bearer {args['access_token']}")
+        api_client = create_rooms_api_client(access_token=args["access_token"])
 
         # Step 2. Get room field data using SDK
         rooms_api = RoomsApi(api_client)

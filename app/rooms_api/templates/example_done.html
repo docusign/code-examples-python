@@ -2,6 +2,11 @@
 
 <h2>{{ h1 }}</h2>
 <p>{{ message | safe }}</p>
+{% if link %}
+    <br>
+    <a href="{{ link }}" target="_blank">{{ link_text }}</a>
+    <br>
+{% endif %}
 
 {% if json %}
   <!-- Data from the server -->

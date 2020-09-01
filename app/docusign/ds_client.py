@@ -11,6 +11,14 @@ from docusign_esign.client.api_exception import ApiException
 from ..ds_config import DS_CONFIG, DS_JWT
 from ..error_handlers import process_error
 
+SCOPES = [
+    "signature", "click.manage", "organization_read", "room_forms",
+    "group_read", "permission_read user_read", "user_write", "account_read",
+    "domain_read", "identity_provider_read", "dtr.rooms.read", "dtr.rooms.write",
+    "dtr.documents.read", "dtr.documents.write", "dtr.profile.read",
+    "dtr.profile.write", "dtr.company.read", "dtr.company.write"
+]
+
 
 class DSClient:
     ds_app = None
@@ -27,7 +35,7 @@ class DSClient:
         """Authorize with the Authorization Code Grant - OAuth 2.0 flow"""
         oauth = OAuth(app)
         request_token_params = {
-            "scope": "signature click.manage organization_read room_forms group_read permission_read user_read user_write account_read domain_read identity_provider_read dtr.rooms.read dtr.rooms.write dtr.documents.read dtr.documents.write dtr.profile.read dtr.profile.write dtr.company.read dtr.company.write",
+            "scope": " ".join(SCOPES),
             "state": lambda: uuid.uuid4().hex.upper()
         }
         if not DS_CONFIG["allow_silent_authentication"]:
@@ -65,7 +73,8 @@ class DSClient:
                 user_id=DS_JWT["ds_impersonated_user_id"],
                 oauth_host_name=DS_JWT["authorization_server"],
                 private_key_bytes=private_key,
-                expires_in=3600
+                expires_in=3600,
+                scopes=SCOPES
             )
 
             return redirect(url_for("ds.ds_callback"))

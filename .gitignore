@@ -113,3 +113,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 .vscode/settings.json
+.docusign-rooms-1.0.0a0/
+/venv*

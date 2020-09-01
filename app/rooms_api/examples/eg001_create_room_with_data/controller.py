@@ -1,5 +1,7 @@
-from docusign_rooms import ApiClient, RoomsApi, RolesApi, RoomForCreate, FieldDataForCreate
+from docusign_rooms import RoomsApi, RolesApi, RoomForCreate, FieldDataForCreate
 from flask import session, request
+
+from ...utils import create_rooms_api_client
 
 
 class Eg001Controller:
@@ -8,7 +10,6 @@ class Eg001Controller:
         """Get required session and request arguments"""
         return {
             "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
-            "base_path": session["ds_base_path"],
             "access_token": session["ds_access_token"],  # Represents your {ACCESS_TOKEN}
             "room_name": request.form.get("room_name"),
         }
@@ -22,9 +23,9 @@ class Eg001Controller:
         4. Post the room using SDK
         """
         # Step 1. Create an API client with headers
-        api_client = ApiClient(host="https://demo.rooms.docusign.com/restapi")
-        api_client.set_default_header(header_name="Authorization",
-                                      header_value=f"Bearer {args['access_token']}")
+        api_client = create_rooms_api_client(
+            access_token=args["access_token"]
+        )
 
         # Step 2. Get Default Admin role id
         roles_api = RolesApi(api_client)
@@ -51,6 +52,8 @@ class Eg001Controller:
 
         # Step 4. Post the room using SDK
         rooms_api = RoomsApi(api_client)
-        response = rooms_api.create_room(room_for_create=room,
-                                         account_id=args["account_id"])
+        response = rooms_api.create_room(
+            room_for_create=room,
+            account_id=args["account_id"]
+        )
         return response

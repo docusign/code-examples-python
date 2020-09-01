@@ -1,0 +1,55 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>6. Creating an external form fill session</h4>
+<p>This example demonstrates how to create an
+    <a href="https://developers.docusign.com/rooms-api/guides/forms" target="_blank">external form fill session</a>
+    using the Rooms API:<br/>
+    the result of this code example is the URL for the form fill session, which you can embed<br/>
+    in your integration or send to the user.</p>
+
+{% if show_doc %}
+  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+
+<p>API methods used:
+    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Rooms/Rooms/GetRooms">Rooms::GetRooms</a>,
+    <a target ='_blank' href="https://developers.docusign.com/docs/rooms-api/reference/Rooms/Rooms/GetDocuments/">Rooms::GetDocuments</a> and
+    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Forms/ExternalFormFillSessions/CreateExternalFormFillSession">Forms::CreateExternalFormFillSession</a>
+</p>
+    {% if rooms %}
+        <form class="eg" action="/forms" method="post" data-busy="form">
+            <div class="form-group">
+            <label for="room_id">Room</label>
+                <select class="form-control" id="room_id" name="room_id">
+                    {% for room in rooms %}
+                        <option value="{{ room.room_id }}">{{ room.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button type="submit" class="btn btn-docu">Get forms</button>
+         </form>
+    {% elif room_name and forms %}
+        <form class="eg" action="eg006" method="post" data-busy="form">
+            <label for="room_name">Room name</label>
+            <input type="text" class="form-control" id="room_name" name="room_name" value="{{ room_name }}" readonly><br/>
+            <input type="hidden" class="form-control" name="room_id" value="{{ room_id }}" readonly>
+            <div class="form-group">
+                <label for="form_id">Form</label>
+                    <select class="form-control" id="form_id" name="form_id">
+                        {% for form in forms %}
+                            <option value="{{ form.docu_sign_form_id }}">{{ form.name }}</option>
+                        {% endfor %}
+                    </select>
+            </div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <button type="submit" class="btn btn-docu">Submit</button>
+        </form>
+    {% elif room_name and not forms %}
+        <p>Problem: please first add form to the room using <a href="eg004">example 4</a> <br/>
+            Thank you.</p>
+    {% else %}
+      <p>Problem: please first create a room using <a href="eg001">example 1</a> or <a href="eg002">example 2</a> <br/>
+            Thank you.</p>
+    {% endif %}
+{% endblock %}

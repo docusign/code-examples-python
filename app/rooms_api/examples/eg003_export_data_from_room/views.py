@@ -3,7 +3,7 @@
 from os import path
 import json
 
-from docusign_esign.client.api_exception import ApiException
+from docusign_rooms.client.api_exception import ApiException
 from flask import render_template, Blueprint
 
 from .controller import Eg003Controller
@@ -30,6 +30,7 @@ def get_field_data_from_room():
         results = Eg003Controller.worker(args)
     except ApiException as err:
         return process_error(err)
+
     # 3. Show field data
     return render_template(
         "example_done.html",
@@ -45,15 +46,19 @@ def get_field_data_from_room():
 def get_view():
     """
     1. Get required arguments
-    2. Get room templates
+    2. Get rooms
     3. Render the response
     """
     # 1. Get required arguments
     args = Eg003Controller.get_args()
 
-    # 2. Get room templates
-    rooms = Eg003Controller.get_rooms(args)
+    try:
+        # 2. Get rooms
+        rooms = Eg003Controller.get_rooms(args)
+    except ApiException as err:
+        return process_error(err)
 
+    # 3. Render the response
     return render_template(
         "eg003_export_data_from_room.html",
         title="Exporting data from a room",

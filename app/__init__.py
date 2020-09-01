@@ -5,17 +5,18 @@ from flask_wtf.csrf import CSRFProtect
 
 from . import examples
 from .docusign.views import ds
-from .ds_config import ROOMS_API
+from .ds_config import EXAMPLES_API_TYPE
 from .rooms_api import examples as rooms_examples
 from .views import core
 
 session_path = "/tmp/python_recipe_sessions"
 
-if ROOMS_API:
+if EXAMPLES_API_TYPE["Rooms"]:
     app = Flask(__name__, template_folder='rooms_api/templates')
 else:
     app = Flask(__name__)
 app.config.from_pyfile("config.py")
+
 # See https://flask-wtf.readthedocs.io/en/stable/csrf.html
 csrf = CSRFProtect(app)
 
@@ -24,11 +25,13 @@ app.register_blueprint(core)
 # Register OAuth
 app.register_blueprint(ds)
 # Register examples
-if ROOMS_API:
+if EXAMPLES_API_TYPE["Rooms"]:
     app.register_blueprint(rooms_examples.eg001)
     app.register_blueprint(rooms_examples.eg002)
     app.register_blueprint(rooms_examples.eg003)
+    app.register_blueprint(rooms_examples.eg004)
     app.register_blueprint(rooms_examples.eg005)
+    app.register_blueprint(rooms_examples.eg006)
 else:
     app.register_blueprint(examples.eg001)
     app.register_blueprint(examples.eg002)
