@@ -7,7 +7,7 @@ import base64
 import re
 import json
 from docusign_esign import *
-from docusign_esign.rest import ApiException
+from docusign_esign import ApiException
 
 eg = "eg019"  # reference (and url) for this example
 # access_code = "NJ9@D1"

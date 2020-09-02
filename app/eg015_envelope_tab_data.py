@@ -5,7 +5,7 @@ from os import path
 import json
 from app import app, ds_config, views
 from docusign_esign import *
-from docusign_esign.rest import ApiException
+from docusign_esign import ApiException
 
 eg = "eg015"  # Reference (and URL) for this example
 

@@ -7,7 +7,7 @@ from app import app, ds_config, views
 import base64
 import re
 from docusign_esign import *
-from docusign_esign.rest import ApiException
+from docusign_esign import ApiException
 
 eg = "eg001"  # reference (and url) for this example
 signer_client_id = 1000 # Used to indicate that the signer will use an embedded
