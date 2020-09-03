@@ -1,6 +1,6 @@
 # Python: Authorization Code Grant Examples
 
-### Github repo: eg-03-python-auth-code-grant
+### Github repo: code-examples-python
 ## Introduction
 This repo is a Python 3 application that demonstrates:
 
@@ -107,8 +107,8 @@ The **refresh token** is not used in this example.
 1. A name and email for a signer, and a name and email for a cc recipient.
 
 ### Installation steps
-1. Download or clone this repository to your workstation to directory **eg-03-python-auth-code-grant**
-1. **cd eg-03-python-auth-code-grant**
+1. Download or clone this repository to your workstation to directory **code-examples-python**
+1. **cd code-examples-python**
 1. **pip3 install -r requirements.txt**  (or pipenv can be used)
 1. Update the file **app/ds_config.py**
      with the Integration Key and other settings.

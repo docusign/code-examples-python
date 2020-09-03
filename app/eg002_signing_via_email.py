@@ -7,7 +7,7 @@ import base64
 import re
 import json
 from docusign_esign import *
-from docusign_esign.rest import ApiException
+from docusign_esign import ApiException
 
 eg = "eg002"  # reference (and url) for this example
 demo_docs_path = path.abspath(path.join(path.dirname(path.realpath(__file__)), "static/demo_documents"))
