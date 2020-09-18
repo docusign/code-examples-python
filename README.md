@@ -1,4 +1,4 @@
-# Python Launcher Code Examples
+﻿# Python Launcher Code Examples
 
 ### Github repo: [code-examples-python](./)
 ## Introduction
@@ -128,6 +128,8 @@ When the token expires, it updates automatically.
 ## Installation
 
 ### Prerequisites
+**Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip steps 1 and 2 below as they're automatically performed for you.**
+
 1. A DocuSign Developer Sandbox account (email and password) on [demo.docusign.net](https://demo.docusign.net).
    Create a [free account](https://go.docusign.com/sandbox/productshot/?elqCampaignId=16535).
 1. A DocuSign Integration Key (a client ID). To use Authorization code grant, you will need the **Integration Key** itself, and its **secret**. To use JSON Web token, you will need the **Integration Key** itself, the **RSA Secret Key** and an API user ID for the user you are impersonating.  
@@ -148,6 +150,8 @@ When the token expires, it updates automatically.
 1. A name and email for a signer, and a name and email for a cc recipient.
 
 ### Installation steps
+**Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip steps 4 and 5 below as they're automatically performed for you.**
+
 1. Download or clone this repository to your workstation to directory **code-examples-python**
 1. **cd code-examples-python**
 1. **pip3 install -r requirements.txt**  (or pipenv can be used)
