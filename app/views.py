@@ -10,16 +10,13 @@ core = Blueprint("core", __name__)
 
 @core.route("/")
 def index():
-<<<<<<< HEAD
     if EXAMPLES_API_TYPE["Rooms"]:
         return render_template(
             "home_rooms.html", title="Home - Python Rooms API Code Examples"
         )
-=======
     qs = DS_CONFIG["quickstart"]
     if qs:
         return redirect(url_for("core.qshome"))
->>>>>>> master
     else:
         return render_template("home.html", title="Home - Python Code Examples")
 
