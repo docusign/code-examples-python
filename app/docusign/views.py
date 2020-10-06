@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from flask import redirect, request, url_for, flash, render_template, Blueprint, session
+from flask import redirect, request, url_for, flash, render_template, Blueprint, session, current_app as app
 
 from .ds_client import DSClient
 from .utils import ds_logout_internal
@@ -14,6 +14,8 @@ ds = Blueprint("ds", __name__, url_prefix="/ds")
 def ds_login():
     if not session.get("auth_type"):
         session["auth_type"] = request.form.get("auth_type")
+    app.config["isLoggedIn"] = True
+    app.config["quickstart"] = DS_CONFIG["quickstart"]
     return DSClient.login(session["auth_type"])
 
 
@@ -21,6 +23,8 @@ def ds_login():
 def ds_logout():
     ds_logout_internal()
     flash("You have logged out from DocuSign.")
+    app.config["isLoggedIn"] = False
+    app.config["quickstart"] = False
     return redirect(url_for("core.index"))
 
 
@@ -52,12 +56,12 @@ def ds_callback():
         if target_account_id:
             account = next((a for a in accounts if a["account_id"] == target_account_id), None)
             if not account:
-                # Panic! The user does not have the targeted account. They should not log in!
+                # The user does not have the targeted account. They should not log in!
                 raise Exception("No access to target account")
         else:  # get the default account
             account = next((a for a in accounts if a["is_default"]), None)
             if not account:
-                # Panic! Every user should always have a default account
+                # Every user should always have a default account
                 raise Exception("No default account")
 
         # Save the account information
@@ -72,8 +76,15 @@ def ds_callback():
 
 @ds.route("/must_authenticate")
 def ds_must_authenticate():
-    return render_template("must_authenticate.html", title="Must authenticate")
+    qs = DS_CONFIG["quickstart"]
+    if qs:
+        return redirect(url_for("ds.ds_quickstart_auth"))
+    else:
+        return render_template("must_authenticate.html", title="Must authenticate")
 
+@ds.route(("/quickstart_auth"))
+def ds_quickstart_auth():
+    return render_template("quickstart_auth.html", title = "Must authenticate")
 
 @ds.route("/ds_return")
 def ds_return():

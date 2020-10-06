@@ -1,6 +1,7 @@
 """Defines the home page route"""
 
-from flask import render_template, url_for, redirect, Blueprint
+from flask import render_template, url_for, redirect, Blueprint, current_app as app
+from .ds_config import DS_CONFIG
 
 from .ds_config import EXAMPLES_API_TYPE
 
@@ -9,18 +10,26 @@ core = Blueprint("core", __name__)
 
 @core.route("/")
 def index():
+<<<<<<< HEAD
     if EXAMPLES_API_TYPE["Rooms"]:
         return render_template(
             "home_rooms.html", title="Home - Python Rooms API Code Examples"
         )
+=======
+    qs = DS_CONFIG["quickstart"]
+    if qs:
+        return redirect(url_for("core.qshome"))
+>>>>>>> master
     else:
         return render_template("home.html", title="Home - Python Code Examples")
 
+@core.route("/quickstarthome")
+def qshome():
+    return render_template("quickstarthome.html", title = "Homepage for Quickstart")
 
 @core.route("/index")
 def r_index():
     return redirect(url_for("core.index"))
-
 
 @core.app_errorhandler(404)
 def not_found_error(error):

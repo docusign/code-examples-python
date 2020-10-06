@@ -3,7 +3,8 @@ import os
 from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 
-from . import examples
+from .ds_config import DS_CONFIG
+from .eSignature import examples
 from .docusign.views import ds
 from .ds_config import EXAMPLES_API_TYPE
 from .rooms_api import examples as rooms_examples
@@ -20,8 +21,15 @@ app.config.from_pyfile("config.py")
 # See https://flask-wtf.readthedocs.io/en/stable/csrf.html
 csrf = CSRFProtect(app)
 
+# Set whether this is a quickstart in config
+#app.config["quickstart"] = DS_CONFIG["quickstart"]
+
+# Set whether user has logged in
+#app.config["isLoggedIn"] = False
+
 # Register home page
 app.register_blueprint(core)
+
 # Register OAuth
 app.register_blueprint(ds)
 # Register examples
