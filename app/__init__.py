@@ -7,13 +7,13 @@ from .ds_config import DS_CONFIG
 from .eSignature import examples
 from .docusign.views import ds
 from .ds_config import EXAMPLES_API_TYPE
-from .rooms_api import examples as rooms_examples
+from .rooms import examples as rooms_examples
 from .views import core
 
 session_path = "/tmp/python_recipe_sessions"
 
 if EXAMPLES_API_TYPE["Rooms"]:
-    app = Flask(__name__, template_folder='rooms_api/templates')
+    app = Flask(__name__, template_folder='rooms/templates')
 else:
     app = Flask(__name__)
 app.config.from_pyfile("config.py")

@@ -4,7 +4,7 @@ cffi==1.13.2
 chardet==3.0.4
 Click==7.0
 cryptography==2.8
-docusign-esign==3.1.0rc2
+docusign-esign==3.6.0
 docusign-rooms==1.0.0b1
 Flask==1.1.1
 Flask-OAuthlib==0.9.5

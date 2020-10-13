@@ -35,7 +35,7 @@ def add_form_to_room():
     return render_template(
         "example_done.html",
         title="Add a form to a room",
-        h1="The DocuSign Form was successfully added to the room",
+        h1="The DocuSign form was successfully added to the room",
         message="Results from the Rooms::AddFormToRoom method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )

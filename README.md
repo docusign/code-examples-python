@@ -119,21 +119,21 @@ This repo is a Python 3 application that demonstrates:
 **Note:** to use the Rooms API you must also [create your DocuSign Developer Account for Rooms](https://developers.docusign.com/docs/rooms-api/rooms101/create-account). Examples 4 and 6 require that you have the [DocuSign Forms feature](https://developers.docusign.com/docs/rooms-api/rooms101/using-forms-in-a-room) enabled in your Rooms for Real Estate account. 
 
 1. **Create a room with data.**
-[Source.](./rooms_api/examples/eg001_create_room_with_data/controller.py)
+[Source.](./rooms/examples/eg001_create_room_with_data/controller.py)
 This example creates a new room in your DocuSign Rooms account to be used for a transaction.
 1. **Create a room from a template.**
-[Source.](./rooms_api/examples/eg002_create_room_with_template/controller.py)
+[Source.](./rooms/examples/eg002_create_room_with_template/controller.py)
 This example creates a new room using a template.
 1. **Create a room with Data.**
-[Source.](./rooms_api/examples/eg003_export_data_from_room/controller.py)
+[Source.](./rooms/examples/eg003_export_data_from_room/controller.py)
 This example exports all the available data from a specific room in your DocuSign Rooms account.
 1. **Add forms to a room.**
-[Source.](./rooms_api/examples/eg004_add_forms_to_room/controller.py)
+[Source.](./rooms/examples/eg004_add_forms_to_room/controller.py)
 This example adds a standard real estate related form to a specific room in your DocuSign Rooms account.
 1. **How to search for rooms with filters.**
-[Source.](./rooms_api/examples/eg005_get_rooms_with_filters/controller.py)
+[Source.](./rooms/examples/eg005_get_rooms_with_filters/controller.py)
 1. **Create an external form fillable session.**
-[Source.](./rooms_api/examples/eg006_create_external_form_fill_session/controller.py)
+[Source.](./rooms/examples/eg006_create_external_form_fill_session/controller.py)
 
 
 ## Included OAuth grant types:

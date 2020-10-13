@@ -20,7 +20,7 @@ def create_external_form_fill_session():
     """
     1. Get required arguments
     2. Call the worker method
-    3. Show url for a new external form fill session
+    3. Show URL for a new external form fill session
     """
     # 1. Get required arguments
     args = Eg006Controller.get_args()
@@ -31,7 +31,7 @@ def create_external_form_fill_session():
     except ApiException as err:
         return process_error(err)
 
-    # 3. Show url for a new external form fill session
+    # 3. Show URL for a new external form fill session
     return render_template(
         "example_done.html",
         title="Create an external form fill session",
