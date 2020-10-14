@@ -1,0 +1,24 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+<h4>1. Creating a room with data</h4>
+<p>This example demonstrates creating a DocuSign Room.</p>
+
+{% if show_doc %}
+  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+
+<p>API methods used:
+   <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Rooms/Rooms/CreateRoom">Rooms::CreateRoom</a> and
+   <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Roles/Roles/GetRoles">Roles::GetRoles</a>
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    <div class="form-group">
+      <label for="room_name">Room name</label>
+      <input type="text" class="form-control" id="room_name" name="room_name" required>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Submit</button>
+  </form>
+  
+{% endblock %}
+

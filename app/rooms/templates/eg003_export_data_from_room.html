@@ -1,0 +1,32 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>3. Exporting data from a room</h4>
+<p>This example demonstrates how to export rooms data from a DocuSign Room.</p>
+
+{% if show_doc %}
+  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+
+<p>API methods used:
+    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Rooms/Rooms/GetRooms">Rooms::GetRooms</a> and
+    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Rooms/Rooms/GetRoomFieldData">Rooms::GetRoomFieldData</a>
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if rooms %}
+    <div class="form-group">
+        <label for="room_id">Room</label>
+            <select class="form-control" id="room_id" name="room_id">
+                {% for room in rooms %}
+                    <option value="{{ room.room_id }}">{{ room.name }}</option>
+                {% endfor %}
+            </select>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Submit</button>
+    {% else %}
+      <p>Problem: please first create a room using <a href="eg001">example 1</a> or <a href="eg002">example 2</a> <br/>
+            Thank you.</p>
+    {% endif %}
+  </form>
+{% endblock %}

@@ -3,13 +3,18 @@
 from flask import render_template, url_for, redirect, Blueprint, current_app as app
 from .ds_config import DS_CONFIG
 
+from .ds_config import EXAMPLES_API_TYPE
+
 core = Blueprint("core", __name__)
 
 
 @core.route("/")
 def index():
-    qs = DS_CONFIG["quickstart"]
-    if qs:
+    if EXAMPLES_API_TYPE["Rooms"]:
+        return render_template(
+            "home_rooms.html", title="Home - Python Rooms API Code Examples"
+        )
+    if DS_CONFIG["quickstart"] == "True":
         return redirect(url_for("core.qshome"))
     else:
         return render_template("home.html", title="Home - Python Code Examples")

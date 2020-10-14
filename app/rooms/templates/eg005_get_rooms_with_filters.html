@@ -1,0 +1,32 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>5. Getting rooms with filters</h4>
+<p>This example demonstrates how to return rooms that have had their field data,<br/>
+    updated within the time period between <b>Start date</b> and <b>End date</b>.</p>
+
+{% if show_doc %}
+  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+
+<p>API method used:
+    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Rooms/Rooms/GetRooms">Rooms::GetRooms</a>
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if rooms %}
+    <div class="form-group">
+        <label for="start_date">Start date</label>
+        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ start }}" required>
+    </div>
+    <div class="form-group">
+        <label for="end_date">End date</label>
+        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ end }}" required>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Submit</button>
+    {% else %}
+      <p>Problem: please first create a room using <a href="eg001">example 1</a> or <a href="eg002">example 2</a> <br/>
+            Thank you.</p>
+    {% endif %}
+  </form>
+{% endblock %}

@@ -8,8 +8,20 @@ from flask_oauthlib.client import OAuth
 from docusign_esign import ApiClient
 from docusign_esign.client.api_exception import ApiException
 
-from ..ds_config import DS_CONFIG, DS_JWT
+from ..ds_config import DS_CONFIG, DS_JWT, EXAMPLES_API_TYPE
 from ..error_handlers import process_error
+
+SCOPES = [
+     "signature", "click.manage", "organization_read"
+]
+
+ROOMS_SCOPES = [
+     "signature", "click.manage", "organization_read", "room_forms",
+    "group_read", "permission_read user_read", "user_write", "account_read",
+    "domain_read", "identity_provider_read", "dtr.rooms.read", "dtr.rooms.write",
+    "dtr.documents.read", "dtr.documents.write", "dtr.profile.read",
+    "dtr.profile.write", "dtr.company.read", "dtr.company.write"
+]
 
 
 class DSClient:
@@ -26,8 +38,12 @@ class DSClient:
     def _auth_code_grant(cls):
         """Authorize with the Authorization Code Grant - OAuth 2.0 flow"""
         oauth = OAuth(app)
+        if EXAMPLES_API_TYPE["Rooms"] == True:
+            use_scopes = ROOMS_SCOPES
+        else:
+            use_scopes = SCOPES
         request_token_params = {
-            "scope": "signature",
+            "scope": " ".join(use_scopes),
             "state": lambda: uuid.uuid4().hex.upper()
         }
         if not DS_CONFIG["allow_silent_authentication"]:
@@ -50,6 +66,13 @@ class DSClient:
         api_client = ApiClient()
         api_client.set_base_path(DS_JWT["authorization_server"])
 
+        if EXAMPLES_API_TYPE["Rooms"] == True:
+            use_scopes = ROOMS_SCOPES
+            use_scopes.append("impersonation")
+        else:
+            use_scopes = SCOPES
+            use_scopes.append("impersonation")
+
         # Catch IO error
         try:
             private_key = cls._get_private_key().encode("ascii").decode("utf-8")
@@ -65,7 +88,8 @@ class DSClient:
                 user_id=DS_JWT["ds_impersonated_user_id"],
                 oauth_host_name=DS_JWT["authorization_server"],
                 private_key_bytes=private_key,
-                expires_in=3600
+                expires_in=3600,
+                scopes=use_scopes
             )
 
             return redirect(url_for("ds.ds_callback"))

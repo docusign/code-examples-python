@@ -7,7 +7,7 @@ DS_CONFIG = {
     "ds_client_secret": "{SECRET_KEY}",  # The app's DocuSign integration key's secret
     "signer_email": "{SIGNER_EMAIL}",
     "signer_name": "{SIGNER_NAME}",
-    "app_url": "http://localhost:5000",  # The url of the application. Eg http://localhost:5000
+    "app_url": "http://localhost:5000",  # The URL of the application. Eg http://localhost:5000
     # NOTE: You must add a Redirect URI of appUrl/ds/callback to your Integration Key.
     #       Example: http://localhost:5000/ds/callback
     "authorization_server": "https://account-d.docusign.com",
@@ -25,7 +25,7 @@ DS_CONFIG = {
     "gateway_display_name": "Stripe",
     "github_example_url": "https://github.com/docusign/code-examples-python/tree/master/app/",
     "documentation": "",  # Use an empty string to indicate no documentation path.
-    "quickstart": "{QUICKSTART_VALUE}"
+    "quickstart": "False"
 }
 
 DS_JWT = {
@@ -33,4 +33,9 @@ DS_JWT = {
     "ds_impersonated_user_id": "{IMPERSONATED_USER_ID}",  # The id of the user.
     "private_key_file": "./private.key", # Create a new file in your repo source folder named private.key then copy and paste your RSA private key there and save it.
     "authorization_server": "account-d.docusign.com"
+}
+
+EXAMPLES_API_TYPE = {
+        "Rooms": True,
+        "ESignature": False
 }
