@@ -76,7 +76,7 @@ def ds_callback():
 
 @ds.route("/must_authenticate")
 def ds_must_authenticate():
-    if DS_CONFIG["quickstart"] == "True":
+    if DS_CONFIG["quickstart"] == "true":
         return redirect(url_for("ds.ds_quickstart_auth"))
     else:
         return render_template("must_authenticate.html", title="Must authenticate")

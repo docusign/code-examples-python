@@ -14,7 +14,7 @@ def index():
         return render_template(
             "home_rooms.html", title="Home - Python Rooms API Code Examples"
         )
-    if DS_CONFIG["quickstart"] == "True":
+    if DS_CONFIG["quickstart"] == "true":
         return redirect(url_for("core.qshome"))
     else:
         return render_template("home.html", title="Home - Python Code Examples")
