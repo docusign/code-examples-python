@@ -195,7 +195,7 @@ When the token expires, it updates automatically.
 1. Create a developer account on developers.docusign.com if you don't already have one.
 2. Create a new API key in the Admin panel: https://admindemo.docusign.com/api-integrator-key, take note of the public key.
 3. Set a redirect URI of `http://localhost:5000/ds/callback` as mentioned in the installation steps above for the API key you make in step 2.
-4. Generate an RSA keypair in the administrator console on the DocuSign developer sandbox and copy the private key to a secure location.
+4. Generate an RSA keypair in the administrator console on the DocuSign developer account and copy the private key to a secure location.
 5. Create a new file in your repo source folder named **private.key**, and paste in that copied RSA private key, then save it.
 6. Update the file **app/ds_config.py** and include the newly created API key from step 2 as well as your account user id GUID which is also found on the Admin panel: `https://admindemo.docusign.com/api-integrator-key`.
 
