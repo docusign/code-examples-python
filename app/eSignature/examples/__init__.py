@@ -1,4 +1,4 @@
-from ...eg001_embedded_signing import eg001
+from .eg001_embedded_signing import eg001
 from .eg002_signing_via_email import eg002
 from .eg003_list_envelopes import eg003
 from .eg004_envelope_info import eg004
