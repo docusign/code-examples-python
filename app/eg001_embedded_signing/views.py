@@ -6,9 +6,9 @@ from docusign_esign.client.api_exception import ApiException
 from flask import render_template, redirect, Blueprint
 
 from .controller import Eg001Controller
-from ....docusign import authenticate
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ..docusign import authenticate
+from ..ds_config import DS_CONFIG
+from ..error_handlers import process_error
 
 eg = "eg001"  # reference (and url) for this example
 eg001 = Blueprint("eg001", __name__)
@@ -45,7 +45,7 @@ def get_view():
         "eg001_embedded_signing.html",
         title="Embedded Signing Ceremony",
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/controller.py",
+        source_url="https://github.com/docusign/code-examples-python/tree/master/app/" + path.basename(path.dirname(__file__)) + "/controller.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],

@@ -5,9 +5,9 @@ from docusign_esign import EnvelopesApi, RecipientViewRequest, Document, Signer,
     Recipients
 from flask import session, url_for, request
 
-from ....consts import authentication_method, demo_docs_path, pattern, signer_client_id
-from ....docusign import create_api_client
-from ....ds_config import DS_CONFIG
+from ..consts import authentication_method, demo_docs_path, pattern, signer_client_id
+from ..docusign import create_api_client
+from ..ds_config import DS_CONFIG
 
 
 class Eg001Controller:
