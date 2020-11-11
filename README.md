@@ -7,7 +7,7 @@ This repo is a Python 3 application that demonstrates:
 ## eSignature API
 
 1. **Embedded Signing Ceremony.**
-   [Source.](.app/eSignature/examples/eg001_embedded_signing/controller.py)
+   [Source.](./app/eg001_embedded_signing/controller.py)
    This example sends an envelope, and then uses an embedded signing ceremony for the first signer.
    With embedded signing, the DocuSign signing ceremony is initiated from your website.
 1. **Send an envelope with a remote (email) signer and cc recipient.**
