@@ -203,7 +203,7 @@ From there you should be able to run the launcher using **python run.py** then s
 
 #### Payments code example
 To use the payments example, create a
-test payments gateway for your developer sandbox account.
+test payments gateway for your developer account.
 
 See the
 [PAYMENTS_INSTALLATION.md](https://github.com/docusign/code-examples-python/blob/master/PAYMENTS_INSTALLATION.md)
