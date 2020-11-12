@@ -72,6 +72,7 @@ else:
     app.register_blueprint(examples.eg029)
     app.register_blueprint(examples.eg030)
     app.register_blueprint(examples.eg031)
+    app.register_blueprint(examples.eg032)
 
 if "DYNO" in os.environ:  # On Heroku?
     import logging

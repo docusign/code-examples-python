@@ -104,7 +104,7 @@ This repo is a Python 3 application that demonstrates:
    Anchor text ([AutoPlace](https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience)) is used to position the signing fields in the documents.
 1. **Applying a brand to a template**
    [Source.](./app/eSignature/examples/eg030_brands_apply_to_template/controller.py)
-   This code example demonstrates how to apply a brand you've created to a template using using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method. 
+   This code example demonstrates how to apply a brand you've created to a template using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method. 
    You must have already created the template and the brand.
    Anchor text ([AutoPlace](https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience)) is used to position the signing fields in the documents.
 1. **Bulk sending envelopes to multiple recipients**
@@ -114,6 +114,10 @@ This repo is a Python 3 application that demonstrates:
    [Create Bulk Send Request](https://developers.docusign.com/esign-rest-api/reference/BulkEnvelopes/BulkSend/createBulkSendRequest).
    Firstly, creates a bulk send recipients list, and then creates an envelope. 
    After that, initiates bulk envelope sending.
+1. **Pause a signature workflow**
+   [Source.](./app/eSignature/examples/eg032_pause_signature_workflow/controller.py)
+   This code example demonstrates how to create an envelope where the workflow is paused before the envelope is sent to a second recipient.
+  
 
 ## Rooms API
 **Note:** to use the Rooms API you must also [create your DocuSign Developer Account for Rooms](https://developers.docusign.com/docs/rooms-api/rooms101/create-account). Examples 4 and 6 require that you have the [DocuSign Forms feature](https://developers.docusign.com/docs/rooms-api/rooms101/using-forms-in-a-room) enabled in your Rooms for Real Estate account. 

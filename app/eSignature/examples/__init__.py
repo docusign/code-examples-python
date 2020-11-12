@@ -29,3 +29,4 @@ from .eg028_brand_creating import eg028
 from .eg029_brands_apply_to_envelope import eg029
 from .eg030_brands_apply_to_template import eg030
 from .eg031_bulk_send import eg031
+from .eg032_pause_signature_workflow import eg032
