@@ -56,9 +56,7 @@ class Eg032Controller:
             envelope_definition=envelope_definition
         )
 
-        envelope_id = results.envelope_id
-
-        return {"envelope_id": envelope_id}
+        return {"paused_envelope_id": results.envelope_id}
 
     @classmethod
     def make_envelope(cls, args):

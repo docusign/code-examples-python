@@ -32,15 +32,17 @@ def pause_signature_workflow():
     except ApiException as err:
         return process_error(err)
 
-    session["envelope_id"] = results["envelope_id"]  # Save for use by other examples which need an envelopeId
+    session["paused_envelope_id"] = results["paused_envelope_id"]  # Save for use by other examples which need an envelopeId
 
     # 2. Render success response with envelopeId
     return render_template(
         "example_done.html",
         title="Envelope sent",
         h1="Envelope sent",
-        message=f"The envelope has been created and sent!<br/>Envelope ID {results['envelope_id']}.<br/>"
-                f"<p>To resume a workflow after the first resipient signs in the envelope use <a href='eg033'>example33.</a><br/>"
+        message=f"The envelope has been created and sent!"
+                f"<br/>Envelope ID {results['paused_envelope_id']}.<br/>"
+                f"<p>To resume a workflow after the first resipient signs "
+                f"the envelope use <a href='eg033'>example33.</a><br/>"
     )
 
 
