@@ -114,12 +114,15 @@ This repo is a Python 3 application that demonstrates:
    [Create Bulk Send Request](https://developers.docusign.com/esign-rest-api/reference/BulkEnvelopes/BulkSend/createBulkSendRequest).
    Firstly, creates a bulk send recipients list, and then creates an envelope. 
    After that, initiates bulk envelope sending.
-1. **Pause a signature workflow**
+1. **Pausing a signature workflow**
    [Source.](./app/eSignature/examples/eg032_pause_signature_workflow/controller.py)
    This code example demonstrates how to create an envelope where the workflow is paused before the envelope is sent to a second recipient.
-1. **Unpause a signature workflow**
+1. **Unpausing a signature workflow**
    [Source.](./app/eSignature/examples/eg033_unpause_signature_workflow/controller.py)
    This code example demonstrates how to resume an envelope workflow that has been paused.
+1. **Using conditional recipients**
+   [Source.](./app/eSignature/examples/eg034_use_conditional_recipients/controller.py)
+   This code example demonstrates how to create an envelope where the workflow is routed to different recipients based on the value of a transaction.
   
 
 ## Rooms API

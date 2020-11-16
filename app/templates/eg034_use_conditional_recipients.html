@@ -1,0 +1,81 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>34. Using conditional recipients</h4>
+<p>This example demonstrates how to create an envelope where the workflow
+    is routed to different recipients based on the value of a transaction.</p>
+<p>The envelope includes a txt document.</p>
+
+{% if show_doc %}
+<p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about
+    this example.</p>
+{% endif %}
+
+<p>API method used:
+    <a target='_blank'
+       href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopes/create/">Envelopes::create</a>.
+</p>
+
+<p>
+    View source file <a target="_blank" href="{{ source_url | safe }}">{{
+    source_file }}</a> on GitHub.
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    <h5>Signer #1</h5>
+    <div class="form-group">
+        <label for="signer1_email">Email</label>
+        <input type="email" class="form-control" id="signer1_email"
+               name="signer1_email"
+               aria-describedby="emailHelp" placeholder="pat@example.com"
+               required
+               value="{{ signer1_email }}"/>
+        <small id="emailHelp" class="form-text text-muted">We'll never share
+            your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label for="signer1_name">Name</label>
+        <input type="text" class="form-control" id="signer1_name"
+               placeholder="Pat Johnson" name="signer1_name"
+               value="{{ signer1_name }}" required/>
+        <br/>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h6><b>Signer when not checked</b></h6>
+            <div class="form-group">
+                <label for="signer_2a_email">Email</label>
+                <input type="email" class="form-control" id="signer_2a_email"
+                       name="signer_2a_email"
+                       aria-describedby="emailHelp"
+                       placeholder="pat@example.com" required
+                       value="{{ signer_2a_email }}">
+            </div>
+            <div class="form-group">
+                <label for="signer_2a_name">Name</label>
+                <input type="text" class="form-control" id="signer_2a_name"
+                       placeholder="Pat Johnson" name="signer_2a_name"
+                       value="{{ signer_2a_name }}" required>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h6><b>Signer when checked</b></h6>
+            <div class="form-group">
+                <label for="signer_2b_email">Email</label>
+                <input type="email" class="form-control" id="signer_2b_email"
+                       name="signer_2b_email"
+                       aria-describedby="emailHelp"
+                       placeholder="pat@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="signer_2b_name">Name</label>
+                <input type="text" class="form-control" id="signer_2b_name"
+                       placeholder="Pat Johnson" name="signer_2b_name" required>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Submit</button>
+</form>
+
+{% endblock %}
