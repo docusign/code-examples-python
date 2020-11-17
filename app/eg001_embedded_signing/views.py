@@ -45,7 +45,7 @@ def get_view():
         "eg001_embedded_signing.html",
         title="Embedded Signing Ceremony",
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/controller.py",
+        source_url="https://github.com/docusign/code-examples-python/tree/master/app/" + path.basename(path.dirname(__file__)) + "/controller.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],

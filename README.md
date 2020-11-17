@@ -1,6 +1,11 @@
 ﻿# Python Launcher Code Examples
 
 ### Github repo: [code-examples-python](./)
+
+This GitHub repo includes code examples for both the DocuSign eSignature REST API as well as the DocuSign Rooms API. To use the Rooms API code example, modify the EXAMPLES_API_TYPE setting at the end of the ds_config.py file. Set 'Rooms' to True and 'ESignature' to False.
+
+**Note:** to use the Rooms API you must also [create your DocuSign Developer Account for Rooms](https://developers.docusign.com/docs/rooms-api/rooms101/create-account).
+
 ## Introduction
 This repo is a Python 3 application that demonstrates:
 
@@ -213,7 +218,7 @@ From there you should be able to run the launcher using **python run.py** then s
 
 #### Payments code example
 To use the payments example, create a
-test payments gateway for your developer sandbox account.
+test payments gateway for your developer account.
 
 See the
 [PAYMENTS_INSTALLATION.md](https://github.com/docusign/code-examples-python/blob/master/PAYMENTS_INSTALLATION.md)
