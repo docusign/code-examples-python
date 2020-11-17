@@ -41,7 +41,7 @@ def pause_signature_workflow():
         h1="Envelope sent",
         message=f"The envelope has been created and sent!"
                 f"<br/>Envelope ID {results['paused_envelope_id']}.<br/>"
-                f"<p>To resume a workflow after the first resipient signs "
+                f"<p>To resume a workflow after the first recipient signs "
                 f"the envelope use <a href='eg033'>example33.</a><br/>"
     )
 

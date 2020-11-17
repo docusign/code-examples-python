@@ -91,17 +91,7 @@ class Eg032Controller:
         )
 
         # The order in the docs array determines the order in the envelope.
-        env.documents = [document,]
-
-        # Create a workflow model
-        workflow_step = WorkflowStep(
-            action="pause_before",
-            trigger_on_item="routing_order",
-            item_id="2"
-        )
-        workflow = Workflow(workflow_steps=[workflow_step,])
-        # Add the workflow to the envelope object
-        env.workflow = workflow
+        env.documents = [document, ]
 
         # Create the signer recipient models
         # routingOrder (lower means earlier) determines the order of deliveries
@@ -138,12 +128,23 @@ class Eg032Controller:
 
         # Add the tabs model (including the sign_here tabs) to the signer
         # The Tabs object wants arrays of the different field/tab types
-        signer1.tabs = Tabs(sign_here_tabs=[sign_here1,])
-        signer2.tabs = Tabs(sign_here_tabs=[sign_here2,])
+        signer1.tabs = Tabs(sign_here_tabs=[sign_here1, ])
+        signer2.tabs = Tabs(sign_here_tabs=[sign_here2, ])
 
         # Add the recipients to the envelope object
         recipients = Recipients(signers=[signer1, signer2])
         env.recipients = recipients
+
+        # Create a workflow model.
+        # Signature workflow will be paused after it is signed by the signer1.
+        workflow_step = WorkflowStep(
+            action="pause_before",
+            trigger_on_item="routing_order",
+            item_id="2"
+        )
+        workflow = Workflow(workflow_steps=[workflow_step, ])
+        # Add the workflow to the envelope object
+        env.workflow = workflow
 
         # Request that the envelope be sent by setting |status| to "sent".
         # To request that the envelope be created as a draft, set to "created"

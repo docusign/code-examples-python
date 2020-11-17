@@ -39,40 +39,35 @@
                value="{{ signer1_name }}" required/>
         <br/>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <h6><b>Signer when not checked</b></h6>
-            <div class="form-group">
-                <label for="signer_2a_email">Email</label>
-                <input type="email" class="form-control" id="signer_2a_email"
-                       name="signer_2a_email"
-                       aria-describedby="emailHelp"
-                       placeholder="pat@example.com" required
-                       value="{{ signer_2a_email }}">
-            </div>
-            <div class="form-group">
-                <label for="signer_2a_name">Name</label>
-                <input type="text" class="form-control" id="signer_2a_name"
-                       placeholder="Pat Johnson" name="signer_2a_name"
-                       value="{{ signer_2a_name }}" required>
-            </div>
-        </div>
 
-        <div class="col-md-6">
-            <h6><b>Signer when checked</b></h6>
-            <div class="form-group">
-                <label for="signer_2b_email">Email</label>
-                <input type="email" class="form-control" id="signer_2b_email"
-                       name="signer_2b_email"
-                       aria-describedby="emailHelp"
-                       placeholder="pat@example.com" required>
-            </div>
-            <div class="form-group">
-                <label for="signer_2b_name">Name</label>
-                <input type="text" class="form-control" id="signer_2b_name"
-                       placeholder="Pat Johnson" name="signer_2b_name" required>
-            </div>
-        </div>
+    <h5>Conditional signer #2 (when not checked)</h5>
+    <div class="form-group">
+        <label for="signer_2a_email">Email</label>
+        <input type="email" class="form-control" id="signer_2a_email"
+               name="signer_2a_email"
+               aria-describedby="emailHelp"
+               placeholder="pat@example.com" required
+               value="{{ signer_2a_email }}">
+    </div>
+    <div class="form-group">
+        <label for="signer_2a_name">Name</label>
+        <input type="text" class="form-control" id="signer_2a_name"
+               placeholder="Pat Johnson" name="signer_2a_name"
+               value="{{ signer_2a_name }}" required>
+    </div>
+
+    <h5>Conditional signer #2 (when checked)</h5>
+    <div class="form-group">
+        <label for="signer_2b_email">Email</label>
+        <input type="email" class="form-control" id="signer_2b_email"
+               name="signer_2b_email"
+               aria-describedby="emailHelp"
+               placeholder="pat@example.com" required>
+    </div>
+    <div class="form-group">
+        <label for="signer_2b_name">Name</label>
+        <input type="text" class="form-control" id="signer_2b_name"
+               placeholder="Pat Johnson" name="signer_2b_name" required>
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <button type="submit" class="btn btn-docu">Submit</button>

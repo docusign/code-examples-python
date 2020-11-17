@@ -31,10 +31,6 @@ def unpause_signature_workflow():
     except ApiException as err:
         return process_error(err)
 
-    # Delete "paused_envelope_id" field from session to prevent an error on
-    # a repeated unpause action for the same envelopeID.
-    session.pop('paused_envelope_id', None)
-
     # 2. Render success response with envelopeId
     return render_template(
             "example_done.html",

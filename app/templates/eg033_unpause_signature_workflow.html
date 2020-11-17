@@ -1,36 +1,41 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
 <h4>33. Unpausing a signature workflow</h4>
-<p>This example demonstrates how to resume an envelope workflow that has been paused.
+<p>This example demonstrates how to resume an envelope workflow that has been
+    paused.
 </p>
 
 {% if show_doc %}
-  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+<p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about
+    this example.</p>
 {% endif %}
 
-<p>API method used: 
-   <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopes/update/">Envelopes::update</a>.
+<p>API method used:
+    <a target='_blank'
+       href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopes/update/">Envelopes::update</a>.
 </p>
 
 <p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+    View source file <a target="_blank" href="{{ source_url | safe }}">{{
+    source_file }}</a> on GitHub.
 </p>
 
 {% if envelope_ok %}
-  <p>The envelope you created via example 32 will be queried.</p>
-  
-  <form class="eg" action="" method="post" data-busy="form">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      <button type="submit" class="btn btn-docu">Continue</button>
-  </form>
+<p>The envelope you created via example 32 will be queried.</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Continue</button>
+</form>
 
 {% else %}
-  <p>Problem: please first create an envelope using <a href="eg032">example 32.</a> <br/>
-     Thank you.</p>
+<p>Problem: please first create an envelope using <a href="eg032">example
+    32.</a> <br/>
+    Thank you.</p>
 
-  <form class="eg" action="eg032" method="get">
-      <button type="submit" class="btn btn-docu">Continue</button>
-  </form>
+<form class="eg" action="eg032" method="get">
+    <button type="submit" class="btn btn-docu">Continue</button>
+</form>
 {% endif %}
 
 {% endblock %}

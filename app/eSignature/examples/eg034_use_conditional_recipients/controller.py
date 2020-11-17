@@ -7,8 +7,8 @@ from docusign_esign import (
 )
 from docusign_esign.models import (
     ConditionalRecipientRule, ConditionalRecipientRuleCondition,
-    ConditionalRecipientRuleFilter, RecipientGroup,
-    RecipientOption, RecipientRouting, RecipientRules, Workflow, WorkflowStep
+    ConditionalRecipientRuleFilter, RecipientGroup, RecipientOption,
+    RecipientRouting, RecipientRules, Workflow, WorkflowStep
 )
 from flask import session, request
 
@@ -79,10 +79,10 @@ class Eg034Controller:
 
         # The envelope has two recipients.
         # recipient 1 - signer1
-        # recipient 2 - signer2
+        # recipient 2 - signer_2a or signer_2b
         # The envelope will be sent first to the signer1.
-        # After it is signed, a signature workflow will be paused.
-        # After resuming (unpause) the signature workflow will send to the second recipient.
+        # If signer1 doesn't check the checkbox the envelope will be sent to the signer_2a.
+        # If signer1 check the checkbox the envelope will be sent to the signer_2b.
 
         # create the envelope definition
         env = EnvelopeDefinition(email_subject="ApproveIfChecked")
@@ -101,13 +101,10 @@ class Eg034Controller:
             file_extension="txt",  # many different document types are accepted
             document_id="1"  # a label used to reference the doc
         )
-
-        # The order in the docs array determines the order in the envelope.
         env.documents = [document, ]
 
-        # Create the signer model
-        # routingOrder (lower means earlier) determines the order of deliveries
-        # to the recipients.
+        # Create the signer modelы
+        # routingOrder (lower means earlier) determines the order of deliveries to the recipients.
         signer1 = Signer(
             email=args["signer1_email"],
             name=args["signer1_name"],
@@ -115,15 +112,15 @@ class Eg034Controller:
             routing_order="1",
             role_name="Purchaser"
         )
-        # signer2 = Signer(
-        #     email="gravecapa@gmail.com",
-        #     name="Alpaca",
-        #     recipient_id="2",
-        #     routing_order="2",
-        #     role_name="Approver"
-        # )
+        signer2 = Signer(
+            email="placeholder@example.com",
+            name="Approver",
+            recipient_id="2",
+            routing_order="2",
+            role_name="Approver"
+        )
 
-        # Create signHere fields (also known as tabs) on the documents.
+        # Create signHere fieldы (also known as tabs) on the documents.
         sign_here1 = SignHere(
             document_id="1",
             page_number="1",
@@ -142,6 +139,7 @@ class Eg034Controller:
             y_position="200"
         )
 
+        # Create checkbox field on the documents.
         checkbox = Checkbox(
             document_id="1",
             page_number="1",
@@ -151,28 +149,27 @@ class Eg034Controller:
             x_position="50",
             y_position="50"
         )
-        #
-        # Add the tabs model (including the sign_here tabs) to the signer
+
+        # Add the tabs models (including the sign_here tabs) to the signer
         # The Tabs object wants arrays of the different field/tab types
         signer1.tabs = Tabs(
             sign_here_tabs=[sign_here1, ],
             checkbox_tabs=[checkbox, ]
         )
-        # signer2.tabs = Tabs(sign_here_tabs=[sign_here2, ])
+        signer2.tabs = Tabs(sign_here_tabs=[sign_here2, ])
 
         # Add the recipients to the envelope object
-        env_recipients = Recipients(signers=[signer1, ])
-        # recipients = Recipients(signers=[signer1, signer2])
+        env_recipients = Recipients(signers=[signer1, signer2])
+        # env_recipients = Recipients(signers=[signer1, ])
         env.recipients = env_recipients
 
-        # !!!!!!!! Create RecipientRouting model.
+        # Create recipientOption models.
         signer_2a = RecipientOption(
             email=args["signer_2a_email"],
             name=args["signer_2a_name"],
             role_name="Signer when not checked",
             recipient_label="signer2a"
         )
-
         signer_2b = RecipientOption(
             email=args["signer_2b_email"],
             name=args["signer_2b_name"],
@@ -180,12 +177,15 @@ class Eg034Controller:
             recipient_label="signer2b"
         )
         recipients = [signer_2a, signer_2b]
+
+        # Create recipientGroup model.
         recipient_group = RecipientGroup(
             group_name="Approver",
             group_message="Members of this group approve a workflow",
             recipients=recipients
         )
 
+        # Create conditionalRecipientRuleFilter models.
         filter1 = ConditionalRecipientRuleFilter(
             scope="tabs",
             recipient_id="1",
@@ -203,6 +203,7 @@ class Eg034Controller:
             tab_label="ApproveWhenChecked"
         )
 
+        # Create conditionalRecipientRuleCondition models.
         condition1 = ConditionalRecipientRuleCondition(
             filters=[filter1, ],
             order="1",
@@ -214,6 +215,8 @@ class Eg034Controller:
             recipient_label="signer2b"
         )
         conditions = [condition1, condition2]
+
+        # Create conditionalRecipientRule model.
         conditional_recipient = ConditionalRecipientRule(
             conditions=conditions,
             recipient_group=recipient_group,
@@ -221,11 +224,12 @@ class Eg034Controller:
             order="0",
 
         )
+
+        # Create recipientRules model.
         rules = RecipientRules(conditional_recipients=[conditional_recipient, ])
         recipient_routing = RecipientRouting(rules=rules)
 
         # Create a workflow model.
-        # Signature workflow will be paused after it is signed by the signer1.
         workflow_step = WorkflowStep(
             action="pause_before",
             trigger_on_item="routing_order",
@@ -233,7 +237,6 @@ class Eg034Controller:
             status="pending",
             recipient_routing=recipient_routing
         )
-
         workflow = Workflow(workflow_steps=[workflow_step, ])
         # Add the workflow to the envelope object
         env.workflow = workflow
