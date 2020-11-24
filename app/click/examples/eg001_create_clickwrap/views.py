@@ -4,10 +4,11 @@ from os import path
 import json
 
 from docusign_click.client.api_exception import ApiException
-from flask import render_template, current_app, Blueprint
+from flask import render_template, current_app, Blueprint, session
 
 from .controller import Eg001Controller
 from app.docusign import authenticate
+from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
 
 eg = "eg001"  # reference (and url) for this example
@@ -29,19 +30,23 @@ def create_clickwrap():
         # 2. Call the worker method to create a new clickwrap
         results = Eg001Controller.worker(args)
         clickwrap_id = results.clickwrap_id
+        clickwrap_name = args['clickwrap_name']
         current_app.logger.info(
-            f"""The clickwrap "{args['clickwrap_name']}" has been created! clickwrap ID: {clickwrap_id}"""
+            f"""The clickwrap "{clickwrap_name}" has been created!"""
         )
     except ApiException as err:
         return process_error(err)
+
+    # Save for use by other examples which need an clickwrapId and clickwrapName
+    session["clickwrap_id"] = clickwrap_id
+    session["clickwrap_name"] = clickwrap_name
 
     # 3. Render the response
     return render_template(
         "example_done.html",
         title="Creating a new clickwrap",
         h1="Creating a new clickwrap",
-        message=f"""The clickwrap "{args['clickwrap_name']}" has been created!<br/>
-                        Clickwrap ID: {clickwrap_id}.""",
+        message=f"""The clickwrap "{args['clickwrap_name']}" has been created!""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
@@ -54,4 +59,6 @@ def get_view():
         "eg001_create_clickwrap.html",
         title="Creating a new clickwrap",
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
+        source_url=DS_CONFIG["github_example_url"] + path.basename(
+            path.dirname(__file__)) + "/controller.py",
     )
