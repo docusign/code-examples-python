@@ -39,7 +39,7 @@ def use_conditional_recipients():
             title="Use conditional recipients",
             h1="Use conditional recipients",
             message=f"Envelope ID {results['envelope_id']} with the conditional"
-                    f" routing criteria has been created and sent to the first recipient!<br/>"
+                    f" routing criteria has been created and sent to the first recipient!"
         )
 
 

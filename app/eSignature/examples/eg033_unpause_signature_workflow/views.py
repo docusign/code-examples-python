@@ -39,7 +39,7 @@ def unpause_signature_workflow():
             h1="Envelope unpaused",
             message=f"The envelope workflow has been resumed and the envelope "
                     f"has been sent to a second recipient!<br/>"
-                    f"Envelope ID {results['envelope_id']}.<br/>"
+                    f"Envelope ID {results['envelope_id']}."
         )
 
 
