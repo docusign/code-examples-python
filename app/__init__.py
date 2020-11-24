@@ -45,6 +45,7 @@ if EXAMPLES_API_TYPE["Rooms"]:
     app.register_blueprint(rooms_examples.eg006)
 elif EXAMPLES_API_TYPE["Click"]:
     app.register_blueprint(click_examples.eg001)
+    app.register_blueprint(click_examples.eg002)
 else:
     app.register_blueprint(examples.eg001)
     app.register_blueprint(examples.eg002)
