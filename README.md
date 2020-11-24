@@ -11,10 +11,10 @@ This repo is a Python 3 application that demonstrates:
 
 ## eSignature API
 
-1. **Embedded Signing Ceremony.**
+1. **Use embedded signing.**
    [Source.](./app/eg001_embedded_signing/controller.py)
-   This example sends an envelope, and then uses an embedded signing ceremony for the first signer.
-   With embedded signing, the DocuSign signing ceremony is initiated from your website.
+   This example sends an envelope, and then uses embedded signing for the first signer.
+   With embedded signing, the DocuSign signing is initiated from your website.
 1. **Send an envelope with a remote (email) signer and cc recipient.**
    [Source.](./app/eSignature/examples/eg002_signing_via_email/controller.py)
    The envelope includes a pdf, Word, and HTML document.
@@ -41,13 +41,13 @@ This repo is a Python 3 application that demonstrates:
 1. **Send an envelope and upload its documents with multipart binary transfer.**
    [Source.](./app/eSignature/examples/eg010_send_binary_docs/controller.py)
    Binary transfer is 33% more efficient than using Base64 encoding.
-1. **Embedded sending.**
+1. **Use embedded sending.**
    [Source.](./app/eSignature/examples/eg011_embedded_sending/controller.py)
    Embeds the DocuSign web tool (NDSE) in your web app to finalize or update
    the envelope and documents before they are sent.
 1. **Embedded DocuSign web tool (NDSE).**
    [Source.](./app/eSignature/examples/eg012_embedded_console/controller.py)
-1. **Embedded Signing Ceremony from a template with an added document.**
+1. **Use embedded signing from a template with an added document.**
    [Source.](./app/eSignature/examples/eg013_add_doc_to_template/controller.py)
    This example sends an envelope based on a template.
    In addition to the template's document(s), the example adds an

@@ -6,8 +6,8 @@ demo_docs_path = path.abspath(path.join(path.dirname(path.realpath(__file__)), "
 # Pattern for validating signer name and email
 pattern = re.compile("([^\w \-\@\.\,])+")
 
-signer_client_id = 1000  # Used to indicate that the signer will use an embedded
-# Signing Ceremony. Represents the signer"s userId within
+signer_client_id = 1000  # Used to indicate that the signer will use embedded
+# signing. Represents the signer"s userId within
 # your application.
 
 authentication_method = "None"  # How is this application authenticating

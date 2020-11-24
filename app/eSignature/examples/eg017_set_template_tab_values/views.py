@@ -24,7 +24,7 @@ def set_template_tab_values():
     """
     1. Get required arguments
     2. Call the worker method
-    3. Redirect the user to the signing ceremony
+    3. Redirect the user to the embedded signing
     """
 
     # 1. Get required arguments
@@ -38,7 +38,7 @@ def set_template_tab_values():
 
     session["envelope_id"] = results["envelope_id"]  # Save for use by other examples
     # which need an envelopeId
-    # 3. Redirect the user to the Signing Ceremony
+    # 3. Redirect the user to the embedded signing
     # Don"t use an iFrame!
     # State can be stored/recovered using the framework"s session or a
     # query parameter on the returnUrl (see the makeRecipientViewRequest method)
