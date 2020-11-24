@@ -44,12 +44,12 @@ class Eg013Controller:
     @classmethod
     def worker(cls, args):
         """
-        Create the envelope and the embedded Signing Ceremony
+        Create the envelope and the embedded signing
         1. Create the envelope request object using composite template to
            add the new document
         2. Send the envelope
         3. Make the recipient view request object
-        4. Get the recipient view (Signing Ceremony) url
+        4. Get the recipient view (embedded signing) url
         """
         envelope_args = args["envelope_args"]
         # 1. Create the envelope request object
@@ -75,7 +75,7 @@ class Eg013Controller:
             user_name=envelope_args["signer_name"],
             email=envelope_args["signer_email"]
         )
-        # 4. Obtain the recipient_view_url for the signing ceremony
+        # 4. Obtain the recipient_view_url for the embedded signing
         # Exceptions will be caught by the calling function
         results = envelope_api.create_recipient_view(
             account_id=args["account_id"],

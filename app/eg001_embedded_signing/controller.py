@@ -39,7 +39,7 @@ class Eg001Controller:
         1. Create the envelope request object
         2. Send the envelope
         3. Create the Recipient View request object
-        4. Obtain the recipient_view_url for the signing ceremony
+        4. Obtain the recipient_view_url for the embedded signing
         """
         envelope_args = args["envelope_args"]
         # 1. Create the envelope request object
@@ -63,7 +63,7 @@ class Eg001Controller:
             user_name=envelope_args["signer_name"],
             email=envelope_args["signer_email"]
         )
-        # 4. Obtain the recipient_view_url for the signing ceremony
+        # 4. Obtain the recipient_view_url for the embedded signing
         # Exceptions will be caught by the calling function
         results = envelope_api.create_recipient_view(
             account_id=args["account_id"],
