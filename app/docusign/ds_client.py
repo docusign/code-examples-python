@@ -16,11 +16,17 @@ SCOPES = [
 ]
 
 ROOMS_SCOPES = [
-     "signature", "click.manage", "organization_read", "room_forms",
+    "signature", "click.manage", "organization_read", "room_forms",
     "group_read", "permission_read user_read", "user_write", "account_read",
     "domain_read", "identity_provider_read", "dtr.rooms.read", "dtr.rooms.write",
     "dtr.documents.read", "dtr.documents.write", "dtr.profile.read",
     "dtr.profile.write", "dtr.company.read", "dtr.company.write"
+]
+
+CLICK_SCOPES = [
+    "signature", "click.manage", "click.send"
+    # "signature", "click.manage", "click.send", "click.sign"
+    # https://developers.docusign.com/docs/click-api/click101/auth
 ]
 
 
@@ -38,8 +44,10 @@ class DSClient:
     def _auth_code_grant(cls):
         """Authorize with the Authorization Code Grant - OAuth 2.0 flow"""
         oauth = OAuth(app)
-        if EXAMPLES_API_TYPE["Rooms"] == True:
+        if EXAMPLES_API_TYPE["Rooms"]:
             use_scopes = ROOMS_SCOPES
+        elif EXAMPLES_API_TYPE["Click"]:
+            use_scopes = CLICK_SCOPES
         else:
             use_scopes = SCOPES
         request_token_params = {
@@ -66,12 +74,14 @@ class DSClient:
         api_client = ApiClient()
         api_client.set_base_path(DS_JWT["authorization_server"])
 
-        if EXAMPLES_API_TYPE["Rooms"] == True:
+        if EXAMPLES_API_TYPE["Rooms"]:
             use_scopes = ROOMS_SCOPES
-            use_scopes.append("impersonation")
+        elif EXAMPLES_API_TYPE["Click"]:
+            use_scopes = CLICK_SCOPES
         else:
             use_scopes = SCOPES
-            use_scopes.append("impersonation")
+
+        use_scopes.append("impersonation")
 
         # Catch IO error
         try:

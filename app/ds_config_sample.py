@@ -19,6 +19,7 @@ DS_CONFIG = {
     "doc_salary_docx": "World_Wide_Corp_salary.docx",
     "doc_docx": "World_Wide_Corp_Battle_Plan_Trafalgar.docx",
     "doc_pdf": "World_Wide_Corp_lorem.pdf",
+    "doc_terms_pdf": "Term_Of_Service.pdf",
     # Payment gateway information is optional
     "gateway_account_id": "{DS_PAYMENT_GATEWAY_ID}",
     "gateway_name": "stripe",

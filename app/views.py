@@ -14,18 +14,25 @@ def index():
         return render_template(
             "home_rooms.html", title="Home - Python Rooms API Code Examples"
         )
+    elif EXAMPLES_API_TYPE["Click"]:
+        return render_template(
+            "home_click.html", title="Home - Python Click API Code Examples"
+        )
     if DS_CONFIG["quickstart"] == "true":
         return redirect(url_for("core.qshome"))
     else:
         return render_template("home.html", title="Home - Python Code Examples")
 
+
 @core.route("/quickstarthome")
 def qshome():
     return render_template("quickstarthome.html", title = "Homepage for Quickstart")
 
+
 @core.route("/index")
 def r_index():
     return redirect(url_for("core.index"))
+
 
 @core.app_errorhandler(404)
 def not_found_error(error):
