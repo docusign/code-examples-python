@@ -37,9 +37,10 @@ def create_clickwrap():
     except ApiException as err:
         return process_error(err)
 
-    # Save for use by other examples which need an clickwrapId and clickwrapName
+    # Save for use by other examples which need an clickwrap params.
     session["clickwrap_id"] = clickwrap_id
     session["clickwrap_name"] = clickwrap_name
+    session["clickwrap_is_active"] = False
 
     # 3. Render the response
     return render_template(

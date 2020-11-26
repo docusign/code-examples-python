@@ -35,6 +35,9 @@ def activate_clickwrap():
     except ApiException as err:
         return process_error(err)
 
+    # Save for use by other examples which need an clickwrap params.
+    session["clickwrap_is_active"] = True
+
     # 3. Render the response
     return render_template(
         "example_done.html",
