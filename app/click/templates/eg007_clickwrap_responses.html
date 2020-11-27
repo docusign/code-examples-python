@@ -1,7 +1,7 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 <h4>7. Getting clickwrap responses</h4>
 <p>This example demonstrates how to use the Click API to get a list of
-            clickwraps associated with a specific DocuSign user.</p>
+    clickwraps associated with a specific DocuSign user.</p>
 
 {% if show_doc %}
 <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a>
@@ -19,9 +19,16 @@
 </p>
 
 {% if clickwrap_ok %}
-<p>The clickwrap you created via example 1 will be queried.</p>
+<p>The clickwrap you created via example 1 will be queried.<br/>
+    Please enter a value that uniquely identifies a user, such as an email
+    address or employee ID</p>
 
 <form class="eg" action="" method="post" data-busy="form">
+    <div class="form-group">
+        <label for="client_user_id">User identifier</label>
+        <input type="text" class="form-control" id="client_user_id"
+               name="client_user_id" required>
+    </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <button type="submit" class="btn btn-docu">Continue</button>
 </form>

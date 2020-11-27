@@ -1,8 +1,7 @@
-from docusign_click import AccountsApi, ClickwrapRequest
-from flask import session
+from docusign_click import AccountsApi
+from flask import request, session
 
 from ...utils import create_click_api_client
-from ....consts import signer_client_id
 
 
 class Eg007Controller:
@@ -13,7 +12,7 @@ class Eg007Controller:
             "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
             "access_token": session["ds_access_token"],  # Represents your {ACCESS_TOKEN}
             "clickwrap_id": session["clickwrap_id"],
-            # "clickwrap_name": session["clickwrap_name"],
+            "client_user_id": request.form.get("client_user_id"),
         }
 
     @staticmethod
@@ -32,8 +31,7 @@ class Eg007Controller:
         response = accounts_api.get_clickwrap_agreements(
             account_id=args["account_id"],
             clickwrap_id=args["clickwrap_id"],
-            client_user_id="eer",
-            # client_user_id=signer_client_id,
+            client_user_id=args["client_user_id"],
             status="agreed"
         )
 
