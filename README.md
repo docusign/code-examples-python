@@ -140,6 +140,29 @@ This example adds a standard real estate related form to a specific room in your
 1. **Create an external form fillable session.**
 [Source.](./app/rooms/examples/eg006_create_external_form_fill_session/controller.py)
 
+## Click API
+
+1. **Create a clickwrap.**
+[Source.](./app/click/examples/eg001_create_clickwrap/controller.py)
+This example demonstrates how to use DocuSign Click to create a clickwrap that you can embed in your website or app.
+1. **Activate a clickwrap.**
+[Source.](./app/click/examples/eg002_activate_clickwrap/controller.py)
+This example demonstrates how to use DocuSign Click to activate a new clickwrap that you have already created.
+1. **Test a clickwrap.**
+[Source.](./app/click/examples/eg003_test_clickwrap/controller.py)
+This example demonstrates how to use Clickwrap Tester to preview a newly created and activated clickwrap.
+1. **Embed a clickwrap.**
+[Source.](./app/click/examples/eg004_embed_clickwrap/controller.py)
+This example demonstrates how to use DocuSign Click to embed an existing clickwrap in your website.
+1. **Create a new clickwrap version.**
+[Source.](./app/click/examples/eg005_create_new_clickwrap_version/controller.py)
+This example demonstrates how to use DocuSign Click to create a new version of a clickwrap.
+1. **Get a list of clickwraps.**
+This example demonstrates how to use DocuSign Click to get a list of clickwraps associated with a specific DocuSign user.
+[Source.](./app/click/examples/eg006_list_clickwraps/controller.py)
+1. **Get clickwrap responses.**
+This example demonstrates how to use DocuSign Click to get user responses to your clickwrap agreements.
+[Source.](./app/click/examples/eg007_clickwrap_responses/controller.py)
 
 ## Included OAuth grant types:
 
