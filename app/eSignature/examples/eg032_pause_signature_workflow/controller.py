@@ -48,7 +48,7 @@ class Eg032Controller:
         api_client = create_api_client(
             base_path=args["base_path"], access_token=args["access_token"]
         )
-        # 2. call Envelopes::create API method
+        # 2. Call Envelopes::create API method
         # Exceptions will be caught by the calling function
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(
@@ -66,35 +66,35 @@ class Eg032Controller:
         DocuSign will convert document to the PDF format.
         """
 
-        # The envelope has two recipients.
-        # recipient 1 - signer1
-        # recipient 2 - signer2
-        # The envelope will be sent first to the signer1.
-        # After it is signed, a signature workflow will be paused.
-        # After resuming (unpause) the signature workflow will send to the second recipient.
+        # The envelope has two recipients
+        # Recipient 1 - signer1
+        # Recipient 2 - signer2
+        # The envelope will be sent first to the signer1
+        # After it is signed, a signature workflow will be paused
+        # After resuming (unpause) the signature workflow will send to the second recipient
 
-        # create the envelope definition
+        # Create the envelope definition
         env = EnvelopeDefinition(email_subject="EnvelopeWorkflowTest")
 
-        # read file from a local directory
+        # Read file from a local directory
         # The reads could raise an exception if the file is not available!
         with open(path.join(demo_docs_path, DS_CONFIG["doc_txt"]), "rb") as file:
             doc_docx_bytes = file.read()
         doc_b64 = base64.b64encode(doc_docx_bytes).decode("ascii")
 
         # Create the document model.
-        document = Document(  # create the DocuSign document object
+        document = Document(  # Create the DocuSign document object
             document_base64=doc_b64,
-            name="Welcome",  # can be different from actual file name
-            file_extension="txt",  # many different document types are accepted
-            document_id="1"  # a label used to reference the doc
+            name="Welcome",  # Can be different from actual file name
+            file_extension="txt",  # Many different document types are accepted
+            document_id="1"  # The label used to reference the doc
         )
 
         # The order in the docs array determines the order in the envelope.
         env.documents = [document, ]
 
         # Create the signer recipient models
-        # routingOrder (lower means earlier) determines the order of deliveries
+        # routing_order (lower means earlier) determines the order of deliveries
         # to the recipients.
         signer1 = Signer(
             email=args["signer1_email"],
@@ -109,7 +109,7 @@ class Eg032Controller:
             routing_order="2"
         )
 
-        # Create signHere fields (also known as tabs) on the documents.
+        # Create SignHere fields (also known as tabs) on the documents.
         sign_here1 = SignHere(
             document_id="1",
             page_number="1",
@@ -127,7 +127,7 @@ class Eg032Controller:
         )
 
         # Add the tabs model (including the sign_here tabs) to the signer
-        # The Tabs object wants arrays of the different field/tab types
+        # The Tabs object takes arrays of the different field/tab types
         signer1.tabs = Tabs(sign_here_tabs=[sign_here1, ])
         signer2.tabs = Tabs(sign_here_tabs=[sign_here2, ])
 
@@ -135,8 +135,8 @@ class Eg032Controller:
         recipients = Recipients(signers=[signer1, signer2])
         env.recipients = recipients
 
-        # Create a workflow model.
-        # Signature workflow will be paused after it is signed by the signer1.
+        # Create a workflow model
+        # Signature workflow will be paused after it is signed by the first signer
         workflow_step = WorkflowStep(
             action="pause_before",
             trigger_on_item="routing_order",
@@ -146,7 +146,7 @@ class Eg032Controller:
         # Add the workflow to the envelope object
         env.workflow = workflow
 
-        # Request that the envelope be sent by setting |status| to "sent".
+        # Request that the envelope be sent by setting |status| to "sent"
         # To request that the envelope be created as a draft, set to "created"
         env.status = args["status"]
         return env

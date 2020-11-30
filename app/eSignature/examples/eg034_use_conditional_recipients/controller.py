@@ -59,7 +59,7 @@ class Eg034Controller:
         api_client = create_api_client(
             base_path=args["base_path"], access_token=args["access_token"]
         )
-        # 2. call Envelopes::create API method
+        # 2. Call Envelopes::create API method
         # Exceptions will be caught by the calling function
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(
@@ -77,34 +77,34 @@ class Eg034Controller:
         DocuSign will convert document to the PDF format.
         """
 
-        # The envelope has two recipients.
-        # recipient 1 - signer1
-        # recipient 2 - signer_2a or signer_2b
-        # The envelope will be sent first to the signer1.
-        # If signer1 doesn't check the checkbox the envelope will be sent to the signer_2a.
-        # If signer1 check the checkbox the envelope will be sent to the signer_2b.
+        # The envelope has two recipients
+        # Recipient 1 - signer1
+        # Recipient 2 - signer_2a or signer_2b
+        # The envelope will be sent first to signer1
+        # If signer1 doesn't check the checkbox the envelope will be sent to the signer_2a
+        # If signer1 check the checkbox the envelope will be sent to the signer_2b
 
-        # create the envelope definition
+        # Create the envelope definition
         env = EnvelopeDefinition(email_subject="ApproveIfChecked")
 
-        # read file from a local directory
-        # The reads could raise an exception if the file is not available!
+        # Read file from a local directory
+        # The reads could raise an exception if the file is not available
         with open(path.join(demo_docs_path, DS_CONFIG["doc_txt"]),
                   "rb") as file:
             doc_docx_bytes = file.read()
         doc_b64 = base64.b64encode(doc_docx_bytes).decode("ascii")
 
         # Create the document model.
-        document = Document(  # create the DocuSign document object
+        document = Document(  # Create the DocuSign document object
             document_base64=doc_b64,
-            name="Welcome",  # can be different from actual file name
-            file_extension="txt",  # many different document types are accepted
-            document_id="1"  # a label used to reference the doc
+            name="Welcome",  # Can be different from actual file name
+            file_extension="txt",  # Many different document types are accepted
+            document_id="1"  # A label used to reference the doc
         )
         env.documents = [document, ]
 
         # Create the signer modelы
-        # routingOrder (lower means earlier) determines the order of deliveries to the recipients.
+        # routingOrder (lower means earlier) determines the order of deliveries to the recipients
         signer1 = Signer(
             email=args["signer1_email"],
             name=args["signer1_name"],
@@ -120,7 +120,7 @@ class Eg034Controller:
             role_name="Approver"
         )
 
-        # Create signHere fieldы (also known as tabs) on the documents.
+        # Create signHere fieldы (also known as tabs) on the documents
         sign_here1 = SignHere(
             document_id="1",
             page_number="1",
@@ -139,7 +139,7 @@ class Eg034Controller:
             y_position="200"
         )
 
-        # Create checkbox field on the documents.
+        # Create checkbox field on the documents
         checkbox = Checkbox(
             document_id="1",
             page_number="1",
@@ -163,7 +163,7 @@ class Eg034Controller:
         # env_recipients = Recipients(signers=[signer1, ])
         env.recipients = env_recipients
 
-        # Create recipientOption models.
+        # Create recipientOption models
         signer_2a = RecipientOption(
             email=args["signer_2a_email"],
             name=args["signer_2a_name"],
@@ -178,14 +178,14 @@ class Eg034Controller:
         )
         recipients = [signer_2a, signer_2b]
 
-        # Create recipientGroup model.
+        # Create recipientGroup model
         recipient_group = RecipientGroup(
             group_name="Approver",
             group_message="Members of this group approve a workflow",
             recipients=recipients
         )
 
-        # Create conditionalRecipientRuleFilter models.
+        # Create conditionalRecipientRuleFilter models
         filter1 = ConditionalRecipientRuleFilter(
             scope="tabs",
             recipient_id="1",
@@ -203,7 +203,7 @@ class Eg034Controller:
             tab_label="ApproveWhenChecked"
         )
 
-        # Create conditionalRecipientRuleCondition models.
+        # Create conditionalRecipientRuleCondition models
         condition1 = ConditionalRecipientRuleCondition(
             filters=[filter1, ],
             order="1",
@@ -216,7 +216,7 @@ class Eg034Controller:
         )
         conditions = [condition1, condition2]
 
-        # Create conditionalRecipientRule model.
+        # Create conditionalRecipientRule model
         conditional_recipient = ConditionalRecipientRule(
             conditions=conditions,
             recipient_group=recipient_group,
@@ -225,11 +225,11 @@ class Eg034Controller:
 
         )
 
-        # Create recipientRules model.
+        # Create recipientRules model
         rules = RecipientRules(conditional_recipients=[conditional_recipient, ])
         recipient_routing = RecipientRouting(rules=rules)
 
-        # Create a workflow model.
+        # Create a workflow model
         workflow_step = WorkflowStep(
             action="pause_before",
             trigger_on_item="routing_order",
@@ -241,7 +241,7 @@ class Eg034Controller:
         # Add the workflow to the envelope object
         env.workflow = workflow
 
-        # Request that the envelope be sent by setting |status| to "sent".
+        # Request that the envelope be sent by setting |status| to "sent"
         # To request that the envelope be created as a draft, set to "created"
         env.status = args["status"]
         return env

@@ -22,7 +22,7 @@ class Eg033Controller:
         1. Call the envelope update method
         """
 
-        # create the envelope definition
+        # Create the envelope definition
         env = EnvelopeDefinition(workflow=Workflow(workflow_status="in_progress"))
 
         # Exceptions will be caught by the calling function
@@ -30,7 +30,7 @@ class Eg033Controller:
             base_path=args["base_path"], access_token=args["access_token"]
         )
 
-        # 2. call Envelopes::update API method
+        # 2. Call Envelopes::update API method
         # Exceptions will be caught by the calling function
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.update(

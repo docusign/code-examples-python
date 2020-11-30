@@ -121,13 +121,14 @@ This repo is a Python 3 application that demonstrates:
    After that, initiates bulk envelope sending.
 1. **Pausing a signature workflow**
    [Source.](./app/eSignature/examples/eg032_pause_signature_workflow/controller.py)
-   This code example demonstrates how to create an envelope where the workflow is paused before the envelope is sent to a second recipient.
+   This code example demonstrates how to create an envelope where the workflow is paused before the envelope is sent to a second recipient using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method.
 1. **Unpausing a signature workflow**
    [Source.](./app/eSignature/examples/eg033_unpause_signature_workflow/controller.py)
-   This code example demonstrates how to resume an envelope workflow that has been paused.
+   This code example demonstrates how to update an envelope to resume the workflow that has been paused using the [Update Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/update) method.
+   You must have created at least one envelope with a paused signature workflow to run this example.
 1. **Using conditional recipients**
    [Source.](./app/eSignature/examples/eg034_use_conditional_recipients/controller.py)
-   This code example demonstrates how to create an envelope where the workflow is routed to different recipients based on the value of a transaction.
+   This code example demonstrates how to create an envelope where the workflow is routed to different recipients based on the value of a transaction using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method.
   
 
 ## Rooms API

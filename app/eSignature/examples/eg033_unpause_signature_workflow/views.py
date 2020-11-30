@@ -10,7 +10,7 @@ from ....docusign import authenticate
 from ....ds_config import DS_CONFIG
 from ....error_handlers import process_error
 
-eg = "eg033"  # reference (and url) for this example
+eg = "eg033"  # Reference (and URL) for this example
 eg033 = Blueprint("eg033", __name__)
 
 
@@ -46,7 +46,7 @@ def unpause_signature_workflow():
 @eg033.route("/eg033", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
-    """responds with the form for the example"""
+    """Responds with the form for the example"""
 
     return render_template(
         "eg033_unpause_signature_workflow.html",

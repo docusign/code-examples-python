@@ -11,7 +11,7 @@ from ....docusign import authenticate
 from ....ds_config import DS_CONFIG
 from ....error_handlers import process_error
 
-eg = "eg034"  # reference (and url) for this example
+eg = "eg034"  # Reference (and URL) for this example
 eg034 = Blueprint("eg034", __name__)
 
 
@@ -46,7 +46,7 @@ def use_conditional_recipients():
 @eg034.route("/eg034", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
-    """responds with the form for the example"""
+    """Responds with the form for the example"""
 
     return render_template(
         "eg034_use_conditional_recipients.html",

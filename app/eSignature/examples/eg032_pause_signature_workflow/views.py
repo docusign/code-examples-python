@@ -11,7 +11,7 @@ from ....docusign import authenticate
 from ....ds_config import DS_CONFIG
 from ....error_handlers import process_error
 
-eg = "eg032"  # reference (and url) for this example
+eg = "eg032"  # Reference (and URL) for this example
 eg032 = Blueprint("eg032", __name__)
 
 
@@ -42,14 +42,14 @@ def pause_signature_workflow():
         message=f"The envelope has been created and sent!"
                 f"<br/>Envelope ID {results['paused_envelope_id']}.<br/>"
                 f"<p>To resume a workflow after the first recipient signs "
-                f"the envelope use <a href='eg033'>example33.</a><br/>"
+                f"the envelope use <a href='eg033'>example 33.</a><br/>"
     )
 
 
 @eg032.route("/eg032", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
-    """responds with the form for the example"""
+    """Responds with the form for the example"""
 
     return render_template(
         "eg032_pause_signature_workflow.html",
