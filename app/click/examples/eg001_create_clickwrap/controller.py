@@ -15,8 +15,8 @@ class Eg001Controller:
     def get_args():
         """Get required session and request arguments"""
         return {
-            "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
-            "access_token": session["ds_access_token"],  # Represents your {ACCESS_TOKEN}
+            "account_id": session.get("ds_account_id"),  # Represents your {ACCOUNT_ID}
+            "access_token": session.get("ds_access_token"),  # Represents your {ACCESS_TOKEN}
             "clickwrap_name": request.form.get("clickwrap_name"),
         }
 
