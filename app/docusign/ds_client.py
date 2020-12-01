@@ -16,7 +16,7 @@ SCOPES = [
 ]
 
 ROOMS_SCOPES = [
-     "signature", "click.manage", "organization_read", "room_forms",
+    "signature", "click.manage", "organization_read", "room_forms",
     "group_read", "permission_read user_read", "user_write", "account_read",
     "domain_read", "identity_provider_read", "dtr.rooms.read", "dtr.rooms.write",
     "dtr.documents.read", "dtr.documents.write", "dtr.profile.read",

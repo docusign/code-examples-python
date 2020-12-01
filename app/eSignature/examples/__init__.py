@@ -29,3 +29,6 @@ from .eg028_brand_creating import eg028
 from .eg029_brands_apply_to_envelope import eg029
 from .eg030_brands_apply_to_template import eg030
 from .eg031_bulk_send import eg031
+from .eg032_pause_signature_workflow import eg032
+from .eg033_unpause_signature_workflow import eg033
+from .eg034_use_conditional_recipients import eg034
