@@ -9,6 +9,11 @@ def process_error(err):
     error_body = json.loads(error_body_json)
     error_code = error_body and "errorCode" in error_body and error_body["errorCode"]
     error_message = error_body and "message" in error_body and error_body["message"]
+
+    # Handle error specific for use conditional recipients example (eg34)
+    if error_code == "WORKFLOW_UPDATE_RECIPIENTROUTING_NOT_ALLOWED":
+        return render_template("error_eg34.html")
+
     # In production, may want to provide customized error messages and
     # remediation advice to the user.
     return render_template(

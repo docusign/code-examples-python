@@ -1,4 +1,4 @@
-"""Example 013: Embedded Signing Ceremony from template with added document"""
+"""Example 013: Embedded Signing from template with added document"""
 
 from os import path
 
@@ -33,7 +33,7 @@ def add_doc_template():
         except ApiException as err:
             return process_error(err)
 
-        # 4. Redirect the user to the Signing Ceremony
+        # 4. Redirect the user to the embedded signing
         # Don"t use an iFrame!
         # State can be stored/recovered using the framework"s session
         return redirect(results["redirect_url"])
@@ -41,7 +41,7 @@ def add_doc_template():
     else:
         return render_template(
             "eg013_add_doc_to_template.html",
-            title="Embedded Signing Ceremony from template and extra doc",
+            title="Use embedded signing from template and extra doc",
             template_ok=False,
             source_file=path.basename(path.dirname(__file__)) + "/controller.py",
             source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/controller.py",
@@ -57,7 +57,7 @@ def get_view():
 
     return render_template(
         "eg013_add_doc_to_template.html",
-        title="Embedded Signing Ceremony from template and extra doc",
+        title="Use embedded signing from template and extra doc",
         template_ok="template_id" in session,
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
         source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/controller.py",

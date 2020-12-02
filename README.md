@@ -11,10 +11,10 @@ This repo is a Python 3 application that demonstrates:
 
 ## eSignature API
 
-1. **Embedded Signing Ceremony.**
+1. **Use embedded signing.**
    [Source.](./app/eg001_embedded_signing/controller.py)
-   This example sends an envelope, and then uses an embedded signing ceremony for the first signer.
-   With embedded signing, the DocuSign signing ceremony is initiated from your website.
+   This example sends an envelope, and then uses embedded signing for the first signer.
+   With embedded signing, the DocuSign signing is initiated from your website.
 1. **Send an envelope with a remote (email) signer and cc recipient.**
    [Source.](./app/eSignature/examples/eg002_signing_via_email/controller.py)
    The envelope includes a pdf, Word, and HTML document.
@@ -41,13 +41,13 @@ This repo is a Python 3 application that demonstrates:
 1. **Send an envelope and upload its documents with multipart binary transfer.**
    [Source.](./app/eSignature/examples/eg010_send_binary_docs/controller.py)
    Binary transfer is 33% more efficient than using Base64 encoding.
-1. **Embedded sending.**
+1. **Use embedded sending.**
    [Source.](./app/eSignature/examples/eg011_embedded_sending/controller.py)
    Embeds the DocuSign web tool (NDSE) in your web app to finalize or update
    the envelope and documents before they are sent.
 1. **Embedded DocuSign web tool (NDSE).**
    [Source.](./app/eSignature/examples/eg012_embedded_console/controller.py)
-1. **Embedded Signing Ceremony from a template with an added document.**
+1. **Use embedded signing from a template with an added document.**
    [Source.](./app/eSignature/examples/eg013_add_doc_to_template/controller.py)
    This example sends an envelope based on a template.
    In addition to the template's document(s), the example adds an
@@ -109,7 +109,7 @@ This repo is a Python 3 application that demonstrates:
    Anchor text ([AutoPlace](https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience)) is used to position the signing fields in the documents.
 1. **Applying a brand to a template**
    [Source.](./app/eSignature/examples/eg030_brands_apply_to_template/controller.py)
-   This code example demonstrates how to apply a brand you've created to a template using using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method. 
+   This code example demonstrates how to apply a brand you've created to a template using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method. 
    You must have already created the template and the brand.
    Anchor text ([AutoPlace](https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience)) is used to position the signing fields in the documents.
 1. **Bulk sending envelopes to multiple recipients**
@@ -119,6 +119,17 @@ This repo is a Python 3 application that demonstrates:
    [Create Bulk Send Request](https://developers.docusign.com/esign-rest-api/reference/BulkEnvelopes/BulkSend/createBulkSendRequest).
    Firstly, creates a bulk send recipients list, and then creates an envelope. 
    After that, initiates bulk envelope sending.
+1. **Pausing a signature workflow**
+   [Source.](./app/eSignature/examples/eg032_pause_signature_workflow/controller.py)
+   This code example demonstrates how to create an envelope where the workflow is paused before the envelope is sent to a second recipient using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method.
+1. **Unpausing a signature workflow**
+   [Source.](./app/eSignature/examples/eg033_unpause_signature_workflow/controller.py)
+   This code example demonstrates how to update an envelope to resume the workflow that has been paused using the [Update Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/update) method.
+   You must have created at least one envelope with a paused signature workflow to run this example.
+1. **Using conditional recipients**
+   [Source.](./app/eSignature/examples/eg034_use_conditional_recipients/controller.py)
+   This code example demonstrates how to create an envelope where the workflow is routed to different recipients based on the value of a transaction using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method.
+  
 
 ## Rooms API
 **Note:** to use the Rooms API you must also [create your DocuSign Developer Account for Rooms](https://developers.docusign.com/docs/rooms-api/rooms101/create-account). Examples 4 and 6 require that you have the [DocuSign Forms feature](https://developers.docusign.com/docs/rooms-api/rooms101/using-forms-in-a-room) enabled in your Rooms for Real Estate account. 

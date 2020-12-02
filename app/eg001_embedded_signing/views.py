@@ -1,4 +1,4 @@
-"""Example 001: Embedded Signing Ceremony"""
+"""Example 001: Use embedded signing"""
 
 from os import path
 
@@ -20,7 +20,7 @@ def embedded_signing():
     """
     1. Get required arguments
     2. Call the worker method
-    3. Redirect the user to the signing ceremony
+    3. Redirect the user to the embedded signing
     """
     try:
         # 1. Get required arguments
@@ -30,7 +30,7 @@ def embedded_signing():
     except ApiException as err:
         return process_error(err)
 
-    # 3. Redirect the user to the Signing Ceremony
+    # 3. Redirect the user to the embedded signing
     # Don"t use an iFrame!
     # State can be stored/recovered using the framework"s session or a
     # query parameter on the returnUrl (see the makeRecipientViewRequest method)
@@ -43,7 +43,7 @@ def get_view():
     """responds with the form for the example"""
     return render_template(
         "eg001_embedded_signing.html",
-        title="Embedded Signing Ceremony",
+        title="Use embedded signing",
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
         source_url="https://github.com/docusign/code-examples-python/tree/master/app/" + path.basename(path.dirname(__file__)) + "/controller.py",
         documentation=DS_CONFIG["documentation"] + eg,
