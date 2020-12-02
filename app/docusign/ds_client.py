@@ -99,7 +99,7 @@ class DSClient:
 
             # Grand explicit consent for the application
             if "consent_required" in body:
-                consent_scopes = "signature%20impersonation"
+                consent_scopes = " ".join(use_scopes)
                 redirect_uri = DS_CONFIG["app_url"] + url_for("ds.ds_callback")
                 consent_url = f"{DS_CONFIG['authorization_server']}/oauth/auth?response_type=code&" \
                               f"scope={consent_scopes}&client_id={DS_JWT['ds_client_id']}&redirect_uri={redirect_uri}"

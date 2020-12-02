@@ -1,9 +1,9 @@
 astroid==2.3.3
 certifi==2019.9.11
-cffi==1.13.2
+cffi==1.14.3
 chardet==3.0.4
 Click==7.0
-cryptography==3.2
+cryptography==3.2.1
 docusign-esign==3.6.0
 docusign-rooms==1.0.0b1
 Flask==1.1.1
