@@ -39,5 +39,6 @@ DS_JWT = {
 
 EXAMPLES_API_TYPE = {
         "Rooms": False,
-        "ESignature": True
+        "ESignature": False,
+        "Click" : True
 }
