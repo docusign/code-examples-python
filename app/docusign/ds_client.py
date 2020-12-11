@@ -16,15 +16,13 @@ SCOPES = [
 ]
 
 ROOMS_SCOPES = [
-    "room_forms","dtr.rooms.read", "dtr.rooms.write",
+    "room_forms", "dtr.rooms.read", "dtr.rooms.write",
     "dtr.documents.read", "dtr.documents.write", "dtr.profile.read",
     "dtr.profile.write", "dtr.company.read", "dtr.company.write"
 ]
 
 CLICK_SCOPES = [
     "signature", "click.manage", "click.send"
-    # "signature", "click.manage", "click.send", "click.sign"
-    # https://developers.docusign.com/docs/click-api/click101/auth
 ]
 
 
