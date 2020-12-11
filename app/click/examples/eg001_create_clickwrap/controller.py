@@ -40,11 +40,9 @@ class Eg001Controller:
             display_name="Terms of Service",
             downloadable=True,
             format="modal",
-            # has_accept=True,
             must_read=True,
             must_view=True,
             require_accept=True,
-            # size="medium",
             document_display="document"
         )
 

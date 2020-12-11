@@ -44,7 +44,6 @@ class Eg005Controller:
             must_read=True,
             must_view=False,
             require_accept=False,
-            # size="medium",
             document_display="document",
             send_to_email=False
         )
@@ -71,7 +70,6 @@ class Eg005Controller:
             name=args.get("clickwrap_name"),
             require_reacceptance=True,
             status="active"
-            # user_id=DS_CONFIG["signer_name"]
         )
 
         # Step 5. Create a new clickwrap version using SDK

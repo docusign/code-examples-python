@@ -3,20 +3,14 @@
 <p>This example demonstrates how to use DocuSign Click to create a
     clickwrap that you can embed in your website or app.</p>
 
-{% if show_doc %}
-<p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a>
-    about this example.</p>
-{% endif %}
+{% include 'documentation.html' %}
 
 <p>API method used:
     <a target='_blank'
        href="https://developers.docusign.com/docs/click-api/reference/accounts/clickwraps/createclickwrap/">ClickWraps::createClickwrap</a>
 </p>
 
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{
-    source_file }}</a> on GitHub.
-</p>
+{% include 'github_source.html' %}
 
 <form class="eg" action="" method="post" data-busy="form">
     <div class="form-group">
