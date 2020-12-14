@@ -5,15 +5,9 @@
     behaves the way you want before you embed it in your website or app.
 </p>
 
-{% if show_doc %}
-<p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a>
-    about this example.</p>
-{% endif %}
+{% include 'documentation.html' %}
 
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{
-    source_file }}</a> on GitHub.
-</p>
+{% include 'github_source.html' %}
 
 {% if clickwrap_ok %}
 <p>The clickwrap you created and activated via examples 1 and 2 will be queried.</p>
