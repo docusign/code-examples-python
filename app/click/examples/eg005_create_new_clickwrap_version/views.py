@@ -11,7 +11,7 @@ from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
 
-eg = "eg005"  # reference (and url) for this example
+eg = "eg005"  # Reference (and URL) for this example
 eg005 = Blueprint("eg005", __name__)
 
 

@@ -49,7 +49,7 @@ class Eg005Controller:
             send_to_email=False
         )
 
-        # read file from a local directory
+        # Read file from a local directory
         # The reads could raise an exception if the file is not available!
         with open(path.join(demo_docs_path, DS_CONFIG["doc_terms_pdf"]),
                   "rb") as file:
@@ -57,10 +57,10 @@ class Eg005Controller:
         doc_b64 = base64.b64encode(doc_docx_bytes).decode("ascii")
 
         # Step 3. Create a document model.
-        document = Document(  # create the DocuSign document object
+        document = Document(  # Create the DocuSign document object
             document_base64=doc_b64,
-            document_name="Terms of Service", # can be different from actual file name
-            file_extension="pdf",  # many different document types are accepted
+            document_name="Terms of Service", # Can be different from actual file name
+            file_extension="pdf",  # Many different document types are accepted
             order=0
         )
 

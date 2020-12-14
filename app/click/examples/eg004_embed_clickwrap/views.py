@@ -1,4 +1,4 @@
-"""Example 004: Embeding a clickwrap"""
+"""Example 004: Embedding a clickwrap"""
 
 from os import path
 
@@ -8,7 +8,7 @@ from .controller import Eg004Controller
 from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
 
-eg = "eg004"  # reference (and url) for this example
+eg = "eg004"  # Reference (and URL) for this example
 eg004 = Blueprint("eg004", __name__)
 
 
@@ -26,7 +26,7 @@ def embed_clickwrap():
     # 2. Render template
     return render_template(
         "eg004_embed_clickwrap.html",
-        title="Embeding a clickwrap",
+        title="Embedding a clickwrap",
         account_id=args.get('account_id'),
         client_user_id=DS_CONFIG.get('signer_email'),
         clickwrap_id=args.get('clickwrap_id'),

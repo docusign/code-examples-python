@@ -8,7 +8,7 @@ from .controller import Eg003Controller
 from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
 
-eg = "eg003"  # reference (and url) for this example
+eg = "eg003"  # Reference (and URL) for this example
 eg003 = Blueprint("eg003", __name__)
 
 

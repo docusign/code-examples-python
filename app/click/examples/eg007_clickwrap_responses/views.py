@@ -11,7 +11,7 @@ from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
 
-eg = "eg007"  # reference (and url) for this example
+eg = "eg007"  # Reference (and URL) for this example
 eg007 = Blueprint("eg007", __name__)
 
 
@@ -45,7 +45,7 @@ def clickwrap_responses():
 @eg007.route("/eg007", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
-    """responds with the form for the example"""
+    """Responds with the form for the example"""
     return render_template(
         "eg007_clickwrap_responses.html",
         title="Getting clickwrap responses",

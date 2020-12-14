@@ -11,7 +11,7 @@ from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
 
-eg = "eg006"  # reference (and url) for this example
+eg = "eg006"  # Reference (and URL) for this example
 eg006 = Blueprint("eg006", __name__)
 
 
@@ -45,7 +45,7 @@ def clickwrap_list():
 @eg006.route("/eg006", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
-    """responds with the form for the example"""
+    """Responds with the form for the example"""
     return render_template(
         "eg006_list_clickwraps.html",
         title="Getting a list of clickwraps",

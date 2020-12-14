@@ -11,7 +11,7 @@ from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
 
-eg = "eg001"  # reference (and url) for this example
+eg = "eg001"  # Reference (and URL) for this example
 eg001 = Blueprint("eg001", __name__)
 
 
@@ -37,7 +37,7 @@ def create_clickwrap():
     except ApiException as err:
         return process_error(err)
 
-    # Save for use by other examples which need an clickwrap params.
+    # Save for use by other examples which need a clickwrap parameter.
     session["clickwrap_id"] = clickwrap_id
     session["clickwrap_name"] = clickwrap_name
     session["clickwrap_is_active"] = False
