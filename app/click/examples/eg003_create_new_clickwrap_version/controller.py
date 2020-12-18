@@ -10,7 +10,7 @@ from ....ds_config import DS_CONFIG
 from ...utils import create_click_api_client
 
 
-class Eg005Controller:
+class Eg003Controller:
     @staticmethod
     def get_args():
         """Get required session and request arguments"""
