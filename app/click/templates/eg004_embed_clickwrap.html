@@ -1,0 +1,45 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+<h4>4. Embedding a clickwrap</h4>
+<p>This example demonstrates how to use DocuSign Click to embed an
+    existing clickwrap in your website.
+</p>
+
+{% include 'documentation.html' %}
+
+{% include 'github_source.html' %}
+
+{% if clickwrap_ok %}
+
+<p>The clickwrap you created and activated via examples 1 and 2 will be queried.</p>
+
+{% if not show_clickwrap %}
+<form class="eg" action="" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Show Clickwrap</button>
+</form>
+{% endif %}
+
+{% else %}
+<p>Problem: please first create a clickwrap using <a href="eg001">example 1</a>
+    and activate it using <a href="eg002">example 2.</a><br/>Thank you.</p>
+
+<form class="eg" action="eg001" method="get">
+    <button type="submit" class="btn btn-docu">Continue</button>
+</form>
+{% endif %}
+
+{% if show_clickwrap %}
+<div id="ds-clickwrap"></div>
+<script src="https://demo.docusign.net/clickapi/sdk/latest/docusign-click.js"></script>
+<script>docuSignClick.Clickwrap.render({
+      environment: 'https://demo.docusign.net',
+      accountId: {{ account_id | tojson }},
+      clickwrapId: {{ clickwrap_id | tojson }},
+      clientUserId: {{ client_user_id | tojson }}
+    }, '#ds-clickwrap');
+</script>
+
+<p><a href="/">Continue</a></p>
+{% endif %}
+
+{% endblock %}
