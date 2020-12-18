@@ -49,8 +49,6 @@ elif EXAMPLES_API_TYPE["Click"]:
     app.register_blueprint(click_examples.eg003)
     app.register_blueprint(click_examples.eg004)
     app.register_blueprint(click_examples.eg005)
-    app.register_blueprint(click_examples.eg006)
-    app.register_blueprint(click_examples.eg007)
 else:
     app.register_blueprint(examples.eg001)
     app.register_blueprint(examples.eg002)

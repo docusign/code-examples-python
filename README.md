@@ -159,12 +159,6 @@ This example demonstrates how to use DocuSign Click to create a clickwrap that y
 1. **Activate a clickwrap.**
 [Source.](./app/click/examples/eg002_activate_clickwrap/controller.py)
 This example demonstrates how to use DocuSign Click to activate a new clickwrap that you have already created.
-1. **Test a clickwrap.**
-[Source.](./app/click/examples/eg003_test_clickwrap/controller.py)
-This example demonstrates how to use Clickwrap Tester to preview a newly created and activated clickwrap.
-1. **Embed a clickwrap.**
-[Source.](./app/click/examples/eg004_embed_clickwrap/controller.py)
-This example demonstrates how to use DocuSign Click to embed an existing clickwrap in your website.
 1. **Create a new clickwrap version.**
 [Source.](./app/click/examples/eg005_create_new_clickwrap_version/controller.py)
 This example demonstrates how to use DocuSign Click to create a new version of a clickwrap.

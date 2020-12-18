@@ -4,7 +4,7 @@ from flask import session
 from ...utils import create_click_api_client
 
 
-class Eg006Controller:
+class Eg004Controller:
     @staticmethod
     def get_args():
         """Get required session and request arguments"""
