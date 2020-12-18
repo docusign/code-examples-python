@@ -114,6 +114,7 @@ crashlytics-build.properties
 fabric.properties
 .vscode/settings.json
 .docusign-rooms-1.0.0a0/
+/docusign-click-1.0.0a0/
 /venv*
 
 # Security key files
