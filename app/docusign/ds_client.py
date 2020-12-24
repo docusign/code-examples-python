@@ -16,7 +16,7 @@ SCOPES = [
 ]
 
 ROOMS_SCOPES = [
-    "room_forms","dtr.rooms.read", "dtr.rooms.write",
+    "room_forms", "dtr.rooms.read", "dtr.rooms.write",
     "dtr.documents.read", "dtr.documents.write", "dtr.profile.read",
     "dtr.profile.write", "dtr.company.read", "dtr.company.write"
 ]

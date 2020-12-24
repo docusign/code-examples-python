@@ -40,6 +40,7 @@ if EXAMPLES_API_TYPE["Rooms"]:
     app.register_blueprint(rooms_examples.eg004)
     app.register_blueprint(rooms_examples.eg005)
     app.register_blueprint(rooms_examples.eg006)
+    app.register_blueprint(rooms_examples.eg007)
 else:
     app.register_blueprint(examples.eg001)
     app.register_blueprint(examples.eg002)
