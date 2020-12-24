@@ -29,7 +29,7 @@ def create_form_group():
     try:
         # 2. Call the worker method to create a new form group
         results = Eg007Controller.worker(args)
-        form_id = results.form_id
+        form_id = results.form_group_id
         current_app.logger.info(
             f"""Form Group "{args['form_group_name']}" has been created! 
             Form Group ID: {form_id}"""
@@ -40,9 +40,9 @@ def create_form_group():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Creating a room with data",
-        h1="Creating a room with data",
-        message=f"""The room "{args['room_name']}" has been created!<br/> 
+        title="Creating a form group",
+        h1="Creating a form group",
+        message=f"""The Form Group "{args['form_group_name']}" has been created!<br/> 
                             Room ID: {form_id}.""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
