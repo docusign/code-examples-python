@@ -25,14 +25,14 @@ class Eg007Controller:
         """
 
         # Step 1. Create an API with headers
-        api_client = create_rooms_api_client(access_token=args['access_token'])
+        api_client = create_rooms_api_client(access_token=args["access_token"])
 
         # Step 2. Create FormGroupForCreate object
-        form = FormGroupForCreate(name=args['form_group_name'])
+        form = FormGroupForCreate(name=args["form_group_name"])
 
         # Step 3. Post the form object using SDK
         form_groups_api = FormGroupsApi(api_client)
         response = form_groups_api.create_form_group(body=form,
-                                                     account_id=args['account_id'])
+                                                     account_id=args["account_id"])
 
         return response

@@ -52,6 +52,6 @@ def get_view():
     """responds with the form for the example"""
     return render_template(
         "eg007_create_form_group.html",
-        title='Creating a form group',
+        title="Creating a form group",
         source_file=path.basename(path.dirname(__file__)) + "/controller.py"
     )
