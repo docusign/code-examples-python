@@ -6,3 +6,4 @@ from .eg005_get_rooms_with_filters import eg005
 from .eg006_create_external_form_fill_session import eg006
 from .eg007_create_form_group import eg007
 from .eg008_grant_office_access_to_form_group import eg008
+from .eg009_assign_form_to_form_group import eg009
