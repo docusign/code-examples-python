@@ -31,8 +31,8 @@ class Eg007Controller:
         form = FormGroupForCreate(name=args['form_group_name'])
 
         # Step 3. Post the form object using SDK
-        form_group_api = FormGroupsApi(api_client)
-        response = form_group_api.create_form_group(body=form,
-                                                    account_id=args['account_id'])
+        form_groups_api = FormGroupsApi(api_client)
+        response = form_groups_api.create_form_group(body=form,
+                                                     account_id=args['account_id'])
 
         return response
