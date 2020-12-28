@@ -9,7 +9,7 @@ eg = "eg008"  # reference (and URL) for this example
 eg008 = Blueprint(eg, __name__)
 
 
-@eg008.route('/eg008', methods=['POST'])
+@eg008.route("/eg008", methods=["POST"])
 @authenticate(eg=eg)
 def assign_office_to_form_group():
     """
@@ -37,7 +37,7 @@ def assign_office_to_form_group():
     )
 
 
-@eg008.route('/eg008', methods=['GET'])
+@eg008.route("/eg008", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
     """

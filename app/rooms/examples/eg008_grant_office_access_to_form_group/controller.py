@@ -23,7 +23,7 @@ class Eg008Controller:
             "access_token": session["ds_access_token"],
             # Represents your {ACCESS_TOKEN}
             "form_group_id": request.form.get("form_group_id"),
-            'office_id': request.form.get('office_id')
+            "office_id": request.form.get("office_id")
         }
 
     @staticmethod
@@ -34,12 +34,12 @@ class Eg008Controller:
         """
 
         # Step 1. Create an API with headers with headers
-        api_client = create_rooms_api_client(access_token=args['access_token'])
+        api_client = create_rooms_api_client(access_token=args["access_token"])
 
         # Step 2. GET Form Groups via FormGroupsAPI
         form_groups_api = FormGroupsApi(api_client)
         responses = form_groups_api.get_form_groups(
-            account_id=args['account_id'])  # type: FormGroupSummaryList
+            account_id=args["account_id"])  # type: FormGroupSummaryList
 
         return responses.form_groups
 
@@ -51,12 +51,12 @@ class Eg008Controller:
         """
 
         # Step 1. Create an API with headers with headers
-        api_client = create_rooms_api_client(args['access_token'])
+        api_client = create_rooms_api_client(args["access_token"])
 
         # Step 2. GET offices via OfficesAPI
         offices_api = OfficesApi(api_client=api_client)
         responses = offices_api.get_offices(
-            account_id=args['account_id'])  # type: OfficeSummaryList
+            account_id=args["account_id"])  # type: OfficeSummaryList
 
         return responses.office_summaries
 
@@ -69,11 +69,11 @@ class Eg008Controller:
         """
 
         # Step 1. Create an API client with headers
-        api_client = create_rooms_api_client(access_token=args['access_token'])
+        api_client = create_rooms_api_client(access_token=args["access_token"])
 
-        # Step 2. Grant office access tp a form group via FormGroups API
+        # Step 2. Grant office access to a form group via FormGroups API
         form_groups_api = FormGroupsApi(api_client)
 
         form_groups_api.grant_office_access_to_form_group(
-            form_group_id=args['form_group_id'], office_id=args['office_id'],
-            account_id=args['account_id'])
+            form_group_id=args["form_group_id"], office_id=args["office_id"],
+            account_id=args["account_id"])
