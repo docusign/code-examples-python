@@ -83,7 +83,8 @@ class Eg009Controller:
         form_groups_api = FormGroupsApi(api_client)
 
         # Step 2. Create FormGroupFormToAssign Object
-        form_group_to_assign = FormGroupFormToAssign(form_id=args["form_id"])
+        form_group_to_assign = FormGroupFormToAssign(form_id=args["form_id"],
+                                                     is_required=True)
 
         # Step 3. Grant office access tp a form group via FormGroups API
         response = form_groups_api.assign_form_group_form(
