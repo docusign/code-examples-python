@@ -150,7 +150,7 @@ This example adds a standard real estate related form to a specific room in your
 [Source.](./app/rooms/examples/eg005_get_rooms_with_filters/controller.py)
 1. **Create an external form fillable session.**
 [Source.](./app/rooms/examples/eg006_create_external_form_fill_session/controller.py)
-
+<!-- 
 ## Click API
 
 1. **Create a clickwrap.**
@@ -167,7 +167,7 @@ This example demonstrates how to use DocuSign Click to get a list of clickwraps 
 [Source.](./app/click/examples/eg006_list_clickwraps/controller.py)
 1. **Get clickwrap responses.**
 This example demonstrates how to use DocuSign Click to get user responses to your clickwrap agreements.
-[Source.](./app/click/examples/eg007_clickwrap_responses/controller.py)
+[Source.](./app/click/examples/eg007_clickwrap_responses/controller.py) -->
 
 ## Included OAuth grant types:
 
