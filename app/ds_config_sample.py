@@ -29,7 +29,7 @@ DS_CONFIG = {
     "gateway_display_name": "Stripe",
     "github_example_url": "https://github.com/docusign/code-examples-python/tree/master/app/eSignature/examples/",
     "documentation": "",  # Use an empty string to indicate no documentation path.
-    "quickstart": "{QUICSTART_VALUE}"
+    "quickstart": "{QUICKSTART_VALUE}"
 }
 
 DS_JWT = {
