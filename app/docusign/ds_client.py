@@ -21,9 +21,9 @@ ROOMS_SCOPES = [
     "dtr.profile.write", "dtr.company.read", "dtr.company.write"
 ]
 
-CLICK_SCOPES = [
-    "signature", "click.manage", "click.send"
-]
+# CLICK_SCOPES = [
+#     "signature", "click.manage", "click.send"
+# ]
 
 
 class DSClient:
@@ -42,8 +42,8 @@ class DSClient:
         oauth = OAuth(app)
         if EXAMPLES_API_TYPE["Rooms"]:
             use_scopes = ROOMS_SCOPES
-        elif EXAMPLES_API_TYPE["Click"]:
-            use_scopes = CLICK_SCOPES
+        # elif EXAMPLES_API_TYPE["Click"]:
+        #     use_scopes = CLICK_SCOPES
         else:
             use_scopes = SCOPES
         request_token_params = {
@@ -72,8 +72,8 @@ class DSClient:
 
         if EXAMPLES_API_TYPE["Rooms"]:
             use_scopes = ROOMS_SCOPES
-        elif EXAMPLES_API_TYPE["Click"]:
-            use_scopes = CLICK_SCOPES
+        # elif EXAMPLES_API_TYPE["Click"]:
+        #     use_scopes = CLICK_SCOPES
         else:
             use_scopes = SCOPES
 
