@@ -32,8 +32,7 @@ class Eg008Controller:
 
         # Step 2. GET Form Groups via FormGroupsAPI
         form_groups_api = FormGroupsApi(api_client)
-        response = form_groups_api.get_form_groups(
-            account_id=args["account_id"])  # type: FormGroupSummaryList
+        response = form_groups_api.get_form_groups(account_id=args["account_id"])  # type: FormGroupSummaryList
 
         return response.form_groups
 
@@ -49,8 +48,7 @@ class Eg008Controller:
 
         # Step 2. GET offices via OfficesAPI
         offices_api = OfficesApi(api_client=api_client)
-        response = offices_api.get_offices(
-            account_id=args["account_id"])  # type: OfficeSummaryList
+        response = offices_api.get_offices(account_id=args["account_id"])  # type: OfficeSummaryList
 
         return response.office_summaries
 
@@ -69,4 +67,5 @@ class Eg008Controller:
 
         form_groups_api.grant_office_access_to_form_group(
             form_group_id=args["form_group_id"], office_id=args["office_id"],
-            account_id=args["account_id"])
+            account_id=args["account_id"]
+        )

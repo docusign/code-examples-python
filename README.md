@@ -165,7 +165,7 @@ This example demonstrates creating a DocuSign Form Group.
 This example demonstrates how to grant Office access to a Form Group.
 1. **Assign a form to a form group**
 [Source.](./app/rooms/examples/eg009_assign_form_to_form_group/controller.py)
-This example demonstrates how to assign form to a form group.
+This example demonstrates how to assign a form to a form group.
 ## Click API
 
 1. **Create a clickwrap.**
