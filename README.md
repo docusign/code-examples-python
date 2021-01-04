@@ -152,7 +152,6 @@ This example demonstrates how to return rooms that have had their field data,
 updated within the time period between <b>Start date</b> and <b>End date</b>.
 1. **Create an external form fillable session.**
 [Source.](./app/rooms/examples/eg006_create_external_form_fill_session/controller.py)
-<<<<<<< HEAD
 This example demonstrates how to create an
 <a href="https://developers.docusign.com/rooms-api/guides/forms" target="_blank">external form fill session</a>
 using the Rooms API:</br>
