@@ -21,6 +21,10 @@ ROOMS_SCOPES = [
     "dtr.profile.write", "dtr.company.read", "dtr.company.write"
 ]
 
+# CLICK_SCOPES = [
+#     "signature", "click.manage", "click.send"
+# ]
+
 
 class DSClient:
     ds_app = None
@@ -36,8 +40,10 @@ class DSClient:
     def _auth_code_grant(cls):
         """Authorize with the Authorization Code Grant - OAuth 2.0 flow"""
         oauth = OAuth(app)
-        if EXAMPLES_API_TYPE["Rooms"] == True:
+        if EXAMPLES_API_TYPE["Rooms"]:
             use_scopes = ROOMS_SCOPES
+        # elif EXAMPLES_API_TYPE["Click"]:
+        #     use_scopes = CLICK_SCOPES
         else:
             use_scopes = SCOPES
         request_token_params = {
@@ -64,12 +70,14 @@ class DSClient:
         api_client = ApiClient()
         api_client.set_base_path(DS_JWT["authorization_server"])
 
-        if EXAMPLES_API_TYPE["Rooms"] == True:
+        if EXAMPLES_API_TYPE["Rooms"]:
             use_scopes = ROOMS_SCOPES
-            use_scopes.append("impersonation")
+        # elif EXAMPLES_API_TYPE["Click"]:
+        #     use_scopes = CLICK_SCOPES
         else:
             use_scopes = SCOPES
-            use_scopes.append("impersonation")
+
+        use_scopes.append("impersonation")
 
         # Catch IO error
         try:

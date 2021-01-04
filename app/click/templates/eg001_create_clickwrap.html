@@ -1,0 +1,25 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+<h4>1. Creating a clickwrap</h4>
+<p>This example demonstrates how to use DocuSign Click to create a
+    clickwrap that you can embed in your website or app.</p>
+
+{% include 'documentation.html' %}
+
+<p>API method used:
+    <a target='_blank'
+       href="https://developers.docusign.com/docs/click-api/reference/accounts/clickwraps/createclickwrap/">ClickWraps::createClickwrap</a>
+</p>
+
+{% include 'github_source.html' %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    <div class="form-group">
+        <label for="clickwrap_name">Clickwrap name</label>
+        <input type="text" class="form-control" id="clickwrap_name"
+               name="clickwrap_name" required>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Submit</button>
+</form>
+
+{% endblock %}

@@ -11,6 +11,8 @@ DS_CONFIG = {
     # NOTE: You must add a Redirect URI of appUrl/ds/callback to your Integration Key.
     #       Example: http://localhost:5000/ds/callback
     "authorization_server": "https://account-d.docusign.com",
+    "click_api_client_host" : "https://demo.docusign.net/clickapi",
+    "rooms_api_client_host" : "https://demo.rooms.docusign.com/restapi",
     "allow_silent_authentication": True,  # a user can be silently authenticated if they have an
     # active login session on another tab of the same browser
     "target_account_id": None,  # Set if you want a specific DocuSign AccountId,
@@ -19,6 +21,7 @@ DS_CONFIG = {
     "doc_salary_docx": "World_Wide_Corp_salary.docx",
     "doc_docx": "World_Wide_Corp_Battle_Plan_Trafalgar.docx",
     "doc_pdf": "World_Wide_Corp_lorem.pdf",
+    "doc_terms_pdf": "Term_Of_Service.pdf",
     "doc_txt": "Welcome.txt",
     # Payment gateway information is optional
     "gateway_account_id": "{DS_PAYMENT_GATEWAY_ID}",
@@ -26,7 +29,7 @@ DS_CONFIG = {
     "gateway_display_name": "Stripe",
     "github_example_url": "https://github.com/docusign/code-examples-python/tree/master/app/eSignature/examples/",
     "documentation": "",  # Use an empty string to indicate no documentation path.
-    "quickstart": "false"
+    "quickstart": "{QUICKSTART_VALUE}"
 }
 
 DS_JWT = {
@@ -38,5 +41,5 @@ DS_JWT = {
 
 EXAMPLES_API_TYPE = {
         "Rooms": False,
-        "ESignature": True
+        "ESignature": True,
 }
