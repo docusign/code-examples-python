@@ -30,5 +30,4 @@ virtualenv==16.7.5
 virtualenv-clone==0.5.3
 Werkzeug==0.16.0
 wrapt==1.11.2
-pyjwt==1.7.1
 

@@ -11,7 +11,7 @@ eg = "eg009"  # reference (and URL) for this example
 eg009 = Blueprint(eg, __name__)
 
 
-@eg009.route("/eg009", methods=['POST'])
+@eg009.route("/eg009", methods=["POST"])
 @authenticate(eg=eg)
 def assign_form_to_form_group():
     """
@@ -44,7 +44,7 @@ def assign_form_to_form_group():
     )
 
 
-@eg009.route("/eg009", methods=['GET'])
+@eg009.route("/eg009", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
     """

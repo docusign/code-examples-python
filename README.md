@@ -148,9 +148,24 @@ This example exports all the available data from a specific room in your DocuSig
 This example adds a standard real estate related form to a specific room in your DocuSign Rooms account.
 1. **How to search for rooms with filters.**
 [Source.](./app/rooms/examples/eg005_get_rooms_with_filters/controller.py)
+This example demonstrates how to return rooms that have had their field data,
+updated within the time period between <b>Start date</b> and <b>End date</b>.
 1. **Create an external form fillable session.**
 [Source.](./app/rooms/examples/eg006_create_external_form_fill_session/controller.py)
-
+This example demonstrates how to create an
+<a href="https://developers.docusign.com/rooms-api/guides/forms" target="_blank">external form fill session</a>
+using the Rooms API:</br>
+the result of this code example is the URL for the form fill session, which you can embed
+in your integration or send to the user.
+1. **Create a form group**
+[Source.](./app/rooms/examples/eg007_create_form_group/controller.py)
+This example demonstrates creating a DocuSign Form Group.
+1. **Grant office access to a form group**
+[Source.](./app/rooms/examples/eg008_grant_office_access_to_form_group/controller.py)
+This example demonstrates how to grant Office access to a Form Group.
+1. **Assign a form to a form group**
+[Source.](./app/rooms/examples/eg009_assign_form_to_form_group/controller.py)
+This example demonstrates how to assign form to a form group.
 
 ## Included OAuth grant types:
 

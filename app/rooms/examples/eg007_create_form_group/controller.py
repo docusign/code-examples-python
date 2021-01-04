@@ -1,7 +1,7 @@
+from docusign_rooms import FormGroupForCreate, FormGroupsApi
 from flask import session, request
 
 from app.rooms import create_rooms_api_client
-from docusign_rooms import FormGroupForCreate, FormGroupsApi
 
 
 class Eg007Controller:
@@ -9,10 +9,8 @@ class Eg007Controller:
     def get_args():
         """Get required session and request arguments"""
         return {
-            "account_id": session["ds_account_id"],
-            # Represents your {ACCOUNT_ID}
-            "access_token": session["ds_access_token"],
-            # Represents your {ACCESS_TOKEN}
+            "account_id": session["ds_account_id"],     # Represents your {ACCOUNT_ID}
+            "access_token": session["ds_access_token"],  # Represents your {ACCESS_TOKEN}
             "form_group_name": request.form.get("form_group_name"),
         }
 

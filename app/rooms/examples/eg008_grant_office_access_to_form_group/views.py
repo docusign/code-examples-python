@@ -27,7 +27,6 @@ def assign_office_to_form_group():
         return process_error(err)
 
     # 3. Render the response
-
     return render_template(
         "example_done.html",
         title="Assign office to a form group",

@@ -1,12 +1,8 @@
-from typing import List
-
 from docusign_rooms import (
-    FormGroupSummary,
     FormGroupsApi,
     FormGroupSummaryList,
     FormLibrariesApi,
     FormGroupFormToAssign,
-    FormSummary,
 )
 from docusign_rooms import FormSummaryList
 from flask import session, request
@@ -16,36 +12,34 @@ from app.rooms import create_rooms_api_client
 
 class Eg009Controller:
     @staticmethod
-    def get_args() -> dict:
+    def get_args():
         """Get required session and request arguments"""
         return {
-            "account_id": session["ds_account_id"],
-            # Represents your {ACCOUNT_ID}
-            "access_token": session["ds_access_token"],
-            # Represents your {ACCESS_TOKEN}
+            "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
+            "access_token": session["ds_access_token"],  # Represents your {ACCESS_TOKEN}
             "form_group_id": request.form.get("form_group_id"),
-            'form_id': request.form.get('form_id')
+            "form_id": request.form.get("form_id")
         }
 
     @staticmethod
-    def get_form_groups(args) -> List[FormGroupSummary]:
+    def get_form_groups(args):
         """
         1. Create an API Client with headers
         2. GET Form Groups via FormGroupsAPI
         """
 
         # Step 1. Create an API with headers with headers
-        api_client = create_rooms_api_client(access_token=args['access_token'])
+        api_client = create_rooms_api_client(access_token=args["access_token"])
 
         # Step 2. GET Form Groups via FormGroupsAPI
         form_groups_api = FormGroupsApi(api_client)
-        responses = form_groups_api.get_form_groups(
-            account_id=args['account_id'])  # type: FormGroupSummaryList
+        response = form_groups_api.get_form_groups(
+            account_id=args["account_id"])  # type: FormGroupSummaryList
 
-        return responses.form_groups
+        return response.form_groups
 
     @staticmethod
-    def get_forms(args) -> List[FormSummary]:
+    def get_forms(args):
         """
         1. Create an API client with headers
         2. Get first form library id
@@ -71,7 +65,7 @@ class Eg009Controller:
         return form_library_forms.forms
 
     @staticmethod
-    def worker(args) -> FormGroupFormToAssign:
+    def worker(args):
         """
         1. Create an API Client with headers
         2. Create FormGroupFormToAssign Object
@@ -79,16 +73,16 @@ class Eg009Controller:
         """
 
         # Step 1. Create an API client with headers
-        api_client = create_rooms_api_client(access_token=args['access_token'])
+        api_client = create_rooms_api_client(access_token=args["access_token"])
         form_groups_api = FormGroupsApi(api_client)
 
         # Step 2. Create FormGroupFormToAssign Object
         form_group_to_assign = FormGroupFormToAssign(form_id=args["form_id"],
                                                      is_required=True)
 
-        # Step 3. Grant office access tp a form group via FormGroups API
+        # Step 3. Assign form to a form group via FormGroups API
         response = form_groups_api.assign_form_group_form(
-            form_group_id=args['form_group_id'], account_id=args['account_id'],
+            form_group_id=args["form_group_id"], account_id=args["account_id"],
             body=form_group_to_assign
         )   # type: FormGroupFormToAssign
 
