@@ -34,7 +34,8 @@ class Eg009Controller:
         # Step 2. GET Form Groups via FormGroupsAPI
         form_groups_api = FormGroupsApi(api_client)
         response = form_groups_api.get_form_groups(
-            account_id=args["account_id"])  # type: FormGroupSummaryList
+            account_id=args["account_id"]
+        )  # type: FormGroupSummaryList
 
         return response.form_groups
 

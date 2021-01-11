@@ -1,5 +1,5 @@
 from docusign_rooms.client.api_exception import ApiException
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, current_app
 
 from app.docusign import authenticate
 from app.error_handlers import process_error
@@ -23,6 +23,10 @@ def assign_office_to_form_group():
     try:
         # 2. Call the worker method to assign office to form group
         Eg008Controller.worker(args)
+        current_app.logger.info(
+            f"""Office {args['office_id']} has been assigned to Form Group
+            {args['form_group_id']}!"""
+        )
     except ApiException as err:
         return process_error(err)
 
