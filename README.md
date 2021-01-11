@@ -168,6 +168,7 @@ This example demonstrates how to grant Office access to a Form Group.
 This example demonstrates how to assign a form to a form group.
 ## Click API
 
+<!--
 1. **Create a clickwrap.**
 [Source.](./app/click/examples/eg001_create_clickwrap/controller.py)
 This example demonstrates how to use DocuSign Click to create a clickwrap that you can embed in your website or app.
