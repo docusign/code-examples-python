@@ -15,7 +15,7 @@ This repo is a Python 3 application that demonstrates:
    [Source.](./app/eg001_embedded_signing/controller.py)
    This example sends an envelope, and then uses embedded signing for the first signer.
    With embedded signing, the DocuSign signing is initiated from your website.
-1. **How to request a signature by email (Remote Signing).**
+1. **Request a signature by email (Remote Signing).**
    [Source.](./app/eSignature/examples/eg002_signing_via_email/controller.py)
    The envelope includes a pdf, Word, and HTML document.
    Anchor text ([AutoPlace](https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience)) is used to position the signing fields in the documents.
@@ -36,7 +36,7 @@ This repo is a Python 3 application that demonstrates:
    documents, the documents concatenated together, or a zip file of the documents.
 1. **Programmatically create a template.**
    [Source.](./app/eSignature/examples/eg008_create_template/controller.py)
-1. **Send an envelope using a template.**
+1. **Request a signature by email using a template.**
    [Source.](./app/eSignature/examples/eg009_use_template/controller.py)
 1. **Send an envelope and upload its documents with multipart binary transfer.**
    [Source.](./app/eSignature/examples/eg010_send_binary_docs/controller.py)
