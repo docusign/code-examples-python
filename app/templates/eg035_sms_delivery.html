@@ -17,14 +17,18 @@
 
 <form class="eg" action="" method="post" data-busy="form">
 
-      
+    <div class="form-group">
+      <label for="country_code">Signer Country Code</label>
+      <input type="tel" class="form-control" id="country_code" name="country_code"
+            aria-describedby="accessHelp" placeholder="1" required
+      <small id="accessHelp" class="form-text text-muted">The country code for the phone number below.</small>
+    </div>  
     <div class="form-group">
         <label for="phone_number">Signer Phone Number</label>
         <input type="tel" class="form-control" id="phone_number" name="phone_number"
                aria-describedby="accessHelp" placeholder="415-555-1212" required
-               value="415-555-1212">
         <small id="accessHelp" class="form-text text-muted">This phone number will receive a notification. We'll never share your phone number with anyone else.</small>
-      </div>
+    </div>
     <div class="form-group">
       <label for="signer_email">Signer Email</label>
       <input type="email" class="form-control" id="signer_email" name="signer_email"
@@ -38,10 +42,15 @@
              value="{{ signer_name }}" required>
     </div>
     <div class="form-group">
+      <label for="country_code">CC Country Code</label>
+      <input type="tel" class="form-control" id="cc_country_code" name="cc_country_code"
+            aria-describedby="accessHelp" placeholder="1" required
+      <small id="accessHelp" class="form-text text-muted">The country code for the phone number below.</small>
+    </div> 
+    <div class="form-group">
       <label for="phone_number">CC Phone Number</label>
       <input type="tel" class="form-control" id="cc_phone_number" name="cc_phone_number"
              aria-describedby="accessHelp" placeholder="415-555-1212" required
-             value="415-555-1212">
       <small id="accessHelp" class="form-text text-muted">This phone number will receive a notification. We'll never share your phone number with anyone else.</small>
     </div>
     <div class="form-group">

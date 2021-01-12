@@ -21,14 +21,18 @@ class Eg035Controller:
         cc_email = pattern.sub("", request.form.get("cc_email"))
         cc_name = pattern.sub("", request.form.get("cc_name"))
         cc_phone_number = request.form.get("cc_phone_number")
+        cc_country_code = request.form.get("country_code")
         phone_number = request.form.get("phone_number")
+        country_code = request.form.get("country_code")
         envelope_args = {
             "signer_email": signer_email,
             "signer_name": signer_name,
             "status": "sent",
             "cc_email": cc_email,
             "cc_name": cc_name,
+            "country_code": country_code,
             "phone_number": phone_number,
+            "cc_country_code" :cc_country_code,
             "cc_phone_number": cc_phone_number
         }
         args = {
@@ -77,8 +81,8 @@ class Eg035Controller:
         # The envelope has two recipients.
         # recipient 1 - signer
         # recipient 2 - cc
-        # The envelope will be sent first to the signer.
-        # After it is signed, a copy is sent to the cc person.
+        # The envelope will be sent first to the signer via SMS.
+        # After it is signed, a copy is sent to the cc person via SMS.
 
         # Create the envelope definition
         env = EnvelopeDefinition(
@@ -117,7 +121,7 @@ class Eg035Controller:
         env.documents = [document1, document2, document3]
 
         phoneNumber = RecipientPhoneNumber(
-            country_code="1",
+            country_code=args["country_code"],
             number=args["phone_number"]
         )
 
@@ -137,7 +141,7 @@ class Eg035Controller:
 
         # Create a RecipientPhoneNumber and add it to the additional SMS notfication
         ccPhoneNumber = RecipientPhoneNumber(
-            country_code="1",
+            country_code=args["cc_country_code"],
             number=args["cc_phone_number"]
         )
 
