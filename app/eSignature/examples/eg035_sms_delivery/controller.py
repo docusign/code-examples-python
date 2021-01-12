@@ -66,30 +66,25 @@ class Eg035Controller:
     @classmethod
     def make_envelope(cls, args):
         """
-        Creates envelope
-        Document 1: An HTML document.
-        Document 2: A Word .docx document.
-        Document 3: A PDF document.
+        Creates envelope:
+        document 1 (HTML) has signHere anchor tag: **signature_1**
+        document 2 (DOCX) has signHere anchor tag: /sn1/
+        document 3 (PDF)  has signHere anchor tag: /sn1/
         DocuSign will convert all of the documents to the PDF format.
-        The recipients" field tags are placed using <b>anchor</b> strings.
+        The recipient’s field tags are placed using anchor strings.
+        The envelope has two recipients:
+        recipient 1: signer
+        recipient 2: cc
+        The envelope will be sent first to the signer via SMS.
+        After it is signed, a copy is sent to the cc recipient via SMS.
         """
-
-        # document 1 (html) has sign here anchor tag **signature_1**
-        # document 2 (docx) has sign here anchor tag /sn1/
-        # document 3 (pdf)  has sign here anchor tag /sn1/
-        #
-        # The envelope has two recipients.
-        # recipient 1 - signer
-        # recipient 2 - cc
-        # The envelope will be sent first to the signer via SMS.
-        # After it is signed, a copy is sent to the cc person via SMS.
 
         # Create the envelope definition
         env = EnvelopeDefinition(
             email_subject="Please sign this document set"
         )
         doc1_b64 = base64.b64encode(bytes(cls.create_document1(args), "utf-8")).decode("ascii")
-        # Read files 2 and 3 from a local directory
+        # Read files 2 and 3 from a local folder
         # The reads could raise an exception if the file is not available!
         with open(path.join(demo_docs_path, DS_CONFIG["doc_docx"]), "rb") as file:
             doc2_docx_bytes = file.read()
@@ -161,17 +156,15 @@ class Eg035Controller:
 
         # routingOrder (lower means earlier) determines the order of deliveries
         # to the recipients. Parallel routing order is supported by using the
-        # same integer as the order for two or more recipients.
+        # same integer as the order for two or more recipients
 
-        # signer1.additional_notifications = [sms_notification]
-
-        # Create signHere fields (also known as tabs) on the documents,
+        # Create signHere fields (also known as tabs) on the documents
         # We're using anchor (autoPlace) positioning
         #
         # The DocuSign platform searches throughout your envelope"s
         # documents for matching anchor strings. So the
         # signHere2 tab will be used in both document 2 and 3 since they
-        # use the same anchor string for their "signer 1" tabs.
+        # use the same anchor string for their "signer 1" tabs
         sign_here1 = SignHere(
             anchor_string="**signature_1**",
             anchor_units="pixels",
@@ -186,7 +179,7 @@ class Eg035Controller:
             anchor_x_offset="20"
         )
 
-        # Add the tabs model (including the sign_here tabs) to the signer
+        # Add the tabs model (including the SignHere tabs) to the signer
         # The Tabs object wants arrays of the different field/tab types
         signer1.tabs = Tabs(sign_here_tabs=[sign_here1, sign_here2])
 
@@ -194,7 +187,7 @@ class Eg035Controller:
         recipients = Recipients(signers=[signer1], carbon_copies=[cc1])
         env.recipients = recipients
 
-        # Request that the envelope be sent by setting status to "sent".
+        # Request that the envelope be sent by setting status to "sent"
         # To request that the envelope be created as a draft, set to "created"
         env.status = args["status"]
 
@@ -226,7 +219,7 @@ class Eg035Controller:
                 Donut jujubes oat cake jelly-o. 
                 Dessert bear claw chocolate cake gummies lollipop sugar plum ice cream gummies cheesecake.
             </p>
-            <!-- Note the anchor tag for the signature field is in white. -->
+            <!-- Note the anchor tag for the signature field is in white -->
             <h3 style="margin-top:3em;">Agreed: <span style="color:white;">**signature_1**/</span></h3>
             </body>
         </html>
