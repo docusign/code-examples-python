@@ -15,7 +15,7 @@ This repo is a Python 3 application that demonstrates:
    [Source.](./app/eg001_embedded_signing/controller.py)
    This example sends an envelope, and then uses embedded signing for the first signer.
    With embedded signing, the DocuSign signing is initiated from your website.
-1. **Send an envelope with a remote (email) signer and cc recipient.**
+1. **How to request a signature by email (Remote Signing).**
    [Source.](./app/eSignature/examples/eg002_signing_via_email/controller.py)
    The envelope includes a pdf, Word, and HTML document.
    Anchor text ([AutoPlace](https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience)) is used to position the signing fields in the documents.
