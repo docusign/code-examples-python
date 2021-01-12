@@ -42,8 +42,8 @@ class Eg035Controller:
 
         envelope_args = args["envelope_args"]
         # 1. Create the envelope request object
-        envelope_definition = cls.make_envelope(envelope_args)
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        envelope_definition = cls.make_envelope(envelope_args)
         # 2. call Envelopes::create API method
         # Exceptions will be caught by the calling function
         envelopes_api = EnvelopesApi(api_client)

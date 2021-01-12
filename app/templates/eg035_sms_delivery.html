@@ -1,11 +1,7 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
 <h4>35. Send an envelope via SMS delivery.</h4>
-<p>Anchor text 
-  (<a href="https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience">AutoPlace</a>)
-  is used to position the signing fields in the documents.
-</p>
-<p>This is a general example of creating and sending an envelope (a signing request) to a recipient that requires an authorization pin sent from a phone call to provide multi-factor authentication on sent envelopes.</p>
+<p>This is a general example of creating and sending an envelope (a signing request) to a recipient and notifying that recipient via SMS delivery. </p>
 
   {% if show_doc %}
     <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
@@ -27,7 +23,7 @@
         <input type="tel" class="form-control" id="phone_number" name="phone_number"
                aria-describedby="accessHelp" placeholder="415-555-1212" required
                value="415-555-1212">
-        <small id="accessHelp" class="form-text text-muted">This phone number will receive a notification.</small>
+        <small id="accessHelp" class="form-text text-muted">This phone number will receive a notification. We'll never share your phone number with anyone else.</small>
       </div>
     <div class="form-group">
       <label for="signer_email">Signer Email</label>
