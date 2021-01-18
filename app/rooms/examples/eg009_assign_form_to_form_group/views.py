@@ -30,8 +30,14 @@ def assign_form_to_form_group():
             f"""Form "{args['form_id']}" has been assigned to 
             Form Group "{args['form_group_id']}"!"""
         )
+        results = results.to_dict()
     except ApiException as err:
         return process_error(err)
+    except ValueError as err:
+        msg = ("Response is empty and could not be cast to"
+               " FormGroupFormToAssign. Please contact DocuSign support.")
+        current_app.logger.info(msg)
+        results = {"error": msg}
 
     # 3. Render the response
     return render_template(
@@ -40,7 +46,7 @@ def assign_form_to_form_group():
         h1="Creating a form group",
         message=f"""Form "{args['form_id']}" has been assigned to 
         Form Group "{args['form_group_id']}"!""",
-        json=json.dumps(json.dumps(results.to_dict(), default=str))
+        json=json.dumps(json.dumps(results, default=str))
     )
 
 
