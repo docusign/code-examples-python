@@ -129,6 +129,9 @@ This repo is a Python 3 application that demonstrates:
 1. **Using conditional recipients**
    [Source.](./app/eSignature/examples/eg034_use_conditional_recipients/controller.py)
    This code example demonstrates how to create an envelope where the workflow is routed to different recipients based on the value of a transaction using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method.
+1. **Request a signature by SMS**
+   [Source.](./app/eSignature/examples/eg035_sms_delivery/controller.py)
+   This code example demonstrates how to send a signature request for a signer to read and sign via an SMS message.
   
 
 ## Rooms API
