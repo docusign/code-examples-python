@@ -129,6 +129,9 @@ This repo is a Python 3 application that demonstrates:
 1. **Using conditional recipients**
    [Source.](./app/eSignature/examples/eg034_use_conditional_recipients/controller.py)
    This code example demonstrates how to create an envelope where the workflow is routed to different recipients based on the value of a transaction using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method.
+1. **Request a signature by SMS**
+   [Source.](./app/eSignature/examples/eg035_sms_delivery/controller.py)
+   This code example demonstrates how to send a signature request for a signer to read and sign via an SMS message.
   
 
 ## Rooms API
@@ -209,6 +212,12 @@ When the token expires, it updates automatically.
 1. Download or clone this repository to your workstation to directory **code-examples-python**
 1. **cd code-examples-python**
 1. **pip3 install -r requirements.txt**  (or pipenv can be used)
+
+   **Note:** To run eSignature example 35, Request a signature by SMS, you will need to edit the SDK files. This is a temporary step that will be removed with future releases of the Python 
+   SDK. Navigate to the folder where your local Python packages are stored. You can find the Python packages in /usr/local/lib/python3.8/site-packages or a similar folder with your Python version. Add the following lines to the docusign_esign/\_\_init\_\_.py file.<br/>
+   `from .models.recipient_additional_notification import RecipientAdditionalNotification`<br/>
+   `from .models.recipient_phone_number import RecipientPhoneNumber`<br/>
+   
 1. Make a copy of the **app/ds_config_sample.py** and name it **ds_config.py** 
 1. Update this new file **app/ds_config.py**
      with your Integration Key and other settings.
