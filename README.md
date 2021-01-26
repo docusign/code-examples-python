@@ -213,10 +213,11 @@ When the token expires, it updates automatically.
 1. **cd code-examples-python**
 1. **pip3 install -r requirements.txt**  (or pipenv can be used)
 
-   **Note:** To run example 35, request a signature by SMS, you will need to edit the SDK files. Navigate to the place where your local Python packages are stored and add the following lines to the docusign_esign/\_\_init\_\_.py file.<br/>
+   **Note:** To run eSignature example 35, Request a signature by SMS, you will need to edit the SDK files. Navigate to the folder where your local Python packages are stored. You can find the python packages in /usr/local/lib/python3.8/site-packages or a similar folder with your Python version. Add the following lines to the docusign_esign/\_\_init\_\_.py file.<br/>
    `from .models.recipient_additional_notification import RecipientAdditionalNotification`<br/>
    `from .models.recipient_phone_number import RecipientPhoneNumber`<br/>
-   You can find the python packages in /usr/local/lib/python3.8/site-packages or a similar folder with your Python version. This is a temporary step that will be removed with future releases of the Python 
+   <br/>
+   This is a temporary step that will be removed with future releases of the Python 
    SDK.
 
 1. Make a copy of the **app/ds_config_sample.py** and name it **ds_config.py** 
