@@ -214,7 +214,7 @@ When the token expires, it updates automatically.
 1. **pip3 install -r requirements.txt**  (or pipenv can be used)
 
    **Note:** To run eSignature example 35, Request a signature by SMS, you will need to edit the SDK files. This is a temporary step that will be removed with future releases of the Python 
-   SDK. Navigate to the folder where your local Python packages are stored. You can find the Python packages in /usr/local/lib/python3.8/site-packages or a similar folder with your Python version. Add the following lines to the docusign_esign/\_\_init\_\_.py file.<br/>
+   SDK. Navigate to the folder where your local Python packages are stored. You can find the Python packages in usr/local/lib/python3.8/site-packages (Mac) or Python38/Lib/site-packages (Windows). Add the following lines to the docusign_esign/\_\_init\_\_.py file.<br/>
    `from .models.recipient_additional_notification import RecipientAdditionalNotification`<br/>
    `from .models.recipient_phone_number import RecipientPhoneNumber`<br/>
    
