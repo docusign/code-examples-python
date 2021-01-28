@@ -3,7 +3,7 @@ from os import path
 
 from docusign_esign import EnvelopesApi, Document, Signer, EnvelopeDefinition, Recipients, \
     BulkEnvelopesApi, TextCustomField, CustomFields
-from docusign_esign.models import BulkSendingCopy, BulkSendingList, BulkSendingCopyRecipient, BulkSendRequest
+from docusign_esign.models import BulkSendingCopy, BulkSendingList, BulkSendingCopyRecipient, BulkSendRequest, BulkSendBatchStatus
 from flask import request, session
 
 from ....consts import demo_docs_path, pattern
@@ -125,7 +125,7 @@ class Eg031Controller:
         batch_id = batch.batch_id
 
         # Step 8. Confirm successful batch send
-        response = bulk_envelopes_api.get(account_id=args["account_id"], batch_id=batch_id)
+        response = bulk_envelopes_api.get_bulk_send_batch_status(account_id=args["account_id"], bulk_send_batch_id=batch_id)
 
         return response
 
