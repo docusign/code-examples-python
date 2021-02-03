@@ -20,13 +20,14 @@ def index():
     #     )
     if DS_CONFIG["quickstart"] == "true":
         return redirect(url_for("core.qshome"))
+        
     else:
         return render_template("home.html", title="Home - Python Code Examples")
 
 
-@core.route("/quickstarthome")
+@core.route("/eg001")
 def qshome():
-    return render_template("quickstarthome.html", title = "Homepage for Quickstart")
+    return render_template("eg001_embedded_signing.html", title = "Homepage for Quickstart")
 
 
 @core.route("/index")

@@ -90,6 +90,7 @@ def ds_return():
     event = request.args.get("event")
     state = request.args.get("state")
     envelope_id = request.args.get("envelopeId")
+    DS_CONFIG["quickstart"] = "false"
     return render_template(
         "ds_return.html",
         title="Return from DocuSign",
