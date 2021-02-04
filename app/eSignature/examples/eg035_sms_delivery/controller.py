@@ -134,7 +134,7 @@ class Eg035Controller:
             additional_notifications=[sms_notification]
         )
 
-        # Create a RecipientPhoneNumber and add it to the additional SMS notfication
+        # Create a RecipientPhoneNumber and add it to the additional SMS notification
         ccPhoneNumber = RecipientPhoneNumber(
             country_code=args["cc_country_code"],
             number=args["cc_phone_number"]
