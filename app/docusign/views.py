@@ -6,6 +6,7 @@ from .ds_client import DSClient
 from .utils import ds_logout_internal
 from ..consts import base_uri_suffix
 from ..ds_config import DS_CONFIG
+from ..ds_config import EXAMPLES_API_TYPE
 
 ds = Blueprint("ds", __name__, url_prefix="/ds")
 
@@ -76,14 +77,16 @@ def ds_callback():
 
 @ds.route("/must_authenticate")
 def ds_must_authenticate():
-    if DS_CONFIG["quickstart"] == "true":
+    if DS_CONFIG["quickstart"] == "true" and EXAMPLES_API_TYPE['ESignature']:
         return redirect(url_for("ds.ds_quickstart_auth"))
     else:
         return render_template("must_authenticate.html", title="Must authenticate")
 
-@ds.route(("/quickstart_auth"))
+
+@ds.route("/quickstart_auth")
 def ds_quickstart_auth():
-    return render_template("quickstart_auth.html", title = "Must authenticate")
+    return render_template("quickstart_auth.html", title="Must authenticate")
+
 
 @ds.route("/ds_return")
 def ds_return():
