@@ -19,15 +19,11 @@ def index():
     #         "home_click.html", title="Home - Python Click API Code Examples"
     #     )
     if DS_CONFIG["quickstart"] == "true":
-        return redirect(url_for("core.qshome"))
+        DS_CONFIG["quickstart"] = 'false'
+        return redirect(url_for("eg001.get_view"))
         
     else:
         return render_template("home.html", title="Home - Python Code Examples")
-
-
-@core.route("/eg001")
-def qshome():
-    return render_template("eg001_embedded_signing.html", title = "Homepage for Quickstart")
 
 
 @core.route("/index")
