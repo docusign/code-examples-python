@@ -1,7 +1,19 @@
 import base64
 from os import path
 
-from docusign_esign import EnvelopesApi, EnvelopeDefinition, Document, Signer, CarbonCopy, SignHere, Tabs, Recipients, RecipientAdditionalNotification, RecipientPhoneNumber
+from docusign_esign import (
+    EnvelopesApi,
+    EnvelopeDefinition,
+    Document,
+    Signer,
+    CarbonCopy,
+    SignHere,
+    Tabs,
+    Recipients,
+    RecipientPhoneNumber,
+    RecipientAdditionalNotification,
+)
+
 from flask import session, request
 
 from ....consts import demo_docs_path, pattern
