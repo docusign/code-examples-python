@@ -43,12 +43,16 @@ class Eg008Controller:
         2. Get Offices via OfficesAPI
         """
 
-        # Step 1. Create an API with headers with headers
+        # Create an API with headers with headers
         api_client = create_rooms_api_client(args["access_token"])
 
-        # Step 2. GET offices via OfficesAPI
+        # Step 3 start
+
+        # GET offices via OfficesAPI
         offices_api = OfficesApi(api_client=api_client)
         response = offices_api.get_offices(account_id=args["account_id"])  # type: OfficeSummaryList
+
+        # Step 3 end
 
         return response.office_summaries
 
@@ -59,13 +63,25 @@ class Eg008Controller:
         2. Grant office access to a form group via FormGroups API
         """
 
-        # Step 1. Create an API client with headers
+        # Step 2 start
+
+        # Create an API client with headers
         api_client = create_rooms_api_client(access_token=args["access_token"])
 
-        # Step 2. Grant office access to a form group via FormGroups API
+        # Step 2 end
+
+        # Step 4 start
+
+        # Grant office access to a form group via FormGroups API
         form_groups_api = FormGroupsApi(api_client)
+
+        # Step 4 end
+
+        # Step 5 end
 
         form_groups_api.grant_office_access_to_form_group(
             form_group_id=args["form_group_id"], office_id=args["office_id"],
             account_id=args["account_id"]
         )
+
+        # Step 5 end
