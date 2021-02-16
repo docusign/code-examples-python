@@ -7,7 +7,7 @@ from app.docusign import authenticate
 from app.error_handlers import process_error
 from .controller import Eg009Controller
 
-eg = "eg009"  # reference (and URL) for this example
+eg = "eg009"  # Reference (and URL) for this example
 eg009 = Blueprint(eg, __name__)
 
 
@@ -63,10 +63,10 @@ def get_view():
     # 1. Get required arguments
     args = Eg009Controller.get_args()
 
-    # 2. get form groups
+    # 2. Get form groups
     form_groups = Eg009Controller.get_form_groups(args)
 
-    # 3. get forms
+    # 3. Get forms
     forms = Eg009Controller.get_forms(args)
 
     # 4. Render the response

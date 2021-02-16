@@ -5,7 +5,7 @@ from app.docusign import authenticate
 from app.error_handlers import process_error
 from .controller import Eg008Controller
 
-eg = "eg008"  # reference (and URL) for this example
+eg = "eg008"  # Reference (and URL) for this example
 eg008 = Blueprint(eg, __name__)
 
 
