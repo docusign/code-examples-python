@@ -21,8 +21,6 @@ class Eg009Controller:
             "form_id": request.form.get("form_id")
         }
 
-    # Step 4 start
-
     @staticmethod
     def get_form_groups(args):
         """
@@ -34,6 +32,9 @@ class Eg009Controller:
         api_client = create_rooms_api_client(access_token=args["access_token"])
 
         # GET Form Groups via FormGroupsAPI
+
+        # Step 4 start
+
         form_groups_api = FormGroupsApi(api_client)
         response = form_groups_api.get_form_groups(
             account_id=args["account_id"]
@@ -41,9 +42,7 @@ class Eg009Controller:
 
         return response.form_groups
 
-    # Step 4 end
-
-    # Step 3 start
+        # Step 4 end
 
     @staticmethod
     def get_forms(args):
@@ -56,6 +55,8 @@ class Eg009Controller:
         # Create an API client with headers
         api_client = create_rooms_api_client(access_token=args["access_token"])
 
+        # Step 3 start
+
         # Get first form library id
         form_libraries_api = FormLibrariesApi(api_client)
         form_libraries = form_libraries_api.get_form_libraries(
@@ -64,14 +65,14 @@ class Eg009Controller:
 
         first_form_library_id = form_libraries.forms_library_summaries[0].forms_library_id
 
+        # Step 3 end
+
         # Get forms
         form_library_forms = form_libraries_api.get_form_library_forms(
             form_library_id=first_form_library_id, account_id=args["account_id"]
         )   # type: FormSummaryList
 
         return form_library_forms.forms
-    
-    # Step 3 end
 
     @staticmethod
     def worker(args):

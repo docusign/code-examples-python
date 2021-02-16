@@ -70,14 +70,10 @@ class Eg008Controller:
 
         # Step 2 end
 
-        # Step 4 start
+        # Step 5 start
 
         # Grant office access to a form group via FormGroups API
         form_groups_api = FormGroupsApi(api_client)
-
-        # Step 4 end
-
-        # Step 5 end
 
         form_groups_api.grant_office_access_to_form_group(
             form_group_id=args["form_group_id"], office_id=args["office_id"],
