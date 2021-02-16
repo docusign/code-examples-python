@@ -37,7 +37,7 @@ app.register_blueprint(core)
 app.register_blueprint(ds)
 # Register examples
 if EXAMPLES_API_TYPE["Rooms"]:
-    app.register_blueprint(rooms_examples.eg001)
+    app.register_blueprint(rooms_examples.eg001Rooms)
     app.register_blueprint(rooms_examples.eg002)
     app.register_blueprint(rooms_examples.eg003)
     app.register_blueprint(rooms_examples.eg004)
