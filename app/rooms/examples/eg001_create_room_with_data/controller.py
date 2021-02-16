@@ -53,7 +53,7 @@ class Eg001Controller:
         # Step 4. Post the room using SDK
         rooms_api = RoomsApi(api_client)
         response = rooms_api.create_room(
-            room_for_create=room,
+            body=room,
             account_id=args["account_id"]
         )
         return response

@@ -64,7 +64,7 @@ class Eg004Controller:
         rooms_api = RoomsApi(api_client)
         response = rooms_api.add_form_to_room(
             room_id=args['room_id'],
-            form_for_add=FormForAdd(form_id=args['form_id']),
+            body=FormForAdd(form_id=args['form_id']),
             account_id=args["account_id"]
         )
         return response
