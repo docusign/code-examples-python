@@ -16,7 +16,7 @@ def index():
         )
     elif EXAMPLES_API_TYPE["Click"]:
         return render_template(
-         "home_click.html", title="Home - Python Click API Code Examples"
+            "home_click.html", title="Home - Python Click API Code Examples"
         )
     if DS_CONFIG["quickstart"] == "true":
         DS_CONFIG["quickstart"] = 'false'
