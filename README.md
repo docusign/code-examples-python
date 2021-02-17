@@ -210,7 +210,7 @@ When the token expires, it updates automatically.
 **Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip steps 4 and 5 below as they're automatically performed for you.**
 
 1. Extract the Quickstart ZIP file or download or clone the **code-examples-python** repo.
-1. Switch to the folder: cd **<Quickstart_folder_name>** or **cd code-examples-python**
+1. Switch to the folder: **cd <Quickstart_folder_name>** or **cd code-examples-python**
 1. **pip3 install -r requirements.txt**  (or pipenv can be used)
 
    **Note:** To run eSignature example 35, Request a signature by SMS, you will need to edit the SDK files. This is a temporary step that will be removed with future releases of the Python 
