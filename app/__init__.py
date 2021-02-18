@@ -15,8 +15,8 @@ session_path = "/tmp/python_recipe_sessions"
 
 if EXAMPLES_API_TYPE["Rooms"]:
     app = Flask(__name__, template_folder='rooms/templates')
-# elif EXAMPLES_API_TYPE["Click"]:
-#     app = Flask(__name__, template_folder='click/templates')
+elif EXAMPLES_API_TYPE["Click"]:
+    app = Flask(__name__, template_folder='click/templates')
 else:
     app = Flask(__name__)
 app.config.from_pyfile("config.py")
