@@ -86,9 +86,10 @@ class Eg009Controller:
 
         # Create an API client with headers
         api_client = create_rooms_api_client(access_token=args["access_token"])
-        form_groups_api = FormGroupsApi(api_client)
 
         # Step 2 end
+        
+        form_groups_api = FormGroupsApi(api_client)
 
         # Step 5 start
 
