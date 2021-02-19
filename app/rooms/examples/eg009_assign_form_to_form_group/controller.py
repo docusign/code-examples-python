@@ -90,7 +90,7 @@ class Eg009Controller:
 
         # Step 2 end
 
-        # Step 6 start
+        # Step 5 start
 
         # Create FormGroupFormToAssign Object
         form_group_to_assign = FormGroupFormToAssign(
