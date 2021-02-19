@@ -14,10 +14,10 @@ def index():
         return render_template(
             "home_rooms.html", title="Home - Python Rooms API Code Examples"
         )
-    # elif EXAMPLES_API_TYPE["Click"]:
-    #     return render_template(
-    #         "home_click.html", title="Home - Python Click API Code Examples"
-    #     )
+    elif EXAMPLES_API_TYPE["Click"]:
+        return render_template(
+            "home_click.html", title="Home - Python Click API Code Examples"
+        )
     if DS_CONFIG["quickstart"] == "true":
         DS_CONFIG["quickstart"] = 'false'
         return redirect(url_for("eg001.get_view"))

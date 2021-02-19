@@ -36,7 +36,7 @@ class Eg002Controller:
             account_id=args["account_id"],
             clickwrap_id=args["clickwrap_id"],
             clickwrap_request=clickwrap_request,
-            version_number="1"
+            version_id="1"
         )
 
         return response
