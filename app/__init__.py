@@ -8,15 +8,15 @@ from .eSignature import examples
 from .docusign.views import ds
 from .ds_config import EXAMPLES_API_TYPE
 from .rooms import examples as rooms_examples
-# from .click import examples as click_examples
+from .click import examples as click_examples
 from .views import core
 
 session_path = "/tmp/python_recipe_sessions"
 
 if EXAMPLES_API_TYPE["Rooms"]:
     app = Flask(__name__, template_folder='rooms/templates')
-# elif EXAMPLES_API_TYPE["Click"]:
-#     app = Flask(__name__, template_folder='click/templates')
+elif EXAMPLES_API_TYPE["Click"]:
+    app = Flask(__name__, template_folder='click/templates')
 else:
     app = Flask(__name__)
 app.config.from_pyfile("config.py")
@@ -46,12 +46,13 @@ if EXAMPLES_API_TYPE["Rooms"]:
     app.register_blueprint(rooms_examples.eg007)
     app.register_blueprint(rooms_examples.eg008)
     app.register_blueprint(rooms_examples.eg009)
-# elif EXAMPLES_API_TYPE["Click"]:
-#     app.register_blueprint(click_examples.eg001)
-#     app.register_blueprint(click_examples.eg002)
-#     app.register_blueprint(click_examples.eg003)
-#     app.register_blueprint(click_examples.eg004)
-#     app.register_blueprint(click_examples.eg005)
+
+elif EXAMPLES_API_TYPE["Click"]:
+    app.register_blueprint(click_examples.eg001)
+    app.register_blueprint(click_examples.eg002)
+    app.register_blueprint(click_examples.eg003)
+    app.register_blueprint(click_examples.eg004)
+    app.register_blueprint(click_examples.eg005)
 else:
     app.register_blueprint(examples.eg001)
     app.register_blueprint(examples.eg002)

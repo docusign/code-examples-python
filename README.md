@@ -2,7 +2,11 @@
 
 ### Github repo: [code-examples-python](./)
 
-This GitHub repo includes code examples for both the DocuSign eSignature REST API as well as the DocuSign Rooms API. To use the Rooms API code example, modify the EXAMPLES_API_TYPE setting at the end of the ds_config.py file. Set 'Rooms' to True and 'ESignature' to False.
+This GitHub repo includes code examples for DocuSign APIs.
+
+To switch between API code examples, modify the EXAMPLES_API_TYPE setting at the end of the configuration file. Set only one API type to true and set the remaining to false.
+
+If none of the API types are set to true, the DocuSign eSignature REST API code examples will be shown. If multiple API types are set to true, only the first will be shown.
 
 **Note:** to use the Rooms API you must also [create your DocuSign Developer Account for Rooms](https://developers.docusign.com/docs/rooms-api/rooms101/create-account).
 
@@ -169,7 +173,7 @@ This example demonstrates how to grant Office access to a Form Group.
 1. **Assign a form to a form group**
 [Source.](./app/rooms/examples/eg009_assign_form_to_form_group/controller.py)
 This example demonstrates how to assign a form to a form group.
-<!--
+ 
 ## Click API
 
 1. **Create a clickwrap.**
@@ -186,7 +190,7 @@ This example demonstrates how to use DocuSign Click to get a list of clickwraps 
 [Source.](./app/click/examples/eg006_list_clickwraps/controller.py)
 1. **Get clickwrap responses.**
 This example demonstrates how to use DocuSign Click to get user responses to your clickwrap agreements.
-[Source.](./app/click/examples/eg007_clickwrap_responses/controller.py) -->
+[Source.](./app/click/examples/eg007_clickwrap_responses/controller.py) 
 
 ## Included OAuth grant types:
 
@@ -225,8 +229,8 @@ When the token expires, it updates automatically.
 ### Installation steps
 **Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip steps 4 and 5 below as they're automatically performed for you.**
 
-1. Download or clone this repository to your workstation to directory **code-examples-python**
-1. **cd code-examples-python**
+1. Extract the Quickstart ZIP file or download or clone the **code-examples-python** repo.
+1. Switch to the folder: **cd <Quickstart_folder_name>** or **cd code-examples-python**
 1. **pip3 install -r requirements.txt**  (or pipenv can be used)
 
    **Note:** To run eSignature example 35, Request a signature by SMS, you will need to edit the SDK files. This is a temporary step that will be removed with future releases of the Python 
