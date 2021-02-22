@@ -19,7 +19,7 @@ def index():
             "home_click.html", title="Home - Python Click API Code Examples"
         )
     if DS_CONFIG["quickstart"] == "true":
-        DS_CONFIG["quickstart"] = 'false'
+        app.config["quickstart"] = False
         return redirect(url_for("eg001.get_view"))
         
     else:

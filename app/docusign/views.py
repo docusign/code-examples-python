@@ -78,14 +78,10 @@ def ds_callback():
 @ds.route("/must_authenticate")
 def ds_must_authenticate():
     if DS_CONFIG["quickstart"] == "true" and EXAMPLES_API_TYPE['ESignature']:
-        return redirect(url_for("ds.ds_quickstart_auth"))
+        session["auth_type"] = "code_grant"
+        return redirect(url_for("ds.ds_login"))
     else:
         return render_template("must_authenticate.html", title="Must authenticate")
-
-
-@ds.route("/quickstart_auth")
-def ds_quickstart_auth():
-    return render_template("quickstart_auth.html", title="Must authenticate")
 
 
 @ds.route("/ds_return")
