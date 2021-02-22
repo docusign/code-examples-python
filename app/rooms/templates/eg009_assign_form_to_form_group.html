@@ -1,0 +1,40 @@
+<!-- extend base layout --> {% extends "base.html" %}
+{% block content %}
+
+<h4>9. Assign a form to a form group</h4>
+<p>This example demonstrates how to assign a form to a form group.</p>
+
+{% if show_doc %}
+  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+
+<p>API methods used:
+    <a target ='_blank' href="https://developers.docusign.com/docs/rooms-api/how-to/assign-form-group/">Rooms::AssignFormGroup</a>,
+    <a target ='_blank' href="https://developers.docusign.com/docs/rooms-api/reference/forms/formgroups/getformgroups/">FormGroups::GetFormGroups</a> and
+    <a target ='_blank' href="https://developers.docusign.com/docs/rooms-api/reference/forms/formlibraries/getformlibraries/">FormLibraries:GetFormLibraries</a>
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if form_groups %}
+    <div class="form-group">
+        <label for="form_id">Form</label>
+            <select class="form-control" id="form_id" name="form_id">
+                {% for form in forms %}
+                    <option value="{{ form.library_form_id }}">{{ form.name }}</option>
+                {% endfor %}
+            </select>
+        <label for="form_group_id">FormGroup</label>
+            <select class="form-control" id="form_group_id" name="form_group_id">
+                {% for form_group in form_groups %}
+                <option value="{{ form_group.form_group_id }}">{{ form_group.name }}</option>
+                {% endfor %}
+            </select>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Submit</button>
+    {% else %}
+      <p>Problem: please first create a form_group using <a href="eg007">example 7</a>
+          </br>Thank you.</p>
+    {% endif %}
+  </form>
+{% endblock %}

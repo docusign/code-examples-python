@@ -87,7 +87,7 @@ class Eg006Controller:
         # Step 2. Create an external form fill session
         form_fill_session_api = ExternalFormFillSessionsApi(api_client)
         response = form_fill_session_api.create_external_form_fill_session(
-            form_fill_session_for_create=ExternalFormFillSessionForCreate(
+            body=ExternalFormFillSessionForCreate(
                 room_id=args['room_id'],
                 form_id=args['form_id']
             ),

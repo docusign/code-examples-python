@@ -37,12 +37,16 @@ app.register_blueprint(core)
 app.register_blueprint(ds)
 # Register examples
 if EXAMPLES_API_TYPE["Rooms"]:
-    app.register_blueprint(rooms_examples.eg001)
+    app.register_blueprint(rooms_examples.eg001Rooms)
     app.register_blueprint(rooms_examples.eg002)
     app.register_blueprint(rooms_examples.eg003)
     app.register_blueprint(rooms_examples.eg004)
     app.register_blueprint(rooms_examples.eg005)
     app.register_blueprint(rooms_examples.eg006)
+    app.register_blueprint(rooms_examples.eg007)
+    app.register_blueprint(rooms_examples.eg008)
+    app.register_blueprint(rooms_examples.eg009)
+
 elif EXAMPLES_API_TYPE["Click"]:
     app.register_blueprint(click_examples.eg001)
     app.register_blueprint(click_examples.eg002)

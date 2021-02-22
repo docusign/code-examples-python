@@ -10,11 +10,11 @@ from .controller import Eg001Controller
 from app.docusign import authenticate
 from app.error_handlers import process_error
 
-eg = "eg001"  # reference (and url) for this example
-eg001 = Blueprint("eg001", __name__)
+eg = "eg001Rooms"  # reference (and url) for this example
+eg001Rooms = Blueprint("eg001Rooms", __name__)
 
 
-@eg001.route("/eg001", methods=["POST"])
+@eg001Rooms.route("/eg001Rooms", methods=["POST"])
 @authenticate(eg=eg)
 def create_room_with_data():
     """
@@ -46,7 +46,7 @@ def create_room_with_data():
     )
 
 
-@eg001.route("/eg001", methods=["GET"])
+@eg001Rooms.route("/eg001Rooms", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
