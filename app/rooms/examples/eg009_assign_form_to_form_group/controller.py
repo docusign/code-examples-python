@@ -65,13 +65,13 @@ class Eg009Controller:
 
         first_form_library_id = form_libraries.forms_library_summaries[0].forms_library_id
 
-        # Step 3 end
-
         # Get forms
         form_library_forms = form_libraries_api.get_form_library_forms(
             form_library_id=first_form_library_id, account_id=args["account_id"]
         )   # type: FormSummaryList
 
+        # Step 3 end
+        
         return form_library_forms.forms
 
     @staticmethod
