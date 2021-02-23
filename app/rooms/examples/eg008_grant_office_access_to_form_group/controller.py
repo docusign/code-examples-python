@@ -27,12 +27,11 @@ class Eg008Controller:
         2. GET Form Groups via FormGroupsAPI
         """
 
-        # Step 1. Create an API with headers with headers
         api_client = create_rooms_api_client(access_token=args["access_token"])
 
         # Step 4 start
 
-        # Step 2. GET Form Groups via FormGroupsAPI
+        # GET Form Groups via FormGroupsAPI
         form_groups_api = FormGroupsApi(api_client)
         response = form_groups_api.get_form_groups(account_id=args["account_id"])  # type: FormGroupSummaryList
 
