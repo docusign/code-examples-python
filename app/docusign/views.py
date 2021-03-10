@@ -80,6 +80,11 @@ def ds_must_authenticate():
     if DS_CONFIG["quickstart"] == "true" and EXAMPLES_API_TYPE['ESignature']:
         session["auth_type"] = "code_grant"
         return redirect(url_for("ds.ds_login"))
+
+    elif EXAMPLES_API_TYPE["Monitor"]:
+        session["auth_type"] = "jwt"
+        return redirect(url_for("ds.ds_login"))
+
     else:
         return render_template("must_authenticate.html", title="Must authenticate")
 

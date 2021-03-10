@@ -1,8 +1,14 @@
 """Defines the home page route"""
 
-from flask import render_template, url_for, redirect, Blueprint, current_app as app
-from .ds_config import DS_CONFIG
+from flask import (
+    render_template,
+    url_for,
+    redirect,
+    Blueprint,
+    current_app as app
+)
 
+from .ds_config import DS_CONFIG
 from .ds_config import EXAMPLES_API_TYPE
 
 core = Blueprint("core", __name__)
@@ -18,6 +24,13 @@ def index():
         return render_template(
             "home_click.html", title="Home - Python Click API Code Examples"
         )
+
+    elif EXAMPLES_API_TYPE["Monitor"]:
+        return render_template(
+            "home_monitor.html",
+            title="Home - Python Monitor Rooms API Code Examples"
+        )
+
     if DS_CONFIG["quickstart"] == "true":
         app.config["quickstart"] = False
         return redirect(url_for("eg001.get_view"))
