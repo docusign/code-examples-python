@@ -18,7 +18,6 @@ class Eg001Controller:
         """
         1. Create an API client with headers
         2. Get your monitor data via SDK
-        3. Use while loop for collecting rest records
         """
 
         # Step 1. Create an API client with headers
@@ -29,26 +28,10 @@ class Eg001Controller:
         # Step 1 end
 
         # Step 2. Get your monitor data
-        dataset_api = DataSetApi(api_client=api_client)
-        response = dataset_api.get_stream_for_dataset(
-            data_set_name="monitor",
-            version="2.0",
-            _preload_content=False,
-        )
-        response = json.loads(response.data)
-
-        # Step 2 end
-
-        # Step 3. Use while loop for collecting rest records
-
-        result = response["data"]
-        cursor = response["endCursor"]
-
-        # If the endCursor from the response is the same as the one
-        # that you already have,
-        # it means that you have reached the end of the records
-
+        cursor = ""
+        result = []
         while True:
+            dataset_api = DataSetApi(api_client=api_client)
             response = dataset_api.get_stream_for_dataset(
                 data_set_name="monitor",
                 version="2.0",
@@ -56,14 +39,17 @@ class Eg001Controller:
                 cursor=cursor
             )
 
-            response = json.loads(response.data)
+            data = json.loads(response.data)
 
-            if response["endCursor"] == cursor:
+            # If the endCursor from the response is the same as the one
+            # that you already have,
+            # it means that you have reached the end of the records
+            if data["endCursor"] == cursor:
                 break
 
-            result.extend(response["data"])
-            cursor = response["endCursor"]
+            result.extend(data["data"])
+            cursor = data["endCursor"]
 
-        # Step 3 end
+        # Step 2 end
 
         return result
