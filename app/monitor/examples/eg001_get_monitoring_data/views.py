@@ -2,7 +2,7 @@
 
 import json
 
-from docusign_rooms.client.api_exception import ApiException
+from docusign_monitor.client.api_exception import ApiException
 from flask import Blueprint, render_template, current_app
 
 from app.docusign import authenticate
