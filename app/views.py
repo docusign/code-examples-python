@@ -28,7 +28,7 @@ def index():
     elif EXAMPLES_API_TYPE["Monitor"]:
         return render_template(
             "home_monitor.html",
-            title="Home - Python Monitor Rooms API Code Examples"
+            title="Home - Python Monitor API Code Examples"
         )
 
     if DS_CONFIG["quickstart"] == "true":
