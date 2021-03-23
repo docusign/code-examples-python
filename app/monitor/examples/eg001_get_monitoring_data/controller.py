@@ -28,10 +28,11 @@ class Eg001Controller:
         # Step 1 end
 
         # Step 2. Get your monitor data
+        dataset_api = DataSetApi(api_client=api_client)
+
         cursor = ""
         result = []
         while True:
-            dataset_api = DataSetApi(api_client=api_client)
             response = dataset_api.get_stream_for_dataset(
                 data_set_name="monitor",
                 version="2.0",
