@@ -35,20 +35,17 @@ class Eg001Controller:
             response = dataset_api.get_stream_for_dataset(
                 data_set_name="monitor",
                 version="2.0",
-                _preload_content=False,
                 cursor=cursor
             )
-
-            data = json.loads(response.data)
 
             # If the endCursor from the response is the same as the one
             # that you already have,
             # it means that you have reached the end of the records
-            if data["endCursor"] == cursor:
+            if response["endCursor"] == cursor:
                 break
 
-            result.extend(data["data"])
-            cursor = data["endCursor"]
+            result.extend(response["data"])
+            cursor = response["endCursor"]
 
         # Step 2 end
 
