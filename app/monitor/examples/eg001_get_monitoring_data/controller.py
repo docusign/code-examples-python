@@ -20,14 +20,17 @@ class Eg001Controller:
         2. Get your monitor data via SDK
         """
 
-        # Step 1. Create an API client with headers
+        # Step 2 start
+
+        # Create an API client with headers
         api_client = create_monitor_api_client(
             access_token=args["access_token"]
         )
 
-        # Step 1 end
+        # Step 2 end
 
-        # Step 2. Get your monitor data
+        #Step 3 start
+
         dataset_api = DataSetApi(api_client=api_client)
 
         cursor = ""
@@ -48,6 +51,6 @@ class Eg001Controller:
             result.extend(response["data"])
             cursor = response["endCursor"]
 
-        # Step 2 end
+        # Step 3 end
 
         return result
