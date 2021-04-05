@@ -195,7 +195,7 @@ This example demonstrates how to use DocuSign Click to get user responses to you
 ## Monitor API
 1. **Get monitor data.**
 [Source.](./app/monitor/examples/eg001_get_monitoring_data/controller.py)
-This example demonstrates how to get and display all of your organization’s monitoring data
+This example demonstrates how to get and display all of your organization’s monitoring data.
 
 ## Included OAuth grant types:
 
