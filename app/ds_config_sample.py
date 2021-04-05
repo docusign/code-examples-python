@@ -11,8 +11,9 @@ DS_CONFIG = {
     # NOTE: You must add a Redirect URI of appUrl/ds/callback to your Integration Key.
     #       Example: http://localhost:5000/ds/callback
     "authorization_server": "https://account-d.docusign.com",
-    "click_api_client_host" : "https://demo.docusign.net/clickapi",
-    "rooms_api_client_host" : "https://demo.rooms.docusign.com/restapi",
+    "click_api_client_host": "https://demo.docusign.net/clickapi",
+    "rooms_api_client_host": "https://demo.rooms.docusign.com/restapi",
+    "monitor_api_client_host": "https://lens-d.docusign.net",
     "allow_silent_authentication": True,  # a user can be silently authenticated if they have an
     # active login session on another tab of the same browser
     "target_account_id": None,  # Set if you want a specific DocuSign AccountId,
@@ -42,5 +43,6 @@ DS_JWT = {
 EXAMPLES_API_TYPE = {
         "Rooms": False,
         "ESignature": True,
-        "Click": False
+        "Click": False,
+        "Monitor": False,
 }

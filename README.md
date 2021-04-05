@@ -190,7 +190,12 @@ This example demonstrates how to use DocuSign Click to get a list of clickwraps 
 [Source.](./app/click/examples/eg006_list_clickwraps/controller.py)
 1. **Get clickwrap responses.**
 This example demonstrates how to use DocuSign Click to get user responses to your clickwrap agreements.
-[Source.](./app/click/examples/eg007_clickwrap_responses/controller.py) 
+[Source.](./app/click/examples/eg007_clickwrap_responses/controller.py)
+
+## Monitor API
+1. **Get monitor data.**
+[Source.](./app/monitor/examples/eg001_get_monitoring_data/controller.py)
+This example demonstrates how to get and display all of your organization’s monitoring data.
 
 ## Included OAuth grant types:
 
