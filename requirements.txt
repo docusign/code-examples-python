@@ -5,7 +5,7 @@ chardet==3.0.4
 Click
 cryptography==3.2.1
 docusign-esign==3.8.1rc3
-docusign-rooms==1.1.0rc1
+docusign-rooms==1.1.0
 docusign-monitor==1.0.0a1
 docusign-click==1.0.0
 Flask==1.1.1
