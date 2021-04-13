@@ -193,9 +193,12 @@ This example demonstrates how to use DocuSign Click to get user responses to you
 [Source.](./app/click/examples/eg007_clickwrap_responses/controller.py)
 
 ## Monitor API
-1. **Get monitor data.**
+**Note:** To use the Monitor API, you must also [enable DocuSign Monitor for your organization](https://developers.docusign.com/docs/monitor-api/how-to/enable-monitor/).   
+For information about the scopes used for obtaining authorization to use the Monitor API, see the [scopes section](https://developers.docusign.com/docs/monitor-api/monitor101/auth/).
+
+1. **Get monitoring data.**
 [Source.](./app/monitor/examples/eg001_get_monitoring_data/controller.py)
-This example demonstrates how to get and display all of your organization’s monitoring data.
+Demonstrates how to get and display all of your organization’s monitoring data.
 
 ## Included OAuth grant types:
 
