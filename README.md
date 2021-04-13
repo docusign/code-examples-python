@@ -198,7 +198,7 @@ For information about the scopes used for obtaining authorization to use the Mon
 
 1. **Get monitoring data.**
 [Source.](./app/monitor/examples/eg001_get_monitoring_data/controller.py)
-This example demonstrates how to get and display all of your organization’s monitoring data.
+Demonstrates how to get and display all of your organization’s monitoring data.
 
 ## Included OAuth grant types:
 
