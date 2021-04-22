@@ -132,7 +132,7 @@ class Eg013Controller:
             ],
             # Add the roles via an inlineTemplate
             inline_templates=[
-                InlineTemplate(sequence="1",
+                InlineTemplate(sequence="2",
                                recipients=recipients_server_template)
             ]
         )
@@ -178,7 +178,7 @@ class Eg013Controller:
             composite_template_id="2",
             # Add the recipients via an inlineTemplate
             inline_templates=[
-                InlineTemplate(sequence="2", recipients=recipients_added_doc)
+                InlineTemplate(sequence="1", recipients=recipients_added_doc)
             ],
             document=doc1
         )
