@@ -103,7 +103,7 @@ class DSClient:
         except ApiException as err:
             body = err.body.decode('utf8')
 
-            # Grand explicit consent for the application
+            # Grant explicit consent for the application
             if "consent_required" in body:
                 consent_scopes = " ".join(use_scopes)
                 redirect_uri = DS_CONFIG["app_url"] + url_for("ds.ds_callback")
