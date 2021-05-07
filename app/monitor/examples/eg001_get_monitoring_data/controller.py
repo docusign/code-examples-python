@@ -48,7 +48,7 @@ class Eg001Controller:
             if response["endCursor"] == cursor:
                 break
 
-            result.extend(response["data"])
+            result.extend([response])
             cursor = response["endCursor"]
 
         # Step 3 end

@@ -35,7 +35,8 @@ def get_monitoring_data():
     return render_template(
         "example_done.html",
         title="Get monitoring data",
-        h1="Get monitoring data",
+        h1="Monitoring data result",
+        message="Results from DataSet:GetStreamForDataset method:",
         json=json.dumps(json.dumps(results, default=str))
     )
 
