@@ -28,13 +28,13 @@ For a list of code examples that use the Rooms API, see the [Code example launch
 
 For more information about the scopes used for obtaining authorization to use the Click API, see the [Required Scopes section](https://developers.docusign.com/docs/click-api/click101/auth/)
 
-For a list of code examples that use the Rooms API, see the [Code example launchers](https://developers.docusign.com/docs/click-api/how-to/code-launchers/) page on the DocuSign Developer Center.
+For a list of code examples that use the Click API, see the [Code example launchers](https://developers.docusign.com/docs/click-api/how-to/code-launchers/) page on the DocuSign Developer Center.
 
 ## Monitor API
 **Note:** To use the Monitor API, you must also [enable DocuSign Monitor for your organization](https://developers.docusign.com/docs/monitor-api/how-to/enable-monitor/).   
 For information about the scopes used for obtaining authorization to use the Monitor API, see the [scopes section](https://developers.docusign.com/docs/monitor-api/monitor101/auth/).
 
-For a list of code examples that use the Rooms API, see the [Code example launchers](https://developers.docusign.com/docs/monitor-api/how-to/code-launchers/) page on the DocuSign Developer Center.
+For a list of code examples that use the Monitor API, see the [Code example launchers](https://developers.docusign.com/docs/monitor-api/how-to/code-launchers/) page on the DocuSign Developer Center.
 
 ## Installation
 
