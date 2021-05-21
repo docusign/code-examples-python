@@ -21,7 +21,7 @@ When the token expires, it updates automatically.
 
 For more information about the scopes used for obtaining authorization to use the eSignature API, see [Required scopes](https://developers.docusign.com/docs/esign-rest-api/esign101/auth#required-scopes).
 
-For a list of code examples that use the eSignature API, select the Python tab under [Examples and languages](https://developers.docusign.com/docs/esign-rest-api/how-to/code-launchers#examples-and-languages) the DocuSign Developer Center.
+For a list of code examples that use the eSignature API, select the Python tab under [Examples and languages](https://developers.docusign.com/docs/esign-rest-api/how-to/code-launchers#examples-and-languages) on the DocuSign Developer Center.
 
 ## Rooms API
 
@@ -38,7 +38,7 @@ For a list of code examples that use the Click API, select the Python tab under 
 
 ## Monitor API
 **Note:** To use the Monitor API, you must also [enable DocuSign Monitor for your organization](https://developers.docusign.com/docs/monitor-api/how-to/enable-monitor/).   
-For information about the scopes used for obtaining authorization to use the Monitor API, see [Required scopes](https://developers.docusign.com/docs/monitor-api/monitor101/auth/).
+For information about the scopes used for obtaining authorization to use the Monitor API, see the [scopes section](https://developers.docusign.com/docs/monitor-api/monitor101/auth/).
 
 For a list of code examples that use the Monitor API, select the Python tab under [Examples and languages](https://developers.docusign.com/docs/monitor-api/how-to/code-launchers/#examples-and-languages) on the DocuSign Developer Center.
 
@@ -82,7 +82,7 @@ For a list of code examples that use the Monitor API, select the Python tab unde
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:5000/ds/callback. Select **SAVE**.   
    1. Set a name and email address for the signer. In ds_config.py, save an email address as `signer_email` and a name as `signer_name`.  
 **Note:** Protect your personal information. Please make sure that ds_config.py will not be stored in your source code repository.
-1. Run the launcher:`python run.py`
+1. Run the launcher:`python run.py`  
    **Note:** You will need to alias the python command to run Python 3 or use `python3 run.py`
 1. Open a browser to http://localhost:5000
 
@@ -101,7 +101,7 @@ Also, in order to select JSON Web Token authentication in the launcher, in app/d
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:5000/ds/callback. Select **SAVE**.   
    1. Set a name and email address for the signer. In ds_config.py, save an email address as `signer_email` and a name as `signer_name`.  
 **Note:** Protect your personal information. Please make sure that ds_config.py will not be stored in your source code repository.  
-1. Run the launcher:`python run.py`
+1. Run the launcher:`python run.py`  
    **Note:** You will need to alias the python command to run Python 3 or use `python3 run.py`   
 1. Open a browser to http://localhost:5000
 1. On the black navigation bar, select **Login**.
