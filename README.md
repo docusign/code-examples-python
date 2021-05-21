@@ -75,7 +75,7 @@ For a list of code examples that use the Monitor API, select the Python tab unde
 1. Extract the Quickstart ZIP file or download or clone the code-examples-python repository.
 1. In your command-line environment, switch to the folder:  
    `cd <Quickstart folder>` or `cd code-examples-python`
-1. To install dependencies, run: `pip3 install -r requirements.txt`  (or pipenv can be used).
+1. To install dependencies, run: `pip3 install -r requirements.txt`  (or pipenv can be used)
 1. To configure the launcher for [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/) authentication, create a copy of the file app/ds_config_sample.py and save the copy as app/ds_config.py.
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions > Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in ds_config.py as your `ds_client_id`.
    1. Generate a secret key, if you don’t already have one. Under **Authentication**, select **+ ADD SECRET KEY**. Copy the secret key and save it in ds_config.py as your `ds_client_secret`.
@@ -93,7 +93,7 @@ Also, in order to select JSON Web Token authentication in the launcher, in app/d
 
 1. Extract the Quickstart ZIP file or download or clone the code-examples-python repository.
 1. In your command-line environment, switch to the folder: `cd <Quickstart folder>` or `cd code-examples-python`
-1. To install dependencies, run: `pip3 install -r requirements.txt`  (or pipenv can be used).
+1. To install dependencies, run: `pip3 install -r requirements.txt`  (or pipenv can be used)
 1. To configure the launcher for [JWT Grant](https://developers.docusign.com/platform/auth/jwt/) authentication, create a copy of the file app/ds_config_sample.py and save the copy as app/ds_config.py.
    1. Add your API Username. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **My Account Information**, copy the **API Username** GUID and save it in ds_config.py as your `ds_impersonated_user_id`.
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions > Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in ds_config.py as your `ds_client_id`.
