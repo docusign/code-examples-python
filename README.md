@@ -2,7 +2,7 @@
 
 ### Github repo: [code-examples-python](./)
 
-This GitHub repo includes code examples for the DocuSign eSignature REST API, Rooms API, and Click API. To switch between API code examples, modify the EXAMPLES_API_TYPE setting in the ds_config.py file. Change the value of either `ESignature`, `Rooms`, `Click`, or `Monitor` to `"true"` to use the corresponding API. Set only one API type to true and set the remaining to false.
+This GitHub repo includes code examples for the DocuSign eSignature REST API, Rooms API, and Click API. To switch between API code examples, modify the EXAMPLES_API_TYPE setting in the ds_config.py file. Change the value of either `ESignature`, `Rooms`, `Click`, or `Monitor` to `"true"` to use the corresponding API. Set only one API type to true and set the remaining to `"false"`.
 
 If none of the API types are set to true, the DocuSign eSignature REST API code examples will be shown. If multiple API types are set to true, only the first will be shown.
 
