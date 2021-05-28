@@ -111,7 +111,7 @@ Also, in order to select JSON Web Token authentication in the launcher, in app/d
 
 ## Payments code example  
 
-To use the payments code example, create a test payment gateway on the [**Payments**](https://admindemo.docusign.com/authenticate?goTo=payments) page in your developer account. See [Configure a payment gateway](./PAYMENTS_INSTALLATION.md) for details.
+To use the payments code example, create a test payment gateway on the [Payments](https://admindemo.docusign.com/authenticate?goTo=payments) page in your developer account. See [Configure a payment gateway](./PAYMENTS_INSTALLATION.md) for details.
 
 Once you've created a payment gateway, save the **Gateway Account ID** GUID to ds_config.py.
 
