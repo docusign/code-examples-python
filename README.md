@@ -1,8 +1,8 @@
 ﻿# Python Launcher Code Examples
 
-### Github repo: [code-examples-python](./)
+### GitHub repo: [code-examples-python](./)
 
-This GitHub repo includes code examples for the DocuSign eSignature REST API, Rooms API, and Click API. To switch between API code examples, modify the `EXAMPLES_API_TYPE` setting in the ds_config.py file. Change the value of either `ESignature`, `Rooms`, `Click`, or `Monitor` to `True` to use the corresponding API. Set only one API type to `True` and set the remaining to `False`.
+This GitHub repo includes code examples for the DocuSign eSignature REST API, Rooms API, Click API, and Monitor API. To switch between API code examples, modify the `EXAMPLES_API_TYPE` setting in the ds_config.py file. Change the value of either `ESignature`, `Rooms`, `Click`, or `Monitor` to `True` to use the corresponding API. Set only one API type to `True` and set the remaining to `False`.
 
 If none of the API types are set to `True`, the DocuSign eSignature REST API code examples will be shown. If multiple API types are set to `True`, only the first will be shown.
 
