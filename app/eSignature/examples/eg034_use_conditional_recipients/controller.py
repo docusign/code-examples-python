@@ -192,7 +192,8 @@ class Eg034Controller:
             tab_id="ApprovalTab",
             operator="equals",
             value="false",
-            tab_label="ApproveWhenChecked"
+            tab_label="ApproveWhenChecked",
+            tab_type ="checkbox"
         )
         filter2 = ConditionalRecipientRuleFilter(
             scope="tabs",
@@ -200,7 +201,8 @@ class Eg034Controller:
             tab_id="ApprovalTab",
             operator="equals",
             value="true",
-            tab_label="ApproveWhenChecked"
+            tab_label="ApproveWhenChecked",
+            tab_type ="checkbox"
         )
 
         # Create conditionalRecipientRuleCondition models
