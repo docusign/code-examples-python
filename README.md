@@ -1,10 +1,10 @@
 ﻿# Python Launcher Code Examples
 
-### Github repo: [code-examples-python](./)
+### GitHub repo: [code-examples-python](./)
 
-This GitHub repo includes code examples for the DocuSign eSignature REST API, Rooms API, and Click API. To switch between API code examples, modify the EXAMPLES_API_TYPE setting in the ds_config.py file. Change the value of either `ESignature`, `Rooms`, `Click`, or `Monitor` to `True` to use the corresponding API. Set only one API type to `True` and set the remaining to `False`.
+This GitHub repo includes code examples for the DocuSign eSignature REST API, Rooms API, Click API, and Monitor API. To switch between API code examples, modify the `EXAMPLES_API_TYPE` setting in the ds_config.py file. Change the value of either `ESignature`, `Rooms`, `Click`, or `Monitor` to `True` to use the corresponding API. Set only one API type to `True` and set the remaining to `False`.
 
-If none of the API types are set to true, the DocuSign eSignature REST API code examples will be shown. If multiple API types are set to true, only the first will be shown.
+If none of the API types are set to `True`, the DocuSign eSignature REST API code examples will be shown. If multiple API types are set to `True`, only the first will be shown.
 
 
 ## Introduction
@@ -75,7 +75,7 @@ For a list of code examples that use the Monitor API, select the Python tab unde
 1. Extract the Quickstart ZIP file or download or clone the code-examples-python repository.
 1. In your command-line environment, switch to the folder:  
    `cd <Quickstart folder>` or `cd code-examples-python`
-1. To install dependencies, run  `pip3 install -r requirements.txt`  (or pipenv can be used).
+1. To install dependencies, run: `pip3 install -r requirements.txt`  (or pipenv can be used)
 1. To configure the launcher for [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/) authentication, create a copy of the file app/ds_config_sample.py and save the copy as app/ds_config.py.
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions > Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in ds_config.py as your `ds_client_id`.
    1. Generate a secret key, if you don’t already have one. Under **Authentication**, select **+ ADD SECRET KEY**. Copy the secret key and save it in ds_config.py as your `ds_client_secret`.
@@ -93,7 +93,7 @@ Also, in order to select JSON Web Token authentication in the launcher, in app/d
 
 1. Extract the Quickstart ZIP file or download or clone the code-examples-python repository.
 1. In your command-line environment, switch to the folder: `cd <Quickstart folder>` or `cd code-examples-python`
-1. To install dependencies, run `pip3 install -r requirements.txt`  (or pipenv can be used).
+1. To install dependencies, run: `pip3 install -r requirements.txt`  (or pipenv can be used)
 1. To configure the launcher for [JWT Grant](https://developers.docusign.com/platform/auth/jwt/) authentication, create a copy of the file app/ds_config_sample.py and save the copy as app/ds_config.py.
    1. Add your API Username. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **My Account Information**, copy the **API Username** GUID and save it in ds_config.py as your `ds_impersonated_user_id`.
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions > Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in ds_config.py as your `ds_client_id`.
@@ -111,7 +111,7 @@ Also, in order to select JSON Web Token authentication in the launcher, in app/d
 
 ## Payments code example  
 
-To use the payments code example, create a test payment gateway on the [**Payments**](https://admindemo.docusign.com/authenticate?goTo=payments) page in your developer account. See [Configure a payment gateway](./PAYMENTS_INSTALLATION.md) for details.
+To use the payments code example, create a test payment gateway on the [Payments](https://admindemo.docusign.com/authenticate?goTo=payments) page in your developer account. See [Configure a payment gateway](./PAYMENTS_INSTALLATION.md) for details.
 
 Once you've created a payment gateway, save the **Gateway Account ID** GUID to ds_config.py.
 
