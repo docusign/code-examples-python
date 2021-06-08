@@ -32,24 +32,9 @@ class Eg001Controller:
         #Step 3 start
 
         dataset_api = DataSetApi(api_client=api_client)
-
-        cursor = ""
-        result = []
-        while True:
-            response = dataset_api.get_stream_for_dataset(
-                data_set_name="monitor",
-                version="2.0",
-                cursor=cursor
-            )
-
-            # If the endCursor from the response is the same as the one
-            # that you already have,
-            # it means that you have reached the end of the records
-            if response["endCursor"] == cursor:
-                break
-
-            result.extend([response])
-            cursor = response["endCursor"]
+        result = dataset_api.get_stream(
+            data_set_name="monitor",
+            version="2.0")._data
 
         # Step 3 end
 
