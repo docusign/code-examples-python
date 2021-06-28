@@ -14,6 +14,7 @@ DS_CONFIG = {
     "click_api_client_host": "https://demo.docusign.net/clickapi",
     "rooms_api_client_host": "https://demo.rooms.docusign.com/restapi",
     "monitor_api_client_host": "https://lens-d.docusign.net",
+    "admin_api_client_host": "https://api-d.docusign.net/management",
     "allow_silent_authentication": True,  # a user can be silently authenticated if they have an
     # active login session on another tab of the same browser
     "target_account_id": None,  # Set if you want a specific DocuSign AccountId,
@@ -30,8 +31,10 @@ DS_CONFIG = {
     "gateway_display_name": "Stripe",
     "github_example_url": "https://github.com/docusign/code-examples-python/tree/master/app/eSignature/examples/",
     "monitor_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/monitor/examples/",
+    "admin_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/admin/examples/",
     "documentation": "",  # Use an empty string to indicate no documentation path.
-    "quickstart": "{QUICKSTART_VALUE}"
+    "quickstart": "{QUICKSTART_VALUE}",
+    "organization_id": "{ORGANIZATION_ID}
 }
 
 DS_JWT = {
@@ -46,4 +49,5 @@ EXAMPLES_API_TYPE = {
         "ESignature": True,
         "Click": False,
         "Monitor": False,
+        "Admin": False
 }

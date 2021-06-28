@@ -30,6 +30,11 @@ def index():
             "home_monitor.html",
             title="Home - Python Monitor API Code Examples"
         )
+    elif EXAMPLES_API_TYPE["Admin"]:
+        return render_template(
+            "home_admin.html",
+            title="Home - Python Admin API Code Examples"
+        )
 
     if DS_CONFIG["quickstart"] == "true":
         app.config["quickstart"] = False

@@ -1,0 +1,42 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div>
+    <div class="jumbotron jumbotron-fluid"> <table>
+      <tbody>
+      <tr>
+      <td>
+        <h1 class="display-4">Python Launcher</h1>
+      <p class="Xlead">Welcome to the Python code examples for DocuSign Admin API with JWT Grant authentication</p>
+      </td>
+      <td>
+          <img src="/static/assets/banner-code.png" />
+      </td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+
+    <div class="container" style="margin-top: 40px" id="index-page">
+        
+        {% if show_doc %}
+            <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> on using JWT from a Python Flask application.</p>
+        {% endif %}
+
+        <h2>Admin API Code Examples</h2>
+            <h4 id="example005">5. <a href="eg005">Audit users</a></h4>
+            <p>Demonstrates how to audit the users in your organization.</p>
+
+            <p>API method used: 
+              <a target='_blank' href="https://developers.docusign.com/docs/monitor-api/reference/monitor/dataset/getstream/">DataSet:getStream</a>
+           </p>
+    </div>
+  </div>
+
+    <!-- anchor-js is only for the index page -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
+    <script>anchors.options.placement = 'left'; anchors.add('h4')</script>
+
+{% endblock %}
