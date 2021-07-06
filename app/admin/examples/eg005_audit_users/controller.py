@@ -2,14 +2,17 @@ from docusign_orgadmin import ApiClient, UsersApi
 from flask import session, json
 
 from ....ds_config import DS_CONFIG
+from app.admin.utils import get_organization_id
 
 class Eg005Controller:
     @staticmethod
     def get_args():
         """Get required session and request arguments"""
+        organization_id = get_organization_id()
         return {
             "account_id": session["ds_account_id"], # Represents your {ACCOUNT_ID}
             "access_token": session["ds_access_token"], # Represents your {ACCESS_TOKEN}
+            "organization_id": organization_id, # Represents your {ORGANIZATION_ID}
         }
 
     @staticmethod
@@ -21,6 +24,7 @@ class Eg005Controller:
 
         access_token = args["access_token"]
         account_id = args["account_id"]
+        org_id = args["organization_id"]
 
         # Step 2 start
         # Create an API client with headers
@@ -34,7 +38,7 @@ class Eg005Controller:
         #Step 3 start
         users_api = UsersApi(api_client=api_client)
         users = users_api.get_users(
-            organization_id=DS_CONFIG["organization_id"],
+            organization_id=org_id,
             account_id=account_id, 
             last_modified_since="2020-02-01")
         # Step 3 end
@@ -49,7 +53,7 @@ class Eg005Controller:
 
         # Step 5 start
         for email in emails:
-            profile = users_api.get_user_profiles(organization_id=DS_CONFIG["organization_id"], email=email)
+            profile = users_api.get_user_profiles(organization_id=org_id, email=email)
         
         # Step 5 end
 
