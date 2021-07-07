@@ -52,9 +52,12 @@ class Eg005Controller:
         # Step 4 end
 
         # Step 5 start
+        profile_list = []
         for email in emails:
             profile = users_api.get_user_profiles(organization_id=org_id, email=email)
-        
+            profile_list.append(profile.to_dict())
         # Step 5 end
 
-        return profile
+        results = {"Modified users": profile_list}
+
+        return results

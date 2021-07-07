@@ -1,4 +1,4 @@
-from docusign_orgadmin import ApiClient, ProductPermissionProfilesApi
+from docusign_orgadmin import ApiClient, ProductPermissionProfilesApi, DSGroupsApi
 from flask import session, json
 
 from ....ds_config import DS_CONFIG
@@ -42,10 +42,12 @@ class Eg002Controller:
         # Step 3 end
 
         # Step 4 start
-
+        ds_groups_api = DSGroupsApi(api_client)
+        ds_groups = ds_groups_api.get_ds_groups(organization_id=org_id, account_id=session["ds_account_id"])
         # Step 4 end
 
         # Step 5 start
+        
 
         # Step 5 end
 
