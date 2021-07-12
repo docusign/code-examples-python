@@ -6,7 +6,7 @@ Click
 cryptography==3.2.1
 docusign-esign==3.10.0rc1
 docusign-rooms==1.1.0
-docusign-monitor==1.0.0b0
+docusign-monitor==1.0.0
 docusign-click==1.0.0
 Flask==1.1.1
 Flask-OAuthlib==0.9.6
