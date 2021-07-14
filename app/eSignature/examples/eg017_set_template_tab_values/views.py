@@ -15,7 +15,7 @@ eg017 = Blueprint("eg017", __name__)
 
 
 # the signer? See the "authenticationMethod" definition
-# https://developers.docusign.com/esign-rest-api/reference/Envelopes/EnvelopeViews/createRecipient
+# https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopeviews/createrecipient/
 
 
 @eg017.route("/eg017", methods=["POST"])
