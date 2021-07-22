@@ -35,7 +35,7 @@ def audit_users():
     return render_template(
         "example_done.html",
         title="Audit users",
-        h1="Audit users result",
+        h1="Audit users",
         message="Results from Users:getUserProfiles method:",
         json=json.dumps(json.dumps(results, default=str))
     )

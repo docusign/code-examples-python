@@ -1,4 +1,4 @@
-from docusign_orgadmin import ApiClient, UsersApi
+from docusign_admin import ApiClient, UsersApi
 from flask import session, json
 
 from ....ds_config import DS_CONFIG
