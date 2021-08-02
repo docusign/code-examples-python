@@ -111,4 +111,4 @@ class Eg002Controller:
         response = users_api.add_or_update_user(organization_id=org_id, account_id=session["ds_account_id"], request=new_user)
         # Step 6 end
 
-        return response
+        return response.to_dict()
