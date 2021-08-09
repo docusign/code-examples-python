@@ -27,7 +27,7 @@ python-dateutil==2.8.1
 requests>=2.22.0
 requests-oauthlib==1.1.0
 six==1.13.0
-urllib3>=1.25.8
+urllib3>=1.26.5
 virtualenv==16.7.5
 virtualenv-clone==0.5.3
 Werkzeug==0.16.0
