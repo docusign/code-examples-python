@@ -76,8 +76,8 @@ class Eg002Controller:
         clm_permission_profile_name = args["clm_permission_profile_name"]
         esign_permission_profile_name = args["esign_permission_profile_name"]
 
-        # Step 2 start
         # Create an API client with headers
+        # Step 2 start        
         api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
         api_client.set_default_header(
             header_name="Authorization",
