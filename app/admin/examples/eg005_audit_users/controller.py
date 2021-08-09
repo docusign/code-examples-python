@@ -3,6 +3,7 @@ from flask import session, json
 
 from ....ds_config import DS_CONFIG
 from app.admin.utils import get_organization_id
+import datetime
 
 class Eg005Controller:
     @staticmethod
@@ -36,11 +37,15 @@ class Eg005Controller:
         # Step 2 end
 
         #Step 3 start
+        today = datetime.datetime.now()
+        ten_days_ago = today - (datetime.timedelta(days = 10))
+        last_modified_since = ten_days_ago.strftime('%Y-%m-%d')
+
         users_api = UsersApi(api_client=api_client)
         users = users_api.get_users(
             organization_id=org_id,
             account_id=account_id, 
-            last_modified_since="2020-02-01")
+            last_modified_since=last_modified_since)
         # Step 3 end
 
         # Step 4 start
