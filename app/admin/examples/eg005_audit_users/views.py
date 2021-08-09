@@ -3,7 +3,7 @@
 import json
 from os import path
 
-from docusign_orgadmin.client.api_exception import ApiException
+from docusign_admin.client.api_exception import ApiException
 from flask import Blueprint, render_template, current_app
 
 from app.docusign import authenticate
