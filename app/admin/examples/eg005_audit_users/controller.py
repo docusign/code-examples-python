@@ -27,8 +27,8 @@ class Eg005Controller:
         account_id = args["account_id"]
         org_id = args["organization_id"]
 
-        # Step 2 start
         # Create an API client with headers
+        # Step 2 start
         api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
         api_client.set_default_header(
             header_name="Authorization",
