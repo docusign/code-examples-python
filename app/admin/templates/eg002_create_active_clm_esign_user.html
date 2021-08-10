@@ -35,19 +35,6 @@
             aria-describedby="emailHelp" required>
         <small id="emailHelp" class="form-text text-muted">We will never share your email with anyone else.</small>
     </div>
-    {% if clm_permission_profiles_list %}
-    <div class="form-group">
-        <label for="clm_permission_profile">CLM permission profile</label>
-        <select class="form-control" id="clm_permission_profile" name="clm_permission_profile">
-            {% for profile in clm_permission_profiles_list %}
-                <option value="{{profile}}">{{profile}}</option>
-            {% endfor %}
-        </select>
-    </div>
-    {% else %}
-        <p>Problem: Please first create a CLM permission profile.
-        </br>Thank you.</p>
-    {% endif %}
     {% if esign_permission_profiles_list %}
     <div class="form-group">
         <label for="esign_permission_profile">eSignature permission profile</label>
@@ -59,6 +46,19 @@
     </div>
     {% else %}
         <p>Problem: Please first create an eSignature permission profile.
+        </br>Thank you.</p>
+    {% endif %}
+    {% if clm_permission_profiles_list %}
+    <div class="form-group">
+        <label for="clm_permission_profile">CLM permission profile</label>
+        <select class="form-control" id="clm_permission_profile" name="clm_permission_profile">
+            {% for profile in clm_permission_profiles_list %}
+                <option value="{{profile}}">{{profile}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% else %}
+        <p>Problem: Please first create a CLM permission profile.
         </br>Thank you.</p>
     {% endif %}
     {% if ds_groups %}

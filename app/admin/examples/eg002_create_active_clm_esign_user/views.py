@@ -38,7 +38,7 @@ def create_active_clm_esign_user():
         "example_done.html",
         title="Create a new active user for CLM and eSignature",
         h1="Create active user for CLM and eSignature",
-        message="Results from Users::addOrUpdateUser method:",
+        message="Results from MultiProductUserManagement:addOrUpdateUser method:",
         json=json.dumps(json.dumps(results, default=str))
     )
 
