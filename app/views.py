@@ -24,11 +24,15 @@ def index():
         return render_template(
             "home_click.html", title="Home - Python Click API Code Examples"
         )
-
     elif EXAMPLES_API_TYPE["Monitor"]:
         return render_template(
             "home_monitor.html",
             title="Home - Python Monitor API Code Examples"
+        )
+    elif EXAMPLES_API_TYPE["Admin"]:
+        return render_template(
+            "home_admin.html",
+            title="Home - Python Orgadmin API Code Examples"
         )
 
     if DS_CONFIG["quickstart"] == "true":
