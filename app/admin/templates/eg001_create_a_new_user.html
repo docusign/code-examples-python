@@ -1,0 +1,46 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>1. Create a new user</h4>
+<p>Demonstrates how to create a new user with active status.</p>
+
+{% if show_doc %}
+    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+  
+  <p>API method used:
+   <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/users/users/createuser/">Users::createUser</a>.
+</p>
+<p>
+    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="form-group">
+        <label for="first_name">First name</label>
+        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="John" required>
+    </div>
+    <div class="form-group">
+        <label for="last_name">Last name</label>
+        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Dow" required>
+    </div>
+    <div class="form-group">
+        <label for="user_email">User Email</label>
+        <input type="email" class="form-control" id="user_email" name="user_email" placeholder="example0001@example.com" required>
+    </div>
+    <div class="form-group">
+        <label for="profile_id" title="You can find Permission profile Id in your Docusign developer account: Settings => Permission Profiles => select the required profile, than: Actions => View">Permission profile ID</label>
+        <input type="number" class="form-control" id="profile_id" name="profile_id" placeholder="11603301" required>
+    </div>
+    <div class="form-group">
+        <label for="group_id" title="You can find Group Id in your Docusign developer account: Settings => Groups => select the required group, than: Actions => View">Group ID</label>
+        <input type="number" class="form-control" id="group_id" name="group_id" placeholder="8219837" required>
+    </div>
+    <div class="form-group">
+        <label for="activate_membership">Auto activate membership. <span style="font-size: 10px">Before enabling this option, make sure you have completed all the necessary presets described here: <a href="https://developers.docusign.com/docs/admin-api/how-to/create-active-user/">How to create a new user with active status</a></span></label>
+        <input type="checkbox" class="form-control" id="activate_membership" name="activate_membership">
+    </div>
+    <button type="submit" class="btn btn-docu">Continue</button>
+</form>
+  
+{% endblock %}
