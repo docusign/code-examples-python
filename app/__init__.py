@@ -10,6 +10,7 @@ from .ds_config import EXAMPLES_API_TYPE
 from .rooms import examples as rooms_examples
 from .click import examples as click_examples
 from .monitor import examples as monitor_examples
+from .admin import examples as admin_examples
 from .views import core
 
 session_path = "/tmp/python_recipe_sessions"
@@ -20,6 +21,8 @@ elif EXAMPLES_API_TYPE["Click"]:
     app = Flask(__name__, template_folder="click/templates")
 elif EXAMPLES_API_TYPE["Monitor"]:
     app = Flask(__name__, template_folder="monitor/templates")
+elif EXAMPLES_API_TYPE["Admin"]:
+    app = Flask(__name__, template_folder="admin/templates")
 else:
     app = Flask(__name__)
 app.config.from_pyfile("config.py")
@@ -59,6 +62,12 @@ elif EXAMPLES_API_TYPE["Click"]:
     app.register_blueprint(click_examples.eg003)
     app.register_blueprint(click_examples.eg004)
     app.register_blueprint(click_examples.eg005)
+
+elif EXAMPLES_API_TYPE["Admin"]:
+    app.register_blueprint(admin_examples.eg001)
+    app.register_blueprint(admin_examples.eg002)
+    app.register_blueprint(admin_examples.eg003)
+    
 else:
     app.register_blueprint(examples.eg001)
     app.register_blueprint(examples.eg002)
