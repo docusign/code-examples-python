@@ -1,4 +1,4 @@
-"""Example 003: Add users via bulk import"""
+"""Example 004: Add users via bulk import"""
 
 import json
 from os import path
@@ -9,14 +9,14 @@ from docusign_admin.client.api_exception import ApiException
 from app.error_handlers import process_error
 from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
-from .controller import Eg003Controller
+from .controller import Eg004Controller
 
 
-eg = "eg003"  # Reference(and URL) for this example
-eg003 = Blueprint(eg, __name__)
+eg = "eg004"  # Reference(and URL) for this example
+eg004 = Blueprint(eg, __name__)
 
 
-@eg003.route("/eg003", methods=["POST"])
+@eg004.route("/eg004", methods=["POST"])
 @authenticate(eg=eg)
 def add_users_via_bulk_import():
     """
@@ -26,7 +26,7 @@ def add_users_via_bulk_import():
 
     # 1. Call the worker method
     try:
-        results = Eg003Controller.worker(request)
+        results = Eg004Controller.worker(request)
         current_app.logger.info(f"Bulk import request ID: {results.id}")
     except ApiException as err:
         return process_error(err)
@@ -40,7 +40,7 @@ def add_users_via_bulk_import():
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
-@eg003.route("/eg003", methods=["GET"])
+@eg004.route("/eg004", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
     """
@@ -49,7 +49,7 @@ def get_view():
 
     # Render the response
     return render_template(
-        "eg003_add_users_via_bulk_import.html",
+        "eg004_add_users_via_bulk_import.html",
         title="Add users via bulk import",
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
         source_url=(
@@ -59,7 +59,7 @@ def get_view():
         documentation=DS_CONFIG["documentation"] + eg,
     )
 
-@eg003.route("/eg003examplecsv", methods=["GET"])
+@eg004.route("/eg004examplecsv", methods=["GET"])
 @authenticate(eg=eg)
 def get_csv():
     """
@@ -68,7 +68,7 @@ def get_csv():
     """
 
     # 1. Creates an example of a CSV file
-    csv_file = Eg003Controller.get_example_csv()
+    csv_file = Eg004Controller.get_example_csv()
 
     # 2. Returns an example of a CSV file to the user
     return Response(

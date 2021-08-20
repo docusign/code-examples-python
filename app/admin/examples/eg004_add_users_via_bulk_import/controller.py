@@ -6,7 +6,7 @@ from app.admin.utils import create_admin_api_client
 from app.ds_config import DS_CONFIG
 
 
-class Eg003Controller:
+class Eg004Controller:
 
     @staticmethod
     def worker(request):

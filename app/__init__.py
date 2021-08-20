@@ -65,8 +65,8 @@ elif EXAMPLES_API_TYPE["Click"]:
 
 elif EXAMPLES_API_TYPE["Admin"]:
     app.register_blueprint(admin_examples.eg001)
-    app.register_blueprint(admin_examples.eg002)
     app.register_blueprint(admin_examples.eg003)
+    app.register_blueprint(admin_examples.eg004)
     
 else:
     app.register_blueprint(examples.eg001)

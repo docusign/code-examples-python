@@ -9,13 +9,13 @@ from docusign_admin.client.api_exception import ApiException
 from app.error_handlers import process_error
 from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
-from .controller import Eg002Controller
+from .controller import Eg003Controller
 
 
-eg = "eg002"  # Reference (and URL) for this example
-eg002 = Blueprint(eg, __name__)
+eg = "eg003"  # Reference (and URL) for this example
+eg003 = Blueprint(eg, __name__)
 
-@eg002.route("/eg002", methods=["POST"])
+@eg003.route("/eg003", methods=["POST"])
 @authenticate(eg=eg)
 def get_user_list_data():
     """
@@ -25,7 +25,7 @@ def get_user_list_data():
 
     # 1. Call the worker method
     try:
-        results = Eg002Controller.worker()
+        results = Eg003Controller.worker()
         current_app.logger.info(f"User list export ID: {results.id}")
     except ApiException as err:
         return process_error(err)
@@ -40,7 +40,7 @@ def get_user_list_data():
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
-@eg002.route("/eg002", methods=["GET"])
+@eg003.route("/eg003", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
     """
@@ -49,7 +49,7 @@ def get_view():
 
     # Render the response
     return render_template(
-        "eg002_bulk_export_user_data.html",
+        "eg003_bulk_export_user_data.html",
         title="Bulk export user data",
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
         source_url=(
@@ -59,7 +59,7 @@ def get_view():
         documentation=DS_CONFIG["documentation"] + eg,
     )
 
-@eg002.route("/eg002check", methods=["GET"])
+@eg003.route("/eg003check", methods=["GET"])
 @authenticate(eg=eg)
 def check_if_csv_ready():
     """
@@ -69,17 +69,17 @@ def check_if_csv_ready():
 
     # 1. Checking if a CSV file exists
     try:
-        csv_file = Eg002Controller.get_csv_user_list()
+        csv_file = Eg003Controller.get_csv_user_list()
     except ApiException as err:
         return process_error(err)
 
     # 2. Render the response
     return render_template(
-        "eg002_file_state.html",
+        "eg003_file_state.html",
         get_csv=bool(csv_file)
     )
 
-@eg002.route("/eg002csv", methods=["GET"])
+@eg003.route("/eg003csv", methods=["GET"])
 @authenticate(eg=eg)
 def get_csv():
     """
@@ -89,7 +89,7 @@ def get_csv():
 
     # 1. Getting an existing CSV file
     try:
-        csv_file = Eg002Controller.get_csv_user_list()
+        csv_file = Eg003Controller.get_csv_user_list()
     except ApiException as err:
         return process_error(err)
 

@@ -6,7 +6,7 @@ from app.admin.utils import create_admin_api_client
 from app.ds_config import DS_CONFIG
 
 
-class Eg002Controller:
+class Eg003Controller:
 
     @staticmethod
     def _get_export_api():
