@@ -25,6 +25,10 @@ CLICK_SCOPES = [
     "signature", "click.manage", "click.send"
 ]
 
+ADMIN_SCOPES = [
+    "signature", "user_write", "user_read"
+]
+
 
 class DSClient:
     ds_app = None
@@ -74,6 +78,8 @@ class DSClient:
             use_scopes = ROOMS_SCOPES
         elif EXAMPLES_API_TYPE["Click"]:
             use_scopes = CLICK_SCOPES
+        elif EXAMPLES_API_TYPE["Admin"]:
+            use_scopes = ADMIN_SCOPES
         else:
             use_scopes = SCOPES
 
