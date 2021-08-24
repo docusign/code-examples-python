@@ -1,3 +1,3 @@
-AccountID,UserName,UserEmail,PermissionSet
-47a751dd-b923-4ea3-9a0c-13ca5629e68e,John Dow1,exampleuser1@example.com,DS Viewer
-47a751dd-b923-4ea3-9a0c-13ca5629e68e,John Dow2,exampleuser2@example.com,DS Viewer
+AccountID,UserName,UserEmail,PermissionSet\n
+{account_id},First1,Last1,example1@sampleemail.example,DS Admin
+{account_id},First2,Last2,example2@sampleemail.example,DS Admin
