@@ -56,6 +56,6 @@ class Eg004Controller:
         # Returns an example of a CSV file
         return (
             "AccountID,UserName,UserEmail,PermissionSet\n"
-            f"{session['ds_account_id']},John Dow1,exampleuser1@example.com,DS Viewer\n"
-            f"{session['ds_account_id']},John Dow2,exampleuser2@example.com,DS Viewer\n"
+            {account_id},First1,Last1,example1@sampleemail.example,DS Admin
+            {account_id},First2,Last2,example2@sampleemail.example,DS Admin
         )
