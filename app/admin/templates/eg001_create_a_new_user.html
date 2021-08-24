@@ -1,13 +1,15 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>1. Create a new user</h4>
-<p>Demonstrates how to create a new user with active status.</p>
+<h4>1. Create a new active eSignature user</h4>
+<p>Demonstrates how to create a new eSignature user and activate their account automatically.</p>
 
 {% if show_doc %}
     <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
 {% endif %}
   
   <p>API method used:
+    <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/list/">AccountPermissionProfiles::list</a>, 
+    <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/usergroups/groups/list/">Groups::list</a>,
    <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/users/users/createuser/">Users::createUser</a>.
 </p>
 <p>

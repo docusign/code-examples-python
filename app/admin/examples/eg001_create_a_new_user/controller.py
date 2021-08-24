@@ -77,14 +77,6 @@ class Eg001Controller:
         4. Creates a user using a method from the user API
         """
 
-        # 1. Create the API client object 
-        api_client = create_admin_api_client(
-            access_token=session["ds_access_token"]
-        )
-
-        # 2. Create the user API request object
-        user_api = UsersApi(api_client=api_client)
-
         # Get group information
         groups = self.get_groups(args)
         for group in groups:
@@ -98,8 +90,17 @@ class Eg001Controller:
             if profile["permission_profile_id"] == args["permission_profile"]:
                 profile_name = profile["permission_profile_name"]
 
-        # 3. Create a request body for the create_user method 
+        # Create the API client object 
+        # Step 2 start
+        api_client = create_admin_api_client(
+            access_token=session["ds_access_token"]
+        )
+        # Create the user API request object
+        user_api = UsersApi(api_client=api_client)
+        # Step 2 end
 
+        # Create a request body for the create_user method 
+        # Step 3 start
         request_body = {
             "user_name": args["user_name"],
             "first_name": args['first_name'],
@@ -120,10 +121,13 @@ class Eg001Controller:
                 }
             ]
         }
+        # Step 3 end
 
-        # 4. Creates a user using a method from the user API
+        # Creates a user using a method from the user API
+        # Step 4 start
         response = user_api.create_user(
             args["organization_id"],
             request_body
         )
+        # Step 4 end
         return response

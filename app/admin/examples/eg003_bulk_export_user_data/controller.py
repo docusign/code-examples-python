@@ -23,21 +23,23 @@ class Eg003Controller:
             access_token=session["ds_access_token"]
         )
 
-        # 1. Create the export API object
+        # Create the export API object
         export_api = BulkExportsApi(api_client=api_client)
 
-        # 2. Create a user list export request
+        # Create a user list export request
+        # Step 3 start
         response = export_api.create_user_list_export(
             organization_id,
             {
                 "type": "organization_memberships_export"
             }
         )
+        # Step 3 end
 
-        # 3. Save user_list_export_id in a client session
+        # Save user_list_export_id in a client session
         session['user_list_export_id'] = response.id
 
-        # 4. Returns a list of pending and completed export requests
+        # Returns a list of pending and completed export requests
         return response
 
     @classmethod
@@ -55,18 +57,43 @@ class Eg003Controller:
 
         organization_id = get_organization_id()
 
+        # Step 2 start
         api_client = create_admin_api_client(
             access_token=session["ds_access_token"]
         )
 
-        # 1. Create the export API object
+        # Create the export API object
         export_api = BulkExportsApi(api_client=api_client)
+        # Step 2 end
 
-        # 2. Getting the user list export response
+        # Getting the user list export response
+        # Step 4 start
         response = export_api.get_user_list_export(
             organization_id,
             session['user_list_export_id']
         )
+        # Step 4 end
 
-        # 7. Returns the csv file
+        # Trying to get the user list export id
+        try: 
+            obj_id = response.results[0].id
+        except TypeError: 
+            return None 
+
+        # Create the API client object
+        # Step 5 start
+        api_client = ApiClient()
+
+        # Add headers to the API client object and the desired URL
+        headers = {"Authorization": "Bearer " + session["ds_access_token"]}
+        url = (
+            "https://demo.docusign.net/restapi/v2/organization_exports/"
+            f"{organization_id}/user_list/{obj_id}"
+        )
+
+        # Getting a response containing a csv file
+        response = api_client.request("GET", url, headers=headers)
+        # Step 5 end
+
+        # Returns the csv file
         return response.data.decode("UTF8")
