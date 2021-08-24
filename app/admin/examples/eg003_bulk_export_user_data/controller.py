@@ -8,21 +8,6 @@ from app.ds_config import DS_CONFIG
 
 class Eg003Controller:
 
-    @staticmethod
-    def _get_export_api():
-        """
-        1. Create the API client object
-        2. Return the bulk exports API Object
-        """
-
-        # 1. Create the API client object
-        api_client = create_admin_api_client(
-            access_token=session["ds_access_token"]
-        )
-
-        # 2. Return the bulk exports API Object
-        return BulkExportsApi(api_client=api_client)
-
     @classmethod
     def worker(cls):
         """
@@ -32,12 +17,18 @@ class Eg003Controller:
         4. Returns a list of pending and completed export requests
         """
 
+        organization_id = get_organization_id()
+
+        api_client = create_admin_api_client(
+            access_token=session["ds_access_token"]
+        )
+
         # 1. Create the export API object
-        export_api = cls._get_export_api()
+        export_api = BulkExportsApi(api_client=api_client)
 
         # 2. Create a user list export request
         response = export_api.create_user_list_export(
-            DS_CONFIG["organization_id"],
+            organization_id,
             {
                 "type": "organization_memberships_export"
             }
@@ -62,33 +53,20 @@ class Eg003Controller:
         7. Returns the csv file
         """
 
+        organization_id = get_organization_id()
+
+        api_client = create_admin_api_client(
+            access_token=session["ds_access_token"]
+        )
+
         # 1. Create the export API object
-        export_api = cls._get_export_api()
+        export_api = BulkExportsApi(api_client=api_client)
 
         # 2. Getting the user list export response
         response = export_api.get_user_list_export(
-            DS_CONFIG["organization_id"],
+            organization_id,
             session['user_list_export_id']
         )
-
-        # 3. Trying to get the user list export id
-        try: 
-            obj_id = response.results[0].id
-        except TypeError: 
-            return None 
-
-        # 4. Create the API client object
-        api_client = ApiClient()
-
-        # 5. Add headers to the API client object and the desired URL
-        headers = {"Authorization": "Bearer " + session["ds_access_token"]}
-        url = (
-            "https://demo.docusign.net/restapi/v2/organization_exports/"
-            f"{DS_CONFIG['organization_id']}/user_list/{obj_id}"
-        )
-
-        # 6. Getting a response containing a csv file
-        response = api_client.request("GET", url, headers=headers)
 
         # 7. Returns the csv file
         return response.data.decode("UTF8")
