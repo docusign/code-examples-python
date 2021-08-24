@@ -32,7 +32,7 @@ def index():
     elif EXAMPLES_API_TYPE["Admin"]:
         return render_template(
             "home_admin.html",
-            title="Home - Python Orgadmin API Code Examples"
+            title="Home - Python Admin API Code Examples"
         )
 
     if DS_CONFIG["quickstart"] == "true":

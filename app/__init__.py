@@ -56,6 +56,10 @@ if EXAMPLES_API_TYPE["Rooms"]:
 elif EXAMPLES_API_TYPE["Monitor"]:
     app.register_blueprint(monitor_examples.eg001)
 
+elif EXAMPLES_API_TYPE["Admin"]:
+    app.register_blueprint(admin_examples.eg002)
+    app.register_blueprint(admin_examples.eg005)
+
 elif EXAMPLES_API_TYPE["Click"]:
     app.register_blueprint(click_examples.eg001)
     app.register_blueprint(click_examples.eg002)
