@@ -5,6 +5,7 @@
 DS_CONFIG = {
     "ds_client_id": "{INTEGRATION_KEY_AUTH_CODE}",  # The app's DocuSign integration key
     "ds_client_secret": "{SECRET_KEY}",  # The app's DocuSign integration key's secret
+    "organization_id": "{ORGANIZATION_ID}", # A GUID value that identifies the organization
     "signer_email": "{SIGNER_EMAIL}",
     "signer_name": "{SIGNER_NAME}",
     "app_url": "http://localhost:5000",  # The URL of the application. Eg http://localhost:5000
@@ -49,5 +50,5 @@ EXAMPLES_API_TYPE = {
         "ESignature": True,
         "Click": False,
         "Monitor": False,
-        "Admin": False
+        "Admin": False,
 }

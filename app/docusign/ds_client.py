@@ -50,7 +50,7 @@ class DSClient:
         elif EXAMPLES_API_TYPE["Click"]:
             use_scopes = CLICK_SCOPES
         elif EXAMPLES_API_TYPE["Admin"]:
-            use_scopes=ADMIN_SCOPES
+            use_scopes = ADMIN_SCOPES
         else:
             use_scopes = SCOPES
         request_token_params = {

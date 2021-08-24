@@ -1,15 +1,14 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>3. List envelopes in the user's account</h4>
-<p>List the envelopes created in the last 30 days.</p>
-<p>This example demonstrates how to query DocuSign about envelopes sent by the current user.</p>
+<h4>3. Bulk-export user data</h4>
+<p>Demonstrates how to bulk-export user accounts within an organization into a CSV (comma separated value) file</p>
 
 {% if show_doc %}
     <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
 {% endif %}
   
-  <p>API method used: 
-   <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopes/liststatuschanges/">Envelopes::listStatusChanges</a>.
+  <p>API method used:
+   <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/bulkoperations/userexport/createuserlistexport/">UserExport:createUserListExport</a>.
 </p>
 <p>
     View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
