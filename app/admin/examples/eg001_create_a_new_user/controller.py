@@ -2,7 +2,7 @@ from docusign_admin import UsersApi, NewUserRequest, NewUserRequestAccountProper
 from docusign_esign import AccountsApi, ApiClient, GroupsApi
 from flask import session
 
-from app.admin.utils import create_admin_api_client
+from app.admin.utils import create_admin_api_client, get_organization_id
 from app.consts import pattern
 from app.ds_config import DS_CONFIG
 
@@ -15,6 +15,7 @@ class Eg001Controller:
         Get request and session arguments
         """
 
+        organization_id = get_organization_id()
         return {
             "account_id": session["ds_account_id"], # Represents your {ACCOUNT_ID}
             "access_token": session["ds_access_token"], # Represents your {ACCESS_TOKEN}
@@ -23,7 +24,8 @@ class Eg001Controller:
             "last_name": request.form.get("last_name"),
             "user_email": request.form.get("user_email"),
             "permission_profile": request.form.get("profile_id"),
-            "group": request.form.get("group_id")
+            "group": request.form.get("group_id"),
+            "organization_id": organization_id
         }
 
     @staticmethod
@@ -121,7 +123,7 @@ class Eg001Controller:
 
         # 4. Creates a user using a method from the user API
         response = user_api.create_user(
-            DS_CONFIG["organization_id"],
+            args["organization_id"],
             request_body
         )
         return response

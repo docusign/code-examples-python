@@ -26,6 +26,7 @@ def get_organization_id():
 
     accounts_api = AccountsApi(api_client)
     organizations = accounts_api.get_organizations()
+    print(organizations)
     org_dict = organizations.to_dict()
     first_org = org_dict["organizations"][0]
     org_id = first_org["id"]

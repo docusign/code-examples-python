@@ -2,7 +2,7 @@ from os import path
 from docusign_admin.apis import BulkImportsApi
 from flask import session
 
-from app.admin.utils import create_admin_api_client
+from app.admin.utils import create_admin_api_client, get_organization_id
 from app.ds_config import DS_CONFIG
 
 
@@ -19,6 +19,9 @@ class Eg004Controller:
         4. Setting headers for creating bulk import request
         5. Returns the response from the create_bulk_import_add_users_request method
         """
+
+        # Get organization ID
+        organization_id = get_organization_id()
 
         # 1. Create the export API object
         api_client = create_admin_api_client(
@@ -40,7 +43,7 @@ class Eg004Controller:
 
         # 5. Returns the response from the create_bulk_import_add_users_request method
         return export_api.create_bulk_import_add_users_request(
-            DS_CONFIG["organization_id"],
+            organization_id,
             csv_file_path
         )
 
