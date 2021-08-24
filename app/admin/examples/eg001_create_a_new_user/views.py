@@ -24,12 +24,14 @@ def get_user_data():
     3. Render the response
     """
 
+    controller = Eg001Controller()
+
     # 1. Get required arguments
     args = Eg001Controller.get_args(request)
 
     # 2. Call the worker method
     try:
-        results = Eg001Controller.worker(args)
+        results = Eg001Controller.worker(controller, args)
         current_app.logger.info(f"ID of the created user: {results.id}")
     except ApiException as err:
         return process_error(err)
@@ -49,6 +51,14 @@ def get_view():
     """
     Responds with the form for the example
     """
+    args = Eg001Controller.get_args(request)
+    
+    try:
+        profiles = Eg001Controller.get_permission_profiles(args)
+        groups = Eg001Controller.get_groups(args)
+
+    except ApiException as err:
+        return process_error(err)
 
     # Render the response
     return render_template(
@@ -58,4 +68,6 @@ def get_view():
         source_url=DS_CONFIG["admin_github_url"] + path.basename(
             path.dirname(__file__)) + "/controller.py",
         documentation=DS_CONFIG["documentation"] + eg,
+        permission_profiles=profiles,
+        groups=groups
     )
