@@ -26,10 +26,10 @@
         {% endif %}
 
         <h2>DocuSign Admin API Code Examples</h2>
-            <h4 id="example001">1. <a href="eg001">Create a new user</a></h4>
-            <p>Demonstrates how to create a new user with active status</p>
+            <h4 id="example001">1. <a href="eg001">Create a new active eSignature user</a></h4>
+            <p>Demonstrates how to create a new eSignature user and activate their account automatically.</p>
 
-            <p>API method used: 
+            <p>API methods used: 
               <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/list/">AccountPermissionProfiles::list</a>, 
               <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/usergroups/groups/list/">Groups::list</a>,
               <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/users/users/createuser/">Users::createUser</a>.
@@ -39,31 +39,31 @@
             <p>Demonstrates how to create a new DocuSign user (valid for both CLM and eSignature APIs) and activate their account automatically.</p>
 
             <p>API methods used: 
-              <a target ='_blank' href="https://developers.docusign.com/docs/admin-api/reference/productpermissionprofiles/productpermissionprofiles/getproductpermissionprofiles/">ProductPermissionProfiles::getProductPermissionProfiles</a>,
-              <a target ='_blank' href="https://developers.docusign.com/docs/admin-api/reference/dsgroups/dsgroups/getdsgroups/">DsGroups::getDsGroups</a>, and 
+              <a target ='_blank' href="https://developers.docusign.com/docs/admin-api/reference/productpermissionprofiles/productpermissionprofiles/getproductpermissionprofiles/">ProductPermissionProfiles::getProductPermissionProfiles</a>
+              <a target ='_blank' href="https://developers.docusign.com/docs/admin-api/reference/dsgroups/dsgroups/getdsgroups/">DsGroups::getDsGroups</a>
               <a target ='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/multiproductusermanagement/addorupdateuser/">MultiProductUserManagement::addOrUpdateUser</a>
             </p>
     
            <h4 id="example003">3. <a href="eg003">Bulk export user data</a></h4>
-           <p>Demonstrates how to bulk-export user accounts within an organization into a CSV (comma separated value) file.</p>
+           <p>Demonstrates how to bulk export user accounts within an organization into a CSV (comma separated value) file.</p>
 
-           <p>API method used: 
-             <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/bulkoperations/userexport/createuserlistexport/">UserExport:createUserListExport</a> and 
-             <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/bulkoperations/userexport/getuserlistexport/">UserExport::getUserListExport</a>.
+           <p>API methods used: 
+             <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/bulkoperations/userexport/createuserlistexport/">UserExport:createUserListExport</a>  
+             <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/bulkoperations/userexport/getuserlistexport/">UserExport::getUserListExport</a>
           </p>
     
           <h4 id="example004">4. <a href="eg004">Add users via bulk import</a></h4>
           <p>Demonstrates how to bulk import users and add user data from an example CSV (comma-separated value) file into a DocuSign Admin organization.</p>
 
           <p>API method used: 
-            <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/bulkoperations/userimport/addbulkuserimport/">UserImport:addBulkUserImport</a>.
+            <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/bulkoperations/userimport/addbulkuserimport/">UserImport:addBulkUserImport</a>
          </p>
             
             <h4 id="example005">5. <a href="eg005">Audit users</a></h4>
             <p>Demonstrates how to audit the users in your account by retrieving the profiles of users that were modified after a specified date.</p>
 
             <p>API methods used: 
-              <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/users/users/getusers/">Users::getUsers</a> and
+              <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/users/users/getusers/">Users::getUsers</a>
               <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/users/users/getuserprofiles/">Users::getUserProfiles</a>              
            </p>
     </div>

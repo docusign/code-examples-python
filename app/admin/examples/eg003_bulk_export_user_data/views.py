@@ -36,7 +36,7 @@ def get_user_list_data():
         get_csv=True,
         title="Bulk export user data",
         h1="Bulk export user data",
-        message="Results from UserExport:createUserListExport:",
+        message="Results from UserExport:getUserListExport:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 

@@ -11,11 +11,11 @@ class Eg004Controller:
     @staticmethod
     def worker(request):
         """
-        Create a user list export request and
-        returns a list of pending and completed export requests:
-        1. Create the export API object
+        Create a user list import request and
+        returns a list of pending and completed import requests:
+        1. Create the import API object
         2. Getting a CSV file from a form and converting it to a string
-        3. Creating an export API object
+        3. Creating an import API object
         4. Setting headers for creating bulk import request
         5. Returns the response from the create_bulk_import_add_users_request method
         """
@@ -23,29 +23,33 @@ class Eg004Controller:
         # Get organization ID
         organization_id = get_organization_id()
 
-        # 1. Create the export API object
+        # Create the export API object
+        # Step 2 start
         api_client = create_admin_api_client(
             access_token=session["ds_access_token"]
         )
+        # Step 2 end
 
-        # 2. Getting a CSV file from a form and saving it
+        # Getting a CSV file from a form and saving it
         uploaded_file = request.files['csv_file']
         csv_folder_path = path.abspath(path.join(path.dirname(path.realpath(__file__)), "csv"))
         csv_file_path = path.join(csv_folder_path, "uploaded_file.csv")
         uploaded_file.save(csv_file_path)
 
-        # 3. Creating an export API object
-        export_api = BulkImportsApi(api_client=api_client)
+        # Creating an import API object
+        import_api = BulkImportsApi(api_client=api_client)
 
-        # 4. Setting headers for creating bulk import request
+        # Setting headers for creating bulk import request
         header_name, header_value = "Content-Disposition", "filename=myfile.csv"
         api_client.set_default_header(header_name, header_value)
 
-        # 5. Returns the response from the create_bulk_import_add_users_request method
-        return export_api.create_bulk_import_add_users_request(
+        # Returns the response from the create_bulk_import_add_users_request method
+        # Step 3 start
+        return import_api.create_bulk_import_add_users_request(
             organization_id,
             csv_file_path
         )
+        # Step 3 end
 
     @staticmethod
     def get_example_csv():
