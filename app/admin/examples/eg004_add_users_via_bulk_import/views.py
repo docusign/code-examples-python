@@ -35,7 +35,7 @@ def add_users_via_bulk_import():
     return render_template(
         "example_done.html",
         title="Add users via bulk import",
-        h1="Result of adding users via bulk import",
+        h1="Add users via bulk import",
         message="Results from UserImport:addBulkUserImport method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )

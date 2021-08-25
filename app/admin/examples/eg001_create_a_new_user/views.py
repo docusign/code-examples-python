@@ -39,8 +39,8 @@ def get_user_data():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Create a new user",
-        h1="Result of creating a new user",
+        title="Create a new active eSignature user",
+        h1="Create a new active eSignature user",
         message="Results from Users:createUser method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
@@ -63,7 +63,7 @@ def get_view():
     # Render the response
     return render_template(
         "eg001_create_a_new_user.html",
-        title="Create a new user",
+        title="Create a new active eSignature user",
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
         source_url=DS_CONFIG["admin_github_url"] + path.basename(
             path.dirname(__file__)) + "/controller.py",

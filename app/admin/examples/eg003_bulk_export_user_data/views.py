@@ -35,7 +35,7 @@ def get_user_list_data():
         "example_done.html",
         get_csv=True,
         title="Bulk export user data",
-        h1="Result of creating a bulk export user data",
+        h1="Bulk export user data",
         message="Results from UserExport:createUserListExport:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
