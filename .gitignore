@@ -9,6 +9,7 @@ app/ds_config*
 # App's temp files
 app/static/files/*
 (*/.DS_Store
+app/admin/examples/eg004_add_users_via_bulk_import/uploaded_file.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
