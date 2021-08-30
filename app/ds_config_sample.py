@@ -34,8 +34,7 @@ DS_CONFIG = {
     "monitor_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/monitor/examples/",
     "admin_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/admin/examples/",
     "documentation": "",  # Use an empty string to indicate no documentation path.
-    "quickstart": "{QUICKSTART_VALUE}",
-    "organization_id": "{ORGANIZATION_ID}
+    "quickstart": "{QUICKSTART_VALUE}"
 }
 
 DS_JWT = {
