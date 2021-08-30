@@ -25,6 +25,11 @@ CLICK_SCOPES = [
     "signature", "click.manage", "click.send"
 ]
 
+ADMIN_SCOPES = [
+    "signature", "organization_read", "group_read", "permission_read", "user_read", "user_write", 
+    "account_read", "domain_read", "identity_provider", "read impersonation"
+]
+
 
 class DSClient:
     ds_app = None
@@ -44,6 +49,8 @@ class DSClient:
             use_scopes = ROOMS_SCOPES
         elif EXAMPLES_API_TYPE["Click"]:
             use_scopes = CLICK_SCOPES
+        elif EXAMPLES_API_TYPE["Admin"]:
+            use_scopes = ADMIN_SCOPES
         else:
             use_scopes = SCOPES
         request_token_params = {
@@ -74,6 +81,8 @@ class DSClient:
             use_scopes = ROOMS_SCOPES
         elif EXAMPLES_API_TYPE["Click"]:
             use_scopes = CLICK_SCOPES
+        elif EXAMPLES_API_TYPE["Admin"]:
+            use_scopes=ADMIN_SCOPES
         else:
             use_scopes = SCOPES
 
