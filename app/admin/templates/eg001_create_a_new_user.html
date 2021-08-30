@@ -1,0 +1,66 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>1. Create a new active eSignature user</h4>
+<p>Demonstrates how to create a new eSignature user and activate their account automatically.</p>
+
+{% if show_doc %}
+    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+  
+  <p>API method used:
+    <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/list/">AccountPermissionProfiles::list</a>, 
+    <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/usergroups/groups/list/">Groups::list</a>,
+   <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/users/users/createuser/">Users::createUser</a>.
+</p>
+<p>
+    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="form-group">
+        <label for="user_name">User Name</label>
+        <input type="text" class="form-control" id="user_name" name="user_name" required>
+    </div>
+    <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="John" required>
+    </div>
+    <div class="form-group">
+        <label for="last_name">Last Name</label>
+        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Dow" required>
+    </div>
+    <div class="form-group">
+        <label for="user_email">Email</label>
+        <input type="email" class="form-control" id="user_email" name="user_email" placeholder="example0001@example.com" required>
+    </div>
+    {% if permission_profiles %}
+    <div class="form-group">
+        <label for="profile_id">eSignature permission profile</label>
+        <select class="form-control" id="profile_id" name="profile_id">
+            {% for profile in permission_profiles %}
+            <option value={{profile["permission_profile_id"]}}>{{profile["permission_profile_name"]}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% else %}
+        <p>Problem: Please first create an eSignature permission profile.
+        </br>Thank you.</p>
+    {% endif %}
+    {% if groups %}
+    <div class="form-group">
+        <label for="group_id">DocuSign Admin group</label>
+        <select class="form-control" id="group_id" name="group_id">
+            {% for group in groups %}
+                <option value={{group["group_id"]}}>{{group["group_name"]}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% else %}
+        <p>Problem: Please first create a DocuSign group.
+        </br>Thank you.</p>
+    {% endif %}
+    <button type="submit" class="btn btn-docu">Continue</button>
+</form>
+  
+{% endblock %}

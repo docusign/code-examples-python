@@ -1,0 +1,83 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>2. Create a new active user for CLM and eSignature</h4>
+<p>Demonstrates how to create a new DocuSign user (valid for both CLM and eSignature APIs) and activate their account automatically.</p>
+
+{% if show_doc %}
+    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+  
+<p>API methods used: 
+    <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/productpermissionprofiles/productpermissionprofiles/getproductpermissionprofiles/">ProductPermissionProfiles::getProductPermissionProfiles</a>,
+    <a target ='_blank' href="https://developers.docusign.com/docs/admin-api/reference/dsgroups/dsgroups/getdsgroups/">DsGroups::getDsGroups</a> and
+    <a target ='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/multiproductusermanagement/addorupdateuser/">MultiProductUserManagement::addOrUpdateUser</a>.
+</p>
+<p>
+    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    <div class="form-group">
+        <label for="user_name">User Name</label>
+        <input type="text" class="form-control" id="user_name" name="user_name" required>
+    </div>
+    <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input type="text" class="form-control" id="first_name" name="first_name" required>
+    </div>
+    <div class="form-group">
+        <label for="last_name">Last Name</label>
+        <input type="text" class="form-control" id="last_name" name="last_name" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email"
+            aria-describedby="emailHelp" required>
+        <small id="emailHelp" class="form-text text-muted">We will never share your email with anyone else.</small>
+    </div>
+    {% if esign_permission_profiles_list %}
+    <div class="form-group">
+        <label for="esign_permission_profile">eSignature permission profile</label>
+        <select class="form-control" id="esign_permission_profile" name="esign_permission_profile">
+            {% for profile in esign_permission_profiles_list %}
+                <option value="{{profile}}">{{profile}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% else %}
+        <p>Problem: Please first create an eSignature permission profile.
+        </br>Thank you.</p>
+    {% endif %}
+    {% if clm_permission_profiles_list %}
+    <div class="form-group">
+        <label for="clm_permission_profile">CLM permission profile</label>
+        <select class="form-control" id="clm_permission_profile" name="clm_permission_profile">
+            {% for profile in clm_permission_profiles_list %}
+                <option value="{{profile}}">{{profile}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% else %}
+        <p>Problem: Please first create a CLM permission profile.
+        </br>Thank you.</p>
+    {% endif %}
+    {% if ds_groups %}
+    <div class="form-group">
+        <label for="ds_group">DocuSign Admin Group</label>
+        <select class="form-control" id="ds_group" name="ds_group">
+            {% for group in ds_groups %}
+                <option value={{group["ds_group_id"]}}>{{group["group_name"]}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% else %}
+        <p>Problem: Please first create a DocuSign Admin group.
+        </br>Thank you.</p>
+    {% endif %}
+
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Continue</button>
+</form>
+  
+{% endblock %}
