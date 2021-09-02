@@ -36,7 +36,7 @@ def audit_users():
         "example_done.html",
         title="Audit users",
         h1="Audit users",
-        message="Results from Users:getUserProfiles method:",
+        message="Results from eSignUserManagement:getUserProfiles method:",
         json=json.dumps(json.dumps(results, default=str))
     )
 

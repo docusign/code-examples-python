@@ -45,11 +45,16 @@ class Eg004Controller:
 
         # Returns the response from the create_bulk_import_add_users_request method
         # Step 3 start
-        return import_api.create_bulk_import_add_users_request(
+        response = import_api.create_bulk_import_add_users_request(
             organization_id,
             csv_file_path
         )
         # Step 3 end
+
+        # Save user list import id in a client session
+        session['import_data_id'] = response.id
+
+        return response
 
     @staticmethod
     def get_example_csv():
@@ -63,3 +68,25 @@ class Eg004Controller:
             "{account_id},First1,Last1,example1@sampleemail.example,DS Admin"
             "{account_id},First2,Last2,example2@sampleemail.example,DS Admin"
         )
+
+    @staticmethod
+    def get_status():
+        """
+        Check the status of the request and download the CSV file.
+        """
+
+        organization_id = get_organization_id()
+
+        # Step 2 start
+        api_client = create_admin_api_client(
+            access_token=session["ds_access_token"]
+        )
+
+        # Creating an import API object
+        import_api = BulkImportsApi(api_client=api_client)
+
+        # Step 4 start
+        response = import_api.get_bulk_user_import_request(organization_id, session['import_data_id'])
+
+        # Step 4 end
+
