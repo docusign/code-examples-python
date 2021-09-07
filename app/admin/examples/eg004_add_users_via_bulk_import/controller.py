@@ -1,6 +1,7 @@
 from os import path
 from docusign_admin.apis import BulkImportsApi
-from flask import session
+from flask import session, Response
+import time
 
 from app.admin.utils import create_admin_api_client, get_organization_id
 from app.ds_config import DS_CONFIG
@@ -9,7 +10,7 @@ from app.ds_config import DS_CONFIG
 class Eg004Controller:
 
     @staticmethod
-    def worker(request):
+    def worker(self, request):
         """
         Create a user list import request and
         returns a list of pending and completed import requests:
@@ -54,6 +55,18 @@ class Eg004Controller:
         # Save user list import id in a client session
         session['import_data_id'] = response.id
 
+        # Step 4 start
+        import_results = import_api.get_bulk_user_import_request(organization_id, session['import_data_id'])
+
+        retry_count = 0
+        while retry_count >=0:
+            if import_results.has_csv_results:
+                break
+            else:
+                retry_count+=1
+                time.sleep(5)
+                import_results = import_api.get_bulk_user_import_request(organization_id, session['import_data_id'])
+
         return response
 
     @staticmethod
@@ -70,7 +83,7 @@ class Eg004Controller:
         )
 
     @staticmethod
-    def get_status():
+    def download_csv():
         """
         Check the status of the request and download the CSV file.
         """
@@ -85,8 +98,23 @@ class Eg004Controller:
         # Creating an import API object
         import_api = BulkImportsApi(api_client=api_client)
 
-        # Step 4 start
-        response = import_api.get_bulk_user_import_request(organization_id, session['import_data_id'])
+        # Trying to get the user list import id
+        try: 
+            obj_id = session['import_data_id']
+        except TypeError: 
+            return None 
+
+        headers = {"Authorization": "Bearer " + session["ds_access_token"]}
+        url = (
+            "https://api-d.docusign.net/management/v2/organizations/"
+            f"{organization_id}/imports/bulk_users/{obj_id}/results_csv"
+        )
+
+        response = api_client.request("GET", url, headers=headers)
+
+        # Returns the csv file
+        return response.data.decode("UTF8")
 
         # Step 4 end
 
+    

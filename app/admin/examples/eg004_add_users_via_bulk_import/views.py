@@ -2,6 +2,7 @@
 
 import json
 from os import path
+import time
 
 from flask import Blueprint, render_template, request, Response, current_app
 from docusign_admin.client.api_exception import ApiException
@@ -24,19 +25,23 @@ def add_users_via_bulk_import():
     2. Render the response
     """
 
+    controller = Eg004Controller()
+
     # 1. Call the worker method
     try:
-        results = Eg004Controller.worker(request)
+        results = Eg004Controller.worker(controller, request)
         current_app.logger.info(f"Bulk import request ID: {results.id}")
     except ApiException as err:
         return process_error(err)
+
+    get_csv_results()
 
     # 2. Render the response
     return render_template(
         "example_done.html",
         title="Add users via bulk import",
         h1="Add users via bulk import",
-        message="Results from UserImport:addBulkUserImport method:",
+        message="The imported user data has been written to /app/admin/examples/eg004_add_users_via_bulk_import/results.csv. </br> Results from UserImport:addBulkUserImport method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
@@ -78,3 +83,11 @@ def get_csv():
             "Content-disposition":"attachment; filename=bulk_import_demo.csv"
         }
     )
+
+def get_csv_results():
+    """Downloads the final csv results"""
+
+    csv_data = Eg004Controller.download_csv()
+
+    csv_file = open("app/admin/examples/eg004_add_users_via_bulk_import/csv/results.csv", "w")
+    csv_file.write(csv_data)

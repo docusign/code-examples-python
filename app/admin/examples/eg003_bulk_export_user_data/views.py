@@ -1,4 +1,4 @@
-"""Example 002: Bulk export user data"""
+"""Example 003: Bulk export user data"""
 
 import json
 from os import path
