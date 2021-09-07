@@ -1,6 +1,7 @@
 """Example 003: Bulk export user data"""
 
 import json
+import time
 from os import path
 
 from flask import Blueprint, render_template, Response, current_app
@@ -30,13 +31,21 @@ def get_user_list_data():
     except ApiException as err:
         return process_error(err)
 
+    csv_ready = False
+    while csv_ready == False:
+        csv_ready = check_if_csv_ready()
+        time.sleep(5)
+
+    if csv_ready == True:
+        get_csv()
+
     # 2. Render the response
     return render_template(
         "example_done.html",
         get_csv=True,
         title="Bulk export user data",
         h1="Bulk export user data",
-        message="Results from UserExport:getUserListExport:",
+        message="User data exported to app/admin/examples/eg003_bulk_export_user_data/exported_user_data.csv </br> Results from UserExport:getUserListExport:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
@@ -59,8 +68,6 @@ def get_view():
         documentation=DS_CONFIG["documentation"] + eg,
     )
 
-@eg003.route("/eg003check", methods=["GET"])
-@authenticate(eg=eg)
 def check_if_csv_ready():
     """
     1. Checking if a CSV file exists
@@ -73,14 +80,8 @@ def check_if_csv_ready():
     except ApiException as err:
         return process_error(err)
 
-    # 2. Render the response
-    return render_template(
-        "eg003_file_state.html",
-        get_csv=bool(csv_file)
-    )
+    return bool(csv_file)
 
-@eg003.route("/eg003csv", methods=["GET"])
-@authenticate(eg=eg)
 def get_csv():
     """
     1. Getting an existing CSV file
@@ -93,12 +94,6 @@ def get_csv():
     except ApiException as err:
         return process_error(err)
 
-    # 2. Returns the finished csv file to the user
-    return Response(
-        csv_file,
-        mimetype="text/csv",
-        headers={
-            "Content-disposition":"attachment; filename=user_list.csv"
-        }
-    )
+    results_file = open("app/admin/examples/eg003_bulk_export_user_data/exported_user_data.csv", "w")
+    results_file.write(csv_file)
     

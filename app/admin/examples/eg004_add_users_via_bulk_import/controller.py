@@ -111,10 +111,10 @@ class Eg004Controller:
         )
 
         response = api_client.request("GET", url, headers=headers)
-
+        # Step 4 end
+        
         # Returns the csv file
         return response.data.decode("UTF8")
 
-        # Step 4 end
 
     
