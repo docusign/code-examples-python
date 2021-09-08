@@ -78,8 +78,8 @@ class Eg004Controller:
         # Returns an example of a CSV file
         return (
             "AccountID,UserName,UserEmail,PermissionSet\n"
-            f"{session['ds_account_id']},Example User1,exampleuser1@example.com,DS Viewer\n"
-            f"{session['ds_account_id']},Example User2,exampleuser2@example.com,DS Viewer\n"
+            f"{session['ds_account_id']},Example User1,exampleuser1@example.com,DS Admin\n"
+            f"{session['ds_account_id']},Example User2,exampleuser2@example.com,DS Admin\n"
         )
 
     @staticmethod

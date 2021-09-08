@@ -41,7 +41,7 @@ def add_users_via_bulk_import():
         "example_done.html",
         title="Add users via bulk import",
         h1="Add users via bulk import",
-        message="The imported user data has been written to /app/admin/examples/eg004_add_users_via_bulk_import/results.csv. </br> Results from UserImport:addBulkUserImport method:",
+        message=f"The imported user data has been written to app/admin/examples/eg004_add_users_via_bulk_import/csv/results.csv. </br> Results from UserImport:addBulkUserImport method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
