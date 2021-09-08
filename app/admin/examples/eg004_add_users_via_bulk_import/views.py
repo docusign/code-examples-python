@@ -1,6 +1,7 @@
 """Example 004: Add users via bulk import"""
 
 import json
+import os
 from os import path
 import time
 
@@ -35,13 +36,16 @@ def add_users_via_bulk_import():
         return process_error(err)
 
     get_csv_results()
+    
+    current_directory = os.getcwd()
+    file_path = current_directory + os.path.abspath("/admin/examples/eg004_add_users_via_bulk_import/csv/results.csv")
 
     # 2. Render the response
     return render_template(
         "example_done.html",
         title="Add users via bulk import",
         h1="Add users via bulk import",
-        message=f"The imported user data has been written to app/admin/examples/eg004_add_users_via_bulk_import/csv/results.csv. </br> Results from UserImport:addBulkUserImport method:",
+        message=f"The imported user data has been written to {file_path}. </br> Results from UserImport:addBulkUserImport method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
