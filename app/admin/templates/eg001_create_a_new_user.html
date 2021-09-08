@@ -10,7 +10,7 @@
   <p>API methods used:
     <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/list/">AccountPermissionProfiles::list</a>, 
     <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/usergroups/groups/list/">Groups::list</a>,
-   <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/esignusermanagement/createuser/">eSignUserManagement::createUser</a>.
+   <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/esignusermanagement/createuser/">eSignUserManagement:createUser</a>.
 </p>
 <p>
     View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
@@ -49,7 +49,7 @@
     {% endif %}
     {% if groups %}
     <div class="form-group">
-        <label for="group_id">DocuSign Admin group</label>
+        <label for="group_id">DocuSign eSignature group</label>
         <select class="form-control" id="group_id" name="group_id">
             {% for group in groups %}
                 <option value={{group["group_id"]}}>{{group["group_name"]}}</option>
