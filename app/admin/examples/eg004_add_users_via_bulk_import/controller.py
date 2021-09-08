@@ -90,7 +90,6 @@ class Eg004Controller:
 
         organization_id = get_organization_id()
 
-        # Step 2 start
         api_client = create_admin_api_client(
             access_token=session["ds_access_token"]
         )
@@ -103,6 +102,8 @@ class Eg004Controller:
             obj_id = session['import_data_id']
         except TypeError: 
             return None 
+        
+        # Step 4 start
 
         headers = {"Authorization": "Bearer " + session["ds_access_token"]}
         url = (
