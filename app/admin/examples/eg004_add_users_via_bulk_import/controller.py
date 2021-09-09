@@ -54,19 +54,7 @@ class Eg004Controller:
 
         # Save user list import id in a client session
         session['import_data_id'] = response.id
-
-        # Step 4 start
-        import_results = import_api.get_bulk_user_import_request(organization_id, session['import_data_id'])
-
-        retry_count = 0
-        while retry_count >=0:
-            if import_results.has_csv_results:
-                break
-            else:
-                retry_count+=1
-                time.sleep(5)
-                import_results = import_api.get_bulk_user_import_request(organization_id, session['import_data_id'])
-
+        
         return response
 
     @staticmethod
@@ -83,10 +71,8 @@ class Eg004Controller:
         )
 
     @staticmethod
-    def download_csv():
-        """
-        Check the status of the request and download the CSV file.
-        """
+    def check_status():
+        """Check request status"""
 
         organization_id = get_organization_id()
 
@@ -97,25 +83,13 @@ class Eg004Controller:
         # Creating an import API object
         import_api = BulkImportsApi(api_client=api_client)
 
-        # Trying to get the user list import id
-        try: 
-            obj_id = session['import_data_id']
-        except TypeError: 
-            return None 
-        
-        # Step 4 start
+        import_results = import_api.get_bulk_user_import_request(organization_id, session['import_data_id'])
 
-        headers = {"Authorization": "Bearer " + session["ds_access_token"]}
-        url = (
-            "https://api-d.docusign.net/management/v2/organizations/"
-            f"{organization_id}/imports/bulk_users/{obj_id}/results_csv"
-        )
+        if import_results.status == "completed":
+            return import_results
+        else:
+            return None
 
-        response = api_client.request("GET", url, headers=headers)
-        # Step 4 end
-        
-        # Returns the csv file
-        return response.data.decode("UTF8")
 
 
     

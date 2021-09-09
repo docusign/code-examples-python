@@ -4,6 +4,7 @@ import json
 import time
 import os
 from os import path
+from pathlib import Path
 
 from flask import Blueprint, render_template, Response, current_app
 from docusign_admin.client.api_exception import ApiException
@@ -41,7 +42,8 @@ def get_user_list_data():
         get_csv()
 
     current_directory = os.getcwd()
-    file_path = current_directory + os.path.realpath("/admin/examples/eg003_bulk_export_user_data/exported_user_data.csv")
+    #file_path = current_directory + os.path.realpath("/admin/examples/eg003_bulk_export_user_data/exported_user_data.csv")
+    file_path = Path("app/admin/examples/eg003_bulk_export_user_data/exported_user_data.csv").absolute()
 
     # 2. Render the response
     return render_template(
@@ -49,7 +51,7 @@ def get_user_list_data():
         get_csv=True,
         title="Bulk export user data",
         h1="Bulk export user data",
-        message=f"User data exported to {file_path}. </br> Results from UserExport:getUserListExport:",
+        message=f"User data exported to {current_directory}{file_path}. </br> Results from UserExport:getUserListExport:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 

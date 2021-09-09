@@ -34,18 +34,14 @@ def add_users_via_bulk_import():
         current_app.logger.info(f"Bulk import request ID: {results.id}")
     except ApiException as err:
         return process_error(err)
-
-    get_csv_results()
     
-    current_directory = os.getcwd()
-    file_path = current_directory + os.path.realpath("/admin/examples/eg004_add_users_via_bulk_import/csv/results.csv")
-
     # 2. Render the response
     return render_template(
         "example_done.html",
+        check_status = True,
         title="Add users via bulk import",
         h1="Add users via bulk import",
-        message=f"The imported user data has been written to {file_path}. </br> Results from UserImport:addBulkUserImport method:",
+        message=f"Results from UserImport:addBulkUserImport method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
@@ -88,10 +84,30 @@ def get_csv():
         }
     )
 
-def get_csv_results():
-    """Downloads the final csv results"""
+@eg004.route("/eg004check", methods=["GET"])
+@authenticate(eg=eg)
+def check_if_request_ready():
+    """
+    1. Checking if the request is complete
+    2. Render the response
+    """
 
-    csv_data = Eg004Controller.download_csv()
+    # Check if request is complete
+    try:
+        results = Eg004Controller.check_status()
+    except ApiException as err:
+        return process_error(err)
 
-    csv_file = open("app/admin/examples/eg004_add_users_via_bulk_import/csv/results.csv", "w")
-    csv_file.write(csv_data)
+    if not results:
+        return render_template(
+            "eg004_file_state.html",
+        )
+    else:
+        return render_template(
+            "example_done.html",
+            title="Add users via bulk import",
+            h1="Add users via bulk import",
+            message=f"Results from UserImport:getBulkUserImportRequest method:",
+            json=json.dumps(json.dumps(results.to_dict(), default=str))
+        )
+    
