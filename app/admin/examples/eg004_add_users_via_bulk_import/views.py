@@ -38,7 +38,7 @@ def add_users_via_bulk_import():
     get_csv_results()
     
     current_directory = os.getcwd()
-    file_path = current_directory + os.path.abspath("/admin/examples/eg004_add_users_via_bulk_import/csv/results.csv")
+    file_path = current_directory + os.path.realpath("/admin/examples/eg004_add_users_via_bulk_import/csv/results.csv")
 
     # 2. Render the response
     return render_template(

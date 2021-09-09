@@ -41,7 +41,7 @@ def get_user_list_data():
         get_csv()
 
     current_directory = os.getcwd()
-    file_path = current_directory + os.path.abspath("/admin/examples/eg003_bulk_export_user_data/exported_user_data.csv")
+    file_path = current_directory + os.path.realpath("/admin/examples/eg003_bulk_export_user_data/exported_user_data.csv")
 
     # 2. Render the response
     return render_template(
