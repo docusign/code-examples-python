@@ -83,7 +83,9 @@ class Eg004Controller:
         # Creating an import API object
         import_api = BulkImportsApi(api_client=api_client)
 
+        # Step 4 start
         import_results = import_api.get_bulk_user_import_request(organization_id, session['import_data_id'])
+        # Step 4 end
 
         if import_results.status == "completed":
             return import_results
