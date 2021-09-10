@@ -2,7 +2,7 @@
 
 ### GitHub repo: [code-examples-python](./README.md)
 
-This GitHub repo includes code examples for the DocuSign eSignature REST API, Rooms API, Click API, and Monitor API. To switch between API code examples, modify the `EXAMPLES_API_TYPE` setting in the ds_config.py file. Change the value of either `ESignature`, `Rooms`, `Click`, or `Monitor` to `True` to use the corresponding API. Set only one API type to `True` and set the remaining to `False`.
+This GitHub repo includes code examples for the DocuSign Admin API, Click API, eSignature REST API, Monitor API, and Rooms API. To switch between API code examples, modify the `EXAMPLES_API_TYPE` setting in the ds_config.py file. Set only one API type to `True` and set the remaining to `False`.
 
 If none of the API types are set to `True`, the DocuSign eSignature REST API code examples will be shown. If multiple API types are set to `True`, only the first will be shown.
 
@@ -48,7 +48,7 @@ For a list of code examples that use the Monitor API, select the Python tab unde
 **Note:** Note: To use the Admin API, you must [create an organization](https://support.docusign.com/en/guides/org-admin-guide-create-org) in your DocuSign developer account. Also, to run the DocuSign CLM code example, [CLM must be enabled for your organization](https://support.docusign.com/en/articles/DocuSign-and-SpringCM).  
 For information about the scopes used for obtaining authorization to use the Admin API, see the [scopes section](https://developers.docusign.com/docs/admin-api/admin101/auth/).  
 
-For a list of code examples that use the Admin API, select the Python tab under Examples and languages on the DocuSign Developer Center.  
+For a list of code examples that use the Admin API, select the Python tab under [Examples and languages](https://developers.docusign.com/docs/admin-api/how-to/code-launchers/#examples-and-languages) on the DocuSign Developer Center.  
 
 ## Installation
 

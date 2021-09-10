@@ -1,7 +1,9 @@
 """Example 004: Add users via bulk import"""
 
 import json
+import os
 from os import path
+import time
 
 from flask import Blueprint, render_template, request, Response, current_app
 from docusign_admin.client.api_exception import ApiException
@@ -24,19 +26,22 @@ def add_users_via_bulk_import():
     2. Render the response
     """
 
+    controller = Eg004Controller()
+
     # 1. Call the worker method
     try:
-        results = Eg004Controller.worker(request)
+        results = Eg004Controller.worker(controller, request)
         current_app.logger.info(f"Bulk import request ID: {results.id}")
     except ApiException as err:
         return process_error(err)
-
+    
     # 2. Render the response
     return render_template(
         "example_done.html",
+        check_status = True,
         title="Add users via bulk import",
         h1="Add users via bulk import",
-        message="Results from UserImport:addBulkUserImport method:",
+        message=f"Results from UserImport:addBulkUserImport method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
@@ -78,3 +83,31 @@ def get_csv():
             "Content-disposition":"attachment; filename=bulk_import_demo.csv"
         }
     )
+
+@eg004.route("/eg004check", methods=["GET"])
+@authenticate(eg=eg)
+def check_if_request_ready():
+    """
+    1. Checking if the request is complete
+    2. Render the response
+    """
+
+    # Check if request is complete
+    try:
+        results = Eg004Controller.check_status()
+    except ApiException as err:
+        return process_error(err)
+
+    if not results:
+        return render_template(
+            "eg004_file_state.html",
+        )
+    else:
+        return render_template(
+            "example_done.html",
+            title="Add users via bulk import",
+            h1="Add users via bulk import",
+            message=f"Results from UserImport:getBulkUserImportRequest method:",
+            json=json.dumps(json.dumps(results.to_dict(), default=str))
+        )
+    

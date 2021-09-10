@@ -1,6 +1,7 @@
 from os import path
 from docusign_admin.apis import BulkImportsApi
-from flask import session
+from flask import session, Response
+import time
 
 from app.admin.utils import create_admin_api_client, get_organization_id
 from app.ds_config import DS_CONFIG
@@ -9,7 +10,7 @@ from app.ds_config import DS_CONFIG
 class Eg004Controller:
 
     @staticmethod
-    def worker(request):
+    def worker(self, request):
         """
         Create a user list import request and
         returns a list of pending and completed import requests:
@@ -45,11 +46,16 @@ class Eg004Controller:
 
         # Returns the response from the create_bulk_import_add_users_request method
         # Step 3 start
-        return import_api.create_bulk_import_add_users_request(
+        response = import_api.create_bulk_import_add_users_request(
             organization_id,
             csv_file_path
         )
         # Step 3 end
+
+        # Save user list import id in a client session
+        session['import_data_id'] = response.id
+        
+        return response
 
     @staticmethod
     def get_example_csv():
@@ -60,6 +66,32 @@ class Eg004Controller:
         # Returns an example of a CSV file
         return (
             "AccountID,UserName,UserEmail,PermissionSet\n"
-            "{account_id},First1,Last1,example1@sampleemail.example,DS Admin"
-            "{account_id},First2,Last2,example2@sampleemail.example,DS Admin"
+            f"{session['ds_account_id']},Example User1,exampleuser1@example.com,DS Admin\n"
+            f"{session['ds_account_id']},Example User2,exampleuser2@example.com,DS Admin\n"
         )
+
+    @staticmethod
+    def check_status():
+        """Check request status"""
+
+        organization_id = get_organization_id()
+
+        api_client = create_admin_api_client(
+            access_token=session["ds_access_token"]
+        )
+
+        # Creating an import API object
+        import_api = BulkImportsApi(api_client=api_client)
+
+        # Step 4 start
+        import_results = import_api.get_bulk_user_import_request(organization_id, session['import_data_id'])
+        # Step 4 end
+
+        if import_results.status == "completed":
+            return import_results
+        else:
+            return None
+
+
+
+    
