@@ -1,10 +1,10 @@
-""" Example 020: Sms Recipient Authentication"""
+""" Example 020: Recipient Phone Authentication"""
 
 from os import path
 
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, session
 
 from .controller import Eg020Controller
 from ....docusign import authenticate
@@ -17,7 +17,7 @@ eg020 = Blueprint("eg020", __name__)
 
 @eg020.route("/eg020", methods=["POST"])
 @authenticate(eg=eg)
-def sms_authentication():
+def phone_authentication():
     """
     1. Get required arguments
     2. Call the worker method
@@ -27,7 +27,7 @@ def sms_authentication():
     # 1. Get required arguments
     args = Eg020Controller.get_args()
     try:
-        # Step 2: Call the worker method for sms authenticating
+        # Step 2: Call the worker method for authenticating with phone
         results = Eg020Controller.worker(args)
         envelope_id = results.envelope_id
         app.logger.info(f"Envelope was created. EnvelopeId {envelope_id} ")
@@ -49,13 +49,22 @@ def sms_authentication():
 def get_view():
     """Responds with the form for the example"""
 
+    args = {
+        "account_id": session["ds_account_id"],  # represent your {ACCOUNT_ID}
+        "base_path": session["ds_base_path"],
+        "access_token": session["ds_access_token"],  # represent your {ACCESS_TOKEN}
+    }
+
+    workflow_id = Eg020Controller.get_workflow(args)
+
     return render_template(
-        "eg020_sms_authentication.html",
-        title="SMS recipient authentication",
+        "eg020_phone_authentication.html",
+        title="Phone recipient authentication",
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
         source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/controller.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],
-        signer_email=DS_CONFIG["signer_email"]
+        signer_email=DS_CONFIG["signer_email"],
+        workflow_id = workflow_id
     )

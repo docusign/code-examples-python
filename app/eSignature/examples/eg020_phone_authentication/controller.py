@@ -11,7 +11,7 @@ from ....ds_config import DS_CONFIG
 from ....error_handlers import process_error
 
 
-class Eg021Controller:
+class Eg020Controller:
     @staticmethod
     def get_args():
         """Get required session and request arguments"""

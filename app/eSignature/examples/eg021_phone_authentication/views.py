@@ -4,7 +4,7 @@ from os import path
 
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, session
 
 from .controller import Eg021Controller
 from ....docusign import authenticate
@@ -49,6 +49,14 @@ def phone_authentication():
 def get_view():
     """Responds with the form for the example"""
 
+    args = {
+        "account_id": session["ds_account_id"],  # represent your {ACCOUNT_ID}
+        "base_path": session["ds_base_path"],
+        "access_token": session["ds_access_token"],  # represent your {ACCESS_TOKEN}
+    }
+
+    workflow_id = Eg021Controller.get_workflow(args)
+
     return render_template(
         "eg021_phone_authentication.html",
         title="Phone recipient authentication",
@@ -57,5 +65,6 @@ def get_view():
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],
-        signer_email=DS_CONFIG["signer_email"]
+        signer_email=DS_CONFIG["signer_email"],
+        workflow_id = workflow_id
     )
