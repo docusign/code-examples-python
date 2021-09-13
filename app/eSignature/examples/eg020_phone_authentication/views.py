@@ -59,7 +59,7 @@ def get_view():
 
     return render_template(
         "eg020_phone_authentication.html",
-        title="Phone recipient authentication",
+        title="Requiring phone authentication for a Recipient",
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
         source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/controller.py",
         documentation=DS_CONFIG["documentation"] + eg,
