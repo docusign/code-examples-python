@@ -43,10 +43,10 @@ class Eg020Controller:
         1. Create an api client
         2. Create an envelope definition object
         """
-        # Step 1: Construct your API headers
+        # Construct your API headers
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
-        # Step 3: Construct your envelope
+        # Construct your envelope
         envelope_definition = EnvelopeDefinition(
             email_subject="Please sign this document set"
         )
@@ -96,7 +96,7 @@ class Eg020Controller:
         # Tabs are set per recipient
         envelope_definition.recipients = Recipients(signers=[signer1])
 
-        # Step 4: Call the eSignature REST API
+        # Call the eSignature REST API
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
 
