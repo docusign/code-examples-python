@@ -7,7 +7,7 @@
     is used to position the signing fields in the documents.
 </p>
 <p>
-    This is a general example of creating and sending an envelope (a signing request) using an SMS message or phone call for Recipient Authentication.
+  This is a general example of creating and sending an envelope (a signing request) using an SMS message or phone call for Recipient Authentication.
 </p>
 
   {% if show_doc %}
@@ -23,7 +23,6 @@
     View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
 </p>
 
-{% if workflow_id %}
     <form class="eg" action="" method="post" data-busy="form">
       <div class="form-group">
         <label for="country_code">Signer Country Code</label>
@@ -52,10 +51,5 @@
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <button type="submit" class="btn btn-docu">Submit</button>
       </form>
-{% else %}
-    <b>ID verification is available to develop API integrations in the DocuSign Developer account,
-    but is not enabled by default. To enable IDV in your Developer account and/or production account,
-    contact your DocuSign Account Manager or Partner Account Manager</b>
-{% endif %}
   
 {% endblock %}
