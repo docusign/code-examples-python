@@ -89,7 +89,7 @@ class Eg020Controller:
             delivery_method="email",
             recipient_id="1",  # Represents your {RECIPIENT_ID}
             routing_order="1",
-            identity_verification={ "workflowId": "c368e411-1592-4001-a3df-dca94ac539ae", "steps": "null", "inputOptions":[{"name":"phone_number_list","valueType":"PhoneNumberList","phoneNumberList":[{"countryCode":args["envelope_args"]["country_code"],"code":"1","number":args["envelope_args"]["phone_number"]}]}], "idCheckConfigurationName":""},
+            identity_verification={ "workflowId": session['workflow_id'], "steps": "null", "inputOptions":[{"name":"phone_number_list","valueType":"PhoneNumberList","phoneNumberList":[{"countryCode":args["envelope_args"]["country_code"],"code":"1","number":args["envelope_args"]["phone_number"]}]}], "idCheckConfigurationName":""},
             tabs=Tabs(sign_here_tabs=[sign_here1])
         )
 
@@ -112,6 +112,7 @@ class Eg020Controller:
             workflow_response = workflow_details.get_account_identity_verification(account_id=args["account_id"])
 
             # Check that idv authentication is enabled
+            # The workflow ID is a hard-coded value which is unique to this phone authentication workflow
             if workflow_response.identity_verification:
                 session['workflow_id'] = "c368e411-1592-4001-a3df-dca94ac539ae"
                 return session['workflow_id']
