@@ -26,10 +26,10 @@
 
     <form class="eg" action="" method="post" data-busy="form">
       <div class="form-group">
-        <label for="country_code">Signer Country Code</label>
-        <input type="tel" class="form-control" id="country_code" name="country_code"
+          <label for="country_code">Signer Country Code</label>
+          <input type="tel" class="form-control" id="country_code" name="country_code"
               aria-describedby="accessHelp" placeholder="1" required
-        <small id="accessHelp" class="form-text text-muted">The country code for the phone number below.</small>
+          <small id="accessHelp" class="form-text text-muted">The country code for the phone number below.</small>
       </div>  
       <div class="form-group">
           <label for="phone_number">Signer Phone Number</label>
@@ -37,20 +37,20 @@
                  aria-describedby="accessHelp" placeholder="4155551212" required
           <small id="accessHelp" class="form-text text-muted">This phone number will receive a notification. We'll never share your phone number with anyone else.</small>
       </div>
-        <div class="form-group">
+      <div class="form-group">
           <label for="signer_email">Signer Email</label>
           <input type="email" class="form-control" id="signer_email" name="signer_email"
                  aria-describedby="emailHelp" placeholder="pat@example.com" required
                  value="{{ signer_email }}">
           <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-group">
+      </div>
+      <div class="form-group">
           <label for="signer_name">Signer Name</label>
           <input type="text" class="form-control" id="signer_name" placeholder="Pat Johnson" name="signer_name"
                  value="{{ signer_name }}" required>
-        </div>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button type="submit" class="btn btn-docu">Submit</button>
-      </form>
+      </div>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          <button type="submit" class="btn btn-docu">Submit</button>
+    </form>
   
 {% endblock %}
