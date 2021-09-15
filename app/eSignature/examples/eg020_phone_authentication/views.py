@@ -35,8 +35,8 @@ def phone_authentication():
         # 3. Render success response
         return render_template(
             "example_done.html",
-            title="Envelope sent",
-            h1="Envelope sent",
+            title="Require Phone Authentication for a Recipient",
+            h1="Require Phone Authentication for a Recipient",
             message=f"""The envelope has been created and sent!<br/> Envelope ID {envelope_id}."""
         )
 
