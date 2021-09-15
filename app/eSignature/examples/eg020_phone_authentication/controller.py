@@ -70,8 +70,10 @@ class Eg020Controller:
         # Create your signature tab
         sign_here1 = SignHere(
             name="SignHereTab",
-            x_position="75",
-            y_position="572",
+            anchor_string="/sn1/",
+            anchor_units="pixels",
+            anchor_y_offset="10",
+            anchor_x_offset="20",
             tab_label="SignHereTab",
             page_number="1",
             document_id="1",
