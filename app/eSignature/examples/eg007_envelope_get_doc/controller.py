@@ -38,13 +38,13 @@ class Eg007Controller:
         envelope_api = EnvelopesApi(api_client)
         document_id = args["document_id"]
 
-        # The SDK always stores the received file as a temp file
-        # Call the envelope get method
-        temp_file = envelope_api.get_document(
+        # Call the envelope get method to get the path of the temp file with the documents
+        temp_file_path = envelope_api.get_document(
             account_id=args["account_id"],
             document_id=document_id,
             envelope_id=args["envelope_id"]
         )
+
         # Step 3 end
         
         doc_item = next(item for item in args["envelope_documents"]["documents"] if item["document_id"] == document_id)
@@ -67,4 +67,4 @@ class Eg007Controller:
         else:
             mimetype = "application/octet-stream"
 
-        return {"mimetype": mimetype, "doc_name": doc_name, "data": temp_file}
+        return {"mimetype": mimetype, "doc_name": doc_name, "data": temp_file_path}

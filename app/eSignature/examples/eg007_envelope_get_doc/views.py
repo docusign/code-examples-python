@@ -32,7 +32,7 @@ def get_envelope_doc():
         except ApiException as err:
             return process_error(err)
 
-        # 3. Download envelope document
+        # 3. Download envelope document from the temp file path
         return send_file(
             results["data"],
             mimetype=results["mimetype"],
