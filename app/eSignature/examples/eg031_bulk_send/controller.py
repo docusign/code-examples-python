@@ -2,8 +2,8 @@ import base64
 from os import path
 
 from docusign_esign import EnvelopesApi, Document, Signer, EnvelopeDefinition, Recipients, \
-    BulkEnvelopesApi, TextCustomField, CustomFields
-from docusign_esign.models import BulkSendingCopy, BulkSendingList, BulkSendingCopyRecipient, BulkSendRequest, BulkSendBatchStatus
+    BulkEnvelopesApi, TextCustomField, CustomFields, Tabs, SignHere
+from docusign_esign.models import BulkSendingCopy, BulkSendingList, BulkSendingCopyRecipient, BulkSendingCopyTab, BulkSendRequest, BulkSendBatchStatus
 from flask import request, session
 
 from ....consts import demo_docs_path, pattern
@@ -57,10 +57,10 @@ class Eg031Controller:
         7. Confirm sending success
         """
 
-        # Step 2. Construct your API headers
+        # Construct your API headers
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
-        # Step 3. Submit a bulk list
+        # Submit a bulk list
         bulk_envelopes_api = BulkEnvelopesApi(api_client)
         bulk_sending_list = cls.create_bulk_sending_list(args["signers"])
         bulk_list = bulk_envelopes_api.create_bulk_send_list(
@@ -69,13 +69,13 @@ class Eg031Controller:
         )
         bulk_list_id = bulk_list.list_id
 
-        # Step 4. Create an envelope
+        # Create an envelope
         envelope_api = EnvelopesApi(api_client)
         envelope_definition = cls.make_draft_envelope()
         envelope = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
         envelope_id = envelope.envelope_id
 
-        # Step 5. Attach your bulk list id to the envelope
+        # Attach your bulk list id to the envelope
         text_custom_fields = TextCustomField(name="mailingListId", required="false", show="false", value=bulk_list_id)
         custom_fields = CustomFields(list_custom_fields=[], text_custom_fields=[text_custom_fields])
         envelope_api.create_custom_fields(
@@ -84,7 +84,17 @@ class Eg031Controller:
             custom_fields=custom_fields
         )
 
-        # Step 6. Add placeholder recipients
+        # Add placeholder tabs
+
+        recipient_sign_here = SignHere(
+            anchor_string="/sn1/",
+            anchor_units="pixels",
+            anchor_y_offset="10",
+            anchor_x_offset="20",
+            tab_label="RecipentTab"
+        )
+
+        # Add placeholder recipients
         cc = Signer(
             name="Multi Bulk Recipient::cc",
             email="multiBulkRecipients-cc@docusign.com",
@@ -93,7 +103,7 @@ class Eg031Controller:
             routing_order="1",
             status="created",
             delivery_method="email",
-            recipient_id="12",
+            recipient_id="1",
             recipient_type="signer"
         )
 
@@ -105,9 +115,11 @@ class Eg031Controller:
             routing_order="1",
             status="created",
             delivery_method="email",
-            recipient_id="13",
+            recipient_id="2",
             recipient_type="signer"
         )
+
+        signer.tabs = Tabs(sign_here_tabs=[recipient_sign_here])
 
         envelope_api.create_recipient(
             account_id=args["account_id"],
@@ -115,7 +127,7 @@ class Eg031Controller:
             recipients=Recipients(signers=[signer, cc])
         )
 
-        # Step 7. Initiate bulk send
+        # Initiate bulk send
         bulk_send_request = BulkSendRequest(envelope_or_template_id=envelope_id)
         batch = bulk_envelopes_api.create_bulk_send_request(
             account_id=args["account_id"],
@@ -124,7 +136,7 @@ class Eg031Controller:
         )
         batch_id = batch.batch_id
 
-        # Step 8. Confirm successful batch send
+        # Confirm successful batch send
         response = bulk_envelopes_api.get_bulk_send_batch_status(account_id=args["account_id"], bulk_send_batch_id=batch_id)
 
         return response
@@ -186,6 +198,43 @@ class Eg031Controller:
             document_id=2
         )
 
+        # Add placeholder tabs
+
+        recipient_sign_here = SignHere(
+            anchor_string="/sn1/",
+            anchor_units="pixels",
+            anchor_y_offset="10",
+            anchor_x_offset="20",
+            tab_label="RecipentTab"
+        )
+
+        # Add placeholder recipients
+        cc = Signer(
+            name="Multi Bulk Recipient::cc",
+            email="multiBulkRecipients-cc@docusign.com",
+            role_name="cc",
+            note="",
+            routing_order="1",
+            status="created",
+            delivery_method="email",
+            recipient_id="1",
+            recipient_type="signer"
+        )
+
+        signer = Signer(
+            name="Multi Bulk Recipient::signer",
+            email="multiBulkRecipients-signer@docusign.com",
+            role_name="signer",
+            note="",
+            routing_order="1",
+            status="created",
+            delivery_method="email",
+            recipient_id="2",
+            recipient_type="signer"
+        )
+
+        signer.tabs = Tabs(sign_here_tabs=[recipient_sign_here])
+
         envelope_definition = EnvelopeDefinition(
             email_subject="Please Sign",
             documents=[document],
@@ -193,5 +242,7 @@ class Eg031Controller:
             envelope_id_stamping="true",
             recipients={},
         )
+
+        envelope_definition.recipients = Recipients(signers=[signer], carbon_copies=[cc])
 
         return envelope_definition
