@@ -41,10 +41,11 @@ class Eg001Controller:
             header_value=f"Bearer {access_token}"
         )
         
+        # Step 3 start
         accounts_api = AccountsApi(api_client=api_client)
         profiles = accounts_api.list_permissions(account_id=account_id)
         profiles_list = profiles.to_dict()["permission_profiles"]
-
+        # Step 3 end
         return profiles_list
 
     @staticmethod
@@ -60,12 +61,13 @@ class Eg001Controller:
             header_name="Authorization",
             header_value=f"Bearer {access_token}"
         )
-
+        
+        # Step 4 start
         groups_api = GroupsApi(api_client)
         groups = groups_api.list_groups(account_id=account_id)
         groups_dict = groups.to_dict()
         groups_list = groups_dict["groups"]
-        
+        # Step 4 end        
         return groups_list
 
     @staticmethod
@@ -100,7 +102,7 @@ class Eg001Controller:
         # Step 2 end
 
         # Create a request body for the create_user method 
-        # Step 3 start
+        # Step 5 start
         request_body = {
             "user_name": args["user_name"],
             "first_name": args['first_name'],
@@ -121,13 +123,13 @@ class Eg001Controller:
                 }
             ]
         }
-        # Step 3 end
+        # Step 5 end
 
         # Creates a user using a method from the user API
-        # Step 4 start
+        # Step 6 start
         response = user_api.create_user(
             args["organization_id"],
             request_body
         )
-        # Step 4 end
+        # Step 6 end
         return response
