@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, session
 from flask_wtf.csrf import CSRFProtect
 
 from .ds_config import DS_CONFIG

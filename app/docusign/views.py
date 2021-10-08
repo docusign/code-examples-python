@@ -28,6 +28,20 @@ def ds_logout():
     app.config["quickstart"] = False
     return redirect(url_for("core.index"))
 
+@ds.route("/choose_api")
+def choose_api():
+    return render_template("choose_api.html", title="Choose API")
+
+@ds.route("/api_selected", methods=["GET", "POST"])
+def api_selected():
+    session["chosen_api"] = request.form.get("chosen_api")
+    ds_logout_internal()
+    flash("You have logged out from DocuSign.")
+    app.config["isLoggedIn"] = False
+    app.config["quickstart"] = False
+
+    return render_template("must_authenticate.html", title="Must authenticate")
+
 
 @ds.route("/callback")
 def ds_callback():
@@ -77,11 +91,11 @@ def ds_callback():
 
 @ds.route("/must_authenticate")
 def ds_must_authenticate():
-    if DS_CONFIG["quickstart"] == "true" and EXAMPLES_API_TYPE['ESignature']:
+    if DS_CONFIG["quickstart"] == "true" and session["chosen_api"] == "e_signature":
         session["auth_type"] = "code_grant"
         return redirect(url_for("ds.ds_login"))
 
-    elif EXAMPLES_API_TYPE["Monitor"]:
+    elif session["chosen_api"] == "monitor":
         session["auth_type"] = "jwt"
         return redirect(url_for("ds.ds_login"))
 

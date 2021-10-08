@@ -5,6 +5,7 @@ from flask import (
     url_for,
     redirect,
     Blueprint,
+    session,
     current_app as app
 )
 

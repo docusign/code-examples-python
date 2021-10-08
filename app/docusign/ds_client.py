@@ -3,7 +3,7 @@ from os import path
 
 
 import requests
-from flask import current_app as app, url_for, redirect, render_template, request
+from flask import current_app as app, url_for, redirect, render_template, request, session
 from flask_oauthlib.client import OAuth
 from docusign_esign import ApiClient
 from docusign_esign.client.api_exception import ApiException
@@ -45,11 +45,11 @@ class DSClient:
     def _auth_code_grant(cls):
         """Authorize with the Authorization Code Grant - OAuth 2.0 flow"""
         oauth = OAuth(app)
-        if EXAMPLES_API_TYPE["Rooms"]:
+        if session["chosen_api"] == "rooms":
             use_scopes = ROOMS_SCOPES
-        elif EXAMPLES_API_TYPE["Click"]:
+        elif session["chosen_api"] == "click":
             use_scopes = CLICK_SCOPES
-        elif EXAMPLES_API_TYPE["Admin"]:
+        elif session["chosen_api"] == "admin":
             use_scopes = ADMIN_SCOPES
         else:
             use_scopes = SCOPES
@@ -77,11 +77,11 @@ class DSClient:
         api_client = ApiClient()
         api_client.set_base_path(DS_JWT["authorization_server"])
 
-        if EXAMPLES_API_TYPE["Rooms"]:
+        if session["chosen_api"] == "rooms":
             use_scopes = ROOMS_SCOPES
-        elif EXAMPLES_API_TYPE["Click"]:
+        elif session["chosen_api"] == "click":
             use_scopes = CLICK_SCOPES
-        elif EXAMPLES_API_TYPE["Admin"]:
+        elif session["chosen_api"] == "admin":
             use_scopes=ADMIN_SCOPES
         else:
             use_scopes = SCOPES
@@ -121,6 +121,7 @@ class DSClient:
                 return redirect(consent_url)
             else:
                 process_error(err)
+
 
     @classmethod
     def destroy(cls):

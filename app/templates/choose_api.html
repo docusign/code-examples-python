@@ -1,0 +1,27 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div style="margin:1% 5%;">
+      <h1 class="display-4">Please Choose an API</h1>
+
+    <form method="post" data-busy="form" action={{ url_for("ds.api_selected") }}>
+        <div class="form-group col-md-5">
+            <label for="chosen_api">Please choose your API</label>
+            <select class="form-control" id="chosen_api" name="chosen_api">
+                <option value="e_signature">eSignature</option>
+                <option value="rooms">Rooms</option>
+                <option value="click">Click</option>
+                <option value="monitor">Monitor</option>
+                <option value="admin">Admin</option>
+            </select>
+            <p class="lead" style="padding-top: .5rem;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button type="submit" class="btn btn-docu">Choose your desired API</button>
+            </p>
+        </div>
+    </form>
+      <hr class="my-4">
+      <p>You need to authenticate with DocuSign to continue your request.</p>
+    </div>
+{% endblock %}
