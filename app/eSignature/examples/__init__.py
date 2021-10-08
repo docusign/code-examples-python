@@ -17,8 +17,7 @@ from .eg016_set_tab_values import eg016
 from .eg017_set_template_tab_values import eg017
 from .eg018_envelope_custom_field_data import eg018
 from .eg019_access_code_authentication import eg019
-from .eg020_sms_authentication import eg020
-from .eg021_phone_authentication import eg021
+from .eg020_phone_authentication import eg020
 from .eg022_kba_authentication import eg022
 from .eg023_idv_authentication import eg023
 from .eg024_permissions_creating import eg024
