@@ -2,11 +2,12 @@ from datetime import datetime, timedelta
 
 from flask import redirect, request, url_for, flash, render_template, Blueprint, session, current_app as app
 
+import json
 from .ds_client import DSClient
 from .utils import ds_logout_internal
 from ..consts import base_uri_suffix
 from ..ds_config import DS_CONFIG
-from ..ds_config import EXAMPLES_API_TYPE
+from ..api_type import EXAMPLES_API_TYPE
 
 ds = Blueprint("ds", __name__, url_prefix="/ds")
 
@@ -36,19 +37,28 @@ def choose_api():
 def api_selected():
     chosen_api = request.form.get("chosen_api")
 
-    if chosen_api == "ESignature":
-        EXAMPLES_API_TYPE["ESignature"] = True
-    elif chosen_api == "Rooms":
-        EXAMPLES_API_TYPE["Rooms"] = True
-    elif chosen_api == "Admin":
-        EXAMPLES_API_TYPE["Admin"] = True
-    elif chosen_api == "Monitor":
-        EXAMPLES_API_TYPE["Monitor"] = True
-    elif chosen_api == "Click":
-        EXAMPLES_API_TYPE["Click"] = True
+    new_api_type = EXAMPLES_API_TYPE
 
-    session["chosen_api"] = False
-    session["chosen_api"] = chosen_api
+    # Set all values to False
+    for api_type in new_api_type:
+        if new_api_type[api_type] == True:
+            new_api_type[api_type] = False
+
+    # Update the new chosen API type to True
+    if chosen_api == "ESignature":
+        new_api_type["ESignature"] = True
+    elif chosen_api == "Rooms":
+        new_api_type["Rooms"] = True
+    elif chosen_api == "Admin":
+        new_api_type["Admin"] = True
+    elif chosen_api == "Monitor":
+        new_api_type["Monitor"] = True
+    elif chosen_api == "Click":
+        new_api_type["Click"] = True 
+
+    # Overwrite api_type.py file
+    with open("app/api_type.py", "w") as api_type_file:
+        api_type_file.write("EXAMPLES_API_TYPE =" + str(new_api_type))
 
     ds_logout_internal()
     flash("You have logged out from DocuSign.")

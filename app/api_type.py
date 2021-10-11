@@ -1,0 +1,1 @@
+EXAMPLES_API_TYPE ={'Rooms': False, 'ESignature': False, 'Click': False, 'Monitor': False, 'Admin': True}

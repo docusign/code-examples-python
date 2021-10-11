@@ -8,7 +8,8 @@ from flask_oauthlib.client import OAuth
 from docusign_esign import ApiClient
 from docusign_esign.client.api_exception import ApiException
 
-from ..ds_config import DS_CONFIG, DS_JWT, EXAMPLES_API_TYPE
+from ..ds_config import DS_CONFIG, DS_JWT
+from ..api_type import EXAMPLES_API_TYPE
 from ..error_handlers import process_error
 
 SCOPES = [
