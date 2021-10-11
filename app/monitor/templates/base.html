@@ -37,6 +37,9 @@
                  data-busy="href">Login <span class="sr-only">(current)</span></a>
             </li>
           {% endif %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('ds.choose_api') }}">Choose API <span class="sr-only">(current)</span></a>
+          </li>
         </ul>
 
         {% if session['ds_user_name'] %}

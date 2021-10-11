@@ -34,7 +34,22 @@ def choose_api():
 
 @ds.route("/api_selected", methods=["GET", "POST"])
 def api_selected():
-    session["chosen_api"] = request.form.get("chosen_api")
+    chosen_api = request.form.get("chosen_api")
+
+    if chosen_api == "ESignature":
+        EXAMPLES_API_TYPE["ESignature"] = True
+    elif chosen_api == "Rooms":
+        EXAMPLES_API_TYPE["Rooms"] = True
+    elif chosen_api == "Admin":
+        EXAMPLES_API_TYPE["Admin"] = True
+    elif chosen_api == "Monitor":
+        EXAMPLES_API_TYPE["Monitor"] = True
+    elif chosen_api == "Click":
+        EXAMPLES_API_TYPE["Click"] = True
+
+    session["chosen_api"] = False
+    session["chosen_api"] = chosen_api
+
     ds_logout_internal()
     flash("You have logged out from DocuSign.")
     app.config["isLoggedIn"] = False
@@ -91,11 +106,11 @@ def ds_callback():
 
 @ds.route("/must_authenticate")
 def ds_must_authenticate():
-    if DS_CONFIG["quickstart"] == "true" and session["chosen_api"] == "e_signature":
+    if DS_CONFIG["quickstart"] == "true" and EXAMPLES_API_TYPE["ESignature"]:
         session["auth_type"] = "code_grant"
         return redirect(url_for("ds.ds_login"))
 
-    elif session["chosen_api"] == "monitor":
+    elif EXAMPLES_API_TYPE["Monitor"]:
         session["auth_type"] = "jwt"
         return redirect(url_for("ds.ds_login"))
 
