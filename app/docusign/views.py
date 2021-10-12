@@ -65,7 +65,7 @@ def api_selected():
     app.config["isLoggedIn"] = False
     app.config["quickstart"] = False
 
-    return render_template("must_authenticate.html", title="Must authenticate")
+    return render_template("must_authenticate.html", title="Must authenticate", chosen_api=chosen_api)
 
 
 @ds.route("/callback")

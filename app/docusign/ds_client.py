@@ -106,8 +106,7 @@ class DSClient:
                 private_key_bytes=private_key,
                 expires_in=3600,
                 scopes=use_scopes
-            )
-
+            )    
             return redirect(url_for("ds.ds_callback"))
 
         except ApiException as err:
