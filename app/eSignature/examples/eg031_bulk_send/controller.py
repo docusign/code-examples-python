@@ -63,7 +63,7 @@ class Eg031Controller:
         # Step 2 end
 
         # Submit a bulk list
-        # Step 3 start
+        # Step 3-1 start
         bulk_envelopes_api = BulkEnvelopesApi(api_client)
         bulk_sending_list = cls.create_bulk_sending_list(args["signers"])
         bulk_list = bulk_envelopes_api.create_bulk_send_list(
@@ -71,15 +71,15 @@ class Eg031Controller:
             bulk_sending_list=bulk_sending_list
         )
         bulk_list_id = bulk_list.list_id
-        # Step 3 end
+        # Step 3-1 end
 
         # Create an envelope
-        # Step 4 start
+        # Step 4-1 start
         envelope_api = EnvelopesApi(api_client)
         envelope_definition = cls.make_draft_envelope()
         envelope = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
         envelope_id = envelope.envelope_id
-        # Step 4 end
+        # Step 4-1 end
 
         # Attach your bulk list id to the envelope
         # Step 5 start
@@ -151,9 +151,11 @@ class Eg031Controller:
         # Step 8 start
         response = bulk_envelopes_api.get_bulk_send_batch_status(account_id=args["account_id"], bulk_send_batch_id=batch_id)
         # Step 8 end
+        print(response)
 
         return response
 
+    # Step 3-2 start
     @classmethod
     def create_bulk_sending_list(cls, args):
         """
@@ -192,7 +194,9 @@ class Eg031Controller:
         )
 
         return bulk_sending_list
+    # Step 3-2 end
 
+    # Step 4-2 start
     @classmethod
     def make_draft_envelope(cls):
         """
@@ -259,3 +263,4 @@ class Eg031Controller:
         envelope_definition.recipients = Recipients(signers=[signer], carbon_copies=[cc])
 
         return envelope_definition
+    # Step 4-2 end

@@ -26,15 +26,14 @@ def bulk_send():
     try:
         # 2. Call the worker method for bulk sending
         response = Eg031Controller.worker(args)
-        batch_id = response.batch_id
+        queued = response.queued
         app.logger.info(f"The envelope has been sent to multiple recipients.")
 
         # 3. Render the response
         return render_template("example_done.html",
-                               title="Bulk sending envelopes to multiple recipients",
-                               h1="Bulk sending envelopes to multiple recipients",
-                               message=f"""The envelope has been sent to recipients!<br/>
-                                                Batch id: {batch_id}."""
+                               title="Bulk send envelope was successfully performed!",
+                               h1="Bulk send envelope was successfully performed!",
+                               message=f"""Bulk request queued to {queued} user lists.<br/>"""
                                )
 
     except ApiException as err:
