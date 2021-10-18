@@ -63,7 +63,7 @@ class Eg002Controller:
         # Step 4. Create the room using a POST API call.
         rooms_api = RoomsApi(api_client)
         response = rooms_api.create_room(
-            room_for_create=room,
+            body=room,
             account_id=args["account_id"],
         )
         return response

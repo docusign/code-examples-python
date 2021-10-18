@@ -91,7 +91,6 @@ else:
     app.register_blueprint(examples.eg018)
     app.register_blueprint(examples.eg019)
     app.register_blueprint(examples.eg020)
-    app.register_blueprint(examples.eg021)
     app.register_blueprint(examples.eg022)
     app.register_blueprint(examples.eg023)
     app.register_blueprint(examples.eg024)
