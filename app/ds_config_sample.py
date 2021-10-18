@@ -43,11 +43,3 @@ DS_JWT = {
     "private_key_file": "./app/private.key", # Create a new file in your repo source folder named private.key then copy and paste your RSA private key there and save it.
     "authorization_server": "account-d.docusign.com"
 }
-
-EXAMPLES_API_TYPE = {
-        "Rooms": False,
-        "ESignature": True,
-        "Click": False,
-        "Monitor": False,
-        "Admin": False,
-}
