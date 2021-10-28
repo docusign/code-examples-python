@@ -1,12 +1,12 @@
 import os
 
-from flask import Flask
+from flask import Flask, session
 from flask_wtf.csrf import CSRFProtect
 
 from .ds_config import DS_CONFIG
 from .eSignature import examples
 from .docusign.views import ds
-from .ds_config import EXAMPLES_API_TYPE
+from .api_type import EXAMPLES_API_TYPE
 from .rooms import examples as rooms_examples
 from .click import examples as click_examples
 from .monitor import examples as monitor_examples

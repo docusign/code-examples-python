@@ -7,5 +7,5 @@ if os.environ.get("DEBUG", False) == "True":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
 else:
-    app.run()
+    app.run(extra_files="api_type.py")
 

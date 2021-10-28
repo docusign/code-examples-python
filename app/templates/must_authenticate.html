@@ -2,6 +2,27 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if chosen_api == "Monitor" %}
+<div style="margin:1% 5%;">
+    <h1 class="display-4">Please Authenticate with DocuSign</h1>
+
+  <form method="post" data-busy="form" action={{ url_for("ds.ds_login") }}>
+      <div class="form-group col-md-5">
+          <label for="auth_type">Please choose your OAuth2.0 grant type</label>
+          <select class="form-control" id="auth_type" name="auth_type">
+              <option value="jwt">JSON Web Token</option>
+          </select>
+          <p class="lead" style="padding-top: .5rem;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <button type="submit" class="btn btn-docu">Authenticate with DocuSign</button>
+          </p>
+      </div>
+  </form>
+    <hr class="my-4">
+  </div>
+
+{% else %}
+
     <div style="margin:1% 5%;">
       <h1 class="display-4">Please Authenticate with DocuSign</h1>
 
@@ -19,6 +40,6 @@
         </div>
     </form>
       <hr class="my-4">
-      <p>You need to authenticate with DocuSign to continue your request.</p>
     </div>
+{% endif %}
 {% endblock %}

@@ -3,12 +3,13 @@ from os import path
 
 
 import requests
-from flask import current_app as app, url_for, redirect, render_template, request
+from flask import current_app as app, url_for, redirect, render_template, request, session
 from flask_oauthlib.client import OAuth
 from docusign_esign import ApiClient
 from docusign_esign.client.api_exception import ApiException
 
-from ..ds_config import DS_CONFIG, DS_JWT, EXAMPLES_API_TYPE
+from ..ds_config import DS_CONFIG, DS_JWT
+from ..api_type import EXAMPLES_API_TYPE
 from ..error_handlers import process_error
 
 SCOPES = [
@@ -103,10 +104,9 @@ class DSClient:
                 user_id=DS_JWT["ds_impersonated_user_id"],
                 oauth_host_name=DS_JWT["authorization_server"],
                 private_key_bytes=private_key,
-                expires_in=3600,
+                expires_in=4000,
                 scopes=use_scopes
             )
-
             return redirect(url_for("ds.ds_callback"))
 
         except ApiException as err:
@@ -121,6 +121,10 @@ class DSClient:
                 return redirect(consent_url)
             else:
                 process_error(err)
+
+        return redirect(url_for("ds.ds_callback"))
+
+
 
     @classmethod
     def destroy(cls):

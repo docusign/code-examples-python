@@ -5,11 +5,12 @@ from flask import (
     url_for,
     redirect,
     Blueprint,
+    session,
     current_app as app
 )
 
 from .ds_config import DS_CONFIG
-from .ds_config import EXAMPLES_API_TYPE
+from .api_type import EXAMPLES_API_TYPE
 
 core = Blueprint("core", __name__)
 
