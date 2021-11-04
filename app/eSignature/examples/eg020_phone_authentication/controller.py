@@ -120,9 +120,12 @@ class Eg020Controller:
             workflow_response = workflow_details.get_account_identity_verification(account_id=args["account_id"])
 
             # Check that idv authentication is enabled
-            # The workflow ID is a hard-coded value which is unique to this phone authentication workflow
+            # Find the workflow ID corresponding to the name "Phone Authentication"
             if workflow_response.identity_verification:
-                session['workflow_id'] = "c368e411-1592-4001-a3df-dca94ac539ae"
+                for workflow in workflow_response.identity_verification:
+                    if workflow.default_name == "Phone Authentication":
+                        session['workflow_id'] = workflow.workflow_id
+
                 return session['workflow_id']
 
             else:
