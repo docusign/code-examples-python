@@ -24,6 +24,7 @@
     View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
 </p>
 
+{% if workflow_id %}
     <form class="eg" action="" method="post" data-busy="form">
       <div class="form-group">
         <label for="country_code">Signer Country Code</label>
@@ -52,5 +53,8 @@
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       <button type="submit" class="btn btn-docu">Submit</button>
       </form>
+  {% else %}
+      <b>Please contact <a target='_blank' href='https://support.docusign.com'>Support</a> to enable recipient phone authentication in your account.</b>
+  {% endif %}
   
 {% endblock %}
