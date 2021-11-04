@@ -12,6 +12,9 @@
   <p><pre>{{ err }}</pre></p>
 {% endif %}
 
+{% if error_code == "IDENTITY_WORKFLOW_INVALID_ID" %}
+  <p>Please contact <a target='_blank' href='https://support.docusign.com'>Support</a> to enable recipient phone authentication in your account.</p>
+{% endif %}
 
 <p><a href="/">Continue</a></p>
   
