@@ -131,7 +131,6 @@ class Eg020Controller:
             else:
                 return None
 
-        #except ApiException as err:
-        #    return process_error(err)
-        except:
-            raise Exception("Please contact <a target='_blank' href='https://support.docusign.com'>Support</a> to enable recipient phone authentication in your account.")
+        except ApiException as err:
+            return process_error(err)
+    
