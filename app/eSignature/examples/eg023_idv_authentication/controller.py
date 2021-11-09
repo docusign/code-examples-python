@@ -109,10 +109,20 @@ class Eg023Controller:
 
             # Check that idv authentication is enabled
             if workflow_response.identity_verification:
-                workflow_id = workflow_response.identity_verification[0].workflow_id
-                app.logger.info("We found the following workflowID: " + workflow_id)
+                # Find the workflow ID corresponding to the name "DocuSign ID Verification"
+                workflow_id = None
+                
+                for workflow in workflow_response.identity_verification:
+                    if workflow.default_name == "DocuSign ID Verification":
+                        workflow_id = workflow.workflow_id
+                        break
+                    
+                if workflow_id is not None:
+                    app.logger.info("We found the following workflowID: " + workflow_id)
+                else:
+                    app.logger.info("No workflowID was found for DocuSign ID Verification.")
+                
                 session['workflow_id'] = workflow_id
-
                 return workflow_id
 
             else:
