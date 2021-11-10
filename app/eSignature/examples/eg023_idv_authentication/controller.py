@@ -66,8 +66,8 @@ class Eg023Controller:
         # Create your signature tab
         sign_here1 = SignHere(
             name="SignHereTab",
-            x_position="75",
-            y_position="572",
+            x_position="200",
+            y_position="160",
             tab_label="SignHereTab",
             page_number="1",
             document_id="1",
