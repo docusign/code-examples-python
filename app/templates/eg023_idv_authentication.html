@@ -1,14 +1,15 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>23. Require Id verification (IDV) for a Recipient</h4>
+<h4>23. Require ID verification (IDV) for a recipient</h4>
+<p>
+    Sends an envelope that requires the recipient to upload a government-issued ID for the purpose of multifactor authentication.
+</p>
 <p>
     The envelope includes a pdf document. Anchor text
     (<a href="https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/tabs/auto-place/">AutoPlace</a>)
     is used to position the signing fields in the documents.
 </p>
-<p>
-    This is a general example of creating and sending an envelope (a signing request) using ID Verification for Recipient Authentication.
-</p>
+
 
   {% if show_doc %}
     <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
