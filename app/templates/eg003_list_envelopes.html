@@ -1,8 +1,7 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>3. List envelopes in the user's account</h4>
-<p>List the envelopes created in the last 30 days.</p>
-<p>This example demonstrates how to query DocuSign about envelopes sent by the current user.</p>
+<h4>3. List envelope status changes</h4>
+<p>The envelopes' current status is included.</p>
 
 {% if show_doc %}
     <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
