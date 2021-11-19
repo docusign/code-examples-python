@@ -33,6 +33,7 @@ DS_CONFIG = {
     "github_example_url": "https://github.com/docusign/code-examples-python/tree/master/app/eSignature/examples/",
     "monitor_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/monitor/examples/",
     "admin_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/admin/examples/",
+    "click_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/click/examples/",
     "documentation": "",  # Use an empty string to indicate no documentation path.
     "quickstart": "{QUICKSTART_VALUE}"
 }
