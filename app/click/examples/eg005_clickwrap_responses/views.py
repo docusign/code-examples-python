@@ -51,6 +51,6 @@ def get_view():
         title="Getting clickwrap responses",
         clickwrap_ok="clickwrap_id" in session,
         source_file=path.basename(path.dirname(__file__)) + "/controller.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(
+        source_url=DS_CONFIG["click_github_url"] + path.basename(
             path.dirname(__file__)) + "/controller.py",
     )
