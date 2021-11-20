@@ -49,7 +49,7 @@ class Eg020Controller:
         # Step 2 end
 
         # Construct your envelope
-        # Step 3 start
+        # Step 4 start
         envelope_definition = EnvelopeDefinition(
             email_subject="Please sign this document set"
         )
@@ -100,13 +100,13 @@ class Eg020Controller:
 
         # Tabs are set per recipient
         envelope_definition.recipients = Recipients(signers=[signer1])
-        # Step 3 end
-
+        # Step 4 end
+        
         # Call the eSignature REST API
-        # Step 4 start
+        # Step 5 start
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
-        # Step 4 end
+        # Step 5 end
 
         return results
 
@@ -115,7 +115,7 @@ class Eg020Controller:
         """Retrieve the workflow id"""
         try:
             api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
-
+            # Step 3 start
             workflow_details = AccountsApi(api_client)
             workflow_response = workflow_details.get_account_identity_verification(account_id=args["account_id"])
 
@@ -125,7 +125,7 @@ class Eg020Controller:
                 for workflow in workflow_response.identity_verification:
                     if workflow.default_name == "Phone Authentication":
                         session['workflow_id'] = workflow.workflow_id
-
+            # Step 3 end
                 return session['workflow_id']
 
             else:
