@@ -4,13 +4,13 @@ from flask import Flask, session
 from flask_wtf.csrf import CSRFProtect
 
 from .ds_config import DS_CONFIG
-from .eSignature import examples
+from .eSignature import views as examples
 from .docusign.views import ds
 from .api_type import EXAMPLES_API_TYPE
-from .rooms import examples as rooms_examples
-from .click import examples as click_examples
-from .monitor import examples as monitor_examples
-from .admin import examples as admin_examples
+from .rooms import views as rooms_examples
+from .click import views as click_examples
+from .monitor import views as monitor_examples
+from .admin import views as admin_examples
 from .views import core
 
 session_path = "/tmp/python_recipe_sessions"
