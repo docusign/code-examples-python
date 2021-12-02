@@ -1,7 +1,7 @@
 from docusign_click import AccountsApi, ClickwrapRequest
 from flask import session
 
-from ...utils import create_click_api_client
+from ..utils import create_click_api_client
 
 
 class Eg002ActivateClickwrapController:

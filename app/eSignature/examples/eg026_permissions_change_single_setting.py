@@ -1,9 +1,9 @@
 from docusign_esign import AccountsApi, PermissionProfile
 from docusign_esign.client.api_exception import ApiException
 from flask import request, session
-from ....consts import settings
-from ....docusign import create_api_client
-from ....error_handlers import process_error
+from ...consts import settings
+from ...docusign import create_api_client
+from ...error_handlers import process_error
 
 class Eg026PermissionsChangeSingleSettingController:
     @staticmethod

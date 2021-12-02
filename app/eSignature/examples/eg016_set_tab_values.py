@@ -5,9 +5,9 @@ from docusign_esign import EnvelopesApi, EnvelopeDefinition, Document, Signer, S
     CustomFields, TextCustomField, Text, RecipientViewRequest
 from flask import current_app as app, session, url_for, request
 
-from ....consts import demo_docs_path, authentication_method, signer_client_id, pattern
-from ....docusign import create_api_client
-from ....ds_config import DS_CONFIG
+from ...consts import demo_docs_path, authentication_method, signer_client_id, pattern
+from ...docusign import create_api_client
+from ...ds_config import DS_CONFIG
 
 
 class Eg016SetTabValuesController:

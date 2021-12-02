@@ -4,9 +4,9 @@ from os import path
 
 from flask import render_template, Blueprint
 
-from .eg010_send_binary_docs import Eg010SendBinaryDocsController
-from ....docusign import authenticate
-from ....ds_config import DS_CONFIG
+from ..examples.eg010_send_binary_docs import Eg010SendBinaryDocsController
+from ...docusign import authenticate
+from ...ds_config import DS_CONFIG
 
 eg = "eg010"  # reference (and url) for this example
 eg010 = Blueprint("eg010", __name__)

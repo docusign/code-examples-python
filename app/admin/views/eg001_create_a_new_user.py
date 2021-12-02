@@ -10,7 +10,7 @@ from app.error_handlers import process_error
 from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
 
-from .eg001_create_a_new_user import Eg001CreateNewUserController
+from ..examples.eg001_create_a_new_user import Eg001CreateNewUserController
 
 eg = "eg001"  # Reference (and URL) for this example
 eg001 = Blueprint(eg, __name__)

@@ -6,7 +6,7 @@ import json
 from docusign_rooms.client.api_exception import ApiException
 from flask import render_template, Blueprint
 
-from .eg006_create_external_form_fill_session import Eg006CreateExternalFormFillSessionController
+from ..examples.eg006_create_external_form_fill_session import Eg006CreateExternalFormFillSessionController
 from app.docusign import authenticate
 from app.error_handlers import process_error
 

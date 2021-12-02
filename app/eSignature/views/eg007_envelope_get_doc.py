@@ -5,10 +5,10 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, send_file, Blueprint
 
-from .eg007_envelope_get_doc import Eg007EnvelopeGetDocController
-from ....docusign import authenticate
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ..examples.eg007_envelope_get_doc import Eg007EnvelopeGetDocController
+from ...docusign import authenticate
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 eg = "eg007"  # reference (and url) for this example
 eg007 = Blueprint("eg007", __name__)

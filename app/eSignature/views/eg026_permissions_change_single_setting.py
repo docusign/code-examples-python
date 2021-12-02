@@ -6,10 +6,10 @@ from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, session, Blueprint
 
-from .eg026_permissions_change_single_setting import Eg026PermissionsChangeSingleSettingController
-from ....docusign import authenticate
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ..examples.eg026_permissions_change_single_setting import Eg026PermissionsChangeSingleSettingController
+from ...docusign import authenticate
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 eg = "eg026"
 eg026 = Blueprint("eg026", __name__)

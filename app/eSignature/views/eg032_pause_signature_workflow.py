@@ -6,10 +6,10 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, Blueprint
 
-from .eg032_pause_signature_workflow import Eg032PauseSignatureWorkflowController
-from ....docusign import authenticate
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ..examples.eg032_pause_signature_workflow import Eg032PauseSignatureWorkflowController
+from ...docusign import authenticate
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 eg = "eg032"  # Reference (and URL) for this example
 eg032 = Blueprint("eg032", __name__)

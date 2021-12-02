@@ -5,10 +5,10 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import render_template, redirect, session, Blueprint
 
-from .eg017_set_template_tab_values import Eg017SetTemplateTabValuesController
-from ....docusign import authenticate
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ..examples.eg017_set_template_tab_values import Eg017SetTemplateTabValuesController
+from ...docusign import authenticate
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 eg = "eg017"  # reference (and url) for this example
 eg017 = Blueprint("eg017", __name__)

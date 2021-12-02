@@ -6,9 +6,9 @@ from docusign_esign import EnvelopesApi, Document, Signer, EnvelopeDefinition, R
 from docusign_esign.models import BulkSendingCopy, BulkSendingList, BulkSendingCopyRecipient, BulkSendingCopyTab, BulkSendRequest, BulkSendBatchStatus
 from flask import request, session
 
-from ....consts import demo_docs_path, pattern
-from ....docusign import create_api_client
-from ....ds_config import DS_CONFIG
+from ...consts import demo_docs_path, pattern
+from ...docusign import create_api_client
+from ...ds_config import DS_CONFIG
 
 class Eg031BulkSendController:
     @staticmethod

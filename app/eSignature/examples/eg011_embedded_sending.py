@@ -2,8 +2,8 @@ from docusign_esign import EnvelopesApi, ReturnUrlRequest
 from flask import url_for, session, request
 
 from .eg002_signing_via_email import Eg002SigningViaEmailController
-from ....consts import pattern
-from ....docusign import create_api_client
+from ...consts import pattern
+from ...docusign import create_api_client
 
 
 class Eg011EmbeddedSendingController:

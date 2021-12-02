@@ -1,7 +1,7 @@
 from docusign_admin import ApiClient, ProductPermissionProfilesApi, DSGroupsApi, UsersApi, NewMultiProductUserAddRequest, ProductPermissionProfileRequest, DSGroupRequest
 from flask import session, json, request
 
-from ....ds_config import DS_CONFIG
+from ...ds_config import DS_CONFIG
 from app.admin.utils import get_organization_id
 
 class Eg002CreateActiveClmEsignUserController:

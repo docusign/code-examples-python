@@ -1,8 +1,8 @@
 from docusign_esign import AccountsApi, Group, GroupInformation, GroupsApi
 from docusign_esign.client.api_exception import ApiException
 from flask import session, request
-from ....docusign import create_api_client
-from ....error_handlers import process_error
+from ...docusign import create_api_client
+from ...error_handlers import process_error
 
 class Eg025PermissionsSetUserGroupController:
     @staticmethod

@@ -4,10 +4,10 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, session, request, Blueprint
-from .eg027_permissions_delete import Eg027PermissionsDeleteController
-from ....docusign import authenticate
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ..examples.eg027_permissions_delete import Eg027PermissionsDeleteController
+from ...docusign import authenticate
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 eg = "eg027"
 eg027 = Blueprint("eg027", __name__)

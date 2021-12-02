@@ -3,10 +3,10 @@ from os import path
 from docusign_esign import AccountsApi, EnvelopesApi, EnvelopeDefinition, Document, Signer, SignHere, Tabs, Recipients
 from docusign_esign.client.api_exception import ApiException
 from flask import request, session
-from ....consts import demo_docs_path, pattern
-from ....docusign import create_api_client
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ...consts import demo_docs_path, pattern
+from ...docusign import create_api_client
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 class Eg029BrandsApplyToEnvelopeController:
     @staticmethod

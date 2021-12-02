@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, current_app
 
 from app.docusign import authenticate
 from app.error_handlers import process_error
-from .eg007_create_form_group import Eg007CreateFormGroupController
+from ..examples.eg007_create_form_group import Eg007CreateFormGroupController
 
 eg = "eg007"  # Reference (and URL) for this example
 eg007 = Blueprint(eg, __name__)

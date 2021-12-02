@@ -12,7 +12,7 @@ from docusign_admin.client.api_exception import ApiException
 from app.error_handlers import process_error
 from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
-from .eg003_bulk_export_user_data import Eg003BulkExportUserDataController
+from ..examples.eg003_bulk_export_user_data import Eg003BulkExportUserDataController
 
 
 eg = "eg003"  # Reference (and URL) for this example
@@ -41,7 +41,7 @@ def get_user_list_data():
     if csv_ready == True:
         get_csv()
 
-    file_path = Path("app/admin/examples/eg003_bulk_export_user_data/exported_user_data.csv").absolute()
+    file_path = Path("app/admin/examples/exported_user_data.csv").absolute()
 
     # 2. Render the response
     return render_template(
@@ -98,6 +98,6 @@ def get_csv():
     except ApiException as err:
         return process_error(err)
 
-    results_file = open("app/admin/examples/eg003_bulk_export_user_data/exported_user_data.csv", "w")
+    results_file = open("app/admin/examples/exported_user_data.csv", "w")
     results_file.write(csv_file)
     

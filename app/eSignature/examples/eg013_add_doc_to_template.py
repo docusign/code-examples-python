@@ -4,8 +4,8 @@ from docusign_esign import EnvelopesApi, EnvelopeDefinition, Document, Signer, C
     CompositeTemplate, InlineTemplate, ServerTemplate, RecipientViewRequest
 from flask import url_for, session, request
 
-from ....consts import signer_client_id, pattern
-from ....docusign import create_api_client
+from ...consts import signer_client_id, pattern
+from ...docusign import create_api_client
 
 
 class Eg013AddDocToTemplateController:

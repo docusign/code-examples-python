@@ -8,8 +8,8 @@ from flask import Blueprint, render_template, current_app
 
 from app.docusign import authenticate
 from app.error_handlers import process_error
-from .eg002_create_active_clm_esign_user import Eg002CreateActiveClmEsignUserController
-from ....ds_config import DS_CONFIG
+from ..examples.eg002_create_active_clm_esign_user import Eg002CreateActiveClmEsignUserController
+from ...ds_config import DS_CONFIG
 
 eg = "eg002"  # Reference (and URL) for this example
 eg002 = Blueprint(eg, __name__)

@@ -4,8 +4,8 @@ from os import path
 import requests
 from flask import request, session
 
-from ....consts import demo_docs_path, pattern
-from ....ds_config import DS_CONFIG
+from ...consts import demo_docs_path, pattern
+from ...ds_config import DS_CONFIG
 
 
 class Eg010SendBinaryDocsController:

@@ -5,9 +5,9 @@ from docusign_esign import EnvelopesApi, EnvelopeDefinition, Document, Signer, S
 from docusign_esign.models import Workflow, WorkflowStep
 from flask import session, request
 
-from ....consts import demo_docs_path, pattern
-from ....docusign import create_api_client
-from ....ds_config import DS_CONFIG
+from ...consts import demo_docs_path, pattern
+from ...docusign import create_api_client
+from ...ds_config import DS_CONFIG
 
 
 class Eg032PauseSignatureWorkflowController:

@@ -5,9 +5,9 @@ from docusign_click import AccountsApi, ClickwrapRequest, DisplaySettings, \
     Document
 from flask import session
 
-from ....consts import demo_docs_path
-from ....ds_config import DS_CONFIG
-from ...utils import create_click_api_client
+from ...consts import demo_docs_path
+from ...ds_config import DS_CONFIG
+from ..utils import create_click_api_client
 
 
 class Eg003CrateNewClickwrapVersionController:

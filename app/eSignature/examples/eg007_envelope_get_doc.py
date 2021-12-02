@@ -1,8 +1,8 @@
 from docusign_esign import EnvelopesApi
 from flask import request, session
 
-from ....consts import pattern
-from ....docusign import create_api_client
+from ...consts import pattern
+from ...docusign import create_api_client
 
 
 class Eg007EnvelopeGetDocController:

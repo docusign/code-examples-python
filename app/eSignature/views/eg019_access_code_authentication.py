@@ -6,10 +6,10 @@ from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, Blueprint
 
-from .eg019_access_code_authentication import Eg019AccessCodeAuthenticationController
-from ....docusign import authenticate
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ..examples.eg019_access_code_authentication import Eg019AccessCodeAuthenticationController
+from ...docusign import authenticate
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 eg = "eg019"  # reference (and url) for this example
 eg019 = Blueprint("eg019", __name__)

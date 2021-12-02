@@ -5,9 +5,9 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, Blueprint
 
-from .eg009_use_template import Eg009UseTemplateController
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ..examples.eg009_use_template import Eg009UseTemplateController
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 eg = "eg009"  # reference (and url) for this example
 eg009 = Blueprint("eg009", __name__)

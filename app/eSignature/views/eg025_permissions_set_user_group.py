@@ -4,10 +4,10 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, session, request, Blueprint
-from .eg025_permissions_set_user_group import Eg025PermissionsSetUserGroupController
-from ....docusign import authenticate
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ..examples.eg025_permissions_set_user_group import Eg025PermissionsSetUserGroupController
+from ...docusign import authenticate
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 eg = "eg025"
 eg025 = Blueprint("eg025", __name__)
@@ -53,7 +53,7 @@ def get_view():
         "base_path": session["ds_base_path"],
         "access_token": session["ds_access_token"],  # Represents your {ACCESS_TOKEN}
     }
-    permission_profiles, groups = Eg025Controller.get_data(args)
+    permission_profiles, groups = Eg025PermissionsSetUserGroupController.get_data(args)
     return render_template(
         "eg025_permissions_set_user_group.html",
         title="Setting a permission profile",

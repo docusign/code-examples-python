@@ -6,7 +6,7 @@ import json
 from docusign_click.client.api_exception import ApiException
 from flask import render_template, current_app, Blueprint, session
 
-from .eg001_create_clickwrap import Eg001CreateClickwrapController
+from ..examples.eg001_create_clickwrap import Eg001CreateClickwrapController
 from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error

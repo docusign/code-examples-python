@@ -11,7 +11,7 @@ from docusign_admin.client.api_exception import ApiException
 from app.error_handlers import process_error
 from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
-from .eg004_add_users_via_bulk_import import Eg004AddUsersViaBulkImportController
+from ..examples.eg004_add_users_via_bulk_import import Eg004AddUsersViaBulkImportController
 
 
 eg = "eg004"  # Reference(and URL) for this example

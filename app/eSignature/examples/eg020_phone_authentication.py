@@ -5,10 +5,10 @@ from docusign_esign import AccountsApi, EnvelopesApi, EnvelopeDefinition, Docume
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app, session, request
 
-from ....consts import demo_docs_path, pattern
-from ....docusign import create_api_client
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ...consts import demo_docs_path, pattern
+from ...docusign import create_api_client
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 
 class Eg020PhoneAuthenticationController:

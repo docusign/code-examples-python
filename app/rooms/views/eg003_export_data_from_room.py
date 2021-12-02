@@ -6,7 +6,7 @@ import json
 from docusign_rooms.client.api_exception import ApiException
 from flask import render_template, Blueprint
 
-from .eg003_export_data_from_room import Eg003ExportDataFromRoomController
+from ..examples.eg003_export_data_from_room import Eg003ExportDataFromRoomController
 from app.docusign import authenticate
 from app.error_handlers import process_error
 

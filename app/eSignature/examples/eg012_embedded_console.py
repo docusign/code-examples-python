@@ -1,8 +1,8 @@
 from docusign_esign import EnvelopesApi, ConsoleViewRequest
 from flask import session, url_for, request
 
-from ....consts import pattern
-from ....docusign import create_api_client
+from ...consts import pattern
+from ...docusign import create_api_client
 
 
 class Eg012EmbeddedConsoleController:

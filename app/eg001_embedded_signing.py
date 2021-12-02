@@ -6,9 +6,9 @@ from docusign_esign.client.api_exception import ApiException
 from flask import render_template, redirect, Blueprint
 
 from .eSignature.examples.eg001_embedded_signing import Eg001EmbeddedSigningController
-from ..docusign import authenticate
-from ..ds_config import DS_CONFIG
-from ..error_handlers import process_error
+from .docusign import authenticate
+from .ds_config import DS_CONFIG
+from .error_handlers import process_error
 
 eg = "eg001"  # reference (and url) for this example
 eg001 = Blueprint("eg001", __name__)

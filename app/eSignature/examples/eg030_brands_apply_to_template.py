@@ -2,9 +2,9 @@ from docusign_esign import EnvelopesApi, EnvelopeDefinition, TemplateRole, Accou
 from docusign_esign.client.api_exception import ApiException
 from flask import session, request
 
-from ....consts import pattern
-from ....docusign import create_api_client
-from ....error_handlers import process_error
+from ...consts import pattern
+from ...docusign import create_api_client
+from ...error_handlers import process_error
 
 
 class Eg030BrandsApplyToTemplateController:

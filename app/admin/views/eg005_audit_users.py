@@ -8,8 +8,8 @@ from flask import Blueprint, render_template, current_app
 
 from app.docusign import authenticate
 from app.error_handlers import process_error
-from .eg005_audit_users import Eg005AuditUsersController
-from ....ds_config import DS_CONFIG
+from ..examples.eg005_audit_users import Eg005AuditUsersController
+from ...ds_config import DS_CONFIG
 
 eg = "eg005"  # Reference (and URL) for this example
 eg005 = Blueprint(eg, __name__)

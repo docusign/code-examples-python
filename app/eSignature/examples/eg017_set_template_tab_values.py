@@ -3,8 +3,8 @@ from docusign_esign import EnvelopesApi, EnvelopeDefinition, RecipientViewReques
 from flask import current_app as app, url_for, request
 from flask import session
 
-from ....consts import authentication_method, signer_client_id, pattern
-from ....docusign import create_api_client
+from ...consts import authentication_method, signer_client_id, pattern
+from ...docusign import create_api_client
 
 
 class Eg017SetTemplateTabValuesController:

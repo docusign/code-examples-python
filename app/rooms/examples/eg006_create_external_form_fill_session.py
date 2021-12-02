@@ -6,7 +6,7 @@ from docusign_rooms import (
 )
 from flask import session, request
 
-from ...utils import create_rooms_api_client
+from ..utils import create_rooms_api_client
 
 
 class Eg006CreateExternalFormFillSessionController:

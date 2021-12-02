@@ -6,7 +6,7 @@ import json
 from docusign_rooms.client.api_exception import ApiException
 from flask import render_template, current_app, Blueprint
 
-from .eg002_create_room_with_template import Eg002CreateRoomWithTemplateController
+from ..examples.eg002_create_room_with_template import Eg002CreateRoomWithTemplateController
 from app.docusign import authenticate
 from app.error_handlers import process_error
 

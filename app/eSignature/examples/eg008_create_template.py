@@ -5,8 +5,8 @@ from docusign_esign import Document, Signer, CarbonCopy, SignHere, Tabs, Recipie
     TemplatesApi, Checkbox, List, ListItem, Number, Radio, RadioGroup, Text, EnvelopeTemplate
 from flask import session
 
-from ....consts import demo_docs_path, doc_file, template_name
-from ....docusign import create_api_client
+from ...consts import demo_docs_path, doc_file, template_name
+from ...docusign import create_api_client
 
 
 class Eg008CreateTemplateController:

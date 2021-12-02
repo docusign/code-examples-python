@@ -1,8 +1,8 @@
 from docusign_esign import AccountsApi, PermissionProfile
 from flask import session, request
 
-from ....consts import settings
-from ....docusign import create_api_client
+from ...consts import settings
+from ...docusign import create_api_client
 
 
 class Eg024PermissionsCreatingController:

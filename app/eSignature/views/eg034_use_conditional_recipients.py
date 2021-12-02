@@ -6,10 +6,10 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, Blueprint
 
-from .eg034_use_conditional_recipients import Eg034UseConditionalRecipientsController
-from ....docusign import authenticate
-from ....ds_config import DS_CONFIG
-from ....error_handlers import process_error
+from ..examples.eg034_use_conditional_recipients import Eg034UseConditionalRecipientsController
+from ...docusign import authenticate
+from ...ds_config import DS_CONFIG
+from ...error_handlers import process_error
 
 eg = "eg034"  # Reference (and URL) for this example
 eg034 = Blueprint("eg034", __name__)

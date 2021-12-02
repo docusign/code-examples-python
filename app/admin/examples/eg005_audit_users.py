@@ -1,7 +1,7 @@
 from docusign_admin import ApiClient, UsersApi
 from flask import session, json
 
-from ....ds_config import DS_CONFIG
+from ...ds_config import DS_CONFIG
 from app.admin.utils import get_organization_id
 import datetime
 

@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, current_app
 
 from app.docusign import authenticate
 from app.error_handlers import process_error
-from .eg008_grant_office_access_to_form_group import Eg008GrantOfficeAccessToFormGroupController
+from ..examples.eg008_grant_office_access_to_form_group import Eg008GrantOfficeAccessToFormGroupController
 
 eg = "eg008"  # Reference (and URL) for this example
 eg008 = Blueprint(eg, __name__)
