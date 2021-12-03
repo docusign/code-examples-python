@@ -54,8 +54,8 @@ def get_view():
     return render_template(
         "eg008_create_template.html",
         title="Create a template",
-        source_file=path.basename(path.dirname(__file__)) + "/eg008_create_template.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg008_create_template.py",
+        source_file= "eg008_create_template.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg008_create_template.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
     )

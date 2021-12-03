@@ -51,8 +51,8 @@ def get_view():
     return render_template(
         "eg014_collect_payment.html",
         title="Order form with payment",
-        source_file=path.basename(path.dirname(__file__)) + "/eg014_collect_payment.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg014_collect_payment.py",
+        source_file= "eg014_collect_payment.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg014_collect_payment.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],

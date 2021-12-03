@@ -57,8 +57,8 @@ def get_view():
     return render_template(
         "eg025_permissions_set_user_group.html",
         title="Setting a permission profile",
-        source_file=path.basename(path.dirname(__file__)) + "/eg025_permissions_set_user_group.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg025_permissions_set_user_group.py",
+        source_file= "eg025_permissions_set_user_group.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg025_permissions_set_user_group.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         permission_profiles=permission_profiles,

@@ -64,7 +64,7 @@ def get_view():
     return render_template(
         "eg006_create_external_form_fill_session.html",
         title="Create an external form fill session",
-        source_file=path.basename(path.dirname(__file__)) + "/eg006_create_external_form_fill_session.py",
+        source_file= "eg006_create_external_form_fill_session.py",
         rooms=rooms,
     )
 
@@ -93,7 +93,7 @@ def get_forms():
     return render_template(
         "eg006_create_external_form_fill_session.html",
         title="Create an external form fill session",
-        source_file=path.basename(path.dirname(__file__)) + "/eg006_create_external_form_fill_session.py",
+        source_file= "eg006_create_external_form_fill_session.py",
         forms=forms,
         room_id=args["room_id"],
         room_name=room.name

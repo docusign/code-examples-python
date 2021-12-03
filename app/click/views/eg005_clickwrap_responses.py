@@ -50,7 +50,6 @@ def get_view():
         "eg005_clickwrap_responses.html",
         title="Getting clickwrap responses",
         clickwrap_ok="clickwrap_id" in session,
-        source_file=path.basename(path.dirname(__file__)) + "/eg005_clickwrap_responses.py",
-        source_url=DS_CONFIG["click_github_url"] + path.basename(
-            path.dirname(__file__)) + "/eg005_clickwrap_responses.py",
+        source_file= "eg005_clickwrap_responses.py",
+        source_url=DS_CONFIG["click_github_url"] + "eg005_clickwrap_responses.py",
     )

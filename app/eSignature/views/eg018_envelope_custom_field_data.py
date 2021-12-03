@@ -46,8 +46,8 @@ def envelope_custom_field_data():
             "eg018_envelope_custom_field_data.html",
             title="Envelope Custom Field Data",
             envelope_ok=False,
-            source_file=path.basename(path.dirname(__file__)) + "/eg018_envelope_custom_field_data.py",
-            source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg018_envelope_custom_field_data.py",
+            source_file= "eg018_envelope_custom_field_data.py",
+            source_url=DS_CONFIG["github_example_url"] + "eg018_envelope_custom_field_data.py",
             documentation=DS_CONFIG["documentation"] + eg,
             show_doc=DS_CONFIG["documentation"],
         )
@@ -62,8 +62,8 @@ def get_view():
         "eg015_envelope_tab_data.html",
         title="Envelope information",
         envelope_ok="envelope_id" in session,
-        source_file=path.basename(path.dirname(__file__)) + "/eg018_envelope_custom_field_data.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg018_envelope_custom_field_data.py",
+        source_file= "eg018_envelope_custom_field_data.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg018_envelope_custom_field_data.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
     )

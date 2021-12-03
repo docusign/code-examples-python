@@ -56,7 +56,6 @@ def get_view():
         "eg002_activate_clickwrap.html",
         title="Activating a clickwrap",
         clickwrap_ok="clickwrap_id" in session,
-        source_file=path.basename(path.dirname(__file__)) + "/eg002_activate_clickwrap.py",
-        source_url=DS_CONFIG["click_github_url"] + path.basename(
-            path.dirname(__file__)) + "/eg002_activate_clickwrap.py",
+        source_file= "eg002_activate_clickwrap.py",
+        source_url=DS_CONFIG["click_github_url"] + "eg002_activate_clickwrap.py",
     )

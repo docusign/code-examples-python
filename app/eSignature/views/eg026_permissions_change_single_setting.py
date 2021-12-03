@@ -60,8 +60,8 @@ def get_view():
     return render_template(
         "eg026_permissions_change_single_setting.html",
         title="Changing a setting in an existing permission profile",
-        source_file=path.basename(path.dirname(__file__)) + "/eg026_permissions_change_single_setting.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg026_permissions_change_single_setting.py",
+        source_file= "eg026_permissions_change_single_setting.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg026_permissions_change_single_setting.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         permission_profiles=permission_profiles

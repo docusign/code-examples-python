@@ -51,8 +51,8 @@ def get_view():
     return render_template(
         "eg024_permissions_creating.html",
         title="Creating a permission profile",
-        source_file=path.basename(path.dirname(__file__)) + "/eg024_permissions_creating.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg024_permissions_creating.py",
+        source_file= "eg024_permissions_creating.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg024_permissions_creating.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         permission_profile_name="Sample Profile 134972-Alpha"

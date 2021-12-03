@@ -48,8 +48,8 @@ def get_view():
     return render_template(
         "eg031_bulk_send.html",
         title="Bulk sending envelopes to multiple recipients",
-        source_file=path.basename(path.dirname(__file__)) + "/eg031_bulk_send.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg031_bulk_send.py",
+        source_file= "eg031_bulk_send.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg031_bulk_send.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],

@@ -73,8 +73,8 @@ def get_view():
     return render_template(
         "eg002_create_active_clm_esign_user.html",
         title="Create an active CLM + eSign user",
-        source_file=path.basename(path.dirname(__file__)) + "/eg002_create_active_clm_esign_user.py",
-        source_url=DS_CONFIG["admin_github_url"] + path.basename(path.dirname(__file__)) + "/eg002_create_active_clm_esign_user.py",
+        source_file= "eg002_create_active_clm_esign_user.py",
+        source_url=DS_CONFIG["admin_github_url"] + "eg002_create_active_clm_esign_user.py",
         documentation=DS_CONFIG["documentation"] + eg,
         clm_permission_profiles_list=clm_permission_profiles_list,
         esign_permission_profiles_list=esign_permission_profiles_list,

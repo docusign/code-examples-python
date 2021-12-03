@@ -47,8 +47,8 @@ def get_view():
         "eg012_embedded_console.html",
         title="Embedded Console",
         envelope_ok=envelope_id,
-        source_file=path.basename(path.dirname(__file__)) + "/eg012_embedded_console.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg012_embedded_console.py",
+        source_file= "eg012_embedded_console.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg012_embedded_console.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
     )

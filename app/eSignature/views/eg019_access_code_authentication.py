@@ -49,8 +49,8 @@ def get_view():
     return render_template(
         "eg019_access_code_authentication.html",
         title="Access-code recipient authentication",
-        source_file=path.basename(path.dirname(__file__)) + "/eg019_access_code_authentication.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg019_access_code_authentication.py",
+        source_file= "eg019_access_code_authentication.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg019_access_code_authentication.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],

@@ -64,9 +64,8 @@ def get_view():
     return render_template(
         "eg001_create_a_new_user.html",
         title="Create a new active eSignature user",
-        source_file=path.basename(path.dirname(__file__)) + "/eg001_create_a_new_user.py",
-        source_url=DS_CONFIG["admin_github_url"] + path.basename(
-            path.dirname(__file__)) + "/eg001_create_a_new_user.py",
+        source_file= "eg001_create_a_new_user.py",
+        source_url=DS_CONFIG["admin_github_url"] + "eg001_create_a_new_user.py",
         documentation=DS_CONFIG["documentation"] + eg,
         permission_profiles=profiles,
         groups=groups

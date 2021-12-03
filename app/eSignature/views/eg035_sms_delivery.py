@@ -50,8 +50,8 @@ def get_view():
     return render_template(
         "eg035_sms_delivery.html",
         title="SMS Delivery",
-        source_file=path.basename(path.dirname(__file__)) + "/eg035_sms_delivery.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg035_sms_delivery.py",
+        source_file= "eg035_sms_delivery.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg035_sms_delivery.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],

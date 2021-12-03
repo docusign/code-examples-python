@@ -46,8 +46,8 @@ def get_view():
     return render_template(
         "eg011_embedded_sending.html",
         title="Embedded Sending",
-        source_file=path.basename(path.dirname(__file__)) + "/eg011_embedded_sending.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg011_embedded_sending.py",
+        source_file= "eg011_embedded_sending.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg011_embedded_sending.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],

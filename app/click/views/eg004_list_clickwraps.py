@@ -49,7 +49,6 @@ def get_view():
     return render_template(
         "eg004_list_clickwraps.html",
         title="Getting a list of clickwraps",
-        source_file=path.basename(path.dirname(__file__)) + "/eg004_list_clickwraps.py",
-        source_url=DS_CONFIG["click_github_url"] + path.basename(
-            path.dirname(__file__)) + "/eg004_list_clickwraps.py",
+        source_file= "eg004_list_clickwraps.py",
+        source_url=DS_CONFIG["click_github_url"] + "eg004_list_clickwraps.py",
     )

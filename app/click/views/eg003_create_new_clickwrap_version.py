@@ -53,7 +53,6 @@ def get_view():
         "eg003_create_new_clickwrap_version.html",
         title="Creating a new clickwrap version",
         clickwrap_ok="clickwrap_id" in session,
-        source_file=path.basename(path.dirname(__file__)) + "/eg003_create_new_clickwrap_version.py",
-        source_url=DS_CONFIG["click_github_url"] + path.basename(
-            path.dirname(__file__)) + "/eg003_create_new_clickwrap_version.py",
+        source_file= "eg003_create_new_clickwrap_version.py",
+        source_url=DS_CONFIG["click_github_url"] + "eg003_create_new_clickwrap_version.py",
     )

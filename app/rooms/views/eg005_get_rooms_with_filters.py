@@ -69,7 +69,7 @@ def get_view():
     return render_template(
         "eg005_get_rooms_with_filters.html",
         title="Getting rooms with filters",
-        source_file=path.basename(path.dirname(__file__)) + "/eg005_get_rooms_with_filters.py",
+        source_file= "eg005_get_rooms_with_filters.py",
         rooms=rooms,
         start=start_date.strftime("%Y-%m-%d"),
         end=end_date.strftime("%Y-%m-%d")

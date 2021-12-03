@@ -50,8 +50,8 @@ def get_view():
     return render_template(
         "eg002_signing_via_email.html",
         title="Signing via email",
-        source_file=path.basename(path.dirname(__file__)) + "/eg002_signing_via_email.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg002_signing_via_email.py",
+        source_file="eg002_signing_via_email.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg002_signing_via_email.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],

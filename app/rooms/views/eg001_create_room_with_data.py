@@ -53,5 +53,5 @@ def get_view():
     return render_template(
         "eg001_create_room_with_data.html",
         title="Creating a room with data",
-        source_file=path.basename(path.dirname(__file__)) + "/eg001_create_room_with_data.py",
+        source_file= "eg001_create_room_with_data.py",
     )

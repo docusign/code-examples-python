@@ -62,6 +62,6 @@ def get_view():
     return render_template(
         "eg003_export_data_from_room.html",
         title="Exporting data from a room",
-        source_file=path.basename(path.dirname(__file__)) + "/eg003_export_data_from_room.py",
+        source_file= "eg003_export_data_from_room.py",
         rooms=rooms,
     )

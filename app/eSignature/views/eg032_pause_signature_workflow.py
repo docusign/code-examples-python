@@ -54,8 +54,8 @@ def get_view():
     return render_template(
         "eg032_pause_signature_workflow.html",
         title="Pausing a signature workflow",
-        source_file=path.basename(path.dirname(__file__)) + "/eg032_pause_signature_workflow.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg032_pause_signature_workflow.py",
+        source_file= "eg032_pause_signature_workflow.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg032_pause_signature_workflow.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer1_name=DS_CONFIG["signer_name"],

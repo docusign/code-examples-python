@@ -53,8 +53,8 @@ def get_view():
     return render_template(
         "eg016_set_tab_values.html",
         title="SetTabValues",
-        source_file=path.basename(path.dirname(__file__)) + "/eg016_set_tab_values.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg016_set_tab_values.py",
+        source_file= "eg016_set_tab_values.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg016_set_tab_values.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],

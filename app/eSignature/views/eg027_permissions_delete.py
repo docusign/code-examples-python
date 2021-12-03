@@ -52,8 +52,8 @@ def get_view():
     return render_template(
         "eg027_permissions_delete.html",
         title="Deleting a permission profile",
-        source_file=path.basename(path.dirname(__file__)) + "/eg027_permissions_delete.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg027_permissions_delete.py",
+        source_file= "eg027_permissions_delete.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg027_permissions_delete.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         permission_profiles=permission_profiles

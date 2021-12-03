@@ -51,8 +51,8 @@ def get_view():
     return render_template(
         "eg034_use_conditional_recipients.html",
         title="Using conditional recipients",
-        source_file=path.basename(path.dirname(__file__)) + "/eg034_use_conditional_recipients.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg034_use_conditional_recipients.py",
+        source_file= "eg034_use_conditional_recipients.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg034_use_conditional_recipients.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer1_name=DS_CONFIG["signer_name"],

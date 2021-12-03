@@ -51,8 +51,8 @@ def envelope_tab_data():
             "eg015_envelope_tab_data.html",
             title="Envelope Tab Data",
             envelope_ok=False,
-            source_file=path.basename(path.dirname(__file__)) + "/eg015_envelope_tab_data.py",
-            source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg015_envelope_tab_data.py",
+            source_file= "eg015_envelope_tab_data.py",
+            source_url=DS_CONFIG["github_example_url"] + "eg015_envelope_tab_data.py",
             documentation=DS_CONFIG["documentation"] + eg,
             show_doc=DS_CONFIG["documentation"],
         )
@@ -67,8 +67,8 @@ def get_view():
         "eg015_envelope_tab_data.html",
         title="Envelope information",
         envelope_ok="envelope_id" in session,
-        source_file=path.basename(path.dirname(__file__)) + "/eg015_envelope_tab_data.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg015_envelope_tab_data.py",
+        source_file= "eg015_envelope_tab_data.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg015_envelope_tab_data.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
     )

@@ -56,11 +56,8 @@ def get_view():
     return render_template(
         "eg004_add_users_via_bulk_import.html",
         title="Add users via bulk import",
-        source_file=path.basename(path.dirname(__file__)) + "/eg004_add_users_via_bulk_import.py",
-        source_url=(
-            DS_CONFIG["admin_github_url"] +
-            path.basename(path.dirname(__file__)) + "/eg004_add_users_via_bulk_import.py"
-        ),
+        source_file="eg004_add_users_via_bulk_import.py",
+        source_url=DS_CONFIG["admin_github_url"] + "eg004_add_users_via_bulk_import.py",
         documentation=DS_CONFIG["documentation"] + eg,
     )
 

@@ -56,8 +56,8 @@ def get_view():
     return render_template(
         "eg030_brands_apply_to_template.html",
         title="Applying a brand and template to an envelope",
-        source_file=path.basename(path.dirname(__file__)) + "/eg030_brands_apply_to_template.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg030_brands_apply_to_template.py",
+        source_file= "eg030_brands_apply_to_template.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg030_brands_apply_to_template.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         brands=brands,

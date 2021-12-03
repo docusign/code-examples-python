@@ -45,8 +45,8 @@ def envelope_info():
             "eg004_envelope_info.html",
             title="Envelope information",
             envelope_ok=False,
-            source_file=path.basename(path.dirname(__file__)) + "/eg004_envelope_info.py",
-            source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg004_envelope_info.py",
+            source_file= "eg004_envelope_info.py",
+            source_url=DS_CONFIG["github_example_url"] + "eg004_envelope_info.py",
             documentation=DS_CONFIG["documentation"] + eg,
             show_doc=DS_CONFIG["documentation"],
         )
@@ -61,8 +61,8 @@ def get_view():
         "eg004_envelope_info.html",
         title="Envelope information",
         envelope_ok="envelope_id" in session,
-        source_file=path.basename(path.dirname(__file__)) + "/eg004_envelope_info.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg004_envelope_info.py",
+        source_file= "eg004_envelope_info.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg004_envelope_info.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
     )

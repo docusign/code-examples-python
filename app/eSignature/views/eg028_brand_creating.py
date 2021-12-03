@@ -49,8 +49,8 @@ def get_view():
     return render_template(
         "eg028_brand_creating.html",
         title="Brand creating",
-        source_file=path.basename(path.dirname(__file__)) + "/eg028_brand_creating.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg028_brand_creating.py",
+        source_file= "eg028_brand_creating.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg028_brand_creating.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         languages=languages

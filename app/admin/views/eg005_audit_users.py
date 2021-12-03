@@ -49,8 +49,8 @@ def get_view():
     return render_template(
         "eg005_audit_users.html",
         title="Audit users",
-        source_file=path.basename(path.dirname(__file__)) + "/eg005_audit_users.py",
-        source_url=DS_CONFIG["admin_github_url"] + path.basename(path.dirname(__file__)) + "/eg005_audit_users.py",
+        source_file= "eg005_audit_users.py",
+        source_url=DS_CONFIG["admin_github_url"] + "eg005_audit_users.py",
         documentation=DS_CONFIG["documentation"] + eg,
     )
 

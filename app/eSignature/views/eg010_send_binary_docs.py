@@ -58,8 +58,8 @@ def get_view():
     return render_template(
         "eg010_send_binary_docs.html",
         title="Send binary documents",
-        source_file=path.basename(path.dirname(__file__)) + "/eg010_send_binary_docs.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg010_send_binary_docs.py",
+        source_file= "eg010_send_binary_docs.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg010_send_binary_docs.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],

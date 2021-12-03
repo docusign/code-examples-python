@@ -49,8 +49,8 @@ def get_view():
     return render_template(
         "eg003_list_envelopes.html",
         title="List changed envelopes",
-        source_file=path.basename(path.dirname(__file__)) + "/eg003_list_envelopes.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg003_list_envelopes.py",
+        source_file= "eg003_list_envelopes.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg003_list_envelopes.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
     )

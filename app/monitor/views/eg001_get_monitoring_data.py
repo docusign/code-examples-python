@@ -49,8 +49,8 @@ def get_view():
     return render_template(
         "eg001_get_monitoring_data.html",
         title="Get monitoring data",
-        source_file=path.basename(path.dirname(__file__)) + "/controller.py",
-        source_url=DS_CONFIG["monitor_github_url"] + path.basename(path.dirname(__file__)) + "/controller.py",
+        source_file= "eg001_get_monitoring_data.py",
+        source_url=DS_CONFIG["monitor_github_url"] + "eg001_get_monitoring_data.py",
         documentation=DS_CONFIG["documentation"] + eg,
     )
 

@@ -45,8 +45,8 @@ def get_envelope_doc():
             title="Download an Envelope's Document",
             envelope_ok=False,
             documents_ok=False,
-            source_file=path.basename(path.dirname(__file__)) + "/eg007_envelope_get_doc.py",
-            source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg007_envelope_get_doc.py",
+            source_file= "eg007_envelope_get_doc.py",
+            source_url=DS_CONFIG["github_example_url"] + "eg007_envelope_get_doc.py",
             documentation=DS_CONFIG["documentation"] + eg,
             show_doc=DS_CONFIG["documentation"],
         )
@@ -71,8 +71,8 @@ def get_view():
         title="Download an Envelope's Document",
         envelope_ok="envelope_id" in session,
         documents_ok=documents_ok,
-        source_file=path.basename(path.dirname(__file__)) + "/eg007_envelope_get_doc.py",
-        source_url=DS_CONFIG["github_example_url"] + path.basename(path.dirname(__file__)) + "/eg007_envelope_get_doc.py",
+        source_file= "eg007_envelope_get_doc.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg007_envelope_get_doc.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         document_options=document_options

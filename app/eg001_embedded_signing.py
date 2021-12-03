@@ -44,8 +44,8 @@ def get_view():
     return render_template(
         "eg001_embedded_signing.html",
         title="Use embedded signing",
-        source_file=path.basename(path.dirname(__file__)) + "/controller.py",
-        source_url="https://github.com/docusign/code-examples-python/tree/master/app/" + path.basename(path.dirname(__file__)) + "/eg001_embedded_signing.py",
+        source_file= "eg001_embedded_signing.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg001_embedded_signing.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],
