@@ -94,45 +94,10 @@ class Eg031Controller:
 
         # Add placeholder tabs
         # Step 6 start
-        recipient_sign_here = SignHere(
-            anchor_string="/sn1/",
-            anchor_units="pixels",
-            anchor_y_offset="10",
-            anchor_x_offset="20",
-            tab_label="RecipentTab"
-        )
-
-        # Add placeholder recipients
-        cc = Signer(
-            name="Multi Bulk Recipient::cc",
-            email="multiBulkRecipients-cc@docusign.com",
-            role_name="cc",
-            note="",
-            routing_order="1",
-            status="created",
-            delivery_method="email",
-            recipient_id="1",
-            recipient_type="signer"
-        )
-
-        signer = Signer(
-            name="Multi Bulk Recipient::signer",
-            email="multiBulkRecipients-signer@docusign.com",
-            role_name="signer",
-            note="",
-            routing_order="1",
-            status="created",
-            delivery_method="email",
-            recipient_id="2",
-            recipient_type="signer"
-        )
-
-        signer.tabs = Tabs(sign_here_tabs=[recipient_sign_here])
-
         envelope_api.create_recipient(
             account_id=args["account_id"],
             envelope_id=envelope_id,
-            recipients=Recipients(signers=[signer, cc])
+            recipients=envelope_definition.recipients
         )
         # Step 6 end
 
@@ -231,7 +196,7 @@ class Eg031Controller:
             email="multiBulkRecipients-cc@docusign.com",
             role_name="cc",
             note="",
-            routing_order="1",
+            routing_order="2",
             status="created",
             delivery_method="email",
             recipient_id="1",
