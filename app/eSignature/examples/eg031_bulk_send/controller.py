@@ -92,17 +92,8 @@ class Eg031Controller:
         )
         # Step 5 end
 
-        # Add placeholder tabs
-        # Step 6 start
-        envelope_api.create_recipient(
-            account_id=args["account_id"],
-            envelope_id=envelope_id,
-            recipients=envelope_definition.recipients
-        )
-        # Step 6 end
-
         # Initiate bulk send
-        # Step 7 start
+        # Step 6 start
         bulk_send_request = BulkSendRequest(envelope_or_template_id=envelope_id)
         batch = bulk_envelopes_api.create_bulk_send_request(
             account_id=args["account_id"],
@@ -110,12 +101,12 @@ class Eg031Controller:
             bulk_send_request=bulk_send_request
         )
         batch_id = batch.batch_id
-        # Step 7 end
+        # Step 6 end
 
         # Confirm successful batch send
-        # Step 8 start
+        # Step 7 start
         response = bulk_envelopes_api.get_bulk_send_batch_status(account_id=args["account_id"], bulk_send_batch_id=batch_id)
-        # Step 8 end
+        # Step 7 end
         print(response)
 
         return response
