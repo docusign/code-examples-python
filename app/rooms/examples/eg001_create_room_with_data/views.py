@@ -53,5 +53,6 @@ def get_view():
     return render_template(
         "eg001_create_room_with_data.html",
         title="Creating a room with data",
-        source_file=path.basename(path.dirname(__file__)) + "/controller.py",
+        source_file=path.relpath(path.dirname(__file__), start='app') + "/controller.py",
+        source_url="https://github.com/docusign/code-examples-python/tree/master/app/" + path.relpath(path.dirname(__file__), start='app') + "/controller.py",
     )
