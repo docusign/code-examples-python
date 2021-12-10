@@ -1,9 +1,12 @@
 """Example 031: Send an envelope to multiple recipients"""
 
+import json
 from os import path
+
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, Blueprint
+
 from .controller import Eg031Controller
 from ....docusign import authenticate
 from ....ds_config import DS_CONFIG
@@ -31,9 +34,10 @@ def bulk_send():
 
         # 3. Render the response
         return render_template("example_done.html",
-                               title="Bulk send envelope was successfully performed!",
-                               h1="Bulk send envelope was successfully performed!",
-                               message=f"""Bulk request queued to {queued} user lists.<br/>"""
+                               title="Bulk sending envelopes to multiple recipients",
+                               h1="Bulk send envelopes",
+                               message=f"""Results from BulkSend:getBulkSendBatchStatus method:<br/>""",
+                               json=json.dumps(json.dumps(response.to_dict()))
                                )
 
     except ApiException as err:
