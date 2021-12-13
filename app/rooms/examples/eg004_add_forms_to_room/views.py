@@ -65,7 +65,8 @@ def get_view():
     return render_template(
         "eg004_add_forms_to_room.html",
         title="Adding forms to a room",
-        source_file=path.basename(path.dirname(__file__)) + "/controller.py",
+        source_file=path.basename(path.dirname(__file__)) + "\controller.py",
+        source_url="https://github.com/docusign/code-examples-python/tree/master/app/" + path.relpath(path.dirname(__file__), start='app') + "/controller.py",
         rooms=rooms,
         forms=forms
     )

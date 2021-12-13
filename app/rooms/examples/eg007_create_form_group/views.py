@@ -53,5 +53,6 @@ def get_view():
     return render_template(
         "eg007_create_form_group.html",
         title="Creating a form group",
-        source_file=path.basename(path.dirname(__file__)) + "/controller.py"
+        source_file=path.basename(path.dirname(__file__)) + "\controller.py",
+        source_url="https://github.com/docusign/code-examples-python/tree/master/app/" + path.relpath(path.dirname(__file__), start='app') + "/controller.py",
     )

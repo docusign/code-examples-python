@@ -1,6 +1,8 @@
 from docusign_rooms.client.api_exception import ApiException
 from flask import Blueprint, render_template, current_app
 
+from os import path
+
 from app.docusign import authenticate
 from app.error_handlers import process_error
 from .controller import Eg008Controller
@@ -63,5 +65,7 @@ def get_view():
     return render_template(
         "eg008_grant_office_access_to_form_group.html",
         offices=offices,
-        form_groups=form_groups
+        form_groups=form_groups,
+        source_file=path.basename(path.dirname(__file__)) + "\controller.py",
+        source_url="https://github.com/docusign/code-examples-python/tree/master/app/" + path.relpath(path.dirname(__file__), start='app') + "/controller.py",
     )
