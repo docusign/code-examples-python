@@ -64,7 +64,7 @@ def get_view():
     return render_template(
         "eg006_create_external_form_fill_session.html",
         title="Create an external form fill session",
-        source_file=path.relpath(path.dirname(__file__), start='app') + "/controller.py",
+        source_file=path.basename(path.dirname(__file__)) + "\controller.py",
         source_url="https://github.com/docusign/code-examples-python/tree/master/app/" + path.relpath(path.dirname(__file__), start='app') + "/controller.py",
         rooms=rooms,
     )

@@ -75,6 +75,6 @@ def get_view():
         "eg009_assign_form_to_form_group.html",
         forms=forms,
         form_groups=form_groups,
-        source_file=path.relpath(path.dirname(__file__), start='app') + "/controller.py",
+        source_file=path.basename(path.dirname(__file__)) + "\controller.py",
         source_url="https://github.com/docusign/code-examples-python/tree/master/app/" + path.relpath(path.dirname(__file__), start='app') + "/controller.py",
     )
