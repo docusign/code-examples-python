@@ -56,7 +56,10 @@ def get_view():
     args = Eg008Controller.get_args()
 
     # 2. Get Form Groups
-    form_groups = Eg008Controller.get_form_groups(args)
+    try:
+        form_groups = Eg008Controller.get_form_groups(args)
+    except ApiException as err:
+        return process_error(err)
 
     # 3. Get offices
     offices = Eg008Controller.get_offices(args)
