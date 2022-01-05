@@ -5,13 +5,16 @@
 
 <div class="container" style="margin-top: 40px; margin-left: 300px">
 
-<h2>Problem: an error occurred</h2>
-<p>Error information:</p>
+<h2>Error</h2>
 
-{% if error_code %}
-  <p>{{ error_code }}: {{ error_message }}</p>
+{% if error_code == 'FORMS_INTEGRATION_NOT_ENABLED' %}
+  <p>{{ error_code }}: Please contact your DocuSign Account Manager or Business Development representative to enable Forms for this account.</p>
 {% else %}
-  <p><pre>{{ err }}</pre></p>
+  {% if error_code %}
+    <p>{{ error_code }}: {{ error_message }}</p>
+  {% else %}
+    <p><pre>{{ err }}</pre></p>
+  {% endif %}
 {% endif %}
 
 
