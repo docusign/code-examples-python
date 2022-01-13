@@ -32,7 +32,7 @@ def create_clickwrap():
         clickwrap_id = results.clickwrap_id
         clickwrap_name = args['clickwrap_name']
         current_app.logger.info(
-            f"""The clickwrap "{clickwrap_name}" has been created!"""
+            f"""The clickwrap "{clickwrap_name}" has been created."""
         )
     except ApiException as err:
         return process_error(err)

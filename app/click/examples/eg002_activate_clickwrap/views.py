@@ -30,7 +30,7 @@ def activate_clickwrap():
         # 2. Call the worker method to create a new clickwrap
         results = Eg002Controller.worker(args)
         current_app.logger.info(
-            f"""The clickwrap "{args['clickwrap_name']}" has been activated!"""
+            f"""The clickwrap "{args['clickwrap_name']}" has been activated."""
         )
     except ApiException as err:
         return process_error(err)
