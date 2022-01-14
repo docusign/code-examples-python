@@ -35,8 +35,8 @@ def clickwrap_list():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="List clickwraps results",
-        h1="List clickwraps results",
+        title="Get a list of clickwraps",
+        h1="Get a list of clickwraps",
         message="Results from the ClickWraps::getClickwraps method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )

@@ -39,8 +39,8 @@ def create_new_clickwrap_version():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Creating a new clickwrap version",
-        h1="Creating a new clickwrap version",
+        title="Create a new clickwrap version",
+        h1="Create a new clickwrap version",
         message=f"""Version {results_dict['version_number']} of clickwrap "{results_dict['clickwrap_name']}" has been created.""",
         json=json.dumps(json.dumps(results_dict, default=str))
     )

@@ -41,8 +41,8 @@ def activate_clickwrap():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Activating a clickwrap",
-        h1="Activating a clickwrap",
+        title="Activate a clickwrap",
+        h1="Activate a clickwrap",
         message=f"""The clickwrap "{args['clickwrap_name']}" has been activated!""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )

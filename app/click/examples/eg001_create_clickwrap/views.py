@@ -45,8 +45,8 @@ def create_clickwrap():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Creating a new clickwrap",
-        h1="Creating a new clickwrap",
+        title="Create a new clickwrap",
+        h1="Create a new clickwrap",
         message=f"""The clickwrap "{args['clickwrap_name']}" has been created!""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
