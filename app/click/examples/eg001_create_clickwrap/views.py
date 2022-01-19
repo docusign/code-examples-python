@@ -32,7 +32,7 @@ def create_clickwrap():
         clickwrap_id = results.clickwrap_id
         clickwrap_name = args['clickwrap_name']
         current_app.logger.info(
-            f"""The clickwrap "{clickwrap_name}" has been created!"""
+            f"""The clickwrap "{clickwrap_name}" has been created."""
         )
     except ApiException as err:
         return process_error(err)
@@ -45,8 +45,8 @@ def create_clickwrap():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Creating a new clickwrap",
-        h1="Creating a new clickwrap",
+        title="Create a clickwrap",
+        h1="Create a clickwrap",
         message=f"""The clickwrap "{args['clickwrap_name']}" has been created!""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )

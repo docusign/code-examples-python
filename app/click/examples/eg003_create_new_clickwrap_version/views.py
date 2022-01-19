@@ -29,8 +29,9 @@ def create_new_clickwrap_version():
     try:
         # 2. Call the worker method to create a new clickwrap version
         results = Eg003Controller.worker(args)
+        results_dict = results.to_dict()
         current_app.logger.info(
-            f"""The 2nd version of clickwrap "{args['clickwrap_name']}" has been created!"""
+            f"""Version {results_dict['version_number']} of clickwrap "{results_dict['clickwrap_name']}" has been created."""
         )
     except ApiException as err:
         return process_error(err)
@@ -38,10 +39,10 @@ def create_new_clickwrap_version():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Creating a new clickwrap version",
-        h1="Creating a new clickwrap version",
-        message=f"""The 2nd version of clickwrap "{args['clickwrap_name']}" has been created!""",
-        json=json.dumps(json.dumps(results.to_dict(), default=str))
+        title="Create a new clickwrap version",
+        h1="Create a new clickwrap version",
+        message=f"""Version {results_dict['version_number']} of clickwrap "{results_dict['clickwrap_name']}" has been created.""",
+        json=json.dumps(json.dumps(results_dict, default=str))
     )
 
 

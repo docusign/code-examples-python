@@ -2,9 +2,8 @@
 
 <div class="container" style="margin-top: 40px; margin-left: 300px">
 
-<h4>5. Getting clickwrap responses</h4>
-<p>This example demonstrates how to use the Click API to get a list of
-    clickwraps associated with a specific DocuSign user.</p>
+<h4>5. Get clickwrap responses</h4>
+<p>Gets user responses to your clickwrap agreements.</p>
 
 {% include 'documentation.html' %}
 
@@ -16,9 +15,12 @@
 {% include 'github_source.html' %}
 
 {% if clickwrap_ok %}
-<p>The clickwrap you created via example 1 will be queried.<br/>
-    Please enter a value that uniquely identifies a user, such as an email
-    address or employee ID</p>
+<p>The clickwrap you created via example 1 will be queried.</p>
+    
+<p>
+    Please enter a value that uniquely identifies a user, such as an email address or <br>
+    employee ID.
+</p>
 
 <form class="eg" action="" method="post" data-busy="form">
     <div class="form-group">
