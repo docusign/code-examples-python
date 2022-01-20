@@ -46,14 +46,19 @@ class DSClient:
     def _auth_code_grant(cls):
         """Authorize with the Authorization Code Grant - OAuth 2.0 flow"""
         oauth = OAuth(app)
+
+        use_scopes = []
         if EXAMPLES_API_TYPE["Rooms"]:
-            use_scopes = ROOMS_SCOPES
+            use_scopes.extend(ROOMS_SCOPES)
         elif EXAMPLES_API_TYPE["Click"]:
-            use_scopes = CLICK_SCOPES
+            use_scopes.extend(CLICK_SCOPES)
         elif EXAMPLES_API_TYPE["Admin"]:
-            use_scopes = ADMIN_SCOPES
+            use_scopes.extend(ADMIN_SCOPES)
         else:
-            use_scopes = SCOPES
+            use_scopes.extend(SCOPES)
+        # remove duplicate scopes
+        use_scopes = list(set(use_scopes))
+        
         request_token_params = {
             "scope": " ".join(use_scopes),
             "state": lambda: uuid.uuid4().hex.upper()
@@ -78,14 +83,17 @@ class DSClient:
         api_client = ApiClient()
         api_client.set_base_path(DS_JWT["authorization_server"])
 
+        use_scopes = []
         if EXAMPLES_API_TYPE["Rooms"]:
-            use_scopes = ROOMS_SCOPES
+            use_scopes.extend(ROOMS_SCOPES)
         elif EXAMPLES_API_TYPE["Click"]:
-            use_scopes = CLICK_SCOPES
+            use_scopes.extend(CLICK_SCOPES)
         elif EXAMPLES_API_TYPE["Admin"]:
-            use_scopes=ADMIN_SCOPES
+            use_scopes.extend(ADMIN_SCOPES)
         else:
-            use_scopes = SCOPES
+            use_scopes.extend(SCOPES)
+        # remove duplicate scopes
+        use_scopes = list(set(use_scopes))
 
         use_scopes.append("impersonation")
 
