@@ -29,6 +29,7 @@ def create_new_clickwrap_version():
     try:
         # 2. Call the worker method to create a new clickwrap version
         results = Eg003CrateNewClickwrapVersionController.worker(args)
+        results_dict = results.to_dict()
         current_app.logger.info(
             f"""Version {results_dict['version_number']} of clickwrap "{results_dict['clickwrap_name']}" has been created."""
         )
