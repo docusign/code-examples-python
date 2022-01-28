@@ -3,16 +3,40 @@
 from os import path
 
 from docusign_esign.client.api_exception import ApiException
-from flask import render_template, session, Blueprint
+from flask import render_template, session, Blueprint, request
 
 from ..examples.eg002_signing_via_email import Eg002SigningViaEmailController
 from ...docusign import authenticate
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import pattern
 
 eg = "eg002"  # reference (and url) for this example
 eg002 = Blueprint("eg002", __name__)
 
+def get_args():
+    """Get request and session arguments"""
+
+    # More data validation would be a good idea here
+    # Strip anything other than characters listed
+    signer_email = pattern.sub("", request.form.get("signer_email"))
+    signer_name = pattern.sub("", request.form.get("signer_name"))
+    cc_email = pattern.sub("", request.form.get("cc_email"))
+    cc_name = pattern.sub("", request.form.get("cc_name"))
+    envelope_args = {
+        "signer_email": signer_email,
+        "signer_name": signer_name,
+        "cc_email": cc_email,
+        "cc_name": cc_name,
+        "status": "sent",
+    }
+    args = {
+        "account_id": session["ds_account_id"],
+        "base_path": session["ds_base_path"],
+        "access_token": session["ds_access_token"],
+        "envelope_args": envelope_args
+    }
+    return args
 
 @eg002.route("/eg002", methods=["POST"])
 @authenticate(eg=eg)
@@ -24,10 +48,11 @@ def sign_by_email():
     """
 
     # 1. Get required arguments
-    args = Eg002SigningViaEmailController.get_args()
+    #args = Eg002SigningViaEmailController.get_args()
+    args = get_args()
     try:
         # 1. Call the worker method
-        results = Eg002SigningViaEmailController.worker(args)
+        results = Eg002SigningViaEmailController.worker(args, DS_CONFIG["doc_docx"], DS_CONFIG["doc_pdf"])
     except ApiException as err:
         return process_error(err)
 

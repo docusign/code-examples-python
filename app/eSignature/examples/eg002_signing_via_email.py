@@ -2,41 +2,15 @@ import base64
 from os import path
 
 from docusign_esign import EnvelopesApi, EnvelopeDefinition, Document, Signer, CarbonCopy, SignHere, Tabs, Recipients
-from flask import session, request
 
 from ...consts import demo_docs_path, pattern
-from ...docusign import create_api_client
-from ...ds_config import DS_CONFIG
+from ...jwt_helpers import create_api_client
 
 
 class Eg002SigningViaEmailController:
-    @staticmethod
-    def get_args():
-        """Get request and session arguments"""
-
-        # More data validation would be a good idea here
-        # Strip anything other than characters listed
-        signer_email = pattern.sub("", request.form.get("signer_email"))
-        signer_name = pattern.sub("", request.form.get("signer_name"))
-        cc_email = pattern.sub("", request.form.get("cc_email"))
-        cc_name = pattern.sub("", request.form.get("cc_name"))
-        envelope_args = {
-            "signer_email": signer_email,
-            "signer_name": signer_name,
-            "cc_email": cc_email,
-            "cc_name": cc_name,
-            "status": "sent",
-        }
-        args = {
-            "account_id": session["ds_account_id"],
-            "base_path": session["ds_base_path"],
-            "access_token": session["ds_access_token"],
-            "envelope_args": envelope_args
-        }
-        return args
 
     @classmethod
-    def worker(cls, args):
+    def worker(cls, args, doc_docx_path, doc_pdf_path):
         """
         1. Create the envelope request object
         2. Send the envelope
@@ -44,7 +18,7 @@ class Eg002SigningViaEmailController:
 
         envelope_args = args["envelope_args"]
         # 1. Create the envelope request object
-        envelope_definition = cls.make_envelope(envelope_args)
+        envelope_definition = cls.make_envelope(envelope_args, doc_docx_path, doc_pdf_path)
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
         # 2. call Envelopes::create API method
         # Exceptions will be caught by the calling function
@@ -56,7 +30,7 @@ class Eg002SigningViaEmailController:
         return {"envelope_id": envelope_id}
 
     @classmethod
-    def make_envelope(cls, args):
+    def make_envelope(cls, args, doc_docx_path, doc_pdf_path):
         """
         Creates envelope
         Document 1: An HTML document.
@@ -83,10 +57,10 @@ class Eg002SigningViaEmailController:
         doc1_b64 = base64.b64encode(bytes(cls.create_document1(args), "utf-8")).decode("ascii")
         # read files 2 and 3 from a local directory
         # The reads could raise an exception if the file is not available!
-        with open(path.join(demo_docs_path, DS_CONFIG["doc_docx"]), "rb") as file:
+        with open(path.join(demo_docs_path, doc_docx_path), "rb") as file:
             doc2_docx_bytes = file.read()
         doc2_b64 = base64.b64encode(doc2_docx_bytes).decode("ascii")
-        with open(path.join(demo_docs_path, DS_CONFIG["doc_pdf"]), "rb") as file:
+        with open(path.join(demo_docs_path, doc_pdf_path), "rb") as file:
             doc3_pdf_bytes = file.read()
         doc3_b64 = base64.b64encode(doc3_pdf_bytes).decode("ascii")
 

@@ -11,6 +11,7 @@ from docusign_esign.client.api_exception import ApiException
 from ..ds_config import DS_CONFIG, DS_JWT
 from ..api_type import EXAMPLES_API_TYPE
 from ..error_handlers import process_error
+from ..jwt_helpers import get_jwt_token, get_private_key
 
 SCOPES = [
      "signature"
@@ -99,7 +100,7 @@ class DSClient:
 
         # Catch IO error
         try:
-            private_key = cls._get_private_key().encode("ascii").decode("utf-8")
+            private_key = get_private_key(DS_JWT["private_key_file"]).encode("ascii").decode("utf-8")
         except (OSError, IOError) as err:
             return render_template(
                 "error.html",
@@ -107,14 +108,7 @@ class DSClient:
             )
 
         try:
-            cls.ds_app = api_client.request_jwt_user_token(
-                client_id=DS_JWT["ds_client_id"],
-                user_id=DS_JWT["ds_impersonated_user_id"],
-                oauth_host_name=DS_JWT["authorization_server"],
-                private_key_bytes=private_key,
-                expires_in=4000,
-                scopes=use_scopes
-            )
+            cls.ds_app = get_jwt_token(private_key, use_scopes, DS_JWT["authorization_server"], DS_JWT["ds_client_id"], DS_JWT["ds_impersonated_user_id"])
             return redirect(url_for("ds.ds_callback"))
 
         except ApiException as err:
@@ -138,21 +132,6 @@ class DSClient:
     def destroy(cls):
         cls.ds_app = None
 
-    @staticmethod
-    def _get_private_key():
-        """
-        Check that the private key present in the file and if it is, get it from the file.
-        In the opposite way get it from config variable.
-        """
-        private_key_file = path.abspath(DS_JWT["private_key_file"])
-
-        if path.isfile(private_key_file):
-            with open(private_key_file) as private_key_file:
-                private_key = private_key_file.read()
-        else:
-            private_key = DS_JWT["private_key_file"]
-
-        return private_key
 
     @classmethod
     def login(cls, auth_type):
