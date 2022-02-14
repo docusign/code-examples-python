@@ -71,11 +71,18 @@
 
       <p id="download-continue" class="feedback"><a href="/">Continue</a></p>
 
-      <div class="container-full-bg">
-        <section id="content" style="margin-top:-60px!important; padding-top:30px!important;">
-          {% block content %}{% endblock %}
-      </section>
-    </div>
+      {% if 'ds_user_name' in session %}
+      <div class="container">
+          <section id="content" style="padding-top:30px;">
+              {%  else  %}
+              <div class="container-full-bg">
+                  <section id="content" style="margin-top:-60px!important; padding-top:30px!important;">
+                      {% endif %}
+                      {% block content %}{% endblock %}
+                  </section>
+              </div>
+          </section>
+      </div>
     
     <!-- Bootstrap core JavaScript
     ================================================== -->
