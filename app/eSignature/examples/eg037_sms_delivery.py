@@ -21,7 +21,7 @@ from ...docusign import create_api_client
 from ...ds_config import DS_CONFIG
 
 
-class Eg035SMSDeliveryController:
+class Eg037SMSDeliveryController:
     @staticmethod
     def get_args():
         """Get request and session arguments"""

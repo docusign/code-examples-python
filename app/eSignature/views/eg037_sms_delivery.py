@@ -1,20 +1,20 @@
-""" Example 035: SMS Delivery """
+""" Example 037: SMS Delivery """
 
 from os import path
 
 from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, Blueprint
 
-from ..examples.eg035_sms_delivery import Eg035SMSDeliveryController
+from ..examples.eg037_sms_delivery import Eg037SMSDeliveryController
 from ...docusign import authenticate
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg035"  # reference (and url) for this example
-eg035 = Blueprint("eg035", __name__)
+eg = "eg037"  # reference (and url) for this example
+eg037 = Blueprint("eg037", __name__)
 
 
-@eg035.route("/eg035", methods=["POST"])
+@eg037.route("/eg037", methods=["POST"])
 @authenticate(eg=eg)
 def sign_by_email():
     """
@@ -24,10 +24,10 @@ def sign_by_email():
     """
 
     # 1. Get required arguments
-    args = Eg035SMSDeliveryController.get_args()
+    args = Eg037SMSDeliveryController.get_args()
     try:
         # 1. Call the worker method
-        results = Eg035SMSDeliveryController.worker(args)
+        results = Eg037SMSDeliveryController.worker(args)
     except ApiException as err:
         return process_error(err)
 
@@ -42,16 +42,16 @@ def sign_by_email():
     )
 
 
-@eg035.route("/eg035", methods=["GET"])
+@eg037.route("/eg037", methods=["GET"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
 
     return render_template(
-        "eg035_sms_delivery.html",
+        "eg037_sms_delivery.html",
         title="SMS Delivery",
-        source_file= "eg035_sms_delivery.py",
-        source_url=DS_CONFIG["github_example_url"] + "eg035_sms_delivery.py",
+        source_file= "eg037_sms_delivery.py",
+        source_url=DS_CONFIG["github_example_url"] + "eg037_sms_delivery.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
         signer_name=DS_CONFIG["signer_name"],
