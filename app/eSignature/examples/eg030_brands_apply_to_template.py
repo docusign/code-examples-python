@@ -18,7 +18,7 @@ class Eg030BrandsApplyToTemplateController:
         cc_email = request.form.get("cc_email")
         cc_name = request.form.get("cc_name")
         brand_id = request.form.get("brand")
-        template_id = request.form.get("envelope_template")
+        template_id = session["template_id"]
 
         if cc_email and cc_name:
             cc_email = pattern.sub("", cc_email)
@@ -95,7 +95,7 @@ class Eg030BrandsApplyToTemplateController:
 
     @staticmethod
     def get_data(args):
-        """Retrieve brands and envelope templates"""
+        """Retrieve brands"""
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
         try:
@@ -103,11 +103,7 @@ class Eg030BrandsApplyToTemplateController:
             account_api = AccountsApi(api_client)
             brands = account_api.list_brands(account_id=args["account_id"]).brands
 
-            """Retrieve all templates using the Templates::List"""
-            template_api = TemplatesApi(api_client)
-            envelope_templates = template_api.list_templates(account_id=args["account_id"]).envelope_templates
-
-            return brands, envelope_templates
+            return brands
 
         except ApiException as err:
             return process_error(err)
