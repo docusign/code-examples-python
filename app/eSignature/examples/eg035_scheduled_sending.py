@@ -17,9 +17,11 @@ class Eg035ScheduledSendingController:
         print(envelope_args["resume_date"])
         envelope_definition = cls.make_envelope(envelope_args, DS_CONFIG["doc_docx"], DS_CONFIG["doc_pdf"])
 
+        # Step 3 start
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
+        # Step 3 end
 
         envelope_id = results.envelope_id
 
@@ -37,6 +39,7 @@ class Eg035ScheduledSendingController:
         The recipients" field tags are placed using <b>anchor</b> strings.
         """
 
+        # Step 2 start
         # document 1 (PDF)  has sign here anchor tag /sn1/
         #
         # The envelope has one recipient.
@@ -102,5 +105,6 @@ class Eg035ScheduledSendingController:
         # Request that the envelope be sent by setting |status| to "sent".
         # To request that the envelope be created as a draft, set to "created"
         env.status = args["status"]
+        # Step 2 end
 
         return env
