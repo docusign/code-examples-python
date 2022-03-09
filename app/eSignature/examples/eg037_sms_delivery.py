@@ -10,8 +10,7 @@ from docusign_esign import (
     SignHere,
     Tabs,
     Recipients,
-    RecipientPhoneNumber,
-    RecipientAdditionalNotification,
+    RecipientPhoneNumber
 )
 
 from flask import session, request
@@ -28,19 +27,15 @@ class Eg037SMSDeliveryController:
 
         # More data validation would be a good idea here
         # Strip anything other than characters listed
-        signer_email = pattern.sub("", request.form.get("signer_email"))
         signer_name = pattern.sub("", request.form.get("signer_name"))
-        cc_email = pattern.sub("", request.form.get("cc_email"))
         cc_name = pattern.sub("", request.form.get("cc_name"))
         cc_phone_number = request.form.get("cc_phone_number")
         cc_country_code = request.form.get("country_code")
         phone_number = request.form.get("phone_number")
         country_code = request.form.get("country_code")
         envelope_args = {
-            "signer_email": signer_email,
             "signer_name": signer_name,
             "status": "sent",
-            "cc_email": cc_email,
             "cc_name": cc_name,
             "country_code": country_code,
             "phone_number": phone_number,
@@ -127,23 +122,17 @@ class Eg037SMSDeliveryController:
         # The order in the docs array determines the order in the envelope
         env.documents = [document1, document2, document3]
 
-        phoneNumber = RecipientPhoneNumber(
+        signerPhoneNumber = RecipientPhoneNumber(
             country_code=args["country_code"],
             number=args["phone_number"]
         )
 
-        sms_notification = RecipientAdditionalNotification(
-            phone_number=phoneNumber
-        )
-        sms_notification.secondary_delivery_method = "SMS"
-
         # Create the signer recipient model
         signer1 = Signer(
-            email=args["signer_email"],
             name=args["signer_name"],
             recipient_id="1",
             routing_order="1",
-            additional_notifications=[sms_notification]
+            phone_number=signerPhoneNumber
         )
 
         # Create a RecipientPhoneNumber and add it to the additional SMS notification
@@ -152,18 +141,12 @@ class Eg037SMSDeliveryController:
             number=args["cc_phone_number"]
         )
 
-        cc_sms_notification = RecipientAdditionalNotification(
-            phone_number=ccPhoneNumber
-        )
-        cc_sms_notification.secondary_delivery_method = "SMS"
-
         # Create a cc recipient to receive a copy of the documents
         cc1 = CarbonCopy(
-            email=args["cc_email"],
             name=args["cc_name"],
             recipient_id="2",
             routing_order="2",
-            additional_notifications=[cc_sms_notification]
+            phone_number=ccPhoneNumber
         )
 
         # routingOrder (lower means earlier) determines the order of deliveries
@@ -222,8 +205,8 @@ class Eg037SMSDeliveryController:
               margin-top: 0px;margin-bottom: 3.5em;font-size: 1em;
               color: darkblue;">Order Processing Division</h2>
             <h4>Ordered by {args["signer_name"]}</h4>
-            <p style="margin-top:0em; margin-bottom:0em;">Email: {args["signer_email"]}</p>
-            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {args["cc_name"]}, {args["cc_email"]}</p>
+            <p style="margin-top:0em; margin-bottom:0em;">Phone Number: {args["phone_number"]}</p>
+            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {args["cc_name"]}</p>
             <p style="margin-top:3em;">
                 Candy bonbon pastry jujubes lollipop wafer biscuit biscuit. Topping brownie sesame snaps sweet roll pie. 
                 Croissant danish biscuit soufflé caramels jujubes jelly. Dragée danish caramels lemon drops dragée. 

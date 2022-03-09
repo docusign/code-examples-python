@@ -54,6 +54,5 @@ def get_view():
         source_url=DS_CONFIG["github_example_url"] + "eg037_sms_delivery.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
-        signer_name=DS_CONFIG["signer_name"],
-        signer_email=DS_CONFIG["signer_email"]
+        signer_name=DS_CONFIG["signer_name"]
     )
