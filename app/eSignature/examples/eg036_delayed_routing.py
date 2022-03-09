@@ -116,8 +116,7 @@ class Eg036DelayedRoutingController:
         workflow_step = WorkflowStep()
         workflow_step.action = "pause_before"
         workflow_step.trigger_on_item = "routing_order"
-        workflow_step.item_id = "2" 
-        workflow_step.status = "pending"
+        workflow_step.item_id = "2"
         delayed_routing = DelayedRoutingApiModel(rules=[EnvelopeDelayRuleApiModel(delay=delay)])
         workflow_step.delayed_routing = delayed_routing
         workflow.workflow_steps = [workflow_step]
