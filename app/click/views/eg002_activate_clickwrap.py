@@ -52,10 +52,11 @@ def activate_clickwrap():
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    args = Eg002ActivateClickwrapController.get_args()
     return render_template(
         "eg002_activate_clickwrap.html",
         title="Activating a clickwrap",
-        clickwrap_ok="clickwrap_id" in session,
+        clickwrapData=Eg002ActivateClickwrapController.get_inactive_clickwraps(),
         source_file= "eg002_activate_clickwrap.py",
         source_url=DS_CONFIG["click_github_url"] + "eg002_activate_clickwrap.py",
     )

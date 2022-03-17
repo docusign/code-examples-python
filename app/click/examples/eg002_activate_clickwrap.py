@@ -14,6 +14,26 @@ class Eg002ActivateClickwrapController:
             "clickwrap_id": session.get("clickwrap_id"),
             "clickwrap_name": session.get("clickwrap_name"),
         }
+        
+    @staticmethod
+    def get_inactive_clickwraps(args):
+        """
+        1. Create an API client with hheaders
+        2. Get a list of inactive clickwraps
+        """
+        # Step 1. Create an API client with headers
+        api_client = create_click_api_client(
+            access_token=args["access_token"]
+        )
+        
+        # Step 2. Get a list of inactive clickwraps
+        accounts_api = AccountsApi(api_client)
+        response = accounts_api.get_clickwraps(
+            account_id=args["account_id"],
+            status="inactive"
+        )
+        
+        return response
 
     @staticmethod
     def worker(args):
