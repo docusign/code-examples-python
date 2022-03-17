@@ -3,7 +3,7 @@ from os import path
 
 from docusign_click import AccountsApi, ClickwrapRequest, DisplaySettings, \
     Document
-from flask import session
+from flask import session, request
 
 from ...consts import demo_docs_path
 from ...ds_config import DS_CONFIG
@@ -17,8 +17,8 @@ class Eg003CrateNewClickwrapVersionController:
         return {
             "account_id": session.get("ds_account_id"),  # Represents your {ACCOUNT_ID}
             "access_token": session.get("ds_access_token"),  # Represents your {ACCESS_TOKEN}
-            "clickwrap_id": session.get("clickwrap_id"),
-            "clickwrap_name": session.get("clickwrap_name"),
+            "clickwrap_id": request.form.get("clickwrap_id"),
+            "clickwrap_name": request.form.get("clickwrap_name"),
         }
 
     @staticmethod

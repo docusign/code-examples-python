@@ -1,5 +1,5 @@
 from docusign_click import AccountsApi, ClickwrapRequest
-from flask import session
+from flask import session, request
 
 from ..utils import create_click_api_client
 
@@ -11,8 +11,7 @@ class Eg002ActivateClickwrapController:
         return {
             "account_id": session.get("ds_account_id"),  # Represents your {ACCOUNT_ID}
             "access_token": session.get("ds_access_token"),  # Represents your {ACCESS_TOKEN}
-            "clickwrap_id": session.get("clickwrap_id"),
-            "clickwrap_name": session.get("clickwrap_name"),
+            "clickwrap_id": request.form.get("clickwrap_id"),
         }
         
     @staticmethod

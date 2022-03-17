@@ -15,7 +15,7 @@
 
 {% include 'github_source.html' %}
 
-{% if args['clickwraps'] is empty %}
+{% if clickwraps_data['clickwraps'] is undefined %}
 <p class="">
     Problem: You do not have clickwraps to activate. Go to example#1 and create one: <a
         href="{{ app_url ~ 'index.php?page=' }}ceg001">create clickwrap.</a> <br/>
@@ -28,7 +28,7 @@
         <label for="clickwrap_id">Clickwrap</label>
         <select class="custom-select" id="clickwrap_id"
                 name="clickwrap_id">
-            {% for clickwrap in args['clickwraps'] %}
+            {% for clickwrap in clickwraps_data['clickwraps'] %}
             <option value="{{ clickwrap['clickwrap_id'] }}">{{ clickwrap['clickwrap_name'] }}</option>
             {% endfor %}
         </select>

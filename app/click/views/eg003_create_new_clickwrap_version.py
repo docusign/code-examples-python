@@ -7,6 +7,7 @@ from docusign_click.client.api_exception import ApiException
 from flask import render_template, current_app, Blueprint, session
 
 from ..examples.eg003_create_new_clickwrap_version import Eg003CrateNewClickwrapVersionController
+from ..examples.eg004_list_clickwraps import Eg004ListClickwrapsController
 from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
@@ -50,10 +51,11 @@ def create_new_clickwrap_version():
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    args = Eg004ListClickwrapsController.get_args()
     return render_template(
         "eg003_create_new_clickwrap_version.html",
         title="Creating a new clickwrap version",
-        clickwrap_ok="clickwrap_id" in session,
+        clickwraps_data=Eg004ListClickwrapsController.worker(args),
         source_file= "eg003_create_new_clickwrap_version.py",
         source_url=DS_CONFIG["click_github_url"] + "eg003_create_new_clickwrap_version.py",
     )

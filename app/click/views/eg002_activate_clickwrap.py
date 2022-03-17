@@ -30,7 +30,7 @@ def activate_clickwrap():
         # 2. Call the worker method to create a new clickwrap
         results = Eg002ActivateClickwrapController.worker(args)
         current_app.logger.info(
-            f"""The clickwrap "{args['clickwrap_name']}" has been activated."""
+            f"""The clickwrap has been activated."""
         )
     except ApiException as err:
         return process_error(err)
@@ -43,7 +43,7 @@ def activate_clickwrap():
         "example_done.html",
         title="Activate a clickwrap",
         h1="Activate a clickwrap",
-        message=f"""The clickwrap "{args['clickwrap_name']}" has been activated!""",
+        message=f"""The clickwrap has been activated!""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
@@ -56,7 +56,7 @@ def get_view():
     return render_template(
         "eg002_activate_clickwrap.html",
         title="Activating a clickwrap",
-        clickwrapData=Eg002ActivateClickwrapController.get_inactive_clickwraps(),
+        clickwraps_data=Eg002ActivateClickwrapController.get_inactive_clickwraps(args),
         source_file= "eg002_activate_clickwrap.py",
         source_url=DS_CONFIG["click_github_url"] + "eg002_activate_clickwrap.py",
     )
