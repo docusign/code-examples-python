@@ -37,7 +37,7 @@ def sign_by_email():
     return render_template(
         "example_done.html",
         title="Envelope sent",
-        h1="Envelope sent",
+        h1="Request a signature by SMS delivery",
         message=f"The envelope has been created and sent!<br/>Envelope ID {results['envelope_id']}."
     )
 
