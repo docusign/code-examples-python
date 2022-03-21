@@ -25,11 +25,11 @@
 
 <form class="eg" action="" method="post" data-busy="form-download">
     <div class="form-group">
-        <label for="clickwrap_id">Clickwrap</label>
-        <select class="custom-select" id="clickwrap_id"
-                name="clickwrap_id">
+        <label for="clickwrap">Clickwrap</label>
+        <select class="custom-select" id="clickwrap"
+                name="clickwrap">
             {% for clickwrap in clickwraps_data['clickwraps'] %}
-            <option value="{{ clickwrap['clickwrap_id'] }}">{{ clickwrap['clickwrap_name'] }}</option>
+            <option value="{{ clickwrap }}">{{ clickwrap['clickwrap_name'] }}</option>
             {% endfor %}
         </select>
     </div>

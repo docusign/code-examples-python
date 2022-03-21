@@ -1,5 +1,6 @@
 from docusign_click import AccountsApi, ClickwrapRequest
 from flask import session, request
+import ast
 
 from ..utils import create_click_api_client
 
@@ -11,7 +12,7 @@ class Eg002ActivateClickwrapController:
         return {
             "account_id": session.get("ds_account_id"),  # Represents your {ACCOUNT_ID}
             "access_token": session.get("ds_access_token"),  # Represents your {ACCESS_TOKEN}
-            "clickwrap_id": request.form.get("clickwrap_id"),
+            "clickwrap": request.form.get("clickwrap"),
         }
         
     @staticmethod
@@ -51,11 +52,13 @@ class Eg002ActivateClickwrapController:
 
         # Step 3. Update a clickwrap using SDK
         accounts_api = AccountsApi(api_client)
+        clickwrap = ast.literal_eval(args["clickwrap"])
+        print(type(clickwrap))
         response = accounts_api.update_clickwrap_version(
             account_id=args["account_id"],
-            clickwrap_id=args["clickwrap_id"],
+            clickwrap_id=clickwrap["clickwrap_id"],
+            version_id=clickwrap["version_number"],
             clickwrap_request=clickwrap_request,
-            version_id="1"
         )
 
         return response
