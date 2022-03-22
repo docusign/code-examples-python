@@ -57,11 +57,13 @@ class Eg037SMSDeliveryController:
         2. Send the envelope
         """
 
+        # Step 3 start
+
         envelope_args = args["envelope_args"]
-        # 1. Create the envelope request object
+        # Create the envelope request object
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
         envelope_definition = cls.make_envelope(envelope_args)
-        # 2. Call Envelopes::create API method
+        # Call Envelopes::create API method
         # Exceptions will be caught by the calling function
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
@@ -69,6 +71,10 @@ class Eg037SMSDeliveryController:
         envelope_id = results.envelope_id
 
         return {"envelope_id": envelope_id}
+
+        # Step 3 end
+
+    # Step 2 start
 
     @classmethod
     def make_envelope(cls, args):
@@ -219,3 +225,5 @@ class Eg037SMSDeliveryController:
             </body>
         </html>
       """
+
+    # Step 2 end
