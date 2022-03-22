@@ -42,7 +42,6 @@ class Eg003CrateNewClickwrapVersionController:
             downloadable=False,
             format="modal",
             must_read=True,
-            must_view=False,
             require_accept=False,
             document_display="document",
             send_to_email=False
