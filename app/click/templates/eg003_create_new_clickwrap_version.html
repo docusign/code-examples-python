@@ -20,7 +20,7 @@
 
 {% include 'github_source.html' %}
 
-{% if clickwraps_data['clickwraps'] is undefined %}
+{% if clickwraps_data['clickwraps'][0] is undefined %}
 <p class="">
     Problem: You do not have clickwraps to activate. Go to example#1 and create one: <a
         href="{{ app_url ~ 'index.php?page=' }}ceg001">create clickwrap.</a> <br/>
