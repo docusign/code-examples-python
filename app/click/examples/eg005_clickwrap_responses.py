@@ -11,8 +11,7 @@ class Eg005ClickwrapResponsesController:
         return {
             "account_id": session.get("ds_account_id"),  # Represents your {ACCOUNT_ID}
             "access_token": session.get("ds_access_token"),  # Represents your {ACCESS_TOKEN}
-            "clickwrap_id": session.get("clickwrap_id"),
-            "client_user_id": request.form.get("client_user_id"),
+            "clickwrap_id": request.form.get("clickwrap_id"),
         }
 
     @staticmethod
@@ -31,7 +30,6 @@ class Eg005ClickwrapResponsesController:
         response = accounts_api.get_clickwrap_agreements(
             account_id=args["account_id"],
             clickwrap_id=args["clickwrap_id"],
-            client_user_id=args["client_user_id"],
             status="agreed"
         )
 

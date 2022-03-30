@@ -41,7 +41,6 @@ class Eg001CreateClickwrapController:
             downloadable=True,
             format="modal",
             must_read=True,
-            must_view=True,
             require_accept=True,
             document_display="document"
         )
