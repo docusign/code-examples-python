@@ -7,6 +7,7 @@ from docusign_click.client.api_exception import ApiException
 from flask import render_template, current_app, Blueprint, session
 
 from ..examples.eg005_clickwrap_responses import Eg005ClickwrapResponsesController
+from ..examples.eg004_list_clickwraps import Eg004ListClickwrapsController
 from app.docusign import authenticate
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
@@ -46,10 +47,11 @@ def clickwrap_responses():
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    args = Eg004ListClickwrapsController.get_args()
     return render_template(
         "eg005_clickwrap_responses.html",
         title="Getting clickwrap responses",
-        clickwrap_ok="clickwrap_id" in session,
+        clickwraps_data=Eg004ListClickwrapsController.worker(args),
         source_file= "eg005_clickwrap_responses.py",
         source_url=DS_CONFIG["click_github_url"] + "eg005_clickwrap_responses.py",
     )
