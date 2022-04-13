@@ -4,8 +4,8 @@ import os
 
 if os.environ.get("DEBUG", False) == "True":
     app.config["DEBUG"] = True
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    port = int(os.environ.get("PORT", 3000))
+    app.run(host="localhost", port=3000, debug=True)
 else:
-    app.run(extra_files="api_type.py")
+    app.run(host="localhost", port=3000, extra_files="api_type.py")
 
