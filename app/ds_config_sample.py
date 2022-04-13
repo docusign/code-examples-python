@@ -8,7 +8,7 @@ DS_CONFIG = {
     "organization_id": "{ORGANIZATION_ID}", # A GUID value that identifies the organization
     "signer_email": "{SIGNER_EMAIL}",
     "signer_name": "{SIGNER_NAME}",
-    "app_url": "http://localhost:5000",  # The URL of the application. Eg http://localhost:5000
+    "app_url": "http://localhost:3000",  # The URL of the application. Eg http://localhost:5000
     # NOTE: You must add a Redirect URI of appUrl/ds/callback to your Integration Key.
     #       Example: http://localhost:5000/ds/callback
     "authorization_server": "https://account-d.docusign.com",

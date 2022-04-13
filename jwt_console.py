@@ -90,9 +90,6 @@ def main():
                     run_example(private_key, api_client)
                 else: 
                     sys.exit("Please grant consent")
-
-            else:
-                process_error(err)
     
 
 main()

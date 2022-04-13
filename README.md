@@ -64,7 +64,7 @@ For a list of code examples that use the Admin API, select the Python tab under 
 
    For both authentication flows:  
    
-   If you use this launcher on your own workstation, the integration key must include a redirect URI of http://localhost:5000/ds/callback
+   If you use this launcher on your own workstation, the integration key must include a redirect URI of http://localhost:3000/ds/callback
 
    If you host this launcher on a remote web server, set your redirect URI as   
    
@@ -85,12 +85,12 @@ For a list of code examples that use the Admin API, select the Python tab under 
 1. To configure the launcher for [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/) authentication, create a copy of the file app/ds_config_sample.py and save the copy as app/ds_config.py.
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions > Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in ds_config.py as your `ds_client_id`.
    1. Generate a secret key, if you don’t already have one. Under **Authentication**, select **+ ADD SECRET KEY**. Copy the secret key and save it in ds_config.py as your `ds_client_secret`.
-   1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:5000/ds/callback. Select **SAVE**.   
+   1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:3000/ds/callback. Select **SAVE**.   
    1. Set a name and email address for the signer. In ds_config.py, save an email address as `signer_email` and a name as `signer_name`.  
 **Note:** Protect your personal information. Please make sure that ds_config.py will not be stored in your source code repository.
 1. Run the launcher:`python run.py`  
    **Note:** You will need to alias the python command to run Python 3 or use `python3 run.py`
-1. Open a browser to http://localhost:5000
+1. Open a browser to http://localhost:3000
 
 ### Installation steps for JWT Grant authentication
 
@@ -104,16 +104,28 @@ Also, in order to select JSON Web Token authentication in the launcher, in app/d
    1. Add your User ID. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **My Account Information**, copy the **User ID** GUID and save it in ds_config.py as your `ds_impersonated_user_id`.
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions > Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in ds_config.py as your `ds_client_id`.
    1. Generate an RSA key pair, if you don’t already have one. Under **Authentication**, select **+ GENERATE RSA**. Copy the private key, and save it in a new file named app/private.key.   
-   1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:5000/ds/callback. Select **SAVE**.   
+   1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:3000/ds/callback. Select **SAVE**.   
    1. Set a name and email address for the signer. In ds_config.py, save an email address as `signer_email` and a name as `signer_name`.  
 **Note:** Protect your personal information. Please make sure that your ds_config.py and private.key files will not be stored in your source code repository.  
 1. Run the launcher:`python run.py`  
    **Note:** You will need to alias the python command to run Python 3 or use `python3 run.py`   
-1. Open a browser to http://localhost:5000
+1. Open a browser to http://localhost:3000
 1. On the black navigation bar, select **Login**.
 1. From the picklist, select **JSON Web Token** > **Authenticate with DocuSign**.
 1. When prompted, log in to your DocuSign developer account. If this is your first time using the app, select **ACCEPT** at the consent window. 
 1. Select your desired code example.
+
+### Installation steps for JWT grant remote signing example
+
+Follow the instructions below if you downloaded the JWT grant remote signing example.
+
+1. Extract the Quickstart ZIP file or download or clone the code-examples-python repository.
+1. Run the JWT console project: `python jwt_console.py`. If you do not already have the docusign-esign package, it will be 
+   installed for you when you start the project.
+  **Note:** You will need to alias the python command to run Python 3 or use `python3 run.py`
+1. Follow the prompts from the command line to grant consent in your browser.
+1. Return to the command line and follow the prompts to enter the names and email addresses of your recipients.
+1. Check your email to sign the example document.
 
 ## Payments code example  
 
