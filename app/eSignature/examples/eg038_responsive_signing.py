@@ -44,6 +44,7 @@ class Eg038ResponsiveSigning:
         }
         return args
 
+    # Step 3 start
     @classmethod
     def worker(cls, args):
         """
@@ -83,7 +84,9 @@ class Eg038ResponsiveSigning:
         )
 
         return {"envelope_id": envelope_id, "redirect_url": results.url}
+    # Step 3 end
 
+    # Step 2 start
     @classmethod
     def make_envelope(cls, args):
         """
@@ -146,3 +149,5 @@ class Eg038ResponsiveSigning:
             .replace("/sn1/", "<ds-signature data-ds-role=\"Signer\"/>") \
             .replace("/l1q/", "<input data-ds-type=\"number\"/>") \
             .replace("/l2q/", "<input data-ds-type=\"number\"/>")
+
+# Step 2 end
