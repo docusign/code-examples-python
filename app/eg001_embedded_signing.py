@@ -39,14 +39,9 @@ def embedded_signing():
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
-    if app.config['QUICK_ACG']:
-        template_name = "quick_embedded_signing.html",
-
-    else:
-        template_name = "eg001_embedded_signing.html",
 
     return render_template(
-        template_name,
+        "eg001_embedded_signing.html",
         title="Use embedded signing",
         source_file="eg001_embedded_signing.py",
         source_url=DS_CONFIG["github_example_url"] + "eg001_embedded_signing.py",
