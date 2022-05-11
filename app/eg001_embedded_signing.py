@@ -1,9 +1,7 @@
 """Example 001: Use embedded signing"""
 
-from os import path
-
 from docusign_esign.client.api_exception import ApiException
-from flask import render_template, redirect, Blueprint
+from flask import render_template, redirect, Blueprint, current_app as app
 
 from .eSignature.examples.eg001_embedded_signing import Eg001EmbeddedSigningController
 from .docusign import authenticate
@@ -41,10 +39,16 @@ def embedded_signing():
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    if app.config['QUICK_ACG']:
+        template_name = "quick_embedded_signing.html",
+
+    else:
+        template_name = "eg001_embedded_signing.html",
+
     return render_template(
-        "eg001_embedded_signing.html",
+        template_name,
         title="Use embedded signing",
-        source_file= "eg001_embedded_signing.py",
+        source_file="eg001_embedded_signing.py",
         source_url=DS_CONFIG["github_example_url"] + "eg001_embedded_signing.py",
         documentation=DS_CONFIG["documentation"] + eg,
         show_doc=DS_CONFIG["documentation"],
