@@ -3,7 +3,6 @@ from flask import session, json
 
 from app.monitor.utils import create_monitor_api_client
 
-
 class Eg001GetMonitoringDataController:
     @staticmethod
     def get_args():
