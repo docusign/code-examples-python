@@ -25,7 +25,7 @@
             <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> on using JWT from a Python Flask application.</p>
         {% endif %}
 
-        <h2>DocuSign Admin API Code Examples</h2>
+      
             <h4 id="example001">1. <a href="eg001">Create a new active eSignature user</a></h4>
             <p>Demonstrates how to create a new eSignature user and activate their account automatically.</p>
 
@@ -66,7 +66,23 @@
             <p>API methods used: 
               <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/users/getusers/">Users:getUsers</a>, 
               <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/esignusermanagement/getuserprofiles/">eSignUserManagement:getUserProfiles</a>
-           </p>
+            </p>
+
+            <h4 id="example006">6. <a href="eg006">Retrieve the user's DocuSign profile using an email address</a></h4>
+            <p>Demonstrates how to obtain the user’s DocuSign profile information across all DocuSign accounts by specifying the user’s email address.</p>
+
+            <p>API method used:
+              <a target="_blank" rel='noopener noreferrer' 
+              href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/esignusermanagement/getuserprofiles/">MultiProductUserManagement:getUserDSProfilesByEmail</a>
+            </p>
+
+            <h4 id="example007">7. <a href="eg007">Retrieve the user's DocuSign profile using a User ID</a></h4>
+            <p>Demonstrates how to obtain the user’s DocuSign profile information across all DocuSign accounts by specifying the user’s User ID.</p>
+
+            <p>API method used:
+              <a target="_blank" rel='noopener noreferrer' 
+              href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/esignusermanagement/getuserprofiles/">MultiProductUserManagement:getUserDSProfile</a>
+            </p>
     </div>
   </div>
 

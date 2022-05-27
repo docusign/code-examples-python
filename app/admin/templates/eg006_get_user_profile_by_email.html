@@ -1,0 +1,27 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>6. Retrieve the user's DocuSign profile using an email address</h4>
+<p>Demonstrates how to obtain the user’s DocuSign profile information across all DocuSign accounts by specifying the user’s email address.</p>
+
+{% if show_doc %}
+    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+
+<p>API method used:
+    <a target="_blank" rel='noopener noreferrer' 
+    href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/esignusermanagement/getuserprofiles/">MultiProductUserManagement:getUserDSProfilesByEmail</a>.
+</p>
+<p>
+    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="example@example.com" required>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-docu">Continue</button>
+</form>
+  
+{% endblock %}
