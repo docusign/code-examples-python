@@ -2,7 +2,7 @@ import base64
 from os import path
 
 from docusign_esign import EnvelopesApi, Envelope, EnvelopeDefinition, Document, Signer, SignHere, \
-                           Tabs, Recipients, Workflow, DelayedRoutingApiModel, EnvelopeDelayRuleApiModel, WorkflowStep
+                           Tabs, Recipients, Workflow, DelayedRouting, EnvelopeDelayRule, WorkflowStep
 from ...consts import demo_docs_path, pattern, signer_client_id
 from ...docusign import create_api_client
 from ...ds_config import DS_CONFIG
@@ -117,7 +117,7 @@ class Eg036DelayedRoutingController:
         workflow_step.action = "pause_before"
         workflow_step.trigger_on_item = "routing_order"
         workflow_step.item_id = "2"
-        delayed_routing = DelayedRoutingApiModel(rules=[EnvelopeDelayRuleApiModel(delay=delay)])
+        delayed_routing = DelayedRouting(rules=[EnvelopeDelayRule(delay=delay)])
         workflow_step.delayed_routing = delayed_routing
         workflow.workflow_steps = [workflow_step]
         env.workflow = workflow

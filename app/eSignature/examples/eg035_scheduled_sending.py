@@ -2,7 +2,7 @@ import base64
 from os import path
 
 from docusign_esign import EnvelopesApi, Envelope, EnvelopeDefinition, Document, Signer, SignHere, \
-                           Tabs, Recipients, Workflow, ScheduledSendingApiModel, EnvelopeDelayRuleApiModel
+                           Tabs, Recipients, Workflow, ScheduledSending, EnvelopeDelayRule
 from ...consts import demo_docs_path, pattern, signer_client_id
 from ...docusign import create_api_client
 from ...ds_config import DS_CONFIG
@@ -94,10 +94,10 @@ class Eg035ScheduledSendingController:
         env.recipients = recipients
 
         workflow = Workflow()
-        scheduled_sending_api_model = ScheduledSendingApiModel()
+        scheduled_sending_api_model = ScheduledSending()
         workflow.scheduled_sending = scheduled_sending_api_model
 
-        envelope_delay_rule = EnvelopeDelayRuleApiModel()
+        envelope_delay_rule = EnvelopeDelayRule()
         envelope_delay_rule.resume_date = args["resume_date"] + "T00:00:00.000Z"
         workflow.scheduled_sending.rules = [envelope_delay_rule]
         env.workflow = workflow
