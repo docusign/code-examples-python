@@ -61,7 +61,7 @@ class Eg002PostWebQueryController:
             "aggregations": [
                 {
                     "aggregationName": "Raw",
-                    "limit": "1",
+                    "limit": "100",
                     "orderby": [
                         "Timestamp, desc"
                     ]
