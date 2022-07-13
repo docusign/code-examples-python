@@ -27,7 +27,7 @@ def embedded_sending():
     args = Eg011EmbeddedSendingController.get_args()
     try:
         # 2. Call the worker method
-        results = Eg011EmbeddedSendingController.worker(args)
+        results = Eg011EmbeddedSendingController.worker(args, DS_CONFIG["doc_docx"], DS_CONFIG["doc_pdf"])
     except ApiException as err:
         return process_error(err)
 
