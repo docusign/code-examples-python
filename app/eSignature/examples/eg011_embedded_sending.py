@@ -2,7 +2,7 @@ from docusign_esign import EnvelopesApi, ReturnUrlRequest
 from flask import url_for, session, request
 
 from .eg002_signing_via_email import Eg002SigningViaEmailController
-from ...consts import pattern
+from ...consts import pattern, demo_docs_path
 from ...docusign import create_api_client
 
 
@@ -37,7 +37,7 @@ class Eg011EmbeddedSendingController:
         return args
 
     @staticmethod
-    def worker(args):
+    def worker(args,doc_docx_path,doc_pdf_path):
         """
         This function does the work of creating the envelope in
         draft mode and returning a URL for the sender"s view
@@ -46,8 +46,9 @@ class Eg011EmbeddedSendingController:
         # Step 1. Create the envelope with "created" (draft) status
         args["envelope_args"]["status"] = "created"
         # Using worker from example 002
-        results = Eg002SigningViaEmailController.worker(args)
+        results = Eg002SigningViaEmailController.worker(args, doc_docx_path, doc_pdf_path)
         envelope_id = results["envelope_id"]
+        
 
         # Step 2. Create the sender view
         view_request = ReturnUrlRequest(return_url=args["ds_return_url"])
