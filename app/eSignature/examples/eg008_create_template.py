@@ -34,9 +34,11 @@ class Eg008CreateTemplateController:
         # Exceptions will be caught by the calling function
         results = templates_api.list_templates(account_id=args["account_id"], search_text=template_name)
         created_new_template = False
+        
         if int(results.result_set_size) > 0:
             template_id = results.envelope_templates[0].template_id
             results_template_name = results.envelope_templates[0].name
+            
         else:
 
             # Template not found -- so create it
