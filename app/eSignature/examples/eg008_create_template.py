@@ -36,6 +36,7 @@ class Eg008CreateTemplateController:
         created_new_template = False
         
         if int(results.result_set_size) > 0:
+            
             template_id = results.envelope_templates[0].template_id
             results_template_name = results.envelope_templates[0].name
             
@@ -45,13 +46,12 @@ class Eg008CreateTemplateController:
             # 2. create the template
             template_req_object = cls.make_template_req()
             res = templates_api.create_template(account_id=args["account_id"], envelope_template=template_req_object)
-            # Pick the first template object within the result
-            results = res.templates[0]
-            template_id = results.template_id
-            results_template_name = results.name
+            template_id = res.template_id
+            results_template_name = res.name
             created_new_template = True
 
         return {
+            
             "template_id": template_id,
             "template_name": results_template_name,
             "created_new_template": created_new_template
