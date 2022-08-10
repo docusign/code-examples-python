@@ -1,0 +1,92 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>8. Update user product permission profiles using an email address</h4>
+<p>Demonstrates how to update user product permission profiles. There may only be one permission profile assigned to a user per product.</p>
+
+{% if show_doc %}
+    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+  
+<p>
+    API methods used:
+    <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/multiproductusermanagement/getproductpermissionprofiles/">MultiProductUserManagement:getProductPermissionProfiles</a>,
+    <a target="_blank" href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/multiproductusermanagement/adduserproductpermissionprofilesbyemail/">MultiProductUserManagement:addUserProductPermissionProfilesByEmail</a>.
+</p>
+<p>
+    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+</p>
+
+{% if email_ok %}
+    <p>Update user product permission profile for the following email: <b>{{ email }}</b></p>
+
+    <form class="eg" action="" method="post" data-busy="form">
+        <div class="form-group">
+            <label for="product">Choose a product for which you want to update the permission profile</label>
+            <select class="form-control" id="product" name="product">
+                {% for product in product_list %}
+                    {% if product.product_name == "CLM" %}
+                        <option value="{{product.product_id}}" selected="selected">{{product.product_name}}</option>
+                    {% else %}
+                        <option value="{{product.product_id}}">{{product.product_name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        {% if esign_permission_profiles_list %}
+        <div class="form-group" id="esign-profiles" style="display: none">
+            <label for="esign_permission_profile">Choose a permission profile</label>
+            <select class="form-control" id="esign_permission_profile" name="esign_permission_profile">
+                {% for profile in esign_permission_profiles_list %}
+                    <option value="{{profile.permission_profile_id}}">{{profile.permission_profile_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% else %}
+            <p>Problem: Please first create an eSignature permission profile.
+            </br>Thank you.</p>
+        {% endif %}
+
+        {% if clm_permission_profiles_list %}
+        <div class="form-group" id="clm-profiles">
+            <label for="clm_permission_profile">Choose a permission profile</label>
+            <select class="form-control" id="clm_permission_profile" name="clm_permission_profile">
+                {% for profile in clm_permission_profiles_list %}
+                    <option value="{{profile.permission_profile_id}}">{{profile.permission_profile_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% else %}
+            <p>Problem: Please first create a CLM permission profile.
+            </br>Thank you.</p>
+        {% endif %}
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button type="submit" class="btn btn-docu">Continue</button>
+    </form>
+
+    {% block javascript %}
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $("#product").on("change", function () {
+                if($("#product option:selected" ).text() === "CLM"){
+                    $("#esign-profiles").css("display", "none")
+                    $("#clm-profiles").css("display", "block")
+                } else {
+                    $("#esign-profiles").css("display", "block")
+                    $("#clm-profiles").css("display", "none")
+                }
+            });
+        });
+        </script>
+    {% endblock %}
+{% else %}
+    <p>Problem: You do not have the user to change permissions for. Go to <a href="eg002">example 2</a> and create one.
+    </br>Thank you.</p>
+
+    <form class="eg" action="eg002" method="get">
+        <button type="submit" class="btn btn-docu">Continue</button>
+    </form>
+{% endif %}
+{% endblock %}

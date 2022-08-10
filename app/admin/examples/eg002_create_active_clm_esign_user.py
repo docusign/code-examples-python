@@ -102,7 +102,7 @@ class Eg002CreateActiveClmEsignUserController:
         # Step 5 start
         clm_product_permission_profile = ProductPermissionProfileRequest(product_id=clm_product_id, permission_profile_id=clm_permission_profile_id)
         esign_product_permission_profile = ProductPermissionProfileRequest(product_id=esign_product_id, permission_profile_id=esign_permission_profile_id)
-        ds_group_request = DSGroupRequest(args["group_id"])
+        ds_group_request = DSGroupRequest(ds_group_id=args["group_id"])
         new_user = NewMultiProductUserAddRequest(product_permission_profiles=[esign_product_permission_profile, clm_product_permission_profile], ds_groups=[ds_group_request], user_name=args["user_name"], first_name=args["first_name"], last_name=args["last_name"], email=args["email"], auto_activate_memberships=True)
         # Step 5 end
 

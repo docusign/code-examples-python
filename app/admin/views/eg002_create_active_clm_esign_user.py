@@ -4,7 +4,7 @@ import json
 from os import path
 
 from docusign_admin.client.api_exception import ApiException
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, render_template, current_app, session
 
 from app.docusign import authenticate
 from app.error_handlers import process_error
@@ -34,6 +34,7 @@ def create_active_clm_esign_user():
     except ApiException as err:
         return process_error(err)
 
+    session["clm_email"] = results["email"]  # Save for use by other examples which need an email of CLM user
     return render_template(
         "example_done.html",
         title="Create a new active user for CLM and eSignature",
