@@ -2,7 +2,7 @@ import base64
 from os import path
 
 from docusign_esign import EnvelopesApi, RecipientViewRequest, Document, Signer, EnvelopeDefinition, SignHere, Tabs, \
-    Recipients
+    Recipients, InPersonSigner
 from flask import session, url_for, request
 
 from ...consts import authentication_method, demo_docs_path, pattern, signer_client_id
@@ -17,14 +17,11 @@ class Eg039InPersonSigner:
         # More data validation would be a good idea here
         # Strip anything other than characters listed
         # 1. Parse request arguments
-        #response = DSClient.get_user(session["ds_access_token"])
-        #print(response)
-        host_name = "host_name"
-        signer_name = "signer_name"
+        signer_name = pattern.sub("", request.form.get("signer_name"))
         envelope_args = {
-            "host_email": "raileendr@gmail.com",
-            "host_name": "Raileen",
-            "signer_name": "Fred",
+            "host_email": session["ds_user_email"],
+            "host_name": session["ds_user_name"],
+            "signer_name": signer_name,
             "ds_return_url": url_for("ds.ds_return", _external=True),
         }
         args = {
@@ -59,13 +56,12 @@ class Eg039InPersonSigner:
         # 3. Create the Recipient View request object
         recipient_view_request = RecipientViewRequest(
             authentication_method=authentication_method,
-            client_user_id=envelope_args["signer_client_id"],
             recipient_id="1",
             return_url=envelope_args["ds_return_url"],
             user_name=envelope_args["host_name"],
             email=envelope_args["host_email"]
         )
-        # 4. Obtain the recipient_view_url for the embedded signing
+        # 4. Obtain the recipient_view_url for the embedded signing session
         # Exceptions will be caught by the calling function
         results = envelope_api.create_recipient_view(
             account_id=args["account_id"],
@@ -100,17 +96,15 @@ class Eg039InPersonSigner:
             document_id=1  # a label used to reference the doc
         )
 
-        # Create the signer recipient model
-        signer = Signer(
+        # Create the in person signer recipient model
+        signer = InPersonSigner(
             # The signer
             host_name = args["host_name"],
             host_email = args["host_email"],
             signer_name = args["signer_name"],
             recipient_id="1",
             routing_order="1",
-            
-            # Setting the client_user_id marks the signer as embedded
-            #client_user_id=args["signer_client_id"]
+        
         )
 
         # Create a sign_here tab (field on the document)
@@ -124,14 +118,14 @@ class Eg039InPersonSigner:
 
         # Add the tabs model (including the sign_here tab) to the signer
         # The Tabs object wants arrays of the different field/tab types
-        signer.tabs = Tabs(sign_here_tabs=[sign_here])
+        InPersonSigner.tabs = Tabs(sign_here_tabs=[sign_here])
 
         # Next, create the top level envelope definition and populate it.
         envelope_definition = EnvelopeDefinition(
             email_subject="Please host this in-person signing session",
             documents=[document],
             # The Recipients object wants arrays for each recipient type
-            recipients=Recipients(signers=[signer]),
+            recipients=Recipients(in_person_signers=[signer]),
             status="sent"  # requests that the envelope be created and sent.
         )
 
