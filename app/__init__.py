@@ -112,6 +112,7 @@ else:
     app.register_blueprint(esignature_views.eg036)
     app.register_blueprint(esignature_views.eg037)
     app.register_blueprint(esignature_views.eg038)
+    app.register_blueprint(esignature_views.eg040)
 if "DYNO" in os.environ:  # On Heroku?
     import logging
 
