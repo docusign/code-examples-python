@@ -1,0 +1,30 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>Send an envelope to an In Person Signer</h4>
+<p>Demonstrates how to host an In Person Signing session with embedded signing.</p>
+
+  {% if show_doc %}
+    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+  {% endif %}
+  
+<p>API method used:
+  <a target ='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopes/create/">Envelopes::create</a> and
+  <a target ='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopeviews/createrecipient/">EnvelopeViews::createRecipient</a>.
+</p>
+
+<p>
+    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+</p>
+
+<form class="eg" action="" method="post" data-busy="form">
+  <div class="form-group">
+    <label for="signer_name">Signer Name</label>
+    <input type="text" class="form-control" id="signer_name" placeholder="Pat Johnson" name="signer_name"
+           value="{{ signer_name }}" required />
+  </div>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <button type="submit" class="btn btn-docu">Submit</button>
+</form>
+
+  
+{% endblock %}
