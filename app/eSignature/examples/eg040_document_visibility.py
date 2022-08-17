@@ -158,20 +158,6 @@ class Eg040DocumentVisibility:
         )
         sign_here2 = SignHere(
             document_id="2",
-            page_number="1",
-            name="Signer2",
-            recipient_id="2",
-            anchor_string="/sn1/",
-            anchor_units="pixels",
-            anchor_y_offset="10",
-            anchor_x_offset="20"
-        )
-        
-        sign_here3 = SignHere(
-            document_id="3",
-            page_number="1",
-            name="Signer2",
-            recipient_id="2",
             anchor_string="/sn1/",
             anchor_units="pixels",
             anchor_y_offset="10",
@@ -183,7 +169,8 @@ class Eg040DocumentVisibility:
         signer1.tabs = Tabs(
             sign_here_tabs=[sign_here1, ],
         )
-        signer2.tabs = Tabs(sign_here_tabs=[sign_here2, sign_here3])
+    
+        signer2.tabs = Tabs(sign_here_tabs=[sign_here2, ])
 
         # Add the recipients to the envelope object
         recipients = Recipients(signers=[signer1, signer2], carbon_copies=[cc])
