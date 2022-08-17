@@ -40,7 +40,8 @@ class Eg006EnvelopeDocsController:
         """
         standard_doc_items = [
             {"name": "Combined", "type": "content", "document_id": "combined"},
-            {"name": "Zip archive", "type": "zip", "document_id": "archive"}]
+            {"name": "Zip archive", "type": "zip", "document_id": "archive"},
+            {"name": "PDF Portfolio", "type": "content", "document_id": "portfolio"}]
         # The certificate of completion is named "summary".
         # We give it a better name below.
         envelope_doc_items = list(map(lambda doc:
