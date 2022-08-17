@@ -151,16 +151,20 @@ class Eg040DocumentVisibility:
             document_id="1",
             page_number="1",
             name="Signer1",
-            x_position="200",
-            y_position="200"
+            anchor_string="**signature_1**",
+            anchor_units="pixels",
+            anchor_y_offset="10",
+            anchor_x_offset="20"
         )
         sign_here2 = SignHere(
             document_id="2",
             page_number="1",
             name="Signer2",
             recipient_id="2",
-            x_position="300",
-            y_position="200"
+            anchor_string="/sn1/",
+            anchor_units="pixels",
+            anchor_y_offset="10",
+            anchor_x_offset="20"
         )
         
         sign_here3 = SignHere(
@@ -168,8 +172,10 @@ class Eg040DocumentVisibility:
             page_number="1",
             name="Signer2",
             recipient_id="2",
-            x_position="300",
-            y_position="200"
+            anchor_string="/sn1/",
+            anchor_units="pixels",
+            anchor_y_offset="10",
+            anchor_x_offset="20"
         )
         
         # Add the tabs model (including the sign_here tabs) to the signer
