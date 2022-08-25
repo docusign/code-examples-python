@@ -1,6 +1,6 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-    <h4>30. Apply a brand and template to an envelope</h4>
+    <h4>Apply a brand and template to an envelope</h4>
 
     {% if template_ok %}
         <p>
@@ -69,7 +69,7 @@
             </form>
 
         {% else %}
-            <p>Problem: please first create the brand using <a href="eg028">example 24.</a>
+            <p>Problem: please first create the brand using <a href="eg028">Create a brand.</a>
             <br />
             Thank you.
             </p>
@@ -79,7 +79,7 @@
             </form>
         {% endif %}
     {% else %}
-        <p>Problem: please first create the template using <a href="eg008">example 8.</a> <br/>
+        <p>Problem: please first create the template using <a href="eg008">Create a template.</a> <br/>
             Thank you.</p>
 
         <form class="eg" action="eg008" method="get">

@@ -1,6 +1,6 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>7. Download envelope documents</h4>
+<h4>Download envelope documents</h4>
 <p>Downloads individual documents, the documents concatenated together, or a ZIP file of the documents.</p>
 <p>Document download options:</p>
 <ul>
@@ -8,10 +8,7 @@
          certificate</li>
   <li><b>Zip Archive</b>: a ZIP archive that contains all of the PDF documents, 
          the certificate, and any .WAV files used for voice authentication.</li>
-  <li>
-      <b>PDF Portfolio</b>: Retrieves the envelope documents as a <a href="https://helpx.adobe.com/acrobat/using/overview-pdf-portfolios.html">PDF portfolio</a>
-  </li>
-    <li>The envelope's individual documents</li>
+  <li>The envelope's individual documents</li>
   <li>The envelope's Certificate of Completion</li>
 </ul>
 
@@ -28,8 +25,8 @@
 </p>
 
 {% if not envelope_ok %}
-  <p>Problem: please first create an envelope using <a href="eg002">example 2.</a> <br/>
-    You will then need to use example 6 to create the list of documents.<br/>
+  <p>Problem: please first create an envelope using <a href="eg002">Request a signature by email (remote signing).</a> <br/>
+    You will then need to use List envelope documents to create the list of documents.<br/>
     Thank you.</p>
     
  <form class="eg" action="eg002" method="get">
@@ -37,7 +34,7 @@
  </form>
 {%  elif not documents_ok %}
   <p>Problem: please first create a list of the envelope's documents using 
-    <a href="eg006">example 6.</a> <br/>
+    <a href="eg006">List envelope documents.</a> <br/>
     Thank you.</p>
     
  <form class="eg" action="eg006" method="get">
@@ -45,7 +42,7 @@
  </form>
 {% else %}
   <p>Please choose a document.<br/>
-     The document list is from your results for example 6.</p>
+     The document list is from your results for List envelope documents.</p>
   
   <form class="eg" action="" method="post" data-busy="form-download">
     <div class="form-group">

@@ -1,5 +1,5 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
-<h4>18. Get envelope custom tab values</h4>
+<h4>Get envelope custom tab values</h4>
 <p>
     Get the data values associated with the envelope itself. The custom data fields enable you to
     add additional meta-data to the envelope. The custom data fields can be set by the <b>Sender</b>
@@ -29,7 +29,7 @@
 {% if envelope_ok %}
 <p>
   The last envelope you created with this example launcher will be queried.
-  Recommendation: Create an envelope using <a href="eg016">example 16</a> then use this example in order to see an example of custom tab values.
+  Recommendation: Create an envelope using <a href="eg016">Set envelope tab values</a> then use this example in order to see an example of custom tab values.
 </p>
 
 <form class="eg" action="" method="post" data-busy="form">
@@ -39,7 +39,7 @@
 
 {% else %}
 <p>
-  Problem: Please first create an envelope using <a href="eg016">example 16</a>.
+  Problem: Please first create an envelope using <a href="eg016">Set envelope tab values</a>.
 </p>
 
 <form class="eg" action="eg009" method="get">

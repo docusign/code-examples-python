@@ -1,6 +1,6 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>33. Unpause a signature workflow</h4>
+<h4>Unpause a signature workflow</h4>
 <p>This example demonstrates how to resume an envelope workflow that has been
     paused.
 </p>
@@ -21,7 +21,7 @@
 </p>
 
 {% if envelope_ok %}
-<p>The envelope you created in example 32 will be queried.</p>
+<p>The envelope you created in Pause a signature workflow will be queried.</p>
 
 <form class="eg" action="" method="post" data-busy="form">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -29,8 +29,7 @@
 </form>
 
 {% else %}
-<p>Problem: please first create an envelope using <a href="eg032">example
-    32.</a> <br/>
+<p>Problem: please first create an envelope using <a href="eg032">Pause a signature workflow.</a> <br/>
     Thank you.</p>
 
 <form class="eg" action="eg032" method="get">
