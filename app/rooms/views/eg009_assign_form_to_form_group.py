@@ -47,7 +47,6 @@ def assign_form_to_form_group():
         h1="Creating a form group",
         message=f"""Form "{args['form_id']}" has been assigned to 
         Form Group "{args['form_group_id']}"!""",
-        json=json.dumps(json.dumps(results, default=str))
     )
 
 
