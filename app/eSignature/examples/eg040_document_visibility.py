@@ -48,7 +48,6 @@ class Eg040DocumentVisibility:
         }
         return args
 
-    # Step 3 start
     @classmethod
     def worker(cls, args, doc_docx_path, doc_pdf_path):
         """
@@ -58,20 +57,23 @@ class Eg040DocumentVisibility:
         envelope_args = args["envelope_args"]
         # 1. Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args, doc_docx_path, doc_pdf_path)
-
+        
+        # Step 2 start
         # 2. call Envelopes::create API method
         # Exceptions will be caught by the calling function
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        # Step 2 end
 
+        # Step 4 start
         envelope_api = EnvelopesApi(api_client)
         results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
-
+        # Step 4 end
+        
         envelope_id = results.envelope_id
 
         return {"envelope_id": envelope_id}
-    # Step 3 end
-
-    # Step 2 start
+    
+    # Step 3 start
     @classmethod
     def make_envelope(cls, args, doc_docx_path, doc_pdf_path):
         """
@@ -181,6 +183,7 @@ class Eg040DocumentVisibility:
         env.status = args["status"]
 
         return env
+    # Step 3 end
 
     @classmethod
     def create_document1(cls, args):
@@ -213,3 +216,5 @@ class Eg040DocumentVisibility:
             </body>
         </html>
       """
+      
+      # End
