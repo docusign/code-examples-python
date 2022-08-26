@@ -55,8 +55,8 @@ class Eg039InPersonSigner:
         envelope_id = results.envelope_id
         # Step 3 end
 
-        # Step 4 start
         # 3. Create the Recipient View request object
+        # Step 4 start
         recipient_view_request = RecipientViewRequest(
             authentication_method=authentication_method,
             recipient_id="1",
@@ -74,7 +74,6 @@ class Eg039InPersonSigner:
             envelope_id=envelope_id,
             recipient_view_request=recipient_view_request
         )
-        
         # Step 5 end
 
         return {"envelope_id": envelope_id, "redirect_url": results.url}
