@@ -102,13 +102,15 @@ class Eg010SendBinaryDocsController:
 
         # Step 2. call Envelopes::create API method
         # Exceptions will be caught by the calling function
-        results = requests.post(
-            url=f"{args['base_path']}/v2.1/accounts/{args['account_id']}/envelopes",
-            headers={
+        headers = {
                 "Authorization": "bearer " + args['access_token'],
                 "Accept": "application/json",
                 "Content-Type": f"multipart/form-data; boundary={boundary.decode('utf-8')}"
-            },
+        }
+        
+        results = requests.post(
+            url=f"{args['base_path']}/v2.1/accounts/{args['account_id']}/envelopes",
+            headers=headers,
             data=req_body
         )
         return {"status_code": results.status_code, "results": results.json()}
