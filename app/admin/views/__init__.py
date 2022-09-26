@@ -6,3 +6,4 @@ from .eg005_audit_users import eg005
 from .eg006_get_user_profile_by_email import eg006
 from .eg007_get_user_profile_by_user_id import eg007
 from .eg008_update_user_product_permission_profile import eg008
+from .eg009_delete_user_product_permission_profile import eg009

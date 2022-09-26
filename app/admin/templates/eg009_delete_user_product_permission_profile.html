@@ -1,0 +1,48 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>9. Delete user product permission profiles using an email address</h4>
+<p>Demonstrates how to list and delete DocuSign Admin user product permission profiles.</p>
+
+{% if show_doc %}
+    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+  
+<p>
+    API methods used:
+    <a target="_blank" href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/multiproductusermanagement/getuserproductpermissionprofilesbyemail/">MultiProductUserManagement:getUserProductPermissionProfilesByEmail</a>,
+    <a target="_blank" href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/multiproductusermanagement/removeuserproductpermission/">MultiProductUserManagement:removeUserProductPermission</a>.
+</p>
+<p>
+    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+</p>
+
+{% if email_ok %}
+    <p>Delete user product permission profile for the following email: <b>{{ email }}</b></p>
+
+    <form class="eg" action="" method="post" data-busy="form">
+        {% if permission_profile_list %}
+        <div class="form-group">
+            <label for="product_id">Choose which product permission profile you would like to delete</label>
+            <select class="form-control" id="product_id" name="product_id">
+                {% for profile in permission_profile_list %}
+                    <option value="{{profile.product_id}}">{{profile.permission_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% else %}
+            <p>Problem: Please first create a user with permission profile.
+            </br>Thank you.</p>
+        {% endif %}
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button type="submit" class="btn btn-docu">Continue</button>
+    </form>
+{% else %}
+    <p>Problem: You do not have the user to change permissions for. Please <a href="eg002">create a new user</a> to continue.
+    </br>Thank you.</p>
+
+    <form class="eg" action="eg002" method="get">
+        <button type="submit" class="btn btn-docu">Continue</button>
+    </form>
+{% endif %}
+{% endblock %}
