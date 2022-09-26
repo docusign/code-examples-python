@@ -62,20 +62,20 @@ class Eg009DeleteUserProductPermissionProfileController:
         )
         # Step 2 end
 
-        # Step 3 start
+        # Step 4 start
         user_product_profile_delete_request = UserProductProfileDeleteRequest(
             user_email=email,
             product_ids=[product_id]
         )
-        # Step 3 end
+        # Step 4 end
 
-        # Step 4 start
+        # Step 5 start
         product_permission_profiles_api = ProductPermissionProfilesApi(api_client=api_client)
         response = product_permission_profiles_api.remove_user_product_permission(
             organization_id=org_id,
             account_id=account_id,
             user_product_permission_profiles_request=user_product_profile_delete_request
         )
-        # Step 4 end
+        # Step 5 end
 
         return response.to_dict()
