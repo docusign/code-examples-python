@@ -1,0 +1,35 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% include 'example_info.html' %}
+
+{%  set form_index = 0 %}
+{%  set product_index = 0 %}
+{%  set redirect_to2_index = 0 %}
+
+{% if email_ok %}
+    <form class="eg" action="" method="post" data-busy="form">
+        {% if permission_profile_list %}
+        <div class="form-group">
+            <label for="product_id">{{ example['Forms'][form_index]['Inputs'][product_index]['InputName'] }}</label>
+            <select class="form-control" id="product_id" name="product_id">
+                {% for profile in permission_profile_list %}
+                    <option value="{{profile.product_id}}">{{profile.permission_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% else %}
+            <p>Problem: Please first create a user with permission profile.
+            </br>Thank you.</p>
+        {% endif %}
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% include 'continue_button.html' %}
+    </form>
+{% else %}
+    {{ example['RedirectsToOtherCodeExamples'][redirect_to2_index]['RedirectText'].format('href="eg002"') | safe }}
+
+    <form class="eg" action="eg002" method="get">
+        {% include 'continue_button.html' %}
+    </form>
+{% endif %}
+{% endblock %}

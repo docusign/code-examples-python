@@ -33,6 +33,7 @@ class Eg039InPersonSigner:
         return args
 
     @classmethod
+    # Step 3 start
     def worker(cls, args):
         """
         1. Create the envelope request object
@@ -52,8 +53,10 @@ class Eg039InPersonSigner:
         results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
 
         envelope_id = results.envelope_id
+        # Step 3 end
 
         # 3. Create the Recipient View request object
+        # Step 4 start
         recipient_view_request = RecipientViewRequest(
             authentication_method=authentication_method,
             recipient_id="1",
@@ -61,6 +64,9 @@ class Eg039InPersonSigner:
             user_name=envelope_args["host_name"],
             email=envelope_args["host_email"]
         )
+        # Step 4 end
+        
+        # Step 5 start
         # 4. Obtain the recipient_view_url for the embedded signing session
         # Exceptions will be caught by the calling function
         results = envelope_api.create_recipient_view(
@@ -68,10 +74,12 @@ class Eg039InPersonSigner:
             envelope_id=envelope_id,
             recipient_view_request=recipient_view_request
         )
+        # Step 5 end
 
         return {"envelope_id": envelope_id, "redirect_url": results.url}
 
     @classmethod
+    # Step 2 start
     def make_envelope(cls, args):
         """
         Creates envelope
@@ -130,3 +138,6 @@ class Eg039InPersonSigner:
         )
 
         return envelope_definition
+    # Step 2 end
+    
+    # End
