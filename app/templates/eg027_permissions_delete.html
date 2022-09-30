@@ -1,37 +1,28 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-    <h4>27. Delete a permission profile</h4>
-    <p>
-         This code example demonstrates how to delete a permission profile.
-    </p>
+{% include 'example_info.html' %}
 
-    {% if show_doc %}
-      <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-    {% endif %}
+{%  set permission_profile_form_index = 0 %}
+{%  set permission_profile_index = 0 %}
 
-    <p>
-        API methods used:
-        <a href="https://developers.docusign.com/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/delete/" target="_blank">Accounts::deletePermissionProfile</a>.
-    </p>
+    <form class="eg" action="" method="post" data-busy="form">
+        {% if 'Forms' in example and 'FormName' in example['Forms'][permission_profile_form_index] %}
+            <p>{{ example['Forms'][permission_profile_form_index]['FormName'] | safe }}</p>
+        {% endif %}
 
-    <p>
-        View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-    </p>
+        <div class="form-group">
+            <label for="permission_profile">{{ example['Forms'][permission_profile_form_index]['Inputs'][permission_profile_index]['InputName'] }}</label>
+            <br>
+            <select id="permission_profile" name="permission_profile" class="form-control">
+                {% for profile in permission_profiles %}
+                    <option value="{{ profile.permission_profile_id }}">{{ profile.permission_profile_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <form class="eg" action="" method="post" data-busy="form">
-            <div class="form-group">
-                <label for="permission_profile">Permission profile</label>
-                <br>
-                <select id="permission_profile" name="permission_profile">
-                    {% for profile in permission_profiles %}
-                        <option value="{{ profile.permission_profile_id }}">{{ profile.permission_profile_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="form-group">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <button type="submit" class="btn btn-docu">Submit</button>
-            </div>
-        </form>
+        <div class="form-group">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            {% include 'submit_button.html' %}
+        </div>
+    </form>
 {% endblock %}

@@ -1,33 +1,24 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-    <h4>24. Create a permission profile</h4>
-    <p>
-         This code example demonstrates how to create a new permission profile.
-    </p>
+{% include 'example_info.html' %}
 
-    {% if show_doc %}
-      <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-    {% endif %}
-
-    <p>
-        API method used:
-        <a href="https://developers.docusign.com/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/create/" target="_blank">Accounts::createPermissionProfile</a>
-    </p>
-
-    <p>
-        View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-    </p>
+{%  set permission_profile_form_index = 0 %}
+{%  set permission_profile_name_index = 0 %}
 
     <form class="eg" action="" method="post" data-busy="form">
+        {% if 'Forms' in example and 'FormName' in example['Forms'][permission_profile_form_index] %}
+            <p>{{ example['Forms'][permission_profile_form_index]['FormName'] | safe }}</p>
+        {% endif %}
+
         <div class="form-group">
-            <label for="permission_profile_name">Permissions profile name</label>
-            <input type="text" class="form-control" id="permission_profile_name" placeholder="Permission profile name"
+            <label for="permission_profile_name">{{ example['Forms'][permission_profile_form_index]['Inputs'][permission_profile_name_index]['InputName'] }}</label>
+            <input type="text" class="form-control" id="permission_profile_name" placeholder="{{ example['Forms'][permission_profile_form_index]['Inputs'][permission_profile_name_index]['InputPlaceholder'] }}"
                    name="permission_profile_name" value="{{ permission_profile_name }}" required>
         </div>
 
         <div class="form-group">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <button type="submit" class="btn btn-docu">Submit</button>
+            {% include 'submit_button.html' %}
         </div>
     </form>
 {% endblock %}

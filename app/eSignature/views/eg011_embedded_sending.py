@@ -3,18 +3,20 @@
 from os import path
 
 from docusign_esign.client.api_exception import ApiException
-from flask import render_template, redirect, Blueprint
+from flask import render_template, redirect, Blueprint, session
 
 from ..examples.eg011_embedded_sending import Eg011EmbeddedSendingController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg011"  # reference (and url) for this example
-eg011 = Blueprint("eg011", __name__)
+example_number = 11
+eg = f"eg0{example_number}"  # reference (and url) for this example
+eg011 = Blueprint(eg, __name__)
 
 
-@eg011.route("/eg011", methods=["POST"])
+@eg011.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def embedded_sending():
     """
@@ -38,14 +40,17 @@ def embedded_sending():
     return redirect(results["redirect_url"])
 
 
-@eg011.route("/eg011", methods=["GET"])
+@eg011.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg011_embedded_sending.html",
-        title="Embedded Sending",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg011_embedded_sending.py",
         source_url=DS_CONFIG["github_example_url"] + "eg011_embedded_sending.py",
         documentation=DS_CONFIG["documentation"] + eg,

@@ -7,14 +7,16 @@ from flask import current_app as app
 from flask import render_template, session, Blueprint
 
 from ..examples.eg026_permissions_change_single_setting import Eg026PermissionsChangeSingleSettingController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg026"
-eg026 = Blueprint("eg026", __name__)
+example_number = 26
+eg = f"eg0{example_number}"
+eg026 = Blueprint(eg, __name__)
 
-@eg026.route("/eg026", methods=["POST"])
+@eg026.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def permissions_change_single_setting():
     """
@@ -22,6 +24,7 @@ def permissions_change_single_setting():
     2. Call the worker method
     3. Render a response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required arguments
     args = Eg026PermissionsChangeSingleSettingController.get_args()
@@ -36,8 +39,7 @@ def permissions_change_single_setting():
         # 3. Render the response
         return render_template(
             "example_done.html",
-            title="Changing setting in a permission profile",
-            h1="Changing setting in a permission profile",
+            title=example["ExampleName"],
             message=f"""Setting of permission profile has been changed!<br/>"""
                     f"""Permission profile ID: {permission_profile_id}.<br> Changed settings:""",
             changed_settings=changed_settings
@@ -46,10 +48,12 @@ def permissions_change_single_setting():
     except ApiException as err:
         return process_error(err)
 
-@eg026.route("/eg026", methods=["GET"])
+@eg026.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     args = {
         "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
@@ -59,7 +63,8 @@ def get_view():
     permission_profiles = Eg026PermissionsChangeSingleSettingController.get_permissions_profiles(args)
     return render_template(
         "eg026_permissions_change_single_setting.html",
-        title="Changing a setting in an existing permission profile",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg026_permissions_change_single_setting.py",
         source_url=DS_CONFIG["github_example_url"] + "eg026_permissions_change_single_setting.py",
         documentation=DS_CONFIG["documentation"] + eg,

@@ -6,15 +6,17 @@ from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, send_file, Blueprint
 
 from ..examples.eg007_envelope_get_doc import Eg007EnvelopeGetDocController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg007"  # reference (and url) for this example
-eg007 = Blueprint("eg007", __name__)
+example_number = 7
+eg = f"eg00{example_number}"  # reference (and url) for this example
+eg007 = Blueprint(eg, __name__)
 
 
-@eg007.route("/eg007", methods=["POST"])
+@eg007.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_envelope_doc():
     """
@@ -22,6 +24,7 @@ def get_envelope_doc():
     2. Call the worker method
     3. Download envelope document
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     if "envelope_id" in session and "envelope_documents" in session:
         # 1. Get required arguments
@@ -42,7 +45,8 @@ def get_envelope_doc():
     else:
         return render_template(
             "eg007_envelope_get_doc.html",
-            title="Download an Envelope's Document",
+            title=example["ExampleName"],
+            example=example,
             envelope_ok=False,
             documents_ok=False,
             source_file= "eg007_envelope_get_doc.py",
@@ -52,10 +56,12 @@ def get_envelope_doc():
         )
 
 
-@eg007.route("/eg007", methods=["GET"])
+@eg007.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     documents_ok = "envelope_documents" in session
     document_options = []
@@ -68,7 +74,8 @@ def get_view():
 
     return render_template(
         "eg007_envelope_get_doc.html",
-        title="Download an Envelope's Document",
+        title=example["ExampleName"],
+        example=example,
         envelope_ok="envelope_id" in session,
         documents_ok=documents_ok,
         source_file= "eg007_envelope_get_doc.py",

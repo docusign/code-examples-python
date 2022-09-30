@@ -5,17 +5,20 @@ from datetime import datetime, timedelta
 import json
 
 from docusign_rooms.client.api_exception import ApiException
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, session
 
+from ...ds_config import DS_CONFIG
 from ..examples.eg005_get_rooms_with_filters import Eg005GetRoomsWithFiltersController
-from app.docusign import authenticate
+from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.error_handlers import process_error
 
-eg = "eg005"  # reference (and URL) for this example
-eg005 = Blueprint("eg005", __name__)
+example_number = 5
+eg = f"eg00{example_number}"  # reference (and URL) for this example
+eg005 = Blueprint(eg, __name__)
 
 
-@eg005.route("/eg005", methods=["POST"])
+@eg005.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def get_rooms_with_filters():
     """
@@ -23,6 +26,8 @@ def get_rooms_with_filters():
     2. Call the worker method
     3. Show filtered rooms
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg005GetRoomsWithFiltersController.get_args()
 
@@ -43,7 +48,8 @@ def get_rooms_with_filters():
     )
 
 
-@eg005.route("/eg005", methods=["GET"])
+@eg005.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """
@@ -52,6 +58,8 @@ def get_view():
     3. Set filtering parameters
     4. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg005GetRoomsWithFiltersController.get_args()
 

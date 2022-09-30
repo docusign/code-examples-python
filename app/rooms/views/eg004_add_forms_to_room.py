@@ -4,17 +4,20 @@ from os import path
 import json
 
 from docusign_rooms.client.api_exception import ApiException
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, session
 
+from ...ds_config import DS_CONFIG
 from ..examples.eg004_add_forms_to_room import Eg004AddFormsToRoomController
-from app.docusign import authenticate
+from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.error_handlers import process_error
 
-eg = "eg004"  # reference (and URL) for this example
-eg004 = Blueprint("eg004", __name__)
+example_number = 4
+eg = f"eg00{example_number}"  # reference (and URL) for this example
+eg004 = Blueprint(eg, __name__)
 
 
-@eg004.route("/eg004", methods=["POST"])
+@eg004.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def add_form_to_room():
     """
@@ -22,6 +25,8 @@ def add_form_to_room():
     2. Call the worker method
     3. Show room document
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg004AddFormsToRoomController.get_args()
 
@@ -41,7 +46,8 @@ def add_form_to_room():
     )
 
 
-@eg004.route("/eg004", methods=["GET"])
+@eg004.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """
@@ -50,6 +56,8 @@ def get_view():
     3. Get forms
     4. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg004AddFormsToRoomController.get_args()
 

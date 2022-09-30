@@ -5,16 +5,18 @@ import json
 from docusign_admin.client.api_exception import ApiException
 from flask import Blueprint, render_template, request, session
 
-from app.docusign import authenticate
+from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.error_handlers import process_error
 from ..examples.eg008_update_user_product_permission_profile import Eg008UpdateUserProductPermissionProfileController
 from ...ds_config import DS_CONFIG
 from ..utils import check_user_exists_by_email
 
-eg = "eg008"  # Reference (and URL) for this example
+example_number = 8
+eg = f"eg00{example_number}"  # Reference (and URL) for this example
 eg008 = Blueprint(eg, __name__)
 
 @eg008.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def create_active_clm_esign_user():
     """
@@ -22,6 +24,7 @@ def create_active_clm_esign_user():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     if "clm_email" in session and check_user_exists_by_email(session["clm_email"]):
         controller = Eg008UpdateUserProductPermissionProfileController()
@@ -45,15 +48,15 @@ def create_active_clm_esign_user():
 
         template = render_template(
             "example_done.html",
-            title="Update user product permission profiles using an email address",
-            h1="Update user product permission profiles using an email address",
+            title=example["ExampleName"],
             message="Results from MultiProductUserManagement:addUserProductPermissionProfilesByEmail method:",
             json=json.dumps(json.dumps(results, default=str))
         )
     else:
         template = render_template(
             f"{eg}_create_active_clm_esign_user.html",
-            title="Update user product permission profiles using an email address",
+            title=example["ExampleName"],
+            example=example,
             email_ok=False,
             source_file=f"{eg}_create_active_clm_esign_user.py",
             source_url=DS_CONFIG["admin_github_url"] + f"{eg}_create_active_clm_esign_user.py",
@@ -63,9 +66,11 @@ def create_active_clm_esign_user():
     return template
 
 @eg008.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """ Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     if "clm_email" in session and check_user_exists_by_email(session["clm_email"]):
         try:
@@ -93,7 +98,8 @@ def get_view():
 
         template = render_template(
             f"{eg}_update_user_product_permission_profile.html",
-            title="Update user product permission profiles using an email address",
+            title=example["ExampleName"],
+            example=example,
             email_ok="clm_email" in session,
             source_file=f"{eg}_update_user_product_permission_profile.py",
             source_url=DS_CONFIG["admin_github_url"] + f"{eg}_update_user_product_permission_profile.py",
@@ -106,7 +112,8 @@ def get_view():
     else:
         template = render_template(
             f"{eg}_update_user_product_permission_profile.html",
-            title="Update user product permission profiles using an email address",
+            title=example["ExampleName"],
+            example=example,
             email_ok=False,
             source_file=f"{eg}_update_user_product_permission_profile.py",
             source_url=DS_CONFIG["admin_github_url"] + f"{eg}_update_user_product_permission_profile.py",

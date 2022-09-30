@@ -3,19 +3,21 @@
 import json
 from os import path
 
-from flask import Blueprint, render_template, request, current_app
+from flask import Blueprint, render_template, request, current_app, session
 from docusign_admin.client.api_exception import ApiException
 
 from app.error_handlers import process_error
-from app.docusign import authenticate
+from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.ds_config import DS_CONFIG
 
 from ..examples.eg001_create_a_new_user import Eg001CreateNewUserController
 
-eg = "eg001"  # Reference (and URL) for this example
+example_number = 1
+eg = f"eg00{example_number}"  # Reference (and URL) for this example
 eg001 = Blueprint(eg, __name__)
 
-@eg001.route("/eg001", methods=["POST"])
+@eg001.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def get_user_data():
     """
@@ -23,6 +25,7 @@ def get_user_data():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     controller = Eg001CreateNewUserController()
 
@@ -39,18 +42,20 @@ def get_user_data():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Create a new active eSignature user",
-        h1="Create a new active eSignature user",
+        title=example["ExampleName"],
         message="Results from eSignUserManagement:createUser method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
-@eg001.route("/eg001", methods=["GET"])
+@eg001.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """
     Responds with the form for the example
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     args = Eg001CreateNewUserController.get_args(request)
     
     try:
@@ -63,7 +68,8 @@ def get_view():
     # Render the response
     return render_template(
         "eg001_create_a_new_user.html",
-        title="Create a new active eSignature user",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg001_create_a_new_user.py",
         source_url=DS_CONFIG["admin_github_url"] + "eg001_create_a_new_user.py",
         documentation=DS_CONFIG["documentation"] + eg,

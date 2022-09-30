@@ -1,32 +1,24 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>28. Create a brand</h4>
-<p>
-    This code example demonstrates how to create a brand.
-</p>
+{% include 'example_info.html' %}
 
-{% if show_doc %}
-  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-
-<p>
-    API method used:
-    <a href="https://developers.docusign.com/docs/esign-rest-api/reference/accounts/accountbrands/create/" target="_blank">AccountBrands::create</a>.
-</p>
-
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set brand_form_index = 0 %}
+{%  set brand_name_index = 0 %}
+{%  set default_language_index = 1 %}
 
 <form class="eg" action="" method="post" data-busy="form">
+    {% if 'Forms' in example and 'FormName' in example['Forms'][brand_form_index] %}
+        <p>{{ example['Forms'][brand_form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <div class="form-group">
-        <label for="brand_name">Brand name</label>
-        <input type="text" class="form-control" id="brand_name" placeholder="New Brand" name="brand_name"
+        <label for="brand_name">{{ example['Forms'][brand_form_index]['Inputs'][brand_name_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="brand_name" placeholder="{{ example['Forms'][brand_form_index]['Inputs'][brand_name_index]['InputPlaceholder'] }}" name="brand_name"
             required>
     </div>
 
     <div class="form-group">
-        <label for="default_language">Default Brand Language</label>
+        <label for="default_language">{{ example['Forms'][brand_form_index]['Inputs'][default_language_index]['InputName'] }}</label>
         <select id="default_language" name="default_language" class="form-control">
             {% for key, value in languages.items() %}
                 <option value="{{ value }}">{{ key }}</option>
@@ -36,7 +28,7 @@
 
     <div class="form-group">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button type="submit" class="btn btn-docu">Submit</button>
+        {% include 'submit_button.html' %}
     </div>
 </form>
 

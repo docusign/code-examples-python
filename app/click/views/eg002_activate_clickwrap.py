@@ -7,15 +7,17 @@ from docusign_click.client.api_exception import ApiException
 from flask import render_template, current_app, Blueprint, session
 
 from ..examples.eg002_activate_clickwrap import Eg002ActivateClickwrapController
-from app.docusign import authenticate
+from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
 
-eg = "eg002"  # Reference (and URL) for this example
-eg002 = Blueprint("eg002", __name__)
+example_number = 2
+eg = f"eg00{example_number}"  # Reference (and URL) for this example
+eg002 = Blueprint(eg, __name__)
 
 
-@eg002.route("/eg002", methods=["POST"])
+@eg002.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
 @authenticate(eg=eg)
 def activate_clickwrap():
     """
@@ -23,6 +25,8 @@ def activate_clickwrap():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg002ActivateClickwrapController.get_args()
 
@@ -41,21 +45,24 @@ def activate_clickwrap():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Activate a clickwrap",
-        h1="Activate a clickwrap",
+        title=example["ExampleName"],
         message=f"""The clickwrap has been activated!""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
 
-@eg002.route("/eg002", methods=["GET"])
+@eg002.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
+
     args = Eg002ActivateClickwrapController.get_args()
     return render_template(
         "eg002_activate_clickwrap.html",
-        title="Activating a clickwrap",
+        title=example["ExampleName"],
+        example=example,
         clickwraps_data=Eg002ActivateClickwrapController.get_inactive_clickwraps(args),
         source_file= "eg002_activate_clickwrap.py",
         source_url=DS_CONFIG["click_github_url"] + "eg002_activate_clickwrap.py",

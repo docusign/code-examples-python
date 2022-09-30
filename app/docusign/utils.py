@@ -1,5 +1,8 @@
 from datetime import timedelta, datetime
 from functools import wraps
+import requests
+import urllib
+import json
 
 from docusign_esign import ApiClient
 from flask import session, flash, url_for, redirect
@@ -46,6 +49,18 @@ def ds_token_ok(buffer_min=60):
 
     return ok
 
+def get_manifest(manifest_url):
+    manifest = requests.get(manifest_url).json()
+
+    return manifest
+
+def get_example_by_number(manifest, number):
+    for group in manifest["Groups"]:
+        for example in group["Examples"]:
+            if example["ExampleNumber"] == number:
+                return example
+
+    return None
 
 def authenticate(eg):
     def decorator(func):
@@ -65,6 +80,19 @@ def authenticate(eg):
                     return redirect(url_for("ds.ds_login"))
                 else:
                     return redirect(url_for("ds.ds_must_authenticate"))
+
+        return wrapper
+
+    return decorator
+
+def ensure_manifest(manifest_url):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            manifest = get_manifest(manifest_url=manifest_url)
+            session["manifest"] = manifest
+
+            return func(*args, **kwargs)
 
         return wrapper
 

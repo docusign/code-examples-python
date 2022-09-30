@@ -2,34 +2,24 @@
 
 <div class="container">
 
-<h4>3. Create a new clickwrap version</h4>
-<p>
-    Creates a new version of a clickwrap.
-</p>
-<p>
-    You can specify whether you require users who have previously accepted the clickwrap 
-    to accept the new version when they return to your website.
-</p>
+{% include 'example_info.html' %}
 
-{% include 'documentation.html' %}
-
-<p>API method used:
-    <a target='_blank'
-       href="https://developers.docusign.com/docs/click-api/reference/accounts/clickwraps/createclickwrapversion/">ClickWraps::createClickwrapVersion</a>
-</p>
-
-{% include 'github_source.html' %}
+{%  set form_index = 0 %}
+{%  set click_id_index = 0 %}
+{%  set click_name_index = 1 %}
+{%  set redirect_to1_index = 0 %}
 
 {% if clickwraps_data['clickwraps'][0] is undefined %}
-<p class="">
-    Problem: You do not have clickwraps to activate. Go to example#1 and create one: <a
-        href="eg001">create clickwrap.</a> <br/>
-</p>
+    {{ example['RedirectsToOtherCodeExamples'][redirect_to1_index]['RedirectText'].format('href="eg001"') | safe }}
 {% else %}
 
 <form class="eg" action="" method="post" data-busy="form-download">
+    {% if 'Forms' in example and 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <div class="form-group">
-        <label for="clickwrap_id">Clickwrap</label>
+        <label for="clickwrap_id">{{ example['Forms'][form_index]['Inputs'][click_id_index]['InputName'] }}</label>
         <select class="custom-select" id="clickwrap_id"
                 name="clickwrap_id">
             {% for clickwrap in clickwraps_data['clickwraps'] %}
@@ -38,11 +28,11 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="clickwrap_name">New Name</label>
+        <label for="clickwrap_name">{{ example['Forms'][form_index]['Inputs'][click_name_index]['InputName'] }}</label>
         <input type="text" class="form-control" id="clickwrap_name" name="clickwrap_name" required/>
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Submit</button>
+    {% include 'submit_button.html' %}
 </form>
 {% endif %}
 

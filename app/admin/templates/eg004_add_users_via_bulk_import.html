@@ -1,26 +1,16 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>4. Add users via bulk import</h4>
-<p>Demonstrates how to bulk-import users and add user data from an example CSV (comma-separated value) file into a DocuSign Admin organization.</p>
+{% include 'example_info.html' %}
 
-{% if show_doc %}
-    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-  
-  <p>API methods used:
-   <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/bulkoperations/userimport/addbulkuserimport/">UserImport:addBulkUserImport</a>,
-   <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/bulkoperations/userimport/getbulkuserimportrequest/">UserImport:getBulkUserImportRequest</a>.
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
-<br>
-<p>
-    You can <a href="eg004examplecsv">download an example of the required csv file</a>
-    and change it as you see fit.
-</p>
+{%  set form_index = 0 %}
+{%  set file_index = 0 %}
+
 <form class="eg" action="" method="post" data-busy="form" enctype="multipart/form-data">
-    <label>Upload your CSV file:</label>
+    {% if 'Forms' in example and 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <label>{{ example['Forms'][form_index]['Inputs'][file_index]['InputName'] }}</label>
     <div class="form-group">
         <input type="file" name="csv_file" required>
     </div>

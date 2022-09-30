@@ -1,27 +1,21 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>6. Retrieve the user's DocuSign profile using an email address</h4>
-<p>Demonstrates how to obtain the user’s DocuSign profile information across all DocuSign accounts by specifying the user’s email address.</p>
+{% include 'example_info.html' %}
 
-{% if show_doc %}
-    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-
-<p>API method used:
-    <a target="_blank" rel='noopener noreferrer' 
-    href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/multiproductusermanagement/getuserdsprofilesbyemail/">MultiProductUserManagement:getUserDSProfilesByEmail</a>.
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set form_index = 0 %}
+{%  set email_index = 0 %}
 
 <form class="eg" action="" method="post" data-busy="form">
+    {% if 'Forms' in example and 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <div class="form-group">
-        <label for="email">Email address</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="example@example.com" required>
+        <label for="email">{{ example['Forms'][form_index]['Inputs'][email_index]['InputName'] }}</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="{{ example['Forms'][form_index]['Inputs'][email_index]['InputPlaceholder'] }}" required>
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Continue</button>
+    {% include 'continue_button.html' %}
 </form>
   
 {% endblock %}

@@ -1,28 +1,23 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
 <div class="container">
-<h4>1. Creating a room with data</h4>
-<p>This example demonstrates creating a DocuSign Room.</p>
 
-{% if show_doc %}
-  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
+{% include 'example_info.html' %}
 
-<p>API methods used:
-   <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Rooms/Rooms/CreateRoom">Rooms::CreateRoom</a> and
-   <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Roles/Roles/GetRoles">Roles::GetRoles</a>
-</p>
-<p>
-  View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set form_index = 0 %}
+{%  set room_name_index = 0 %}
 
 <form class="eg" action="" method="post" data-busy="form">
+    {% if 'Forms' in example and 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <div class="form-group">
-      <label for="room_name">Room name</label>
+      <label for="room_name">{{ example['Forms'][form_index]['Inputs'][room_name_index]['InputName'] }}</label>
       <input type="text" class="form-control" id="room_name" name="room_name" required>
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Submit</button>
+    {% include 'submit_button.html' %}
   </form>
 
 </div>

@@ -7,15 +7,17 @@ from flask import current_app as app
 from flask import render_template, Blueprint, session
 
 from ..examples.eg023_idv_authentication import Eg023IDVAuthenticationController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg023"  # Reference (and URL) for this example
-eg023 = Blueprint("eg023", __name__)
+example_number = 23
+eg = f"eg0{example_number}"  # Reference (and URL) for this example
+eg023 = Blueprint(eg, __name__)
 
 
-@eg023.route("/eg023", methods=["POST"])
+@eg023.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def idv_authentication():
     """
@@ -23,6 +25,8 @@ def idv_authentication():
     2. Call the worker method
     3. Render success response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required data
     args = Eg023IDVAuthenticationController.get_args()
     try:
@@ -34,8 +38,7 @@ def idv_authentication():
         # 3. Render success response
         return render_template(
             "example_done.html",
-            title="Envelope sent",
-            h1="Envelope sent",
+            title=example["ExampleName"],
             message=f"The envelope has been created and sent!<br/> Envelope ID {envelope_id}."
         )
 
@@ -43,10 +46,13 @@ def idv_authentication():
         return process_error(err)
 
 
-@eg023.route("/eg023", methods=["GET"])
+@eg023.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
+
     args = {
         "account_id": session["ds_account_id"],  # represent your {ACCOUNT_ID}
         "base_path": session["ds_base_path"],
@@ -58,7 +64,8 @@ def get_view():
 
     return render_template(
         "eg023_idv_authentication.html",
-        title="IDV authentication",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg023_idv_authentication.py",
         source_url=DS_CONFIG["github_example_url"] + "eg023_idv_authentication.py",
         documentation=DS_CONFIG["documentation"] + eg,

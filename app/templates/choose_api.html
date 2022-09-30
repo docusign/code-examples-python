@@ -3,11 +3,11 @@
 
 {% block content %}
     <div style="margin:1% 5%;">
-      <h1 class="display-4">Please Choose an API</h1>
+      {{ session['manifest']['SupportingTexts']['SelectAPIPage']['SelectAPIHeader'] | safe }}
 
     <form method="post" data-busy="form" action={{ url_for("ds.api_selected") }}>
         <div class="form-group col-md-5">
-            <label for="chosen_api">Please choose your API</label>
+            <label for="chosen_api">{{ session['manifest']['SupportingTexts']['SelectAPIPage']['SelectAPIButton'] }}</label>
             <select class="form-control" id="chosen_api" name="chosen_api">
                 <option value="ESignature">eSignature</option>
                 <option value="Rooms">Rooms</option>

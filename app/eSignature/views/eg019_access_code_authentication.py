@@ -4,17 +4,19 @@ from os import path
 
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, session
 
 from ..examples.eg019_access_code_authentication import Eg019AccessCodeAuthenticationController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg019"  # reference (and url) for this example
-eg019 = Blueprint("eg019", __name__)
+example_number = 19
+eg = f"eg0{example_number}"  # reference (and url) for this example
+eg019 = Blueprint(eg, __name__)
 
-@eg019.route("/eg019", methods=["POST"])
+@eg019.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def access_code_authentication():
     """
@@ -22,6 +24,8 @@ def access_code_authentication():
     2. Call the worker method
     3. Render success response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     args = Eg019AccessCodeAuthenticationController.get_args()
     try:
         # Step 1: Call the worker method for authenticating with access code
@@ -32,8 +36,7 @@ def access_code_authentication():
 
         return render_template(
             "example_done.html",
-            title="Envelope sent",
-            h1="Envelope sent",
+            title=example["ExampleName"],
             message=f"""The envelope has been created and sent!<br/> Envelope ID {envelope_id}."""
         )
 
@@ -41,14 +44,17 @@ def access_code_authentication():
         return process_error(err)
 
 
-@eg019.route("/eg019", methods=["GET"])
+@eg019.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg019_access_code_authentication.html",
-        title="Access-code recipient authentication",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg019_access_code_authentication.py",
         source_url=DS_CONFIG["github_example_url"] + "eg019_access_code_authentication.py",
         documentation=DS_CONFIG["documentation"] + eg,

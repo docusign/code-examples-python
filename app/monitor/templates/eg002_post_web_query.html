@@ -1,32 +1,26 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>2. Query monitoring data with filters</h4>
-<p>Demonstrates how to query an organization's data based on specified filters and aggregations.</p>
+{% include 'example_info.html' %}
 
-{% if show_doc %}
-    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-  
-  <p>API method used: 
-   <a target='_blank' href="https://developers.docusign.com/docs/monitor-api/reference/monitor/dataset/postwebquery/">DataSet:postWebQuery</a>.
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
-
-<p>Please select start and end dates.</p>
+{%  set form_index = 0 %}
+{%  set start_index = 0 %}
+{%  set end_name_index = 1 %}
 
 <form class="eg" action="" method="post" data-busy="form">
+    {% if 'Forms' in example and 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <div class="form-group">
-        <label for="start_date">Start date</label>
+        <label for="start_date">{{ example['Forms'][form_index]['Inputs'][start_index]['InputName'] }}</label>
         <input type="date" class="form-control" id="start_date" name="start_date" value="{{start_date}}" required>
     </div>
     <div class="form-group">
-        <label for="end_date">End date</label>
+        <label for="end_date">{{ example['Forms'][form_index]['Inputs'][end_name_index]['InputName'] }}</label>
         <input type="date" class="form-control" id="end_date" name="end_date" value="{{end_date}}" required>
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Continue</button>
+    {% include 'continue_button.html' %}
 </form>
   
 {% endblock %}

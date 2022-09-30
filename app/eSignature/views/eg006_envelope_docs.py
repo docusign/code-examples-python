@@ -6,15 +6,17 @@ from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, Blueprint
 
 from ..examples.eg006_envelope_docs import Eg006EnvelopeDocsController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg006"  # reference (and url) for this example
-eg006 = Blueprint("eg006", __name__)
+example_number = 6
+eg = f"eg00{example_number}"  # reference (and url) for this example
+eg006 = Blueprint(eg, __name__)
 
 
-@eg006.route("/eg006", methods=["POST"])
+@eg006.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def envelope_docs():
     """
@@ -23,6 +25,7 @@ def envelope_docs():
     3. Save envelope documents
     4. Show envelope documents
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     if "envelope_id" in session:
         # 1. Get required arguments
@@ -48,7 +51,8 @@ def envelope_docs():
     else:
         return render_template(
             "eg006_envelope_docs.html",
-            title="Envelope documents",
+            title=example["ExampleName"],
+            example=example,
             envelope_ok=False,
             source_file= "eg006_envelope_docs.py",
             source_url=DS_CONFIG["github_example_url"] + "eg006_envelope_docs.py",
@@ -57,14 +61,17 @@ def envelope_docs():
         )
 
 
-@eg006.route("/eg006", methods=["GET"])
+@eg006.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg006_envelope_docs.html",
-        title="Envelope documents",
+        title=example["ExampleName"],
+        example=example,
         envelope_ok="envelope_id" in session,
         source_file= "eg006_envelope_docs.py",
         source_url=DS_CONFIG["github_example_url"] + "eg006_envelope_docs.py",

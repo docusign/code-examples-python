@@ -5,14 +5,16 @@ from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, session, request, Blueprint
 from ..examples.eg025_permissions_set_user_group import Eg025PermissionsSetUserGroupController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg025"
-eg025 = Blueprint("eg025", __name__)
+example_number = 25
+eg = f"eg0{example_number}"
+eg025 = Blueprint(eg, __name__)
 
-@eg025.route("/eg025", methods=["POST"])
+@eg025.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def permissions_set_user_group():
     """
@@ -20,6 +22,7 @@ def permissions_set_user_group():
     2. Call the worker method
     3. Render a response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required arguments
     args = Eg025PermissionsSetUserGroupController.get_args()
@@ -33,8 +36,7 @@ def permissions_set_user_group():
         # 3. Render the response
         return render_template(
             "example_done.html",
-            title="Set a permission profile for a group of users",
-            h1="Setting a permission profile for a group of users",
+            title=example["ExampleName"],
             message=f"""The permission profile has been set!<br/>"""
                     f"""Permission profile ID: {permission_profile_id}<br/>"""
                     f"""Group id: {group_id}"""
@@ -43,10 +45,12 @@ def permissions_set_user_group():
     except ApiException as err:
         return process_error(err)
 
-@eg025.route("/eg025", methods=["GET"])
+@eg025.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     args = {
         "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
@@ -56,7 +60,8 @@ def get_view():
     permission_profiles, groups = Eg025PermissionsSetUserGroupController.get_data(args)
     return render_template(
         "eg025_permissions_set_user_group.html",
-        title="Setting a permission profile",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg025_permissions_set_user_group.py",
         source_url=DS_CONFIG["github_example_url"] + "eg025_permissions_set_user_group.py",
         documentation=DS_CONFIG["documentation"] + eg,

@@ -1,47 +1,37 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-    <h4>29. Apply a brand to an envelope</h4>
-    <p>
-        The envelope includes a pdf document.
-    </p>
+{% include 'example_info.html' %}
 
-    <p>
-        This code example demonstrates how to apply a brand to an envelope.
-    </p>
+{%  set recipient_form_index = 0 %}
+{%  set signer_email_index = 0 %}
+{%  set signer_name_index = 1 %}
+{%  set brand_index = 2 %}
+{%  set redirect_to28_index = 0 %}
 
-    {% if show_doc %}
-        <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-    {% endif %}
-
-    <p>
-        Api method used:
-        <a href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopes/create/" target="_blank">Envelopes::Create</a>.
-    </p>
-
-    <p>
-        View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-    </p>
-
-     {% if brands %}
+    {% if brands %}
         <form class="eg" action="" method="post" data-busy="form">
+            {% if 'Forms' in example and 'FormName' in example['Forms'][recipient_form_index] %}
+                <p>{{ example['Forms'][recipient_form_index]['FormName'] | safe }}</p>
+            {% endif %}
+
             <div class="form-group">
-                <label for="signer_email">Signer Email</label>
+                <label for="signer_email">{{ example['Forms'][recipient_form_index]['Inputs'][signer_email_index]['InputName'] }}</label>
                 <input type="email" class="form-control" id="signer_email" name="signer_email"
-                       aria-describedby="emailHelp" placeholder="pat@example.com" required
+                       aria-describedby="emailHelp" placeholder="{{ example['Forms'][recipient_form_index]['Inputs'][signer_email_index]['InputPlaceholder'] }}" required
                        value="{{ signer_email }}">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <small id="emailHelp" class="form-text text-muted">{{ session['manifest']['SupportingTexts']['HelpingTexts']['EmailWontBeShared'] | safe}}</small>
             </div>
 
             <div class="form-group">
-                <label for="signer_name">Signer Name</label>
-                <input type="text" class="form-control" id="signer_name" placeholder="Pat Johnson" name="signer_name"
+                <label for="signer_name">{{ example['Forms'][recipient_form_index]['Inputs'][signer_name_index]['InputName'] }}</label>
+                <input type="text" class="form-control" id="signer_name" placeholder="{{ example['Forms'][recipient_form_index]['Inputs'][signer_name_index]['InputPlaceholder'] }}" name="signer_name"
                        value="{{ signer_name }}" required>
             </div>
 
             <div class="form-group">
-                <label for="signer_name">Brand</label>
+                <label for="brand">{{ example['Forms'][recipient_form_index]['Inputs'][brand_index]['InputName'] }}</label>
                 <br>
-                <select id="brand" name="brand_id">
+                <select id="brand" name="brand_id" class="form-control">
                     {% for brand in brands %}
                         <option value="{{ brand.brand_id }}">{{ brand.brand_name }}</option>
                     {% endfor %}
@@ -50,17 +40,14 @@
 
             <div>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <button type="submit" class="btn btn-docu">Submit</button>
+                {% include 'submit_button.html' %}
             </div>
         </form>
     {% elif not brands %}
-        <p>Problem: please first create the brand using <a href="eg028">example 24.</a>
-        <br />
-        Thank you.
-        </p>
+        {{ example['RedirectsToOtherCodeExamples'][redirect_to28_index]['RedirectText'].format('href="eg028"') | safe }}
 
         <form class="eg" action="eg028" method="get">
-            <button type="submit" class="btn btn-docu">Continue</button>
+            {% include 'continue_button.html' %}
         </form>
     {% endif %}
 {% endblock %}

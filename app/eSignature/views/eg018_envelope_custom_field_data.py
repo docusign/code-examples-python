@@ -7,15 +7,17 @@ from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, Blueprint
 
 from ..examples.eg018_envelope_custom_field_data import Eg018EnvelopeCustomFieldDataController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg018"  # reference (and URL) for this example
-eg018 = Blueprint("eg018", __name__)
+example_number = 18
+eg = f"eg0{example_number}"  # reference (and URL) for this example
+eg018 = Blueprint(eg, __name__)
 
 
-@eg018.route("/eg018", methods=["POST"])
+@eg018.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def envelope_custom_field_data():
     """
@@ -23,6 +25,7 @@ def envelope_custom_field_data():
     2. Call the worker method
     3. Show custom field data
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     if "envelope_id" in session:
         # 1. Get required args
@@ -36,15 +39,15 @@ def envelope_custom_field_data():
         # 3. Step render the results
         return render_template(
             "example_done.html",
-            title="Get custom field data",
-            h1="Envelope custom field data",
+            title=example["ExampleName"],
             message="Results from the EnvelopeCustomFields::list method:",
             json=json.dumps(json.dumps(results.to_dict()))
         )
     else:
         return render_template(
             "eg018_envelope_custom_field_data.html",
-            title="Envelope Custom Field Data",
+            title=example["ExampleName"],
+            example=example,
             envelope_ok=False,
             source_file= "eg018_envelope_custom_field_data.py",
             source_url=DS_CONFIG["github_example_url"] + "eg018_envelope_custom_field_data.py",
@@ -53,14 +56,17 @@ def envelope_custom_field_data():
         )
 
 
-@eg018.route("/eg018", methods=["GET"])
+@eg018.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg015_envelope_tab_data.html",
-        title="Envelope information",
+        title=example["ExampleName"],
+        example=example,
         envelope_ok="envelope_id" in session,
         source_file= "eg018_envelope_custom_field_data.py",
         source_url=DS_CONFIG["github_example_url"] + "eg018_envelope_custom_field_data.py",

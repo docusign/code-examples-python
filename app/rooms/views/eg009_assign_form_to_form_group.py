@@ -2,17 +2,20 @@ import json
 from os import path
 
 from docusign_rooms.client.api_exception import ApiException
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, render_template, current_app, session
 
-from app.docusign import authenticate
+from ...ds_config import DS_CONFIG
+from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.error_handlers import process_error
 from ..examples.eg009_assign_form_to_form_group import Eg009AssignFormToFormGroupController
 
-eg = "eg009"  # Reference (and URL) for this example
+example_number = 9
+eg = f"eg00{example_number}"  # Reference (and URL) for this example
 eg009 = Blueprint(eg, __name__)
 
 
-@eg009.route("/eg009", methods=["POST"])
+@eg009.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def assign_form_to_form_group():
     """
@@ -20,6 +23,7 @@ def assign_form_to_form_group():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required arguments
     args = Eg009AssignFormToFormGroupController.get_args()
@@ -51,7 +55,8 @@ def assign_form_to_form_group():
     )
 
 
-@eg009.route("/eg009", methods=["GET"])
+@eg009.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """
@@ -60,6 +65,7 @@ def get_view():
     3. Get forms
     4. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required arguments
     args = Eg009AssignFormToFormGroupController.get_args()

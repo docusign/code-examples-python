@@ -6,15 +6,17 @@ from os import path
 from docusign_admin.client.api_exception import ApiException
 from flask import Blueprint, render_template, current_app, session
 
-from app.docusign import authenticate
+from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.error_handlers import process_error
 from ..examples.eg002_create_active_clm_esign_user import Eg002CreateActiveClmEsignUserController
 from ...ds_config import DS_CONFIG
 
-eg = "eg002"  # Reference (and URL) for this example
+example_number = 2
+eg = f"eg00{example_number}"  # Reference (and URL) for this example
 eg002 = Blueprint(eg, __name__)
 
-@eg002.route("/eg002", methods=["POST"])
+@eg002.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def create_active_clm_esign_user():
     """
@@ -22,6 +24,7 @@ def create_active_clm_esign_user():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     controller = Eg002CreateActiveClmEsignUserController()
     
@@ -37,16 +40,17 @@ def create_active_clm_esign_user():
     session["clm_email"] = results["email"]  # Save for use by other examples which need an email of CLM user
     return render_template(
         "example_done.html",
-        title="Create a new active user for CLM and eSignature",
-        h1="Create a new active user for CLM and eSignature",
+        title=example["ExampleName"],
         message="Results from MultiProductUserManagement:addOrUpdateUser method:",
         json=json.dumps(json.dumps(results, default=str))
     )
 
-@eg002.route("/eg002", methods=["GET"])
+@eg002.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """ Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     # Get the required arguments
     args = Eg002CreateActiveClmEsignUserController.get_args()
@@ -73,7 +77,8 @@ def get_view():
 
     return render_template(
         "eg002_create_active_clm_esign_user.html",
-        title="Create an active CLM + eSign user",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg002_create_active_clm_esign_user.py",
         source_url=DS_CONFIG["admin_github_url"] + "eg002_create_active_clm_esign_user.py",
         documentation=DS_CONFIG["documentation"] + eg,

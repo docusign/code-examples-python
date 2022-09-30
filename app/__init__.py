@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session
+from flask import Flask, session, current_app
 from flask_wtf.csrf import CSRFProtect
 
 from .ds_config import DS_CONFIG
@@ -16,15 +16,21 @@ from .views import core
 session_path = "/tmp/python_recipe_sessions"
 
 if EXAMPLES_API_TYPE["Rooms"]:
+    manifest_url = DS_CONFIG["rooms_manifest_url"]
     app = Flask(__name__, template_folder="rooms/templates")
 elif EXAMPLES_API_TYPE["Click"]:
+    manifest_url = DS_CONFIG["click_manifest_url"]
     app = Flask(__name__, template_folder="click/templates")
 elif EXAMPLES_API_TYPE["Monitor"]:
+    manifest_url = DS_CONFIG["monitor_manifest_url"]
     app = Flask(__name__, template_folder="monitor/templates")
 elif EXAMPLES_API_TYPE["Admin"]:
+    manifest_url = DS_CONFIG["admin_manifest_url"]
     app = Flask(__name__, template_folder="admin/templates")
 else:
+    manifest_url = DS_CONFIG["esign_manifest_url"]
     app = Flask(__name__)
+
 app.config.from_pyfile("config.py")
 
 # See https://flask-wtf.readthedocs.io/en/stable/csrf.html

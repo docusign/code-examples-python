@@ -1,23 +1,14 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>5. Audit users</h4>
-<p>Demonstrates how to audit the users in your account by retrieving the profiles of users that were modified after a specified date.</p>
-
-{% if show_doc %}
-    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-  
-  <p>API methods used: 
-   <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/users/getusers/">Users:getUsers</a>, 
-   <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/esignusermanagement/getuserprofiles/">eSignUserManagement:getUserProfiles</a>.
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{% include 'example_info.html' %}
 
 <form class="eg" action="" method="post" data-busy="form">
+    {% if 'Forms' in example and 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Continue</button>
+    {% include 'continue_button.html' %}
 </form>
   
 {% endblock %}

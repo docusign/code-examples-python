@@ -2,17 +2,19 @@
 
 from os import path
 
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, session
 
 from ..examples.eg010_send_binary_docs import Eg010SendBinaryDocsController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 
-eg = "eg010"  # reference (and url) for this example
-eg010 = Blueprint("eg010", __name__)
+example_number = 10
+eg = f"eg0{example_number}"  # reference (and url) for this example
+eg010 = Blueprint(eg, __name__)
 
 
-@eg010.route("/eg010", methods=["POST"])
+@eg010.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def send_bynary_docs():
     """
@@ -20,6 +22,7 @@ def send_bynary_docs():
     2. Call the worker method
     3. Render success response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required arguments
     args = Eg010SendBinaryDocsController.get_args()
@@ -50,14 +53,17 @@ def send_bynary_docs():
         )
 
 
-@eg010.route("/eg010", methods=["GET"])
+@eg010.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg010_send_binary_docs.html",
-        title="Send binary documents",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg010_send_binary_docs.py",
         source_url=DS_CONFIG["github_example_url"] + "eg010_send_binary_docs.py",
         documentation=DS_CONFIG["documentation"] + eg,

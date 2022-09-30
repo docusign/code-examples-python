@@ -4,17 +4,20 @@ from os import path
 import json
 
 from docusign_rooms.client.api_exception import ApiException
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, session
 
+from ...ds_config import DS_CONFIG
 from ..examples.eg006_create_external_form_fill_session import Eg006CreateExternalFormFillSessionController
-from app.docusign import authenticate
+from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.error_handlers import process_error
 
-eg = "eg006"  # reference (and URL) for this example
-eg006 = Blueprint("eg006", __name__)
+example_number = 6
+eg = f"eg00{example_number}"  # reference (and URL) for this example
+eg006 = Blueprint(eg, __name__)
 
 
-@eg006.route("/eg006", methods=["POST"])
+@eg006.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def create_external_form_fill_session():
     """
@@ -22,6 +25,8 @@ def create_external_form_fill_session():
     2. Call the worker method
     3. Show URL for a new external form fill session
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg006CreateExternalFormFillSessionController.get_args()
 
@@ -43,7 +48,8 @@ def create_external_form_fill_session():
     )
 
 
-@eg006.route("/eg006", methods=["GET"])
+@eg006.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """
@@ -51,6 +57,8 @@ def get_view():
     2. Get rooms
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg006CreateExternalFormFillSessionController.get_args()
 
@@ -70,6 +78,7 @@ def get_view():
 
 
 @eg006.route("/forms", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def get_forms():
     """
@@ -78,6 +87,8 @@ def get_forms():
     3. Get room name
     4. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg006CreateExternalFormFillSessionController.get_args()
     try:
