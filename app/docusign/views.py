@@ -24,6 +24,9 @@ else:
 
 @ds.route("/login", methods=["GET", "POST"])
 def ds_login():
+    if session.get('manifest'):
+        session.pop('manifest')
+
     if not session.get("auth_type"):
         session["auth_type"] = request.form.get("auth_type")
 
@@ -43,7 +46,8 @@ def ds_logout():
 
 @ds.route("/choose_api")
 def choose_api():
-    return render_template("choose_api.html", title="Choose API")
+    session["manifest"] = get_manifest(manifest_url)
+    return render_template("choose_api.html", title="Choose API", manifest=session["manifest"])
 
 @ds.route("/api_selected", methods=["GET", "POST"])
 def api_selected():
@@ -77,7 +81,8 @@ def api_selected():
     app.config["isLoggedIn"] = False
     app.config["quickstart"] = False
 
-    return render_template("must_authenticate.html", title="Must authenticate", chosen_api=chosen_api)
+    session["manifest"] = get_manifest(manifest_url)
+    return render_template("must_authenticate.html", title="Must authenticate", chosen_api=chosen_api, manifest=session["manifest"])
 
 
 @ds.route("/callback")
@@ -137,7 +142,8 @@ def ds_must_authenticate():
         return redirect(url_for("ds.ds_login"))
 
     else:
-        return render_template("must_authenticate.html", title="Must authenticate")
+        session["manifest"] = get_manifest(manifest_url)
+        return render_template("must_authenticate.html", title="Must authenticate", manifest=session["manifest"])
 
 
 @ds.route("/ds_return")
@@ -147,11 +153,13 @@ def ds_return():
     envelope_id = request.args.get("envelopeId")
     DS_CONFIG["quickstart"] = "false"
 
+    session["manifest"] = get_manifest(manifest_url)
     return render_template(
         "ds_return.html",
         title="Return from DocuSign",
         event=event,
         envelope_id=envelope_id,
-        state=state
+        state=state,
+        manifest=session["manifest"]
     )
         

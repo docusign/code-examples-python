@@ -5,10 +5,11 @@ import urllib
 import json
 
 from docusign_esign import ApiClient
-from flask import session, flash, url_for, redirect
+from flask import session, flash, url_for, redirect, render_template, current_app
 
 from .ds_client import DSClient
 from ..consts import minimum_buffer_min
+from ..error_handlers import process_error
 
 
 def ds_logout_internal():
@@ -50,17 +51,18 @@ def ds_token_ok(buffer_min=60):
     return ok
 
 def get_manifest(manifest_url):
-    manifest = requests.get(manifest_url).json()
-
-    return manifest
+    try:
+        manifest = requests.get(manifest_url).json()
+        return manifest
+    except:
+        current_app.logger.info(f"Could not load code examples manifest. Manifest URL: {manifest_url}")
+        raise Exception(f"Could not load code examples manifest. Manifest URL: {manifest_url}")
 
 def get_example_by_number(manifest, number):
     for group in manifest["Groups"]:
         for example in group["Examples"]:
             if example["ExampleNumber"] == number:
                 return example
-
-    return None
 
 def authenticate(eg):
     def decorator(func):

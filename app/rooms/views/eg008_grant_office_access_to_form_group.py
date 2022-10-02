@@ -39,8 +39,7 @@ def assign_office_to_form_group():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Assign office to a form group",
-        h1="Assign office to a form group",
+        title=example["ExampleName"],
         message=f"""Office "{args['office_id']}" has been assigned to 
         Form Group "{args['form_group_id']}" """,
     )
@@ -70,6 +69,8 @@ def get_view():
     # 4. Render the response
     return render_template(
         "eg008_grant_office_access_to_form_group.html",
+        title=example["ExampleName"],
+        example=example,
         offices=offices,
         form_groups=form_groups,
         source_file=path.basename(path.dirname(__file__)) + "\controller.py",

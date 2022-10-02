@@ -43,8 +43,7 @@ def create_room_with_template():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Creating a room with a template",
-        h1="Creating a room with a template",
+        title=example["ExampleName"],
         message=f"""The room "{args['room_name']}" has been created!<br/>
                         Room ID: {room_id}.""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
@@ -73,7 +72,8 @@ def get_view():
 
     return render_template(
         "eg002_create_room_with_template.html",
-        title="Creating a room with a template",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg002_create_room_with_template.py",
         templates=templates
     )

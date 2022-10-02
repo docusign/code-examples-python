@@ -39,8 +39,7 @@ def get_field_data_from_room():
     # 3. Show field data
     return render_template(
         "example_done.html",
-        title="Field data associated with a room",
-        h1="Field data associated with a room",
+        title=example["ExampleName"],
         message="Results from the Rooms::GetRoomFieldData method:",
         json=json.dumps(json.dumps(results.to_dict()))
     )
@@ -69,7 +68,8 @@ def get_view():
     # 3. Render the response
     return render_template(
         "eg003_export_data_from_room.html",
-        title="Exporting data from a room",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg003_export_data_from_room.py",
         rooms=rooms,
     )

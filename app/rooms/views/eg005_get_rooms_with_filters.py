@@ -40,9 +40,7 @@ def get_rooms_with_filters():
     # 3. Show filtered rooms
     return render_template(
         "example_done.html",
-        title="Rooms filtered by date",
-        h1=f"""Rooms that have had their field data, updated within the time 
-            period between {args["start_date"]} and {args["end_date"]}""",
+        title=example["ExampleName"],
         message="Results from the Rooms::GetRooms method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
@@ -76,7 +74,8 @@ def get_view():
     # 4. Render the response
     return render_template(
         "eg005_get_rooms_with_filters.html",
-        title="Getting rooms with filters",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg005_get_rooms_with_filters.py",
         rooms=rooms,
         start=start_date.strftime("%Y-%m-%d"),

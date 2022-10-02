@@ -42,8 +42,7 @@ def create_form_group():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Creating a form group",
-        h1="Creating a form group",
+        title=example["ExampleName"],
         message=f"""The Form Group "{args['form_group_name']}" has been created!<br/> 
                             Room ID: {form_id}.""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
@@ -59,6 +58,7 @@ def get_view():
 
     return render_template(
         "eg007_create_form_group.html",
-        title="Creating a form group",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg007_create_form_group.py"
     )

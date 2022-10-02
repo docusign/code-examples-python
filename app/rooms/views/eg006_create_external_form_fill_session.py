@@ -39,8 +39,7 @@ def create_external_form_fill_session():
     # 3. Show URL for a new external form fill session
     return render_template(
         "example_done.html",
-        title="Create an external form fill session",
-        h1="URL for a new external form fill session",
+        title=example["ExampleName"],
         message="Results from the Forms::CreateExternalFormFillSession:",
         json=json.dumps(json.dumps(results.to_dict(), default=str)),
         link=results.url,
@@ -71,7 +70,8 @@ def get_view():
     # 3. Render the response
     return render_template(
         "eg006_create_external_form_fill_session.html",
-        title="Create an external form fill session",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg006_create_external_form_fill_session.py",
         rooms=rooms,
     )
@@ -103,7 +103,8 @@ def get_forms():
     # 4. Render the response
     return render_template(
         "eg006_create_external_form_fill_session.html",
-        title="Create an external form fill session",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg006_create_external_form_fill_session.py",
         forms=forms,
         room_id=args["room_id"],

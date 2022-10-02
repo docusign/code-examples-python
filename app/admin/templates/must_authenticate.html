@@ -4,17 +4,16 @@
 {% block content %}
 {% if chosen_api == "Monitor" %}
 <div style="margin:1% 5%;">
-    <h1 class="display-4">Please Authenticate with DocuSign</h1>
+    {{ session["manifest"]["SupportingTexts"]["LoginPage"]["LoginHeader"] | safe }}
 
   <form method="post" data-busy="form" action={{ url_for("ds.ds_login") }}>
       <div class="form-group col-md-5">
-          <label for="auth_type">Please choose your OAuth2.0 grant type</label>
           <select class="form-control" id="auth_type" name="auth_type">
               <option value="jwt">JSON Web Token</option>
           </select>
           <p class="lead" style="padding-top: .5rem;">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              <button type="submit" class="btn btn-docu">Authenticate with DocuSign</button>
+              <button type="submit" class="btn btn-docu">{{ session["manifest"]["SupportingTexts"]["LoginPage"]["LoginButton"] }}</button>
           </p>
       </div>
   </form>
@@ -24,7 +23,7 @@
 {% else %}
 
     <div style="margin:1% 5%;">
-      <h1 class="display-4">Please Authenticate with DocuSign</h1>
+      {{ session["manifest"]["SupportingTexts"]["LoginPage"]["LoginHeader"] | safe }}
 
     <form method="post" data-busy="form" action={{ url_for("ds.ds_login") }}>
         <div class="form-group col-md-5">
@@ -35,7 +34,7 @@
             </select>
             <p class="lead" style="padding-top: .5rem;">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <button type="submit" class="btn btn-docu">Authenticate with DocuSign</button>
+                <button type="submit" class="btn btn-docu">{{ session["manifest"]["SupportingTexts"]["LoginPage"]["LoginButton"] }}</button>
             </p>
         </div>
     </form>

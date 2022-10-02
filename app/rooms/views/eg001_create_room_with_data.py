@@ -16,9 +16,24 @@ eg = "eg001"  # reference (and url) for this example
 eg001Rooms = Blueprint("eg001", __name__)
 
 
-@eg001Rooms.route("/eg001", methods=["POST"])
+@eg001Rooms.route("/eg001", methods=["GET"])
 @ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
+def get_view():
+    """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
+
+    return render_template(
+        "eg001_create_room_with_data.html",
+        title=example["ExampleName"],
+        example=example,
+        source_file= "eg001_create_room_with_data.py",
+    )
+
+
+@eg001Rooms.route("/eg001", methods=["POST"])
+@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 def create_room_with_data():
     """
     1. Get required arguments
@@ -43,23 +58,8 @@ def create_room_with_data():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Creating a room with data",
-        h1="Creating a room with data",
+        title=example["ExampleName"],
         message=f"""The room "{args['room_name']}" has been created!<br/> 
                         Room ID: {room_id}.""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
-    )
-
-
-@eg001Rooms.route("/eg001", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
-def get_view():
-    """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
-
-    return render_template(
-        "eg001_create_room_with_data.html",
-        title="Creating a room with data",
-        source_file= "eg001_create_room_with_data.py",
     )

@@ -47,8 +47,7 @@ def assign_form_to_form_group():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Assigning form a form group",
-        h1="Creating a form group",
+        title=example["ExampleName"],
         message=f"""Form "{args['form_id']}" has been assigned to 
         Form Group "{args['form_group_id']}"!""",
     )
@@ -78,6 +77,8 @@ def get_view():
     # 4. Render the response
     return render_template(
         "eg009_assign_form_to_form_group.html",
+        title=example["ExampleName"],
+        example=example,
         forms=forms,
         form_groups=form_groups,
         source_file=path.basename(path.dirname(__file__)) + "\controller.py",

@@ -39,8 +39,7 @@ def add_form_to_room():
     # 3. Show filtered rooms
     return render_template(
         "example_done.html",
-        title="Add a form to a room",
-        h1="The DocuSign form was successfully added to the room",
+        title=example["ExampleName"],
         message="Results from the Rooms::AddFormToRoom method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
@@ -72,7 +71,8 @@ def get_view():
     # 4. Render the response
     return render_template(
         "eg004_add_forms_to_room.html",
-        title="Adding forms to a room",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg004_add_forms_to_room.py",
         rooms=rooms,
         forms=forms
