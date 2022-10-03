@@ -1,4 +1,4 @@
-astroid==2.3.3
+astroid==2.11.5
 certifi==2019.9.11
 cffi==1.14.3
 chardet==3.0.4
@@ -19,12 +19,12 @@ itsdangerous==1.1.0
 Jinja2>=2.10.3
 lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
-mccabe==0.6.1
+mccabe==0.7.0
 oauthlib==2.1.0
 pipenv==2018.11.26
 py-oauth2==0.0.10
 pycparser==2.19
-pylint==2.4.4
+pylint==2.14.1
 python-dateutil==2.8.1
 requests>=2.22.0
 requests-oauthlib==1.1.0
