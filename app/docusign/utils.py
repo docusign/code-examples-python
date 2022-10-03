@@ -54,9 +54,9 @@ def get_manifest(manifest_url):
     try:
         manifest = requests.get(manifest_url).json()
         return manifest
-    except:
-        current_app.logger.info(f"Could not load code examples manifest. Manifest URL: {manifest_url}")
-        raise Exception(f"Could not load code examples manifest. Manifest URL: {manifest_url}")
+    except Exception as e:
+        current_app.logger.info(f"Could not load code examples manifest. Manifest URL: {manifest_url} with error {str(e)}")
+        raise Exception(f"Could not load code examples manifest. Manifest URL: {manifest_url} with error {str(e)}")
 
 def get_example_by_number(manifest, number):
     for group in manifest["Groups"]:
