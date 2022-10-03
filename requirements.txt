@@ -12,6 +12,7 @@ docusign-admin==1.1.1
 Flask==1.1.1
 Flask-OAuthlib==0.9.6
 flask-wtf==0.14.3
+flake8==5.0.4
 idna==2.8
 isort==4.3.21
 itsdangerous==1.1.0
