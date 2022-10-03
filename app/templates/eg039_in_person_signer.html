@@ -6,7 +6,7 @@
 {%  set signer_name_index = 0 %}
 
 <form class="eg" action="" method="post" data-busy="form">
-  {% if 'Forms' in example and 'FormName' in example['Forms'][recipient_form_index] %}
+  {% if 'FormName' in example['Forms'][recipient_form_index] %}
     <p>{{ example['Forms'][recipient_form_index]['FormName'] | safe }}</p>
   {% endif %}
   <div class="form-group">

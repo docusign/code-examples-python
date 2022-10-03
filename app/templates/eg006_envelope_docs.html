@@ -5,10 +5,6 @@
 {%  set redirect_to2_index = 0 %}
 
 {% if envelope_ok %}
-    {% if 'Forms' in example and 'FormName' in example['Forms'][0] %}
-        <p>{{ example['Forms'][0]['FormName'] | safe }}</p>
-    {% endif %}
-  
   <form class="eg" action="" method="post" data-busy="form">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       {% include 'continue_button.html' %}

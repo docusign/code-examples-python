@@ -12,7 +12,7 @@
     <form class="eg" action="" method="post" data-busy="form">
         <div class="row">
             <div class="col-md-6">
-                {% if 'Forms' in example and 'FormName' in example['Forms'][bulk_copy1_form_index] %}
+                {% if 'FormName' in example['Forms'][bulk_copy1_form_index] %}
                     <h5>{{ example['Forms'][bulk_copy1_form_index]['FormName'] | safe }}</h5>
                 {% endif %}
                 <div class="form-group">
@@ -42,7 +42,7 @@
             </div>
     
             <div class="col-md-6">
-                {% if 'Forms' in example and 'FormName' in example['Forms'][bulk_copy2_form_index] %}
+                {% if 'FormName' in example['Forms'][bulk_copy2_form_index] %}
                     <h5>{{ example['Forms'][bulk_copy2_form_index]['FormName'] | safe }}</h5>
                 {% endif %}
                 <div class="form-group">

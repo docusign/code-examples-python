@@ -8,7 +8,7 @@
 {%  set signer_name_index = 1 %}
 
 <form class="eg" action="" method="post" data-busy="form">
-    {% if 'Forms' in example and 'FormName' in example['Forms'][signer1_form_index] %}
+    {% if 'FormName' in example['Forms'][signer1_form_index] %}
         <h5>{{ example['Forms'][signer1_form_index]['FormName'] | safe }}</h5>
     {% endif %}
     <div class="form-group">
@@ -24,7 +24,7 @@
          value="{{ signer1_name }}" required />
     <br/>
     </div>
-    {% if 'Forms' in example and 'FormName' in example['Forms'][signer2_form_index] %}
+    {% if 'FormName' in example['Forms'][signer2_form_index] %}
         <h5>{{ example['Forms'][signer2_form_index]['FormName'] | safe }}</h5>
     {% endif %}
     <div class="form-group">

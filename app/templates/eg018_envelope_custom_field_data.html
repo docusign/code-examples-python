@@ -6,10 +6,6 @@
 
 {% if envelope_ok %}
 <form class="eg" action="" method="post" data-busy="form">
-  {% if 'Forms' in example and 'FormName' in example['Forms'][0] %}
-        <p>{{ example['Forms'][signer_form_index]['FormName'] | safe }}</p>
-    {% endif %}
-
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   {% include 'continue_button.html' %}
 </form>

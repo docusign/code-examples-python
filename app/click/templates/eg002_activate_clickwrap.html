@@ -13,7 +13,7 @@
 {% else %}
 
 <form class="eg" action="" method="post" data-busy="form-download">
-    {% if 'Forms' in example and 'FormName' in example['Forms'][form_index] %}
+    {% if 'FormName' in example['Forms'][form_index] %}
         <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
     {% endif %}
 
