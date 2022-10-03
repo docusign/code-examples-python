@@ -1,17 +1,29 @@
 import base64
 from os import path
 
-from docusign_esign import EnvelopesApi, Envelope, EnvelopeDefinition, Document, Signer, SignHere, \
-                           Tabs, Recipients, Workflow, ScheduledSending, EnvelopeDelayRule
+from docusign_esign import (
+    EnvelopesApi,
+    Envelope,
+    EnvelopeDefinition,
+    Document,
+    Signer,
+    SignHere,
+    Tabs,
+    Recipients,
+    Workflow,
+    ScheduledSending,
+    EnvelopeDelayRule
+)
+
 from ...consts import demo_docs_path, pattern, signer_client_id
 from ...docusign import create_api_client
 from ...ds_config import DS_CONFIG
+
 
 class Eg035ScheduledSendingController:
 
     @classmethod
     def worker(cls, args):
-
         envelope_args = args["envelope_args"]
         print("RESUMEDATE")
         print(envelope_args["resume_date"])
@@ -29,7 +41,6 @@ class Eg035ScheduledSendingController:
         print(envelope_id)
 
         return {"envelope_id": envelope_id}
-
 
     @classmethod
     def make_envelope(cls, args, doc_docx_path, doc_pdf_path):
@@ -49,7 +60,7 @@ class Eg035ScheduledSendingController:
         env = EnvelopeDefinition(
             email_subject="Please sign this document"
         )
-        
+
         with open(path.join(demo_docs_path, doc_pdf_path), "rb") as file:
             doc1_pdf_bytes = file.read()
         doc1_b64 = base64.b64encode(doc1_pdf_bytes).decode("ascii")

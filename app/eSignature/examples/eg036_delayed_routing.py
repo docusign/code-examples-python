@@ -1,8 +1,21 @@
 import base64
 from os import path
 
-from docusign_esign import EnvelopesApi, Envelope, EnvelopeDefinition, Document, Signer, SignHere, \
-                           Tabs, Recipients, Workflow, DelayedRouting, EnvelopeDelayRule, WorkflowStep
+from docusign_esign import (
+    EnvelopesApi,
+    Envelope,
+    EnvelopeDefinition,
+    Document,
+    Signer,
+    SignHere,
+    Tabs,
+    Recipients,
+    Workflow,
+    DelayedRouting,
+    EnvelopeDelayRule,
+    WorkflowStep
+)
+
 from ...consts import demo_docs_path, pattern, signer_client_id
 from ...docusign import create_api_client
 from ...ds_config import DS_CONFIG
@@ -24,7 +37,6 @@ class Eg036DelayedRoutingController:
         envelope_id = results.envelope_id
 
         return {"envelope_id": envelope_id}
-
 
     @classmethod
     def make_envelope(cls, args, doc_docx_path, doc_pdf_path):

@@ -74,7 +74,6 @@ def get_view():
     except ApiException as err:
         return process_error(err)
 
-
     return render_template(
         "eg002_create_active_clm_esign_user.html",
         title=example["ExampleName"],

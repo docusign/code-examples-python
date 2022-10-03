@@ -58,7 +58,6 @@ def sign_by_email():
     except ApiException as err:
         return process_error(err)
 
-
     # 2. Render success response with envelopeId
     return render_template(
         "example_done.html",

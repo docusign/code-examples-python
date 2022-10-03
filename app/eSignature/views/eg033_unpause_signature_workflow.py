@@ -36,13 +36,13 @@ def unpause_signature_workflow():
 
     # 2. Render success response with envelopeId
     return render_template(
-            "example_done.html",
-            envelope_ok=True,
-            title=example["ExampleName"],
-            message=f"The envelope workflow has been resumed and the envelope "
-                    f"has been sent to a second recipient!<br/>"
-                    f"Envelope ID {results['envelope_id']}."
-        )
+        "example_done.html",
+        envelope_ok=True,
+        title=example["ExampleName"],
+        message=f"The envelope workflow has been resumed and the envelope "
+                f"has been sent to a second recipient!<br/>"
+                f"Envelope ID {results['envelope_id']}."
+    )
 
 
 @eg033.route(f"/{eg}", methods=["GET"])

@@ -96,7 +96,6 @@ class Eg040DocumentVisibility:
             doc3_pdf_bytes = file.read()
         doc3_b64 = base64.b64encode(doc3_pdf_bytes).decode("ascii")
 
-
         # Create the document models
         document1 = Document(  # create the DocuSign document object
             document_base64=doc1_b64,
@@ -104,7 +103,7 @@ class Eg040DocumentVisibility:
             file_extension="html",  # many different document types are accepted
             document_id="1",  # a label used to reference the doc
         )
-        document2 = Document(  \
+        document2 = Document(
             document_base64=doc2_b64,
             name="Battle Plan",  
             file_extension="docx",  
@@ -214,7 +213,7 @@ class Eg040DocumentVisibility:
             <h3 style="margin-top:3em;">Agreed: <span style="color:white;">**signature_1**/</span></h3>
             </body>
         </html>
-      """
-      # Step 3 end
-      
-      # End
+        """
+    # Step 3 end
+
+    # End

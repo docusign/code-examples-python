@@ -48,7 +48,6 @@ class Eg011EmbeddedSendingController:
         # Using worker from example 002
         results = Eg002SigningViaEmailController.worker(args, doc_docx_path, doc_pdf_path)
         envelope_id = results["envelope_id"]
-        
 
         # Step 2. Create the sender view
         view_request = ReturnUrlRequest(return_url=args["ds_return_url"])

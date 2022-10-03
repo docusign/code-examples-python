@@ -37,12 +37,12 @@ def use_conditional_recipients():
 
     # 2. Render success response with envelopeId
     return render_template(
-            "example_done.html",
-            envelope_ok=True,
-            title=example["ExampleName"],
-            message=f"Envelope ID {results['envelope_id']} with the conditional"
-                    f" routing criteria has been created and sent to the first recipient!"
-        )
+        "example_done.html",
+        envelope_ok=True,
+        title=example["ExampleName"],
+        message=f"Envelope ID {results['envelope_id']} with the conditional"
+                f" routing criteria has been created and sent to the first recipient!"
+    )
 
 
 @eg034.route(f"/{eg}", methods=["GET"])
