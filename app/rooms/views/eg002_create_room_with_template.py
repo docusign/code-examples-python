@@ -4,17 +4,20 @@ from os import path
 import json
 
 from docusign_rooms.client.api_exception import ApiException
-from flask import render_template, current_app, Blueprint
+from flask import render_template, current_app, Blueprint, session
 
+from ...ds_config import DS_CONFIG
 from ..examples.eg002_create_room_with_template import Eg002CreateRoomWithTemplateController
-from app.docusign import authenticate
+from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.error_handlers import process_error
 
-eg = "eg002"  # reference (and url) for this example
-eg002 = Blueprint("eg002", __name__)
+example_number = 2
+eg = f"eg00{example_number}"  # reference (and url) for this example
+eg002 = Blueprint(eg, __name__)
 
 
-@eg002.route("/eg002", methods=["POST"])
+@eg002.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def create_room_with_template():
     """
@@ -22,6 +25,8 @@ def create_room_with_template():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg002CreateRoomWithTemplateController.get_args()
 
@@ -38,15 +43,15 @@ def create_room_with_template():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Creating a room with a template",
-        h1="Creating a room with a template",
+        title=example["ExampleName"],
         message=f"""The room "{args['room_name']}" has been created!<br/>
                         Room ID: {room_id}.""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
 
-@eg002.route("/eg002", methods=["GET"])
+@eg002.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """
@@ -54,6 +59,8 @@ def get_view():
     2. Get room templates
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg002CreateRoomWithTemplateController.get_args()
 
@@ -65,7 +72,8 @@ def get_view():
 
     return render_template(
         "eg002_create_room_with_template.html",
-        title="Creating a room with a template",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg002_create_room_with_template.py",
         templates=templates
     )

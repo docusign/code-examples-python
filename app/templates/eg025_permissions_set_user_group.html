@@ -1,47 +1,39 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-    <h4>Set a permission profile</h4>
-    <p>
-         Updates the group name and modifies, or sets, the permission profile for the group.
-    </p>
+{% include 'example_info.html' %}
 
-    {% if show_doc %}
-      <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{%  set permission_profile_form_index = 0 %}
+{%  set permission_profile_index = 0 %}
+{%  set group_index = 1 %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][permission_profile_form_index] %}
+        <p>{{ example['Forms'][permission_profile_form_index]['FormName'] | safe }}</p>
     {% endif %}
 
-    <p>
-        API method used:
-        <a href="https://developers.docusign.com/docs/esign-rest-api/reference/usergroups/groups/update/" target="_blank">UserGroups::updateGroups</a>
-    </p>
+    <div class="form-group">
+        <label for="permission_profile">{{ example['Forms'][permission_profile_form_index]['Inputs'][permission_profile_index]['InputName'] }}</label>
+        <br>
+        <select id="permission_profile" name="permission_profile" class="form-control">
+            {% for profile in permission_profiles %}
+                <option value="{{ profile.permission_profile_id }}">{{ profile.permission_profile_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-    <p>
-        View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-    </p>
+    <div class="form-group">
+        <label for="group">{{ example['Forms'][permission_profile_form_index]['Inputs'][group_index]['InputName'] }}</label>
+        <br>
+        <select id="group" name="group" class="form-control">
+            {% for group in groups %}
+                <option value="{{ group.group_id }}">{{ group.group_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-        <form class="eg" action="" method="post" data-busy="form">
-            <div class="form-group">
-                <label for="permission_profile">Permission profile</label>
-                <br>
-                <select id="permission_profile" name="permission_profile">
-                    {% for profile in permission_profiles %}
-                        <option value="{{ profile.permission_profile_id }}">{{ profile.permission_profile_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="group">User group</label>
-                <br>
-                <select id="group" name="group">
-                    {% for group in groups %}
-                        <option value="{{ group.group_id }}">{{ group.group_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="form-group">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <button type="submit" class="btn btn-docu">Submit</button>
-            </div>
-        </form>
+    <div class="form-group">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% include 'submit_button.html' %}
+    </div>
+</form>
 {% endblock %}

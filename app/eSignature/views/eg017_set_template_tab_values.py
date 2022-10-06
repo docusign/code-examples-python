@@ -6,19 +6,21 @@ from docusign_esign.client.api_exception import ApiException
 from flask import render_template, redirect, session, Blueprint
 
 from ..examples.eg017_set_template_tab_values import Eg017SetTemplateTabValuesController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg017"  # reference (and url) for this example
-eg017 = Blueprint("eg017", __name__)
+example_number = 17
+eg = f"eg0{example_number}"  # reference (and url) for this example
+eg017 = Blueprint(eg, __name__)
 
 
 # the signer? See the "authenticationMethod" definition
 # https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopeviews/createrecipient/
 
 
-@eg017.route("/eg017", methods=["POST"])
+@eg017.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def set_template_tab_values():
     """
@@ -45,14 +47,17 @@ def set_template_tab_values():
     return redirect(results["redirect_url"])
 
 
-@eg017.route("/eg017", methods=["GET"])
+@eg017.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg017_set_template_tab_values.html",
-        title="SetTemplateTabValues",
+        title=example["ExampleName"],
+        example=example,
         template_ok="template_id" in session,
         source_file= "eg017_set_template_tab_values.py",
         source_url=DS_CONFIG["github_example_url"] + "eg017_set_template_tab_values.py",

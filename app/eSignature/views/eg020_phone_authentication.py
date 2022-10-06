@@ -7,15 +7,17 @@ from flask import current_app as app
 from flask import render_template, Blueprint, session
 
 from ..examples.eg020_phone_authentication import Eg020PhoneAuthenticationController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg020"  # reference (and url) for this example
-eg020 = Blueprint("eg020", __name__)
+example_number = 20
+eg = f"eg0{example_number}"  # reference (and url) for this example
+eg020 = Blueprint(eg, __name__)
 
 
-@eg020.route("/eg020", methods=["POST"])
+@eg020.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def phone_authentication():
     """
@@ -23,6 +25,7 @@ def phone_authentication():
     2. Call the worker method
     3. Render success response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required arguments
     args = Eg020PhoneAuthenticationController.get_args()
@@ -35,8 +38,7 @@ def phone_authentication():
         # 3. Render success response
         return render_template(
             "example_done.html",
-            title="Require Phone Authentication for a Recipient",
-            h1="Require Phone Authentication for a Recipient",
+            title=example["ExampleName"],
             message=f"""The envelope has been created and sent!<br/> Envelope ID {envelope_id}."""
         )
 
@@ -44,10 +46,12 @@ def phone_authentication():
         return process_error(err)
 
 
-@eg020.route("/eg020", methods=["GET"])
+@eg020.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     args = {
         "account_id": session["ds_account_id"],  # represent your {ACCOUNT_ID}
@@ -59,7 +63,8 @@ def get_view():
 
     return render_template(
         "eg020_phone_authentication.html",
-        title="Requiring phone authentication for a Recipient",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg020_phone_authentication.py",
         source_url=DS_CONFIG["github_example_url"] + "eg020_phone_authentication.py",
         documentation=DS_CONFIG["documentation"] + eg,

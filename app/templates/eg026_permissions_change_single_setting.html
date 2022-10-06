@@ -1,28 +1,19 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-    <h4>Update individual permission settings</h4>
-    <p>
-         This code example demonstrates how to change settings in the existing permission profile.
-    </p>
+{% include 'example_info.html' %}
 
-    {% if show_doc %}
-      <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-    {% endif %}
-
-    <p>
-        API method used:
-        <a href="https://developers.docusign.com/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/update/" target="_blank">AccountPermissionProfiles: update</a>
-    </p>
-
-    <p>
-        View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-    </p>
+{%  set permission_profile_form_index = 0 %}
+{%  set permission_profile_index = 0 %}
 
     <form class="eg" action="" method="post" data-busy="form">
+        {% if 'FormName' in example['Forms'][permission_profile_form_index] %}
+            <p>{{ example['Forms'][permission_profile_form_index]['FormName'] | safe }}</p>
+        {% endif %}
+
         <div class="form-group">
-            <label for="permission_profile">Permission profile</label>
+            <label for="permission_profile">{{ example['Forms'][permission_profile_form_index]['Inputs'][permission_profile_index]['InputName'] }}</label>
             <br>
-            <select id="permission_profile" name="permission_profile">
+            <select id="permission_profile" name="permission_profile" class="form-control">
                 {% for profile in permission_profiles %}
                     <option value="{{ profile.permission_profile_id }}">{{ profile.permission_profile_name }}</option>
                 {% endfor %}
@@ -31,7 +22,7 @@
 
         <div class="form-group">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <button type="submit" class="btn btn-docu">Submit</button>
+            {% include 'submit_button.html' %}
         </div>
     </form>
 

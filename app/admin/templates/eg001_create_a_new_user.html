@@ -1,43 +1,41 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>1. Create a new active eSignature user</h4>
-<p>Demonstrates how to create a new eSignature user and activate their account automatically.</p>
+{% include 'example_info.html' %}
 
-{% if show_doc %}
-    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-  
-  <p>API methods used:
-    <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/list/">AccountPermissionProfiles:list</a>, 
-    <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/usergroups/groups/list/">Groups:list</a>,
-   <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/esignusermanagement/createuser/">eSignUserManagement:createUser</a>.
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set form_index = 0 %}
+{%  set user_name_index = 0 %}
+{%  set first_name_index = 1 %}
+{%  set last_name_index = 2 %}
+{%  set user_email_index = 3 %}
+{%  set profile_index = 4 %}
+{%  set group_index = 5 %}
 
 <form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <div class="form-group">
-        <label for="user_name">User Name</label>
+        <label for="user_name">{{ example['Forms'][form_index]['Inputs'][user_name_index]['InputName'] }}</label>
         <input type="text" class="form-control" id="user_name" name="user_name" required>
     </div>
     <div class="form-group">
-        <label for="first_name">First Name</label>
-        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="John" required>
+        <label for="first_name">{{ example['Forms'][form_index]['Inputs'][first_name_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ example['Forms'][form_index]['Inputs'][first_name_index]['InputPlaceholder'] }}" required>
     </div>
     <div class="form-group">
-        <label for="last_name">Last Name</label>
-        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Dow" required>
+        <label for="last_name">{{ example['Forms'][form_index]['Inputs'][last_name_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{ example['Forms'][form_index]['Inputs'][last_name_index]['InputPlaceholder'] }}" required>
     </div>
     <div class="form-group">
-        <label for="user_email">Email</label>
-        <input type="email" class="form-control" id="user_email" name="user_email" placeholder="example0001@example.com" required>
+        <label for="user_email">{{ example['Forms'][form_index]['Inputs'][user_email_index]['InputName'] }}</label>
+        <input type="email" class="form-control" id="user_email" name="user_email" placeholder="{{ example['Forms'][form_index]['Inputs'][user_email_index]['InputPlaceholder'] }}" required>
         <small id="accessHelp" class="form-text text-muted">This email address must use the same domain that has been claimed by your organization.</small>
     </div>
     {% if permission_profiles %}
     <div class="form-group">
-        <label for="profile_id">eSignature permission profile</label>
+        <label for="profile_id">{{ example['Forms'][form_index]['Inputs'][profile_index]['InputName'] }}</label>
         <select class="form-control" id="profile_id" name="profile_id">
             {% for profile in permission_profiles %}
             <option value={{profile["permission_profile_id"]}}>{{profile["permission_profile_name"]}}</option>
@@ -50,7 +48,7 @@
     {% endif %}
     {% if groups %}
     <div class="form-group">
-        <label for="group_id">eSignature group</label>
+        <label for="group_id">{{ example['Forms'][form_index]['Inputs'][group_index]['InputName'] }}</label>
         <select class="form-control" id="group_id" name="group_id">
             {% for group in groups %}
                 <option value={{group["group_id"]}}>{{group["group_name"]}}</option>
@@ -61,7 +59,7 @@
         <p>Problem: Please first create a DocuSign group.
         </br>Thank you.</p>
     {% endif %}
-    <button type="submit" class="btn btn-docu">Continue</button>
+    {% include 'continue_button.html' %}
 </form>
   
 {% endblock %}

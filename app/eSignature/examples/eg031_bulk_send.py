@@ -3,12 +3,14 @@ from os import path
 
 from docusign_esign import EnvelopesApi, Document, Signer, EnvelopeDefinition, Recipients, \
     BulkEnvelopesApi, TextCustomField, CustomFields, Tabs, SignHere
-from docusign_esign.models import BulkSendingCopy, BulkSendingList, BulkSendingCopyRecipient, BulkSendingCopyTab, BulkSendRequest, BulkSendBatchStatus
+from docusign_esign.models import BulkSendingCopy, BulkSendingList, BulkSendingCopyRecipient, BulkSendingCopyTab, \
+    BulkSendRequest, BulkSendBatchStatus
 from flask import request, session
 
 from ...consts import demo_docs_path, pattern
 from ...docusign import create_api_client
 from ...ds_config import DS_CONFIG
+
 
 class Eg031BulkSendController:
     @staticmethod
@@ -28,12 +30,13 @@ class Eg031BulkSendController:
             "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
             "base_path": session["ds_base_path"],
             "access_token": session["ds_access_token"],  # Represents your {ACCESS_TOKEN}
-            "signers": [{
-                "signer_name": signer_name_1,
-                "signer_email": signer_email_1,
-                "cc_email": cc_email_1,
-                "cc_name": cc_name_1
-            },
+            "signers": [
+                {
+                    "signer_name": signer_name_1,
+                    "signer_email": signer_email_1,
+                    "cc_email": cc_email_1,
+                    "cc_name": cc_name_1
+                },
                 {
                     "signer_name": signer_name_2,
                     "signer_email": signer_email_2,
@@ -41,7 +44,6 @@ class Eg031BulkSendController:
                     "cc_name": cc_name_2
                 }
             ]
-
         }
         return args
 
@@ -105,7 +107,8 @@ class Eg031BulkSendController:
 
         # Confirm successful batch send
         # Step 7 start
-        response = bulk_envelopes_api.get_bulk_send_batch_status(account_id=args["account_id"], bulk_send_batch_id=batch_id)
+        response = bulk_envelopes_api.get_bulk_send_batch_status(account_id=args["account_id"],
+                                                                 bulk_send_batch_id=batch_id)
         # Step 7 end
         print(response)
 
@@ -150,6 +153,7 @@ class Eg031BulkSendController:
         )
 
         return bulk_sending_list
+
     # Step 3-2 end
 
     # Step 4-2 start

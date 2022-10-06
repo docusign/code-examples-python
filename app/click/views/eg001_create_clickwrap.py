@@ -7,15 +7,17 @@ from docusign_click.client.api_exception import ApiException
 from flask import render_template, current_app, Blueprint, session
 
 from ..examples.eg001_create_clickwrap import Eg001CreateClickwrapController
-from app.docusign import authenticate
+from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
 
-eg = "eg001"  # Reference (and URL) for this example
-eg001 = Blueprint("eg001", __name__)
+example_number = 1
+eg = f"eg00{example_number}"  # Reference (and URL) for this example
+eg001 = Blueprint(eg, __name__)
 
 
-@eg001.route("/eg001", methods=["POST"])
+@eg001.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
 @authenticate(eg=eg)
 def create_clickwrap():
     """
@@ -23,6 +25,8 @@ def create_clickwrap():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg001CreateClickwrapController.get_args()
 
@@ -45,20 +49,23 @@ def create_clickwrap():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Create a clickwrap",
-        h1="Create a clickwrap",
+        title=example["ExampleName"],
         message=f"""The clickwrap "{args['clickwrap_name']}" has been created!""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
 
-@eg001.route("/eg001", methods=["GET"])
+@eg001.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
+
     return render_template(
         "eg001_create_clickwrap.html",
-        title="Creating a new clickwrap",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg001_create_clickwrap.py",
         source_url=DS_CONFIG["click_github_url"] + "eg001_create_clickwrap.py",
     )

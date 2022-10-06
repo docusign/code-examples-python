@@ -1,18 +1,20 @@
 """Example 001: Use embedded signing"""
 
 from docusign_esign.client.api_exception import ApiException
-from flask import render_template, redirect, Blueprint, current_app as app
+from flask import render_template, redirect, Blueprint, current_app as app, session
 
 from .eSignature.examples.eg001_embedded_signing import Eg001EmbeddedSigningController
-from .docusign import authenticate
+from .docusign import authenticate, ensure_manifest, get_example_by_number
 from .ds_config import DS_CONFIG
 from .error_handlers import process_error
 
-eg = "eg001"  # reference (and url) for this example
-eg001 = Blueprint("eg001", __name__)
+example_number = 1
+eg = f"eg00{example_number}"  # reference (and url) for this example
+eg001 = Blueprint(eg, __name__)
 
 
-@eg001.route("/eg001", methods=["POST"])
+@eg001.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def embedded_signing():
     """
@@ -35,14 +37,17 @@ def embedded_signing():
     return redirect(results["redirect_url"])
 
 
-@eg001.route("/eg001", methods=["GET"])
+@eg001.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg001_embedded_signing.html",
-        title="Use embedded signing",
+        title=example["ExampleName"],
+        example=example,
         source_file="eg001_embedded_signing.py",
         source_url=DS_CONFIG["github_example_url"] + "eg001_embedded_signing.py",
         documentation=DS_CONFIG["documentation"] + eg,

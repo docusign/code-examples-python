@@ -39,7 +39,6 @@ class Eg002PostWebQueryController:
             web_query=cls.get_query(args))
         # Step 4 end
 
-
         return result
 
     # Step 3 start

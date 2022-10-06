@@ -1,35 +1,22 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>Embed the DocuSign UI in your app</h4>
-<p>Redirect the user to the DocuSign web tool.</p>
-<p>Use this API call to open the DocuSign web tool, the NDSE (New DocuSign Signing Experience), 
-    with the user already logged in.</p>
-<p>The starting view can be either an envelope's documents or the web tool's front page.</p>
-<p>The user does not necessarily return from the NDSE, so using this API call is often a final 
-    step for your application.
-    Or you can open the NDSE in a new tab for the user.
-</p>
+{% include 'example_info.html' %}
 
-{% if show_doc %}
-    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-  
-<p>API method used: 
-    <a target ='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopeviews/createconsole/">EnvelopeViews::createConsole</a>.
-</p>
-
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set form_index = 0 %}
+{%  set starting_view_index = 0 %}
+{%  set redirect_to2_index = 0 %}
 
 {% if not envelope_ok %}
-    <p><b>Optional:</b> to use the <i>Envelope's document view</i> please first create an envelope using 
-        <a href="eg002">Request a signature by email (remote signing).</a></p>
+    {{ example['RedirectsToOtherCodeExamples'][redirect_to2_index]['RedirectText'].format('href="eg002"') | safe }}
 {% endif %}
 
 <form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <div class="form-group">
-        <label for="starting_view">Starting View</label>
+        <label for="starting_view">{{ example['Forms'][form_index]['Inputs'][starting_view_index]['InputName'] }}</label>
         <select id="starting_view" name="starting_view" class="form-control">
                 <option value="front_page" selected>Front page</option>
                 <option value="envelope" {% if not envelope_ok %}disabled="true"{% endif %} >
@@ -37,7 +24,7 @@
         </select>
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Continue</button>
+    {% include 'continue_button.html' %}
 </form>
   
 {% endblock %}

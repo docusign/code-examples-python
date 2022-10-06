@@ -1,17 +1,20 @@
 from docusign_rooms.client.api_exception import ApiException
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, render_template, current_app, session
 
 from os import path
 
-from app.docusign import authenticate
+from ...ds_config import DS_CONFIG
+from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.error_handlers import process_error
 from ..examples.eg008_grant_office_access_to_form_group import Eg008GrantOfficeAccessToFormGroupController
 
-eg = "eg008"  # Reference (and URL) for this example
+example_number = 8
+eg = f"eg00{example_number}"  # Reference (and URL) for this example
 eg008 = Blueprint(eg, __name__)
 
 
-@eg008.route("/eg008", methods=["POST"])
+@eg008.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def assign_office_to_form_group():
     """
@@ -19,6 +22,7 @@ def assign_office_to_form_group():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     args = Eg008GrantOfficeAccessToFormGroupController.get_args()
 
@@ -35,14 +39,14 @@ def assign_office_to_form_group():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Assign office to a form group",
-        h1="Assign office to a form group",
+        title=example["ExampleName"],
         message=f"""Office "{args['office_id']}" has been assigned to 
         Form Group "{args['form_group_id']}" """,
     )
 
 
-@eg008.route("/eg008", methods=["GET"])
+@eg008.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """
@@ -51,6 +55,7 @@ def get_view():
     3. Get Offices
     4. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required arguments
     args = Eg008GrantOfficeAccessToFormGroupController.get_args()
@@ -64,6 +69,8 @@ def get_view():
     # 4. Render the response
     return render_template(
         "eg008_grant_office_access_to_form_group.html",
+        title=example["ExampleName"],
+        example=example,
         offices=offices,
         form_groups=form_groups,
         source_file=path.basename(path.dirname(__file__)) + "\controller.py",

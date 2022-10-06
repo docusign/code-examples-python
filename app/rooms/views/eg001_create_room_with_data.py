@@ -4,24 +4,44 @@ from os import path
 import json
 
 from docusign_rooms.client.api_exception import ApiException
-from flask import render_template, current_app, Blueprint
+from flask import render_template, current_app, Blueprint, session
 
+from ...ds_config import DS_CONFIG
 from ..examples.eg001_create_room_with_data import Eg001CreateRoomWithDateController
-from app.docusign import authenticate
+from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.error_handlers import process_error
 
-eg = "eg001Rooms"  # reference (and url) for this example
-eg001Rooms = Blueprint("eg001Rooms", __name__)
+example_number = 1
+eg = "eg001"  # reference (and url) for this example
+eg001Rooms = Blueprint("eg001", __name__)
 
 
-@eg001Rooms.route("/eg001Rooms", methods=["POST"])
+@eg001Rooms.route("/eg001", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
+def get_view():
+    """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
+
+    return render_template(
+        "eg001_create_room_with_data.html",
+        title=example["ExampleName"],
+        example=example,
+        source_file= "eg001_create_room_with_data.py",
+    )
+
+
+@eg001Rooms.route("/eg001", methods=["POST"])
+@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 def create_room_with_data():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg001CreateRoomWithDateController.get_args()
 
@@ -38,20 +58,8 @@ def create_room_with_data():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Creating a room with data",
-        h1="Creating a room with data",
+        title=example["ExampleName"],
         message=f"""The room "{args['room_name']}" has been created!<br/> 
                         Room ID: {room_id}.""",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
-    )
-
-
-@eg001Rooms.route("/eg001Rooms", methods=["GET"])
-@authenticate(eg=eg)
-def get_view():
-    """responds with the form for the example"""
-    return render_template(
-        "eg001_create_room_with_data.html",
-        title="Creating a room with data",
-        source_file= "eg001_create_room_with_data.py",
     )

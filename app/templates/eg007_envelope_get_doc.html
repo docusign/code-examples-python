@@ -1,55 +1,32 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>Download envelope documents</h4>
-<p>Downloads individual documents, the documents concatenated together, or a ZIP file of the documents.</p>
-<p>Document download options:</p>
-<ul>
-  <li><b>Combined</b>: a PDF with the combined content of all documents and the
-         certificate</li>
-  <li><b>Zip Archive</b>: a ZIP archive that contains all of the PDF documents, 
-         the certificate, and any .WAV files used for voice authentication.</li>
-  <li>
-      <b>PDF Portfolio</b>: Retrieves the envelope documents as a <a href="https://helpx.adobe.com/acrobat/using/overview-pdf-portfolios.html">PDF portfolio</a>
-  </li>
-    <li>The envelope's individual documents</li>
-  <li>The envelope's Certificate of Completion</li>
-</ul>
+{% include 'example_info.html' %}
 
-{% if show_doc %}
-  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-
-<p>API method used: 
-   <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopedocuments/get/">EnvelopeDocuments::get</a>.
-</p>
-
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set form_index = 0 %}
+{%  set document_index = 0 %}
+{%  set redirect_to2_index = 0 %}
+{%  set redirect_to6_index = 1 %}
 
 {% if not envelope_ok %}
-  <p>Problem: please first create an envelope using <a href="eg002">Request a signature by email (remote signing).</a> <br/>
-    You will then need to use List envelope documents to create the list of documents.<br/>
-    Thank you.</p>
+  {{ example['RedirectsToOtherCodeExamples'][redirect_to2_index]['RedirectText'].format('href="eg002"') | safe }}
     
  <form class="eg" action="eg002" method="get">
-     <button type="submit" class="btn btn-docu">Continue</button>
+     {% include 'continue_button.html' %}
  </form>
 {%  elif not documents_ok %}
-  <p>Problem: please first create a list of the envelope's documents using 
-    <a href="eg006">List envelope documents.</a> <br/>
-    Thank you.</p>
+  {{ example['RedirectsToOtherCodeExamples'][redirect_to6_index]['RedirectText'].format('href="eg006"') | safe }}
     
  <form class="eg" action="eg006" method="get">
-     <button type="submit" class="btn btn-docu">Continue</button>
+     {% include 'continue_button.html' %}
  </form>
 {% else %}
-  <p>Please choose a document.<br/>
-     The document list is from your results for List envelope documents.</p>
-  
   <form class="eg" action="" method="post" data-busy="form-download">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <div class="form-group">
-        <label for="docSelect">Document selection</label>
+        <label for="docSelect">{{ example['Forms'][form_index]['Inputs'][document_index]['InputName'] }}</label>
         <select class="custom-select" id="document_id"
           name="document_id" aria-describedby="emailHelp">
         {% for opt in document_options %}
@@ -58,7 +35,7 @@
         </select>
     </div>  
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Continue</button>
+    {% include 'continue_button.html' %}
   </form>
 {% endif %}
 

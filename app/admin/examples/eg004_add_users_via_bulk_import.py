@@ -91,7 +91,3 @@ class Eg004AddUsersViaBulkImportController:
             return import_results
         else:
             return None
-
-
-
-    

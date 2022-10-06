@@ -6,25 +6,27 @@ import os
 from os import path
 from pathlib import Path
 
-from flask import Blueprint, render_template, Response, current_app
+from flask import Blueprint, render_template, Response, current_app, session
 from docusign_admin.client.api_exception import ApiException
 
 from app.error_handlers import process_error
-from app.docusign import authenticate
+from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.ds_config import DS_CONFIG
 from ..examples.eg003_bulk_export_user_data import Eg003BulkExportUserDataController
 
-
-eg = "eg003"  # Reference (and URL) for this example
+example_number = 3
+eg = f"eg00{example_number}"  # Reference (and URL) for this example
 eg003 = Blueprint(eg, __name__)
 
-@eg003.route("/eg003", methods=["POST"])
+@eg003.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def get_user_list_data():
     """
     1. Call the worker method
     2. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Call the worker method
     try:
@@ -47,23 +49,25 @@ def get_user_list_data():
     return render_template(
         "example_done.html",
         get_csv=True,
-        title="Bulk export user data",
-        h1="Bulk export user data",
+        title=example["ExampleName"],
         message=f"User data exported to {file_path}. </br> Results from UserExport:getUserListExport:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
-@eg003.route("/eg003", methods=["GET"])
+@eg003.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """
     Responds with the form for the example
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # Render the response
     return render_template(
         "eg003_bulk_export_user_data.html",
-        title="Bulk export user data",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg003_bulk_export_user_data.py",
         source_url=DS_CONFIG["admin_github_url"] + "eg003_bulk_export_user_data.py",
         documentation=DS_CONFIG["documentation"] + eg,

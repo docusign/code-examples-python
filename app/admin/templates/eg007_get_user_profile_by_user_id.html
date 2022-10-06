@@ -1,31 +1,23 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>7. Retrieve the user's DocuSign profile using a User ID</h4>
-<p>
-  Demonstrates how to obtain the user’s DocuSign profile information across all DocuSign accounts by specifying the user’s User ID.
-</p>
+{% include 'example_info.html' %}
 
-{% if show_doc %}
-    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-  
-<p>API method used:
-  <a target="_blank" rel='noopener noreferrer' 
-        href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/multiproductusermanagement/getuserdsprofile/">MultiProductUserManagement:getUserDSProfile</a>.
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set form_index = 0 %}
+{%  set user_id_index = 0 %}
 
 <form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <div class="form-group">
-        <label for="user_id">User ID</label>
+        <label for="user_id">{{ example['Forms'][form_index]['Inputs'][user_id_index]['InputName'] }}</label>
         <input type="text" class="form-control" id="user_id" name="user_id"
-               placeholder="00000000-0000-0000-0000-000000000000" required
+               placeholder="{{ example['Forms'][form_index]['Inputs'][user_id_index]['InputPlaceholder'] }}" required
                pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}">
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Continue</button>
+    {% include 'continue_button.html' %}
 </form>
   
 {% endblock %}

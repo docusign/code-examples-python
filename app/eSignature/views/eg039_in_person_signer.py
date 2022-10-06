@@ -6,15 +6,17 @@ from docusign_esign.client.api_exception import ApiException
 from flask import render_template, redirect, session, Blueprint, request
 
 from ..examples.eg039_in_person_signer import Eg039InPersonSigner
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 from ...consts import pattern
 
-eg = "eg039"  # reference (and url) for this example
-eg039 = Blueprint("eg039", __name__)
+example_number = 39
+eg = f"eg0{example_number}"  # reference (and url) for this example
+eg039 = Blueprint(eg, __name__)
 
-@eg039.route("/eg039", methods=["POST"])
+@eg039.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def in_person_signer():
     """
@@ -37,14 +39,17 @@ def in_person_signer():
     return redirect(results["redirect_url"])
 
 
-@eg039.route("/eg039", methods=["GET"])
+@eg039.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg039_in_person_signer.html",
-        title="Signing via email",
+        title=example["ExampleName"],
+        example=example,
         source_file="eg039_in_person_signer.py",
         source_url=DS_CONFIG["github_example_url"] + "eg039_in_person_signer.py",
         documentation=DS_CONFIG["documentation"] + eg,

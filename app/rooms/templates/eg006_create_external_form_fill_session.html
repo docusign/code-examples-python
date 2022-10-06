@@ -1,29 +1,19 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
 <div class="container">
-<h4>6. Creating an external form fill session</h4>
-<p>This example demonstrates how to create an
-    <a href="https://developers.docusign.com/rooms-api/guides/forms" target="_blank">external form fill session</a>
-    using the Rooms API:<br/>
-    the result of this code example is the URL for the form fill session, which you can embed<br/>
-    in your integration or send to the user.</p>
 
-{% if show_doc %}
-  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
+{% include 'example_info.html' %}
+{%  set form_index = 0 %}
+{%  set room_form_index = 0 %}
+{%  set room_id_index = 0 %}
+{%  set form_id_index = 0 %}
+{%  set redirect_to4_index = 0 %}
+{%  set redirect_to1_index = 1 %}
 
-<p>API methods used:
-    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Rooms/Rooms/GetRooms">Rooms::GetRooms</a>,
-    <a target ='_blank' href="https://developers.docusign.com/docs/rooms-api/reference/Rooms/Rooms/GetDocuments/">Rooms::GetDocuments</a> and
-    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Forms/ExternalFormFillSessions/CreateExternalFormFillSession">Forms::CreateExternalFormFillSession</a>
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
     {% if rooms %}
         <form class="eg" action="/forms" method="post" data-busy="form">
             <div class="form-group">
-            <label for="room_id">Room</label>
+            <label for="room_id">{{ example['Forms'][form_index]['Inputs'][room_id_index]['InputName'] }}</label>
                 <select class="form-control" id="room_id" name="room_id">
                     {% for room in rooms %}
                         <option value="{{ room.room_id }}">{{ room.name }}</option>
@@ -35,11 +25,11 @@
          </form>
     {% elif room_name and forms %}
         <form class="eg" action="eg006" method="post" data-busy="form">
-            <label for="room_name">Room name</label>
+            <label for="room_name">{{ example['Forms'][form_index]['Inputs'][room_id_index]['InputName'] }}</label>
             <input type="text" class="form-control" id="room_name" name="room_name" value="{{ room_name }}" readonly><br/>
             <input type="hidden" class="form-control" name="room_id" value="{{ room_id }}" readonly>
             <div class="form-group">
-                <label for="form_id">Form</label>
+                <label for="form_id">{{ example['Forms'][room_form_index]['Inputs'][form_id_index]['InputName'] }}</label>
                     <select class="form-control" id="form_id" name="form_id">
                         {% for form in forms %}
                             <option value="{{ form.docu_sign_form_id }}">{{ form.name }}</option>
@@ -47,14 +37,12 @@
                     </select>
             </div>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <button type="submit" class="btn btn-docu">Submit</button>
+            {% include 'submit_button.html' %}
         </form>
     {% elif room_name and not forms %}
-        <p>Problem: please first add form to the room using <a href="eg004">example 4</a> <br/>
-            Thank you.</p>
+        {{ example['RedirectsToOtherCodeExamples'][redirect_to4_index]['RedirectText'].format('href="eg004"') | safe }}
     {% else %}
-      <p>Problem: please first create a room using <a href="eg001Rooms">example 1</a> or <a href="eg002">example 2</a> <br/>
-            Thank you.</p>
+      {{ example['RedirectsToOtherCodeExamples'][redirect_to1_index]['RedirectText'].format('href="eg001"') | safe }}
     {% endif %}
 
 </div>

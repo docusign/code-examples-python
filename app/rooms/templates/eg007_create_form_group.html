@@ -2,27 +2,24 @@
 {% block content %}
 
 <div class="container">
-<h4>7. Creating a form group</h4>
-<p>This example demonstrates creating a DocuSign Form Group.</p>
-{% if show_doc %}
-  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
 
-<p>API methods used:
-   <a target ='_blank' href="https://developers.docusign.com/docs/rooms-api/how-to/create-form-group/">Rooms::CreateFormGroup</a>
-</p>
-<p>
-  View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{% include 'example_info.html' %}
+
+{%  set form_index = 0 %}
+{%  set form_group_index = 0 %}
 
 <form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <div class="form-group">
-      <label for="form_group_name">Form Group Name</label>
+      <label for="form_group_name">{{ example['Forms'][form_index]['Inputs'][form_group_index]['InputName'] }}</label>
       <input type="text" class="form-control" id="form_group_name"
              name="form_group_name" required>
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Submit</button>
+    {% include 'submit_button.html' %}
   </form>
 
 </div>

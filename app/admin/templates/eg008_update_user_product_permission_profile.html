@@ -1,27 +1,21 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>8. Update user product permission profiles using an email address</h4>
-<p>Demonstrates how to update user product permission profiles. There may only be one permission profile assigned to a user per product.</p>
+{% include 'example_info.html' %}
 
-{% if show_doc %}
-    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-  
-<p>
-    API methods used:
-    <a target='_blank' href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/multiproductusermanagement/getproductpermissionprofiles/">MultiProductUserManagement:getProductPermissionProfiles</a>,
-    <a target="_blank" href="https://developers.docusign.com/docs/admin-api/reference/usermanagement/multiproductusermanagement/adduserproductpermissionprofilesbyemail/">MultiProductUserManagement:addUserProductPermissionProfilesByEmail</a>.
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set form_index = 0 %}
+{%  set product_index = 0 %}
+{%  set esign_permission_index = 1 %}
+{%  set clm_permission_index = 2 %}
+{%  set redirect_to2_index = 0 %}
 
 {% if email_ok %}
-    <p>Update user product permission profile for the following email: <b>{{ email }}</b></p>
-
     <form class="eg" action="" method="post" data-busy="form">
+        {% if 'FormName' in example['Forms'][form_index] %}
+            <p>{{ example['Forms'][form_index]['FormName'].format(email) | safe }}</p>
+        {% endif %}
+
         <div class="form-group">
-            <label for="product">Choose a product for which you want to update the permission profile</label>
+            <label for="product">{{ example['Forms'][form_index]['Inputs'][product_index]['InputName'] }}</label>
             <select class="form-control" id="product" name="product">
                 {% for product in product_list %}
                     {% if product.product_name == "CLM" %}
@@ -35,7 +29,7 @@
 
         {% if esign_permission_profiles_list %}
         <div class="form-group" id="esign-profiles" style="display: none">
-            <label for="esign_permission_profile">Choose a permission profile</label>
+            <label for="esign_permission_profile">{{ example['Forms'][form_index]['Inputs'][esign_permission_index]['InputName'] }}</label>
             <select class="form-control" id="esign_permission_profile" name="esign_permission_profile">
                 {% for profile in esign_permission_profiles_list %}
                     <option value="{{profile.permission_profile_id}}">{{profile.permission_profile_name}}</option>
@@ -49,7 +43,7 @@
 
         {% if clm_permission_profiles_list %}
         <div class="form-group" id="clm-profiles">
-            <label for="clm_permission_profile">Choose a permission profile</label>
+            <label for="clm_permission_profile">{{ example['Forms'][form_index]['Inputs'][clm_permission_index]['InputName'] }}</label>
             <select class="form-control" id="clm_permission_profile" name="clm_permission_profile">
                 {% for profile in clm_permission_profiles_list %}
                     <option value="{{profile.permission_profile_id}}">{{profile.permission_profile_name}}</option>
@@ -62,7 +56,7 @@
         {% endif %}
 
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button type="submit" class="btn btn-docu">Continue</button>
+        {% include 'continue_button.html' %}
     </form>
 
     {% block javascript %}
@@ -82,11 +76,10 @@
         </script>
     {% endblock %}
 {% else %}
-    <p>Problem: You do not have the user to change permissions for. Go to <a href="eg002">example 2</a> and create one.
-    </br>Thank you.</p>
+    {{ example['RedirectsToOtherCodeExamples'][redirect_to2_index]['RedirectText'].format('href="eg002"') | safe }}
 
     <form class="eg" action="eg002" method="get">
-        <button type="submit" class="btn btn-docu">Continue</button>
+        {% include 'continue_button.html' %}
     </form>
 {% endif %}
 {% endblock %}

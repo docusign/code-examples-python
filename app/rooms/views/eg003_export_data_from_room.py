@@ -4,17 +4,20 @@ from os import path
 import json
 
 from docusign_rooms.client.api_exception import ApiException
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, session
 
+from ...ds_config import DS_CONFIG
 from ..examples.eg003_export_data_from_room import Eg003ExportDataFromRoomController
-from app.docusign import authenticate
+from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.error_handlers import process_error
 
-eg = "eg003"  # reference (and URL) for this example
-eg003 = Blueprint("eg003", __name__)
+example_number = 3
+eg = f"eg00{example_number}"  # reference (and URL) for this example
+eg003 = Blueprint(eg, __name__)
 
 
-@eg003.route("/eg003", methods=["POST"])
+@eg003.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def get_field_data_from_room():
     """
@@ -22,6 +25,8 @@ def get_field_data_from_room():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg003ExportDataFromRoomController.get_args()
 
@@ -34,14 +39,14 @@ def get_field_data_from_room():
     # 3. Show field data
     return render_template(
         "example_done.html",
-        title="Field data associated with a room",
-        h1="Field data associated with a room",
+        title=example["ExampleName"],
         message="Results from the Rooms::GetRoomFieldData method:",
         json=json.dumps(json.dumps(results.to_dict()))
     )
 
 
-@eg003.route("/eg003", methods=["GET"])
+@eg003.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """
@@ -49,6 +54,8 @@ def get_view():
     2. Get rooms
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg003ExportDataFromRoomController.get_args()
 
@@ -61,7 +68,8 @@ def get_view():
     # 3. Render the response
     return render_template(
         "eg003_export_data_from_room.html",
-        title="Exporting data from a room",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg003_export_data_from_room.py",
         rooms=rooms,
     )

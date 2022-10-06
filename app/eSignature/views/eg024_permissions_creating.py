@@ -4,18 +4,20 @@ from os import path
 
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, session
 
 from ..examples.eg024_permissions_creating import Eg024PermissionsCreatingController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg024"
-eg024 = Blueprint("eg024", __name__)
+example_number = 24
+eg = f"eg0{example_number}"
+eg024 = Blueprint(eg, __name__)
 
 
-@eg024.route("/eg024", methods=["POST"])
+@eg024.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def permissions_creating():
     """
@@ -23,6 +25,7 @@ def permissions_creating():
     2. Call the worker method
     3. Render a response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required args
     args = Eg024PermissionsCreatingController.get_args()
@@ -35,22 +38,24 @@ def permissions_creating():
         # 3. Render the response
         return render_template(
             "example_done.html",
-            title="Creating a permission profile",
-            h1="Creating a permission profile",
+            title=example["ExampleName"],
             message=f"""The permission profile has been created!<br/> Permission profile ID: {permission_profile_id}."""
         )
 
     except ApiException as err:
         return process_error(err)
 
-@eg024.route("/eg024", methods=["GET"])
+@eg024.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg024_permissions_creating.html",
-        title="Creating a permission profile",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg024_permissions_creating.py",
         source_url=DS_CONFIG["github_example_url"] + "eg024_permissions_creating.py",
         documentation=DS_CONFIG["documentation"] + eg,

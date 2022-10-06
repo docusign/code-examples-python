@@ -4,18 +4,20 @@ import json
 from os import path
 
 from docusign_esign.client.api_exception import ApiException
-from flask import render_template, session, Blueprint
+from flask import render_template, session, Blueprint, session
 
 from ..examples.eg005_envelope_recipients import Eg005EnvelopeRecipientsController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg005"  # reference (and url) for this example
-eg005 = Blueprint("eg005", __name__)
+example_number = 5
+eg = f"eg00{example_number}"  # reference (and url) for this example
+eg005 = Blueprint(eg, __name__)
 
 
-@eg005.route("/eg005", methods=["POST"])
+@eg005.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def envelope_recipients():
     """
@@ -23,6 +25,7 @@ def envelope_recipients():
     2. Call the worker method
     3. Show recipients
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     if "envelope_id" in session:
         # 1. Get required arguments
@@ -35,15 +38,15 @@ def envelope_recipients():
         # 3. Show recipients
         return render_template(
             "example_done.html",
-            title="Envelope recipients results",
-            h1="List the envelope's recipients and their status",
+            title=example["ExampleName"],
             message="Results from the EnvelopesRecipients::list method:",
             json=json.dumps(json.dumps(results.to_dict()))
         )
     else:
         return render_template(
             "eg005_envelope_recipients.html",
-            title="Envelope recipient information",
+            title=example["ExampleName"],
+            example=example,
             envelope_ok=False,
             source_file= "eg005_envelope_recipients.py",
             source_url=DS_CONFIG["github_example_url"] + "eg005_envelope_recipients.py",
@@ -52,14 +55,17 @@ def envelope_recipients():
         )
 
 
-@eg005.route("/eg005", methods=["GET"])
+@eg005.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg005_envelope_recipients.html",
-        title="Envelope recipient information",
+        title=example["ExampleName"],
+        example=example,
         envelope_ok="envelope_id" in session,
         source_file= "eg005_envelope_recipients.py",
         source_url=DS_CONFIG["github_example_url"] + "eg005_envelope_recipients.py",

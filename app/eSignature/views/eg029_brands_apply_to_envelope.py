@@ -5,14 +5,16 @@ from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, session, Blueprint
 from ..examples.eg029_brands_apply_to_envelope import Eg029BrandsApplyToEnvelopeController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg029"  # Reference and URL for this example
-eg029 = Blueprint("eg029", __name__)
+example_number = 29
+eg = f"eg0{example_number}"  # Reference and URL for this example
+eg029 = Blueprint(eg, __name__)
 
-@eg029.route("/eg029", methods=["POST"])
+@eg029.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def brands_apply_to_envelope():
     """
@@ -20,6 +22,7 @@ def brands_apply_to_envelope():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required arguments
     args = Eg029BrandsApplyToEnvelopeController.get_args()
@@ -32,8 +35,7 @@ def brands_apply_to_envelope():
         # 3. Render the response
         return render_template(
             "example_done.html",
-            title="The brand applying to the envelope",
-            h1="The brand applying to the envelope",
+            title=example["ExampleName"],
             message=f"The brand has been applied to the envelope!<br/> Envelope ID: {envelope_id}."
         )
 
@@ -41,10 +43,12 @@ def brands_apply_to_envelope():
         return process_error(err)
 
 
-@eg029.route("/eg029", methods=["GET"])
+@eg029.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     args = {
         "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
@@ -58,7 +62,8 @@ def get_view():
 
     return render_template(
         "eg029_brands_apply_to_envelope.html",
-        title="Applying a brand to an envelope",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg029_brands_apply_to_envelope.py",
         source_url=DS_CONFIG["github_example_url"] + "eg029_brands_apply_to_envelope.py",
         documentation=DS_CONFIG["documentation"] + eg,

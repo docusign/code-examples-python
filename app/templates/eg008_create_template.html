@@ -1,32 +1,10 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>Create a template</h4>
-<p>Create a template with two roles, <b>signer</b> and <b>cc</b>. 
-   The template includes three documents.
-</p>
+{% include 'example_info.html' %}
 
-<p>Templates are usually created using the DocuSign web tool. This example creates
-  a template that will later be used by other examples in this launcher. </p>
-  
-<p>This example first lists the user's templates and only creates a new template if one does not already exist in your account.
-</p>
-
-{% if show_doc %}
-    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-  
-<p>API methods used:
-    <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/templates/templates/list/">Templates::list</a>,
-    <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/templates/templates/create/">Templates::create</a>.
-</p>
-
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
-  
   <form class="eg" action="" method="post" data-busy="form">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      <button type="submit" class="btn btn-docu">Continue</button>
+      {% include 'continue_button.html' %}
   </form>
   
 {% endblock %}

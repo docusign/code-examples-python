@@ -5,20 +5,24 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, Blueprint
 
+from ...docusign import ensure_manifest, get_example_by_number
 from ..examples.eg009_use_template import Eg009UseTemplateController
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg009"  # reference (and url) for this example
-eg009 = Blueprint("eg009", __name__)
+example_number = 9
+eg = f"eg00{example_number}"  # reference (and url) for this example
+eg009 = Blueprint(eg, __name__)
 
 
-@eg009.route("/eg009", methods=["POST"])
+@eg009.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 def use_template():
     """
     1. 1. Get required arguments
     2. Call the worker method
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     if "template_id" in session:
         # 1. Get required arguments
@@ -42,7 +46,8 @@ def use_template():
     else:
         return render_template(
             "eg009_use_template.html",
-            title="Use a template to send an envelope",
+            title=example["ExampleName"],
+            example=example,
             template_ok=False,
             source_file= "eg009_use_template.py",
             source_url=DS_CONFIG["github_example_url"] + "eg009_use_template.py",
@@ -51,13 +56,16 @@ def use_template():
         )
 
 
-@eg009.route("/eg009", methods=["GET"])
+@eg009.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg009_use_template.html",
-        title="Use a template to send an envelope",
+        title=example["ExampleName"],
+        example=example,
         template_ok="template_id" in session,
         source_file= "eg009_use_template.py",
         source_url=DS_CONFIG["github_example_url"] + "eg009_use_template.py",

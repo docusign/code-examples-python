@@ -1,33 +1,20 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<h4>List envelope recipients</h4>
-<p>Includes current recipient status.</p>
+{% include 'example_info.html' %}
 
-{% if show_doc %}
-    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
-  
-  <p>API method used: 
-   <a target='_blank' href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/enveloperecipients/list/">EnvelopeRecipients::list</a>.
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set redirect_to2_index = 0 %}
 
 {% if envelope_ok %}
-  <p>The envelope you created via Request a signature by email (remote signing) will be queried.</p>
-  
   <form class="eg" action="" method="post" data-busy="form">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      <button type="submit" class="btn btn-docu">Continue</button>
+      {% include 'continue_button.html' %}
   </form>
 
 {% else %}
-  <p>Problem: please first create an envelope using <a href="eg002">Request a signature by email (remote signing).</a> <br/>
-     Thank you.</p>
+  {{ example['RedirectsToOtherCodeExamples'][redirect_to2_index]['RedirectText'].format('href="eg002"') | safe }}
      
   <form class="eg" action="eg002" method="get">
-      <button type="submit" class="btn btn-docu">Continue</button>
+      {% include 'continue_button.html' %}
   </form>
 {% endif %}
   

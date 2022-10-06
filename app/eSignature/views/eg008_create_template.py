@@ -6,15 +6,17 @@ from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, Blueprint
 
 from ..examples.eg008_create_template import Eg008CreateTemplateController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg008"  # reference (and url) for this example
-eg008 = Blueprint("eg008", __name__)
+example_number = 8
+eg = f"eg00{example_number}"  # reference (and url) for this example
+eg008 = Blueprint(eg, __name__)
 
 
-@eg008.route("/eg008", methods=["POST"])
+@eg008.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def create_template():
     """
@@ -22,6 +24,7 @@ def create_template():
     2. Call the worker method
     3. Render template info
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required arguments
     args = Eg008CreateTemplateController.get_args()
@@ -47,13 +50,16 @@ def create_template():
     )
 
 
-@eg008.route("/eg008", methods=["GET"])
+@eg008.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg008_create_template.html",
-        title="Create a template",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg008_create_template.py",
         source_url=DS_CONFIG["github_example_url"] + "eg008_create_template.py",
         documentation=DS_CONFIG["documentation"] + eg,

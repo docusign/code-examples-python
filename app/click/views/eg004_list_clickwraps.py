@@ -7,15 +7,17 @@ from docusign_click.client.api_exception import ApiException
 from flask import render_template, current_app, Blueprint, session
 
 from ..examples.eg004_list_clickwraps import Eg004ListClickwrapsController
-from app.docusign import authenticate
+from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
 
-eg = "eg004"  # Reference (and URL) for this example
-eg004 = Blueprint("eg004", __name__)
+example_number = 4
+eg = f"eg00{example_number}"  # Reference (and URL) for this example
+eg004 = Blueprint(eg, __name__)
 
 
-@eg004.route("/eg004", methods=["POST"])
+@eg004.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
 @authenticate(eg=eg)
 def clickwrap_list():
     """
@@ -23,6 +25,8 @@ def clickwrap_list():
     2. Call the worker method
     3. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
+
     # 1. Get required arguments
     args = Eg004ListClickwrapsController.get_args()
 
@@ -35,20 +39,23 @@ def clickwrap_list():
     # 3. Render the response
     return render_template(
         "example_done.html",
-        title="Get a list of clickwraps",
-        h1="Get a list of clickwraps",
+        title=example["ExampleName"],
         message="Results from the ClickWraps::getClickwraps method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
 
-@eg004.route("/eg004", methods=["GET"])
+@eg004.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
+
     return render_template(
         "eg004_list_clickwraps.html",
-        title="Getting a list of clickwraps",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg004_list_clickwraps.py",
         source_url=DS_CONFIG["click_github_url"] + "eg004_list_clickwraps.py",
     )

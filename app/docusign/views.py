@@ -4,18 +4,32 @@ from flask import redirect, request, url_for, flash, render_template, Blueprint,
 
 import json
 from .ds_client import DSClient
-from .utils import ds_logout_internal
+from .utils import ds_logout_internal, get_manifest
 from ..consts import base_uri_suffix
 from ..ds_config import DS_CONFIG
 from ..api_type import EXAMPLES_API_TYPE
 
 ds = Blueprint("ds", __name__, url_prefix="/ds")
 
+if EXAMPLES_API_TYPE["Rooms"]:
+    manifest_url = DS_CONFIG["rooms_manifest_url"]
+elif EXAMPLES_API_TYPE["Click"]:
+    manifest_url = DS_CONFIG["click_manifest_url"]
+elif EXAMPLES_API_TYPE["Monitor"]:
+    manifest_url = DS_CONFIG["monitor_manifest_url"]
+elif EXAMPLES_API_TYPE["Admin"]:
+    manifest_url = DS_CONFIG["admin_manifest_url"]
+else:
+    manifest_url = DS_CONFIG["esign_manifest_url"]
 
 @ds.route("/login", methods=["GET", "POST"])
 def ds_login():
+    if session.get('manifest'):
+        session.pop('manifest')
+
     if not session.get("auth_type"):
         session["auth_type"] = request.form.get("auth_type")
+
     app.config["isLoggedIn"] = True
     app.config["quickstart"] = DS_CONFIG["quickstart"]
     return DSClient.login(session["auth_type"])
@@ -27,11 +41,13 @@ def ds_logout():
     flash("You have logged out from DocuSign.")
     app.config["isLoggedIn"] = False
     app.config["quickstart"] = False
+
     return redirect(url_for("core.index"))
 
 @ds.route("/choose_api")
 def choose_api():
-    return render_template("choose_api.html", title="Choose API")
+    session["manifest"] = get_manifest(manifest_url)
+    return render_template("choose_api.html", title="Choose API", manifest=session["manifest"])
 
 @ds.route("/api_selected", methods=["GET", "POST"])
 def api_selected():
@@ -65,7 +81,8 @@ def api_selected():
     app.config["isLoggedIn"] = False
     app.config["quickstart"] = False
 
-    return render_template("must_authenticate.html", title="Must authenticate", chosen_api=chosen_api)
+    session["manifest"] = get_manifest(manifest_url)
+    return render_template("must_authenticate.html", title="Must authenticate", chosen_api=chosen_api, manifest=session["manifest"])
 
 
 @ds.route("/callback")
@@ -125,7 +142,8 @@ def ds_must_authenticate():
         return redirect(url_for("ds.ds_login"))
 
     else:
-        return render_template("must_authenticate.html", title="Must authenticate")
+        session["manifest"] = get_manifest(manifest_url)
+        return render_template("must_authenticate.html", title="Must authenticate", manifest=session["manifest"])
 
 
 @ds.route("/ds_return")
@@ -134,11 +152,14 @@ def ds_return():
     state = request.args.get("state")
     envelope_id = request.args.get("envelopeId")
     DS_CONFIG["quickstart"] = "false"
+
+    session["manifest"] = get_manifest(manifest_url)
     return render_template(
         "ds_return.html",
         title="Return from DocuSign",
         event=event,
         envelope_id=envelope_id,
-        state=state
+        state=state,
+        manifest=session["manifest"]
     )
         

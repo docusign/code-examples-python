@@ -5,26 +5,28 @@ import os
 from os import path
 import time
 
-from flask import Blueprint, render_template, request, Response, current_app
+from flask import Blueprint, render_template, request, Response, current_app, session
 from docusign_admin.client.api_exception import ApiException
 
 from app.error_handlers import process_error
-from app.docusign import authenticate
+from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.ds_config import DS_CONFIG
 from ..examples.eg004_add_users_via_bulk_import import Eg004AddUsersViaBulkImportController
 
-
-eg = "eg004"  # Reference(and URL) for this example
+example_number = 4
+eg = f"eg00{example_number}"  # Reference(and URL) for this example
 eg004 = Blueprint(eg, __name__)
 
 
-@eg004.route("/eg004", methods=["POST"])
+@eg004.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def add_users_via_bulk_import():
     """
     1. Call the worker method
     2. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     controller = Eg004AddUsersViaBulkImportController()
 
@@ -39,23 +41,25 @@ def add_users_via_bulk_import():
     return render_template(
         "example_done.html",
         check_status = True,
-        title="Add users via bulk import",
-        h1="Add users via bulk import",
+        title=example["ExampleName"],
         message=f"Results from UserImport:addBulkUserImport method:",
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
-@eg004.route("/eg004", methods=["GET"])
+@eg004.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """
     Responds with the form for the example
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # Render the response
     return render_template(
         "eg004_add_users_via_bulk_import.html",
-        title="Add users via bulk import",
+        title=example["ExampleName"],
+        example=example,
         source_file="eg004_add_users_via_bulk_import.py",
         source_url=DS_CONFIG["admin_github_url"] + "eg004_add_users_via_bulk_import.py",
         documentation=DS_CONFIG["documentation"] + eg,
@@ -82,12 +86,14 @@ def get_csv():
     )
 
 @eg004.route("/eg004check", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
 @authenticate(eg=eg)
 def check_if_request_ready():
     """
     1. Checking if the request is complete
     2. Render the response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # Check if request is complete
     try:
@@ -102,8 +108,7 @@ def check_if_request_ready():
     else:
         return render_template(
             "example_done.html",
-            title="Add users via bulk import",
-            h1="Add users via bulk import",
+            title=example["ExampleName"],
             message=f"Results from UserImport:getBulkUserImportRequest method:",
             json=json.dumps(json.dumps(results.to_dict(), default=str))
         )

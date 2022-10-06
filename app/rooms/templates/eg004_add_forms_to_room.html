@@ -1,46 +1,40 @@
 <!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
 <div class="container">
-<h4>4. Adding forms to a room</h4>
-<p>This example demonstrates how to attach forms to a DocuSign Room.</p>
 
-{% if show_doc %}
-  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
+{% include 'example_info.html' %}
 
-<p>API methods used:
-    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Rooms/Rooms/GetRooms">Rooms::GetRooms</a>,
-    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Forms/FormLibraries/GetFormLibraries">Forms::GetFormLibraries</a>,<br/>
-    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Forms/FormLibraries/GetFormLibraryForms">Forms::GetFormLibraryForms</a> and
-    <a target ='_blank' href="https://developers.docusign.com/rooms-api/reference/Rooms/Rooms/AddFormToRoom">Rooms::AddFormToRoom</a>
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set form_index = 0 %}
+{%  set room_id_index = 0 %}
+{%  set form_id_index = 1 %}
+{%  set redirect_to1_index = 0 %}
 
 <form class="eg" action="" method="post" data-busy="form">
     {% if rooms %}
-    <div class="form-group">
-        <label for="room_id">Room</label>
-            <select class="form-control" id="room_id" name="room_id">
-                {% for room in rooms %}
-                    <option value="{{ room.room_id }}">{{ room.name }}</option>
-                {% endfor %}
-            </select>
-    </div>
-    <div class="form-group">
-        <label for="form_id">Form</label>
-            <select class="form-control" id="form_id" name="form_id">
-                {% for form in forms %}
-                    <option value="{{ form.library_form_id }}">{{ form.name }}</option>
-                {% endfor %}
-            </select>
-    </div>
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Submit</button>
+        {% if 'FormName' in example['Forms'][form_index] %}
+            <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="room_id">{{ example['Forms'][form_index]['Inputs'][room_id_index]['InputName'] }}</label>
+                <select class="form-control" id="room_id" name="room_id">
+                    {% for room in rooms %}
+                        <option value="{{ room.room_id }}">{{ room.name }}</option>
+                    {% endfor %}
+                </select>
+        </div>
+        <div class="form-group">
+            <label for="form_id">{{ example['Forms'][form_index]['Inputs'][form_id_index]['InputName'] }}</label>
+                <select class="form-control" id="form_id" name="form_id">
+                    {% for form in forms %}
+                        <option value="{{ form.library_form_id }}">{{ form.name }}</option>
+                    {% endfor %}
+                </select>
+        </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% include 'submit_button.html' %}
     {% else %}
-      <p>Problem: please first create a room using <a href="eg001Rooms">example 1</a> or <a href="eg002">example 2</a> <br/>
-            Thank you.</p>
+        {{ example['RedirectsToOtherCodeExamples'][redirect_to1_index]['RedirectText'].format('href="eg001"') | safe }}
     {% endif %}
   </form>
 

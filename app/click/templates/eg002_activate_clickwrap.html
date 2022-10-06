@@ -2,30 +2,23 @@
 
 <div class="container">
 
-<h4>2. Activate a clickwrap</h4>
-<p>Activates a new clickwrap that you have already created. By default, new clickwraps are 
-    inactive. You must activate your clickwrap before you can use it.</p>
+{% include 'example_info.html' %}
 
-{% include 'documentation.html' %}
-
-<p>API method used:
-    <a target='_blank'
-       href="https://developers.docusign.com/docs/click-api/reference/accounts/clickwraps/updateclickwrapversion">ClickWraps::updateClickwrapVersion</a>
-</p>
-
-{% include 'github_source.html' %}
+{%  set form_index = 0 %}
+{%  set click_index = 0 %}
+{%  set redirect_to1_index = 0 %}
 
 {% if clickwraps_data['clickwraps'][0] is undefined %}
-<p class="">
-    Problem: You do not have clickwraps to activate. Go to example#1 and create one: <a
-        href="eg001">create clickwrap.</a> <br/>
-</p>
+    {{ example['RedirectsToOtherCodeExamples'][redirect_to1_index]['RedirectText'].format('href="eg001"') | safe }}
 {% else %}
-<p>Please choose a clickwrap to activate</p>
 
 <form class="eg" action="" method="post" data-busy="form-download">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
     <div class="form-group">
-        <label for="clickwrap">Clickwrap</label>
+        <label for="clickwrap">{{ example['Forms'][form_index]['Inputs'][click_index]['InputName'] }}</label>
         <select class="custom-select" id="clickwrap"
                 name="clickwrap">
             {% for clickwrap in clickwraps_data['clickwraps'] %}
@@ -34,7 +27,7 @@
         </select>
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Submit</button>
+    {% include 'submit_button.html' %}
 </form>
 {% endif %}
 

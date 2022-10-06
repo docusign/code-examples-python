@@ -2,26 +2,22 @@
 
 <div class="container">
 
-<h4>1. Create a clickwrap</h4>
-<p>Creates a clickwrap that you can embed in your website or app.</p>
+{% include 'example_info.html' %}
 
-{% include 'documentation.html' %}
-
-<p>API method used:
-    <a target='_blank'
-       href="https://developers.docusign.com/docs/click-api/reference/accounts/clickwraps/createclickwrap/">ClickWraps::createClickwrap</a>
-</p>
-
-{% include 'github_source.html' %}
+{%  set form_index = 0 %}
+{%  set click_name_index = 0 %}
 
 <form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
     <div class="form-group">
-        <label for="clickwrap_name">Clickwrap name</label>
+        <label for="clickwrap_name">{{ example['Forms'][form_index]['Inputs'][click_name_index]['InputName'] }}</label>
         <input type="text" class="form-control" id="clickwrap_name"
                name="clickwrap_name" required>
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Submit</button>
+    {% include 'submit_button.html' %}
 </form>
 
 </div>

@@ -16,19 +16,19 @@ def get_jwt_token(private_key, scopes, auth_server, client_id, impersonated_user
     return response
 
 def get_private_key(private_key_path):
-        """
-        Check that the private key present in the file and if it is, get it from the file.
-        In the opposite way get it from config variable.
-        """
-        private_key_file = path.abspath(private_key_path)
+    """
+    Check that the private key present in the file and if it is, get it from the file.
+    In the opposite way get it from config variable.
+    """
+    private_key_file = path.abspath(private_key_path)
 
-        if path.isfile(private_key_file):
-            with open(private_key_file) as private_key_file:
-                private_key = private_key_file.read()
-        else:
-            private_key = private_key_path
+    if path.isfile(private_key_file):
+        with open(private_key_file) as private_key_file:
+            private_key = private_key_file.read()
+    else:
+        private_key = private_key_path
 
-        return private_key
+    return private_key
 
 def create_api_client(base_path, access_token):
     """Create api client and construct API headers"""

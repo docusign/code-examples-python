@@ -20,9 +20,9 @@ def get_organization_id():
     access_token = session["ds_access_token"]
     api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
     api_client.set_default_header(
-            header_name="Authorization",
-            header_value=f"Bearer {access_token}"
-        )
+        header_name="Authorization",
+        header_value=f"Bearer {access_token}"
+    )
 
     accounts_api = AccountsApi(api_client)
     organizations = accounts_api.get_organizations()
@@ -36,9 +36,9 @@ def check_user_exists_by_email(user_email):
     access_token = session["ds_access_token"]
     api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
     api_client.set_default_header(
-            header_name="Authorization",
-            header_value=f"Bearer {access_token}"
-        )
+        header_name="Authorization",
+        header_value=f"Bearer {access_token}"
+    )
 
     users_api = UsersApi(api_client)
     response = users_api.get_users(organization_id=get_organization_id(), email=user_email)

@@ -14,7 +14,7 @@ from ..error_handlers import process_error
 from ..jwt_helpers import get_jwt_token, get_private_key
 
 SCOPES = [
-     "signature"
+    "signature"
 ]
 
 ROOMS_SCOPES = [
@@ -126,12 +126,9 @@ class DSClient:
 
         return redirect(url_for("ds.ds_callback"))
 
-
-
     @classmethod
     def destroy(cls):
         cls.ds_app = None
-
 
     @classmethod
     def login(cls, auth_type):

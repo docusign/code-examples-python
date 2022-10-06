@@ -3,18 +3,20 @@
 from os import path
 
 from docusign_esign.client.api_exception import ApiException
-from flask import render_template, redirect, Blueprint
+from flask import render_template, redirect, Blueprint, session
 
 from ..examples.eg038_responsive_signing import Eg038ResponsiveSigning
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg038"  # reference (and url) for this example
-eg038 = Blueprint("eg038", __name__)
+example_number = 38
+eg = f"eg0{example_number}"  # reference (and url) for this example
+eg038 = Blueprint(eg, __name__)
 
 
-@eg038.route("/eg038", methods=["POST"])
+@eg038.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def embedded_signing():
     """
@@ -37,13 +39,17 @@ def embedded_signing():
     return redirect(results["redirect_url"])
 
 
-@eg038.route("/eg038", methods=["GET"])
+@eg038.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
+
     return render_template(
         "eg038_responsive_signing.html",
-        title="Responsive signing",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg038_responsive_signing.py",
         source_url=DS_CONFIG["github_example_url"] + "eg038_responsive_signing.py",
         documentation=DS_CONFIG["documentation"] + eg,

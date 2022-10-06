@@ -5,14 +5,16 @@ from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, session, request, Blueprint
 from ..examples.eg027_permissions_delete import Eg027PermissionsDeleteController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg027"
-eg027 = Blueprint("eg027", __name__)
+example_number = 27
+eg = f"eg0{example_number}"
+eg027 = Blueprint(eg, __name__)
 
-@eg027.route("/eg027", methods=["POST"])
+@eg027.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def permissions_delete():
     """
@@ -20,6 +22,7 @@ def permissions_delete():
     2. Call the worker method
     3. Render success response
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     args = Eg027PermissionsDeleteController.get_args()
     try:
@@ -30,18 +33,19 @@ def permissions_delete():
         # 3. Render success response
         return render_template(
             "example_done.html",
-            title="Deleting a permission profile",
-            h1="Deleting a permission profile",
+            title=example["ExampleName"],
             message=f"The permission profile has been deleted!<br/>"
         )
 
     except ApiException as err:
         return process_error(err)
 
-@eg027.route("/eg027", methods=["GET"])
+@eg027.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     args = {
         "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
@@ -51,7 +55,8 @@ def get_view():
     permission_profiles = Eg027PermissionsDeleteController.get_permissions_profiles(args)
     return render_template(
         "eg027_permissions_delete.html",
-        title="Deleting a permission profile",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg027_permissions_delete.py",
         source_url=DS_CONFIG["github_example_url"] + "eg027_permissions_delete.py",
         documentation=DS_CONFIG["documentation"] + eg,

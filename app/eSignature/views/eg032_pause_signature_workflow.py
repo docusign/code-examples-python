@@ -7,15 +7,17 @@ from docusign_esign.client.api_exception import ApiException
 from flask import render_template, session, Blueprint
 
 from ..examples.eg032_pause_signature_workflow import Eg032PauseSignatureWorkflowController
-from ...docusign import authenticate
+from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
 
-eg = "eg032"  # Reference (and URL) for this example
-eg032 = Blueprint("eg032", __name__)
+example_number = 32
+eg = f"eg0{example_number}"  # Reference (and URL) for this example
+eg032 = Blueprint(eg, __name__)
 
 
-@eg032.route("/eg032", methods=["POST"])
+@eg032.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def pause_signature_workflow():
     """
@@ -23,6 +25,7 @@ def pause_signature_workflow():
     2. Call the worker method
     3. Render success response with envelopeId
     """
+    example = get_example_by_number(session["manifest"], example_number)
 
     # 1. Get required arguments
     args = Eg032PauseSignatureWorkflowController.get_args()
@@ -37,8 +40,7 @@ def pause_signature_workflow():
     # 2. Render success response with envelopeId
     return render_template(
         "example_done.html",
-        title="Envelope sent",
-        h1="Envelope sent",
+        title=example["ExampleName"],
         message=f"The envelope has been created and sent!"
                 f"<br/>Envelope ID {results['paused_envelope_id']}.<br/>"
                 f"<p>To resume a workflow after the first recipient signs "
@@ -46,14 +48,17 @@ def pause_signature_workflow():
     )
 
 
-@eg032.route("/eg032", methods=["GET"])
+@eg032.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
 @authenticate(eg=eg)
 def get_view():
     """Responds with the form for the example"""
+    example = get_example_by_number(session["manifest"], example_number)
 
     return render_template(
         "eg032_pause_signature_workflow.html",
-        title="Pausing a signature workflow",
+        title=example["ExampleName"],
+        example=example,
         source_file= "eg032_pause_signature_workflow.py",
         source_url=DS_CONFIG["github_example_url"] + "eg032_pause_signature_workflow.py",
         documentation=DS_CONFIG["documentation"] + eg,

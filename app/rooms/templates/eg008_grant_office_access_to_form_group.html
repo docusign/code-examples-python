@@ -2,43 +2,38 @@
 {% block content %}
 
 <div class="container">
-<h4>8. Grant office access to a form group</h4>
-<p>This example demonstrates how to grant Office access to a Form Group.</p>
 
-{% if show_doc %}
-  <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-{% endif %}
+{% include 'example_info.html' %}
 
-<p>API methods used:
-    <a target ='_blank' href="https://developers.docusign.com/docs/rooms-api/how-to/access-form-group/">Rooms::AccessFormGroup</a>,
-    <a target ='_blank' href="https://developers.docusign.com/docs/rooms-api/reference/forms/formgroups/getformgroups/">FormGroups::GetFormGroups</a> and
-    <a target ='_blank' href="https://developers.docusign.com/docs/rooms-api/reference/offices/offices/getoffices/">Offices::GetOffices</a>
-</p>
-<p>
-    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-</p>
+{%  set form_index = 0 %}
+{%  set office_index = 0 %}
+{%  set form_group_index = 1 %}
+{%  set redirect_to7_index = 0 %}
 
 <form class="eg" action="" method="post" data-busy="form">
     {% if form_groups %}
-    <div class="form-group">
-        <label for="office_id">Office</label>
-            <select class="form-control" id="office_id" name="office_id">
-                {% for office in offices %}
-                    <option value="{{ office.office_id }}">{{ office.name }}</option>
-                {% endfor %}
-            </select>
-        <label for="form_group_id">FormGroup</label>
-            <select class="form-control" id="form_group_id" name="form_group_id">
-                {% for form_group in form_groups %}
-                <option value="{{ form_group.form_group_id }}">{{ form_group.name }}</option>
-                {% endfor %}
-            </select>
-    </div>
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <button type="submit" class="btn btn-docu">Submit</button>
+        {% if 'FormName' in example['Forms'][form_index] %}
+            <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="office_id">{{ example['Forms'][form_index]['Inputs'][office_index]['InputName'] }}</label>
+                <select class="form-control" id="office_id" name="office_id">
+                    {% for office in offices %}
+                        <option value="{{ office.office_id }}">{{ office.name }}</option>
+                    {% endfor %}
+                </select>
+            <label for="form_group_id">{{ example['Forms'][form_index]['Inputs'][form_group_index]['InputName'] }}</label>
+                <select class="form-control" id="form_group_id" name="form_group_id">
+                    {% for form_group in form_groups %}
+                    <option value="{{ form_group.form_group_id }}">{{ form_group.name }}</option>
+                    {% endfor %}
+                </select>
+        </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% include 'submit_button.html' %}
     {% else %}
-      <p>Problem: please first create a form_group using <a href="eg007">example 7</a>
-          </br>Thank you.</p>
+        {{ example['RedirectsToOtherCodeExamples'][redirect_to7_index]['RedirectText'].format('href="eg007"') | safe }}
     {% endif %}
   </form>
 
