@@ -73,6 +73,7 @@ For a list of code examples that use the Admin API, select the Python tab under 
    where {base_url} is the URL for the web app.
 
 1. Python 3.
+1. If you are working on a Windows with a Python version after 3.10 you will also need to install [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022). After installing that run `pip install --upgrade setuptools`.
 
 ### Installation steps
 
