@@ -76,7 +76,6 @@ def ds_must_authenticate():
 
 @ds.route("/logout")
 def ds_logout():
-    ds_logout_internal()
     flash("You have logged out from DocuSign.")
     app.config["isLoggedIn"] = False
     app.config["quickstart"] = False
