@@ -1,0 +1,24 @@
+<h4>{{ title }}</h4>
+<p>{{ example["ExampleDescription"] | safe }}</p>
+
+{% if show_doc %}
+    <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
+{% endif %}
+
+{% if "Note" in example %}
+    <p>{{ example["Note"] | safe }}</p>
+{% endif %}
+
+{% if example["LinksToAPIMethod"] | length > 1 %}
+    {{ session["manifest"]["SupportingTexts"]["APIMethodUsedPlural"] | safe }}
+{% else %}
+    {{ session["manifest"]["SupportingTexts"]["APIMethodUsed"] | safe }}
+{% endif %}
+
+{% for link in example["LinksToAPIMethod"] -%}
+    <a target='_blank' href="{{ link['Path'] }}">{{ link['PathName'] }}</a>
+{% endfor %}
+
+<p>
+    View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
+</p>
