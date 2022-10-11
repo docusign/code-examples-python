@@ -1,6 +1,7 @@
 import json
 
 from flask import render_template
+from .api_type import EXAMPLES_API_TYPE
 
 
 def process_error(err):
@@ -16,6 +17,10 @@ def process_error(err):
     # Handle error specific for use conditional recipients example (eg34)
     if error_code == "WORKFLOW_UPDATE_RECIPIENTROUTING_NOT_ALLOWED":
         return render_template("error_eg34.html")
+    
+    if EXAMPLES_API_TYPE["Monitor"]:
+        if ("(403" in str(err)):
+            return render_template("error_enable_monitor.html")
 
     # In production, may want to provide customized error messages and
     # remediation advice to the user.
