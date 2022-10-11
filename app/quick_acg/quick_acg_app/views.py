@@ -74,6 +74,15 @@ def ds_must_authenticate():
     session["auth_type"] = "code_grant"
     return redirect(url_for("ds.ds_login"))
 
+@ds.route("/logout")
+def ds_logout():
+    ds_logout_internal()
+    flash("You have logged out from DocuSign.")
+    app.config["isLoggedIn"] = False
+    app.config["quickstart"] = False
+
+    return redirect(url_for("core.index"))
+
 @ds.route("/ds_return")
 def ds_return():
     return redirect(url_for("core.index"))
