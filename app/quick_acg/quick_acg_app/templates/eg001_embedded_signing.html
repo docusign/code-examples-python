@@ -1,72 +1,30 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
-    <title>{{ title }}</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <!-- Custom styles for this template -->
-</head>
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
 
-<body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" target="_blank" href="https://developers.docusign.com">DocuSign Developer</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto"></ul>
-        {% if session['ds_user_name'] %}
-        <span class="navbar-text">
-            Welcome {{ session['ds_user_name'] }}
-        </span>
-        {% endif %}
+{% include 'example_info.html' %}
+
+{%  set signer_form_index = 0 %}
+{%  set signer_email_index = 0 %}
+{%  set signer_name_index = 1 %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][signer_form_index] %}
+        <p>{{ example['Forms'][signer_form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="signer_email">{{ example['Forms'][signer_form_index]['Inputs'][signer_email_index]['InputName'] }}</label>
+      <input type="email" class="form-control" id="signer_email" name="signer_email"
+             aria-describedby="emailHelp" placeholder="{{ example['Forms'][signer_form_index]['Inputs'][signer_email_index]['InputPlaceholder'] }}" required
+             value="{{ signer_email }}">
+      <small id="emailHelp" class="form-text text-muted">{{ session['manifest']['SupportingTexts']['HelpingTexts']['EmailWontBeShared'] | safe}}</small>
     </div>
-</nav>
-<div class="container">
-    <section id="content" style="padding-top: 90px;">
-        <h4>Request a signature through your app (embedded signing)</h4>
-        <p>Sends an envelope, then uses embedded signing for the first signer. With embedded signing, DocuSign signing is
-            initiated from your website.</p>
-
-        {% if show_doc %}
-        <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
-        {% endif %}
-
-        <p>API methods used:
-            <a target='_blank'
-               href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopes/create/">Envelopes::create</a>
-            and
-            <a target='_blank'
-               href="https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopeviews/createrecipient/">EnvelopeViews::createRecipient</a>.
-        </p>
-        <p>
-            View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
-        </p>
-
-        <form class="eg" action="" method="post" data-busy="form">
-            <div class="form-group">
-                <label for="signer_email">Signer Email</label>
-                <input type="email" class="form-control" id="signer_email" name="signer_email"
-                       aria-describedby="emailHelp" placeholder="pat@example.com" required
-                       value="{{ signer_email }}">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-                <label for="signer_name">{{ example['Forms'][recipient_form_index]['Inputs'][signer_name_index]['InputName'] }}</label>
-                <input type="text" class="form-control" id="signer_name" placeholder="Pat Johnson" name="signer_name"
-                       value="{{ signer_name }}" required>
-            </div>
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <button type="submit" class="btn btn-docu">Submit</button>
-        </form>
-    </section>
-</div>
-</body>
-</html>
+    <div class="form-group">
+      <label for="signer_name">{{ example['Forms'][signer_form_index]['Inputs'][signer_name_index]['InputName'] }}</label>
+      <input type="text" class="form-control" id="signer_name" placeholder="{{ example['Forms'][signer_form_index]['Inputs'][signer_name_index]['InputPlaceholder'] }}" name="signer_name"
+             value="{{ signer_name }}" required>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'submit_button.html' %}
+  </form>
+  
+{% endblock %}
