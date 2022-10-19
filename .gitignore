@@ -119,3 +119,7 @@ fabric.properties
 
 # Security key files
 private.key
+
+# Current flask session
+
+flask_session/

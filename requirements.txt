@@ -7,10 +7,11 @@ cryptography==3.3.2
 docusign-esign==3.16.0
 docusign-rooms==1.1.0
 docusign-monitor==1.1.0
-docusign-click==1.0.0
+docusign-click==1.1.0
 docusign-admin==1.1.1
 Flask==1.1.1
 Flask-OAuthlib==0.9.6
+Flask-Session
 flask-wtf==0.14.3
 flake8==5.0.4
 idna==2.8
@@ -21,7 +22,7 @@ lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
 mccabe==0.7.0
 oauthlib==2.1.0
-pipenv==2018.11.26
+pipenv==2022.1.8
 py-oauth2==0.0.10
 pycparser==2.19
 pylint==2.14.1
