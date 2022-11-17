@@ -1,0 +1,75 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<div class="container">
+
+{% include 'example_info.html' %}
+{%  set form_index = 0 %}
+{%  set click_index = 0 %}
+{% set full_name_index = 1 %}
+{% set email_index = 2 %}
+{% set company_index = 3 %}
+{% set title_index = 4 %}
+{% set date_index = 5 %}
+{%  set redirect_to1_index = 0 %}    
+{% set redirect_to2_index = 1 %}    
+
+
+{% if inactive_clickwraps_data['clickwraps'][0] is defined and clickwraps_data['clickwraps'][0] is undefined %}
+    {{ example['RedirectsToOtherCodeExamples'][redirect_to2_index]['RedirectText'].format('href="eg002"') | safe }}
+{% elif clickwraps_data['clickwraps'][0] is undefined %}
+    {{ example['RedirectsToOtherCodeExamples'][redirect_to1_index]['RedirectText'].format('href="eg001"') | safe }}    
+{% else %}
+
+<form class="eg" action="" method="post" data-busy="form-download">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <div class="form-group">
+        <label for="clickwrap">{{ example['Forms'][form_index]['Inputs'][click_index]['InputName'] }}</label>
+        <select class="custom-select" id="clickwrap"
+                name="clickwrap">
+            {% for clickwrap in clickwraps_data['clickwraps'] %}
+            <option value="{{ clickwrap }}">{{ clickwrap['clickwrap_name'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+ 
+     <div class="form-group">
+        <label for="fullName">{{ example['Forms'][form_index]['Inputs'][full_name_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="fullName"
+               name="fullName" required>
+    </div>    
+ 
+    <div class="form-group">
+        <label for="email">{{ example['Forms'][form_index]['Inputs'][email_index]['InputName'] }}</label>
+        <input type="email" class="form-control" id="email"
+               name="email" required>
+    </div>    
+    
+    <div class="form-group">
+        <label for="company">{{ example['Forms'][form_index]['Inputs'][company_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="company"
+               name="company" required>
+    </div>  
+   
+    <div class="form-group">
+        <label for="title">{{ example['Forms'][form_index]['Inputs'][title_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="title"
+               name="title" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="date">{{ example['Forms'][form_index]['Inputs'][date_index]['InputName'] }}</label>
+        <input type="date" class="form-control" id="date"
+               name="date" required>
+    </div>    
+       
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'submit_button.html' %}
+</form>
+{% endif %}
+
+</div>
+
+{% endblock %}
