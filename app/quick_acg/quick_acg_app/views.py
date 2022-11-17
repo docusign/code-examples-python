@@ -65,6 +65,8 @@ def ds_callback():
         session["ds_account_name"] = account["account_name"]
         session["ds_base_path"] = account["base_uri"] + base_uri_suffix
 
+    session["is_cfr"] = is_cfr(session["ds_access_token"], session["ds_account_id"], session["ds_base_path"])
+
     if not redirect_url:
         redirect_url = url_for("core.index")
     return redirect(redirect_url)

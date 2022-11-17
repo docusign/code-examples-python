@@ -52,6 +52,9 @@ def get_view():
     """Responds with the form for the example"""
     example = get_example_by_number(session["manifest"], example_number)
 
+    if "is_cfr" in session and session["is_cfr"] == "enabled":
+        return render_template("cfr_error.html", title="Error")
+
     return render_template(
         "eg034_use_conditional_recipients.html",
         title=example["ExampleName"],

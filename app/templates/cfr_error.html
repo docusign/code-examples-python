@@ -1,0 +1,13 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+{% set title = "Error" %}
+{% block content %}
+
+<h2>Problem: an error occurred</h2>
+<p>Error information:</p>
+
+<p>{{ session['manifest']['SupportingTexts']['CFRError'] }}</p>
+
+<p><a href="/">Continue</a></p>
+  
+{% endblock %}

@@ -4,7 +4,7 @@ from flask import redirect, request, url_for, flash, render_template, Blueprint,
 
 import json
 from .ds_client import DSClient
-from .utils import ds_logout_internal, get_manifest
+from .utils import ds_logout_internal, get_manifest, is_cfr
 from ..consts import base_uri_suffix
 from ..ds_config import DS_CONFIG
 from ..api_type import EXAMPLES_API_TYPE
@@ -125,6 +125,8 @@ def ds_callback():
         session["ds_account_id"] = account["account_id"]
         session["ds_account_name"] = account["account_name"]
         session["ds_base_path"] = account["base_uri"] + base_uri_suffix
+
+    session["is_cfr"] = is_cfr(session["ds_access_token"], session["ds_account_id"], session["ds_base_path"])
 
     if not redirect_url:
         redirect_url = url_for("core.index")

@@ -46,7 +46,8 @@ def index():
     if DS_CONFIG["quickstart"] == "true":
         app.config["quickstart"] = False
         return redirect(url_for("eg001.get_view"))
-        
+    if "is_cfr" in session and session["is_cfr"] == "enabled":
+        return render_template("cfr_home.html", title="Home - Python Code Examples", manifest=session["manifest"])
     else:
         return render_template("home.html", title="Home - Python Code Examples", manifest=session["manifest"])
 

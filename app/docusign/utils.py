@@ -4,7 +4,7 @@ import requests
 import urllib
 import json
 
-from docusign_esign import ApiClient
+from docusign_esign import ApiClient, AccountsApi
 from flask import session, flash, url_for, redirect, render_template, current_app
 
 from .ds_client import DSClient
@@ -99,3 +99,12 @@ def ensure_manifest(manifest_url):
         return wrapper
 
     return decorator
+
+def is_cfr(accessToken, accountId, basePath):
+    
+    api_client = create_api_client(basePath, accessToken)
+    accounts_api = AccountsApi(api_client)
+    account_details = accounts_api.get_account_information(accountId)
+    
+    return account_details.status21_cfr_part11
+

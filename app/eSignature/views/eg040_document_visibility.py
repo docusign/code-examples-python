@@ -48,6 +48,9 @@ def get_view():
     """responds with the form for the example"""
     example = get_example_by_number(session["manifest"], example_number)
 
+    if "is_cfr" in session and session["is_cfr"] == "enabled":
+        return render_template("cfr_error.html", title="Error")
+
     return render_template(
         "eg040_document_visibility.html",
         title=example["ExampleName"],

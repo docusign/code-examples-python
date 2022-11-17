@@ -1,9 +1,10 @@
 """Example 001: Use embedded signing"""
 
 from docusign_esign.client.api_exception import ApiException
-from flask import render_template, redirect, Blueprint, current_app as app, session
+from flask import render_template, redirect, Blueprint, current_app as app, session, url_for
 
 from .eSignature.examples.eg001_embedded_signing import Eg001EmbeddedSigningController
+from .eSignature.examples.eg041_cfr_embedded_signing import Eg041CFREmbeddedSigningController
 from .docusign import authenticate, ensure_manifest, get_example_by_number
 from .ds_config import DS_CONFIG
 from .error_handlers import process_error
@@ -43,6 +44,12 @@ def embedded_signing():
 def get_view():
     """responds with the form for the example"""
     example = get_example_by_number(session["manifest"], example_number)
+
+    # Check if account is a CFR Part 11 account and redirect accordingly for Quickstart
+    if "is_cfr" in session and session["is_cfr"] == "enabled":
+        if DS_CONFIG["quickstart"] == "true":
+            return redirect(url_for("eg041.get_view"))
+        return render_template("cfr_error.html", title="Error")
 
     return render_template(
         "eg001_embedded_signing.html",

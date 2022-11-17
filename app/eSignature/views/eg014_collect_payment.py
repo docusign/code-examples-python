@@ -52,6 +52,9 @@ def get_view():
     gateway = DS_CONFIG["gateway_account_id"]
     gateway_ok = gateway and len(gateway) > 25
 
+    if "is_cfr" in session and session["is_cfr"] == "enabled":
+        return render_template("cfr_error.html", title="Error")
+
     return render_template(
         "eg014_collect_payment.html",
         title=example["ExampleName"],

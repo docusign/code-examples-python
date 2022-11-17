@@ -37,7 +37,7 @@
 
             {% for example in group["Examples"] -%}
                 {% if SkipLanguages not in example or "python" not in example["SkipLanguages"] %}
-                    {% if example.CFREnabled == "AllAccounts" or example.CFREnabled == "NonCFR" %}
+                    {% if example.CFREnabled == "AllAccounts" or example.CFREnabled == "CFROnly" %}
                         <h4
                             id="{{ 'example' + '0' * (3 - example['ExampleNumber'] | string() | length ) + example['ExampleNumber'] | string() }}"
                         >

@@ -37,3 +37,4 @@ from .eg037_sms_delivery import eg037
 from .eg038_responsive_signing import eg038
 from .eg039_in_person_signer import eg039
 from .eg040_document_visibility import eg040
+from .eg041_cfr_embedded_signing import eg041

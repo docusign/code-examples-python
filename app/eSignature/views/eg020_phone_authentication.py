@@ -61,6 +61,9 @@ def get_view():
 
     workflow_id = Eg020PhoneAuthenticationController.get_workflow(args)
 
+    if "is_cfr" in session and session["is_cfr"] == "enabled":
+        return render_template("cfr_error.html", title="Error")
+
     return render_template(
         "eg020_phone_authentication.html",
         title=example["ExampleName"],
