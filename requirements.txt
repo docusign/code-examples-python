@@ -7,7 +7,7 @@ cryptography==3.3.2
 docusign-esign==3.16.0
 docusign-rooms==1.1.0
 docusign-monitor==1.1.0
-docusign-click==1.1.0
+docusign-click==1.2.2
 docusign-admin==1.1.1
 Flask==1.1.1
 Flask-OAuthlib==0.9.6

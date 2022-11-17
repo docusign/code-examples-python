@@ -80,7 +80,8 @@ elif EXAMPLES_API_TYPE["Click"]:
     app.register_blueprint(click_views.eg003)
     app.register_blueprint(click_views.eg004)
     app.register_blueprint(click_views.eg005)
-    
+    app.register_blueprint(click_views.eg006)
+        
 else:
     app.register_blueprint(esignature_views.eg001)
     app.register_blueprint(esignature_views.eg002)

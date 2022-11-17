@@ -1,0 +1,38 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h2>{{ h1 }}</h2>
+<p>{{ message | safe }}</p>
+{% if link %}
+    <br>
+    <a href="{{ link }}" target="_blank">{{ link_text }}</a>
+    <br>
+{% endif %}
+
+<p>Agreement URL received back from the API call: <code>{{agreementUrl}}</code></p>
+
+<p id="agreementStatus">
+    {{ session["manifest"]["SupportingTexts"]["HelpingTexts"]["NOTAGREED"] }}
+</p>
+
+{% if changed_settings %}
+    <ul>
+        {% for k, v in changed_settings.items() %}
+            <li><b>{{ k }}:</b> {{ v }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<div id="ds-terms-of-service"></div>
+<script src="https://demo.docusign.net/clickapi/sdk/latest/docusign-click.js"></script>
+<script>docuSignClick.Clickwrap.render({
+  agreementUrl: "{{ agreementUrl }}",
+  onAgreed: function() {
+    // Triggered if the user has just agreed
+    document.getElementById("agreementStatus").innerHTML = "{{ session['manifest']['SupportingTexts']['HelpingTexts']['AGREED'] }}";
+  }
+}, "#ds-terms-of-service");
+</script>
+
+<p><a href="/">Continue</a></p>
+  
+{% endblock %}
