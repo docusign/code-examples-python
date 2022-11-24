@@ -18,6 +18,8 @@ unittest.TestLoader.sortTestMethodsUsing = None
 
 
 class Testing(unittest.TestCase):
+    TEMPLATE_ID = ""
+
     @classmethod
     def setUpClass(cls):
         results = TestHelper.authenticate()
@@ -64,8 +66,8 @@ class Testing(unittest.TestCase):
                 signers=[Signer(
                     email=DS_CONFIG["signer_email"],
                     name=DS_CONFIG["signer_name"],
-                    recipient_id=1,
-                    routing_order=1,
+                    recipient_id='1',
+                    routing_order='1',
                     client_user_id=DATA["signer_client_id"],
                     tabs=Tabs(
                         sign_here_tabs=[SignHere(
@@ -84,7 +86,6 @@ class Testing(unittest.TestCase):
                 document_id=1
             )]
         )
-
 
         expected = {
             "emailSubject": "Please sign this document",
@@ -123,7 +124,6 @@ class Testing(unittest.TestCase):
 
         self.assertIsNotNone(results)
         self.assertEqual(results, envelope)
-        # self.assertEqual(results, expected)
 
     def test_sign_via_email(self):
         envelope_args = {
@@ -155,31 +155,31 @@ class Testing(unittest.TestCase):
         }
 
         html_document = f"""
-            <!DOCTYPE html>
-            <html>
-                <head>
-                  <meta charset="UTF-8">
-                </head>
-                <body style="font-family:sans-serif;margin-left:2em;">
-                <h1 style="font-family: "Trebuchet MS", Helvetica, sans-serif;
-                    color: darkblue;margin-bottom: 0;">World Wide Corp</h1>
-                <h2 style="font-family: "Trebuchet MS", Helvetica, sans-serif;
-                  margin-top: 0px;margin-bottom: 3.5em;font-size: 1em;
-                  color: darkblue;">Order Processing Division</h2>
-                <h4>Ordered by {DS_CONFIG["signer_name"]}</h4>
-                <p style="margin-top:0em; margin-bottom:0em;">Email: {DS_CONFIG["signer_email"]}</p>
-                <p style="margin-top:0em; margin-bottom:0em;">Copy to: {DATA["cc_name"]}, {DATA["cc_email"]}</p>
-                <p style="margin-top:3em;">
-                    Candy bonbon pastry jujubes lollipop wafer biscuit biscuit. Topping brownie sesame snaps sweet roll pie. 
-                    Croissant danish biscuit soufflé caramels jujubes jelly. Dragée danish caramels lemon drops dragée. 
-                    Gummi bears cupcake biscuit tiramisu sugar plum pastry. Dragée gummies applicake pudding liquorice. 
-                    Donut jujubes oat cake jelly-o. 
-                    Dessert bear claw chocolate cake gummies lollipop sugar plum ice cream gummies cheesecake.
-                </p>
-                <!-- Note the anchor tag for the signature field is in white. -->
-                <h3 style="margin-top:3em;">Agreed: <span style="color:white;">**signature_1**/</span></h3>
-                </body>
-            </html>
+        <!DOCTYPE html>
+        <html>
+            <head>
+              <meta charset="UTF-8">
+            </head>
+            <body style="font-family:sans-serif;margin-left:2em;">
+            <h1 style="font-family: "Trebuchet MS", Helvetica, sans-serif;
+                color: darkblue;margin-bottom: 0;">World Wide Corp</h1>
+            <h2 style="font-family: "Trebuchet MS", Helvetica, sans-serif;
+              margin-top: 0px;margin-bottom: 3.5em;font-size: 1em;
+              color: darkblue;">Order Processing Division</h2>
+            <h4>Ordered by {DS_CONFIG["signer_name"]}</h4>
+            <p style="margin-top:0em; margin-bottom:0em;">Email: {DS_CONFIG["signer_email"]}</p>
+            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {DATA["cc_name"]}, {DATA["cc_email"]}</p>
+            <p style="margin-top:3em;">
+                Candy bonbon pastry jujubes lollipop wafer biscuit biscuit. Topping brownie sesame snaps sweet roll pie. 
+                Croissant danish biscuit soufflé caramels jujubes jelly. Dragée danish caramels lemon drops dragée. 
+                Gummi bears cupcake biscuit tiramisu sugar plum pastry. Dragée gummies applicake pudding liquorice. 
+                Donut jujubes oat cake jelly-o. 
+                Dessert bear claw chocolate cake gummies lollipop sugar plum ice cream gummies cheesecake.
+            </p>
+            <!-- Note the anchor tag for the signature field is in white. -->
+            <h3 style="margin-top:3em;">Agreed: <span style="color:white;">**signature_1**/</span></h3>
+            </body>
+        </html>
       """
 
         expected = EnvelopeDefinition(
@@ -193,13 +193,13 @@ class Testing(unittest.TestCase):
                     document_id="1"
                 ),
                 Document(
-                    document_base64=TestHelper.read_as_base64(DATA["test_docx_file"]),
+                    document_base64=TestHelper.read_as_base64(os.path.abspath(DATA["test_docx_file"])),
                     name="Battle Plan",
                     file_extension="docx",
                     document_id="2"
                 ),
                 Document(
-                    document_base64=TestHelper.read_as_base64(DATA["test_pdf_file"]),
+                    document_base64=TestHelper.read_as_base64(os.path.abspath(DATA["test_pdf_file"])),
                     name="Lorem Ipsum",
                     file_extension="pdf",
                     document_id="3"
@@ -235,17 +235,10 @@ class Testing(unittest.TestCase):
             )
         )
 
-        self.test_helper = TestHelper()
-
-        envelope = Eg002SigningViaEmailController.make_envelope(envelope_args, DATA["test_docx_file"], DATA["test_pdf_file"])
+        envelope = Eg002SigningViaEmailController.make_envelope(envelope_args, os.path.abspath(DATA["test_docx_file"]), os.path.abspath(DATA["test_pdf_file"]))
 
         self.assertIsNotNone(envelope)
-        self.assertEquals(envelope.email_subject, expected.email_subject)
-        self.assertEquals(envelope.status, expected.status)
-        self.assertEquals(len(envelope.documents), len(expected.documents))
-        self.assertEquals(envelope.documents, expected.documents)
-        self.assertEquals(envelope.recipients, expected.recipients)
-        # self.assertEquals(self.test_helper.delete_none(vars(envelope)), self.test_helper.delete_none(vars(expected)))
+        self.assertEquals(envelope, expected)
 
     def test_sign_via_email_html_doc(self):
         envelope_args = {
@@ -289,7 +282,6 @@ class Testing(unittest.TestCase):
         self.assertEqual(document, expected)
 
     def test_create_template(self):
-        new_template_name = f"{DATA['template_name']}_{int(datetime.datetime.utcnow().timestamp())}"
         args = {
             "account_id": self.account_id,
             "base_path": self.base_path,
@@ -298,7 +290,7 @@ class Testing(unittest.TestCase):
         }
 
         result = Eg008CreateTemplateController.worker(args)
-        self.template_id = result["template_id"]
+        Testing.TEMPLATE_ID = result["template_id"]
 
         self.assertIsNotNone(result)
         self.assertIsNotNone(result["template_id"])
@@ -441,7 +433,7 @@ class Testing(unittest.TestCase):
             "signer_name": DS_CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
-            "template_id": self.template_id
+            "template_id": Testing.TEMPLATE_ID
         }
         args = {
             "account_id": self.account_id,
@@ -462,12 +454,12 @@ class Testing(unittest.TestCase):
             "signer_name": DS_CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
-            "template_id": self.template_id
+            "template_id": Testing.TEMPLATE_ID
         }
 
         expected = EnvelopeDefinition(
             status="sent",
-            template_id=self.template_id,
+            template_id=Testing.TEMPLATE_ID,
             template_roles=[
                 TemplateRole(
                     email=DS_CONFIG["signer_email"],
@@ -493,7 +485,7 @@ class Testing(unittest.TestCase):
             "signer_name": DS_CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
-            "template_id": self.template_id,
+            "template_id": Testing.TEMPLATE_ID,
             "signer_client_id": DATA["signer_client_id"],
             "item": DATA["item"],
             "quantity": DATA["quantity"],
@@ -518,7 +510,7 @@ class Testing(unittest.TestCase):
             "signer_name": DS_CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
-            "template_id": self.template_id,
+            "template_id": Testing.TEMPLATE_ID,
             "signer_client_id": DATA["signer_client_id"],
             "item": DATA["item"],
             "quantity": DATA["quantity"],
@@ -556,7 +548,7 @@ class Testing(unittest.TestCase):
                 CompositeTemplate(
                     composite_template_id="1",
                     server_templates=[
-                        ServerTemplate(sequence="1", template_id=self.template_id)
+                        ServerTemplate(sequence="1", template_id=Testing.TEMPLATE_ID)
                     ],
                     inline_templates=[
                         InlineTemplate(
