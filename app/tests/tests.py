@@ -1,7 +1,6 @@
 import unittest
 import base64
 import os
-import datetime
 from docusign_esign import Document, Signer, EnvelopeDefinition, SignHere, Tabs, \
     Recipients, CarbonCopy, EnvelopeTemplate, Checkbox, List, ListItem, Text, Radio, RadioGroup, Number, TemplateRole, \
     CompositeTemplate, ServerTemplate, InlineTemplate, CustomFields, TextCustomField
@@ -14,8 +13,6 @@ from app.eSignature.examples.eg013_add_doc_to_template import Eg013AddDocToTempl
 from app.eSignature.examples.eg016_set_tab_values import Eg016SetTabValuesController
 from .test_helper import TestHelper, DATA, DS_CONFIG
 
-unittest.TestLoader.sortTestMethodsUsing = None
-
 
 class Testing(unittest.TestCase):
     TEMPLATE_ID = ""
@@ -27,7 +24,6 @@ class Testing(unittest.TestCase):
         cls.access_token = results["access_token"]
         cls.account_id = results["account_id"]
         cls.base_path = results["base_path"]
-        cls.test_helper = TestHelper()
 
     def test_embedded_signing_worker(self):
         envelope_args = {
@@ -87,39 +83,6 @@ class Testing(unittest.TestCase):
             )]
         )
 
-        expected = {
-            "emailSubject": "Please sign this document",
-            "documents": [
-              {
-                "documentBase64": base64_file_content,
-                "name": "Lorem Ipsum",
-                "fileExtension": "pdf",
-                "documentId": "3",
-              }
-            ],
-            "recipients": {
-              "signers": [
-                {
-                  "email": DS_CONFIG["signer_email"],
-                  "name": DS_CONFIG["signer_name"],
-                  "clientUserId": DATA["signer_client_id"],
-                  "recipientId": '1',
-                  "tabs": {
-                    "signHereTabs": [
-                      {
-                        "anchorString": "/sn1/",
-                        "anchorYOffset": "10",
-                        "anchorUnits": "pixels",
-                        "anchorXOffset": "20"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "status": 'sent'
-        }
-
         results = Eg001EmbeddedSigningController.make_envelope(envelope_args)
 
         self.assertIsNotNone(results)
@@ -140,7 +103,8 @@ class Testing(unittest.TestCase):
             "envelope_args": envelope_args
         }
 
-        results = Eg002SigningViaEmailController.worker(args, DATA["test_docx_file"], DATA["test_pdf_file"])
+        results = Eg002SigningViaEmailController.worker(args, os.path.join("../../", DATA["test_docx_file"]),
+                                                        os.path.join("../../", DATA["test_pdf_file"]))
 
         self.assertIsNotNone(results)
         self.assertIsNotNone(results["envelope_id"])
@@ -235,7 +199,8 @@ class Testing(unittest.TestCase):
             )
         )
 
-        envelope = Eg002SigningViaEmailController.make_envelope(envelope_args, os.path.abspath(DATA["test_docx_file"]), os.path.abspath(DATA["test_pdf_file"]))
+        envelope = Eg002SigningViaEmailController.make_envelope(envelope_args, os.path.abspath(DATA["test_docx_file"]),
+                                                                os.path.abspath(DATA["test_pdf_file"]))
 
         self.assertIsNotNone(envelope)
         self.assertEquals(envelope, expected)
@@ -447,7 +412,6 @@ class Testing(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertIsNotNone(result["envelope_id"])
 
-
     def test_use_template_make_envelope(self):
         envelope_args = {
             "signer_email": DS_CONFIG["signer_email"],
@@ -479,7 +443,7 @@ class Testing(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEquals(result, expected)
 
-    def test_add_doc_to_template(self):
+    def test_include_doc_to_template(self):
         envelope_args = {
             "signer_email": DS_CONFIG["signer_email"],
             "signer_name": DS_CONFIG["signer_name"],
@@ -504,7 +468,7 @@ class Testing(unittest.TestCase):
         self.assertIsNotNone(result["envelope_id"])
         self.assertIsNotNone(result["redirect_url"])
 
-    def test_add_doc_to_template_make_envelope(self):
+    def test_include_doc_to_template_make_envelope(self):
         envelope_args = {
             "signer_email": DS_CONFIG["signer_email"],
             "signer_name": DS_CONFIG["signer_name"],
@@ -615,7 +579,7 @@ class Testing(unittest.TestCase):
         self.assertIsNotNone(envelope)
         self.assertEquals(envelope, expected)
 
-    def test_add_doc_to_template_html_doc(self):
+    def test_include_doc_to_template_html_doc(self):
         envelope_args = {
             "signer_email": DS_CONFIG["signer_email"],
             "signer_name": DS_CONFIG["signer_name"],
@@ -754,6 +718,7 @@ class Testing(unittest.TestCase):
 
         self.assertIsNotNone(envelope)
         self.assertEquals(envelope, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

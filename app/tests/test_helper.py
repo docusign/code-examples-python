@@ -1,7 +1,7 @@
 import os
 import base64
-import json
 from docusign_esign import ApiClient
+from docusign_esign.client.api_exception import ApiException
 
 from ..ds_config import DS_CONFIG, DS_JWT
 
@@ -26,36 +26,49 @@ DATA = {
     "quantity": '5'
 }
 
+
 class TestHelper:
     @staticmethod
     def authenticate():
-        private_key_file = open(os.path.abspath(os.path.join("../", DS_JWT["private_key_file"])), "r")
-        private_key = private_key_file.read()
+        try:
+            private_key_file = open(os.path.abspath(os.path.join("../", DS_JWT["private_key_file"])), "r")
+            private_key = private_key_file.read()
 
-        api_client = ApiClient()
-        api_client.host = DATA["base_path"]
+            api_client = ApiClient()
+            api_client.host = DATA["base_path"]
 
-        api_client = ApiClient()
-        api_client.set_base_path(DATA["base_path"])
-        api_client.set_oauth_host_name(DATA["oauth_base_path"])
-        token_response = api_client.request_jwt_user_token(
-            client_id=DS_JWT["ds_client_id"],
-            user_id=DS_JWT["ds_impersonated_user_id"],
-            oauth_host_name=DATA["oauth_base_path"],
-            private_key_bytes=private_key,
-            expires_in=4000,
-            scopes=DATA["scopes"]
-        )
+            api_client = ApiClient()
+            api_client.set_base_path(DATA["base_path"])
+            api_client.set_oauth_host_name(DATA["oauth_base_path"])
+            token_response = api_client.request_jwt_user_token(
+                client_id=DS_JWT["ds_client_id"],
+                user_id=DS_JWT["ds_impersonated_user_id"],
+                oauth_host_name=DATA["oauth_base_path"],
+                private_key_bytes=private_key,
+                expires_in=4000,
+                scopes=DATA["scopes"]
+            )
 
-        access_token = token_response.access_token
+            access_token = token_response.access_token
 
-        # Save API account ID
-        user_info = api_client.get_user_info(access_token)
-        accounts = user_info.get_accounts()
-        api_account_id = accounts[0].account_id
-        base_path = accounts[0].base_uri + "/restapi"
+            # Save API account ID
+            user_info = api_client.get_user_info(access_token)
+            accounts = user_info.get_accounts()
+            api_account_id = accounts[0].account_id
+            base_path = accounts[0].base_uri + "/restapi"
 
-        return {"access_token": access_token, "account_id": api_account_id, "base_path": base_path}
+            return {"access_token": access_token, "account_id": api_account_id, "base_path": base_path}
+        except ApiException as err:
+            body = err.body.decode('utf8')
+
+            if "consent_required" in body:
+                url_scopes = "+".join(DATA["scopes"])
+                url = f"https://{DS_JWT['authorization_server']}/oauth/auth?response_type=code&" \
+                      f"scope={url_scopes}&client_id={DS_JWT['ds_client_id']}&redirect_uri={DATA['redirect_uri']}"
+
+                consent_message = f"You should grant access by making the following call: {url}"
+                print(consent_message)
+                raise Exception(f"You should grant access by making the following call: {url}")
 
     @staticmethod
     def read_as_base64(path):

@@ -55,7 +55,6 @@ class Eg016SetTabValuesController:
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
 
         envelope_id = results.envelope_id
-        app.logger.info(f"Envelope was created. EnvelopeId {envelope_id}")
 
         # 3. Create the RecipientViewRequest object
         recipient_view_request = RecipientViewRequest(
