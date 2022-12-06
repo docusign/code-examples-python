@@ -3,7 +3,7 @@
 from os import path
 
 from docusign_esign.client.api_exception import ApiException
-from flask import render_template, redirect, session, Blueprint
+from flask import render_template, redirect, session, Blueprint, current_app
 
 from ..examples.eg016_set_tab_values import Eg016SetTabValuesController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
@@ -35,6 +35,7 @@ def set_tab_values():
     try:
         # 2. Call the worker method for setting tab values
         results = Eg016SetTabValuesController.worker(args)
+        current_app.logger.info(f"Envelope was created. EnvelopeId {results['envelope_id']}")
     except ApiException as err:
         return process_error(err)
 
