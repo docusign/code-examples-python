@@ -15,10 +15,10 @@ DATA = {
     "redirect_uri": 'https://www.docusign.com/api',
     "scopes": ["signature", "impersonation"],
     "expires_in": 3600,
-    "test_pdf_file": './tests/docs/World_Wide_Corp_lorem.pdf',
-    "test_docx_file": './tests/docs/World_Wide_Corp_Battle_Plan_Trafalgar.docx',
-    "test_template_pdf_file": './tests/docs/World_Wide_Corp_fields.pdf',
-    "test_template_docx_file": './tests/docs/World_Wide_Corp_salary.docx',
+    "test_pdf_file": './app/tests/docs/World_Wide_Corp_lorem.pdf',
+    "test_docx_file": './app/tests/docs/World_Wide_Corp_Battle_Plan_Trafalgar.docx',
+    "test_template_pdf_file": './app/tests/docs/World_Wide_Corp_fields.pdf',
+    "test_template_docx_file": './app/tests/docs/World_Wide_Corp_salary.docx',
     "template_name": 'Example Signer and CC template',
     "cc_name": 'Test Name',
     "cc_email": 'test@mail.com',
@@ -31,7 +31,7 @@ class TestHelper:
     @staticmethod
     def authenticate():
         try:
-            private_key_file = open(os.path.abspath(os.path.join("../", DS_JWT["private_key_file"])), "r")
+            private_key_file = open(os.path.abspath(os.path.join(DS_JWT["private_key_file"])), "r")
             private_key = private_key_file.read()
 
             api_client = ApiClient()

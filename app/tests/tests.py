@@ -103,8 +103,8 @@ class Testing(unittest.TestCase):
             "envelope_args": envelope_args
         }
 
-        results = Eg002SigningViaEmailController.worker(args, os.path.join("../../", DATA["test_docx_file"]),
-                                                        os.path.join("../../", DATA["test_pdf_file"]))
+        results = Eg002SigningViaEmailController.worker(args, os.path.abspath(DATA["test_docx_file"]),
+                                                        os.path.abspath(DATA["test_pdf_file"]))
 
         self.assertIsNotNone(results)
         self.assertIsNotNone(results["envelope_id"])
