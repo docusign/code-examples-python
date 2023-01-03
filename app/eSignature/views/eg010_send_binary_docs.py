@@ -7,22 +7,24 @@ from flask import render_template, Blueprint, session
 from ..examples.eg010_send_binary_docs import Eg010SendBinaryDocsController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
+from ...consts import API_TYPE
 
 example_number = 10
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # reference (and url) for this example
 eg010 = Blueprint(eg, __name__)
 
 
 @eg010.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def send_bynary_docs():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render success response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg010SendBinaryDocsController.get_args()
@@ -54,14 +56,14 @@ def send_bynary_docs():
 
 
 @eg010.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg010_send_binary_docs.html",
+        "eSignature/eg010_send_binary_docs.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg010_send_binary_docs.py",

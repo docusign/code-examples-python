@@ -10,37 +10,39 @@ from ...ds_config import DS_CONFIG
 from ..examples.eg001_create_room_with_data import Eg001CreateRoomWithDateController
 from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 1
-eg = "eg001"  # reference (and url) for this example
-eg001Rooms = Blueprint("eg001", __name__)
+api = API_TYPE["ROOMS"]
+eg = f"reg00{example_number}"  # reference (and url) for this example
+reg001 = Blueprint(eg, __name__)
 
 
-@eg001Rooms.route("/eg001", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg001.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg001_create_room_with_data.html",
+        "rooms/eg001_create_room_with_data.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg001_create_room_with_data.py",
     )
 
 
-@eg001Rooms.route("/eg001", methods=["POST"])
-@authenticate(eg=eg)
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
+@reg001.route(f"/{eg}", methods=["POST"])
+@authenticate(eg=eg, api=api)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
 def create_room_with_data():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg001CreateRoomWithDateController.get_args()

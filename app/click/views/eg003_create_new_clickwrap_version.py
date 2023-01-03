@@ -11,22 +11,24 @@ from ..examples.eg004_list_clickwraps import Eg004ListClickwrapsController
 from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 3
-eg = f"eg00{example_number}"  # Reference (and URL) for this example
-eg003 = Blueprint(eg, __name__)
+api = API_TYPE["CLICK"]
+eg = f"ceg00{example_number}"  # Reference (and URL) for this example
+ceg003 = Blueprint(eg, __name__)
 
 
-@eg003.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
-@authenticate(eg=eg)
+@ceg003.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def create_new_clickwrap_version():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg003CrateNewClickwrapVersionController.get_args()
@@ -50,16 +52,16 @@ def create_new_clickwrap_version():
     )
 
 
-@eg003.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
-@authenticate(eg=eg)
+@ceg003.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     args = Eg004ListClickwrapsController.get_args()
     return render_template(
-        "eg003_create_new_clickwrap_version.html",
+        "click/eg003_create_new_clickwrap_version.html",
         title=example["ExampleName"],
         example=example,
         clickwraps_data=Eg004ListClickwrapsController.worker(args),

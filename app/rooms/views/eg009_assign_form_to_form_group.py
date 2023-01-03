@@ -8,22 +8,24 @@ from ...ds_config import DS_CONFIG
 from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.error_handlers import process_error
 from ..examples.eg009_assign_form_to_form_group import Eg009AssignFormToFormGroupController
+from ...consts import API_TYPE
 
 example_number = 9
-eg = f"eg00{example_number}"  # Reference (and URL) for this example
-eg009 = Blueprint(eg, __name__)
+api = API_TYPE["ROOMS"]
+eg = f"reg00{example_number}"  # Reference (and URL) for this example
+reg009 = Blueprint(eg, __name__)
 
 
-@eg009.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg009.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def assign_form_to_form_group():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg009AssignFormToFormGroupController.get_args()
@@ -53,9 +55,9 @@ def assign_form_to_form_group():
     )
 
 
-@eg009.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg009.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """
     1. Get required arguments
@@ -63,7 +65,7 @@ def get_view():
     3. Get forms
     4. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg009AssignFormToFormGroupController.get_args()
@@ -76,7 +78,7 @@ def get_view():
 
     # 4. Render the response
     return render_template(
-        "eg009_assign_form_to_form_group.html",
+        "rooms/eg009_assign_form_to_form_group.html",
         title=example["ExampleName"],
         example=example,
         forms=forms,

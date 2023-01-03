@@ -34,11 +34,7 @@ DS_CONFIG = {
     "monitor_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/monitor/examples/",
     "admin_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/admin/examples/",
     "click_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/click/examples/",
-    "esign_manifest_url": "https://raw.githubusercontent.com/docusign/code-examples-csharp/master/manifest/eSignatureManifest.json",
-    "click_manifest_url": "https://raw.githubusercontent.com/docusign/code-examples-csharp/master/manifest/ClickManifest.json",
-    "rooms_manifest_url": "https://raw.githubusercontent.com/docusign/code-examples-csharp/master/manifest/RoomsManifest.json",
-    "admin_manifest_url": "https://raw.githubusercontent.com/docusign/code-examples-csharp/master/manifest/AdminManifest.json",
-    "monitor_manifest_url": "https://raw.githubusercontent.com/docusign/code-examples-csharp/master/manifest/MonitorManifest.json",
+    "example_manifest_url": "https://raw.githubusercontent.com/docusign/code-examples-csharp/master/manifest/CodeExamplesManifest.json",
     "documentation": "",  # Use an empty string to indicate no documentation path.
     "quickstart": "{QUICKSTART_VALUE}"
 }

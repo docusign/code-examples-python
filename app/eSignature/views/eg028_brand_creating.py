@@ -4,26 +4,29 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, session, request, Blueprint
+
 from ..examples.eg028_brand_creating import Eg028BrandCreatingController
 from ...consts import languages
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 28
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # reference and url for this example
 eg028 = Blueprint(eg, __name__)
 
 @eg028.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def brand_creating():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg028BrandCreatingController.get_args()
@@ -44,14 +47,14 @@ def brand_creating():
         return process_error(err)
 
 @eg028.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg028_brand_creating.html",
+        "eSignature/eg028_brand_creating.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg028_brand_creating.py",

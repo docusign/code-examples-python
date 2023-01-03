@@ -103,3 +103,10 @@ settings = {
     "vaultingMode": "none"
 }
 
+API_TYPE = {
+    "ESIGNATURE": "eSignature",
+    "MONITOR": "Monitor",
+    "CLICK": "Click",
+    "ROOMS": "Rooms",
+    "ADMIN": "Admin"
+}

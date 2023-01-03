@@ -10,15 +10,17 @@ from ..examples.eg015_envelope_tab_data import Eg015EnvelopeTabDateController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 15
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # Reference (and URL) for this example
 eg015 = Blueprint(eg, __name__)
 
 
 @eg015.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def envelope_tab_data():
     """
     1. Check presence of envelope_id in session
@@ -26,7 +28,7 @@ def envelope_tab_data():
     3. Call the worker method
     4. Show Envelope tab data results
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Check presence of envelope_id in session
     if "envelope_id" in session:
@@ -50,7 +52,7 @@ def envelope_tab_data():
 
     else:
         return render_template(
-            "eg015_envelope_tab_data.html",
+            "eSignature/eg015_envelope_tab_data.html",
             title=example["ExampleName"],
             example=example,
             envelope_ok=False,
@@ -62,14 +64,14 @@ def envelope_tab_data():
 
 
 @eg015.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg015_envelope_tab_data.html",
+        "eSignature/eg015_envelope_tab_data.html",
         title=example["ExampleName"],
         example=example,
         envelope_ok="envelope_id" in session,

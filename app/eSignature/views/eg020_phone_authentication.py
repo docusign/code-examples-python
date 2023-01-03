@@ -8,24 +8,27 @@ from flask import render_template, Blueprint, session
 
 from ..examples.eg020_phone_authentication import Eg020PhoneAuthenticationController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
+from ...docusign.utils import is_cfr
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 20
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # reference (and url) for this example
 eg020 = Blueprint(eg, __name__)
 
 
 @eg020.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def phone_authentication():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render success response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg020PhoneAuthenticationController.get_args()
@@ -47,11 +50,11 @@ def phone_authentication():
 
 
 @eg020.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     args = {
         "account_id": session["ds_account_id"],  # represent your {ACCOUNT_ID}
@@ -61,11 +64,15 @@ def get_view():
 
     workflow_id = Eg020PhoneAuthenticationController.get_workflow(args)
 
-    if "is_cfr" in session and session["is_cfr"] == "enabled":
-        return render_template("cfr_error.html", title="Error")
+    cfr_status = is_cfr(session["ds_access_token"], session["ds_account_id"], session["ds_base_path"])
+    if cfr_status == "enabled":
+        if DS_CONFIG["quickstart"] == "true":
+            return redirect(url_for("eg041.get_view"))
+        else:
+            return render_template("cfr_error.html", title="Error")
 
     return render_template(
-        "eg020_phone_authentication.html",
+        "eSignature/eg020_phone_authentication.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg020_phone_authentication.py",

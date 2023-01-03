@@ -10,17 +10,7 @@ from ..ds_config import DS_CONFIG
 from ..api_type import EXAMPLES_API_TYPE
 
 ds = Blueprint("ds", __name__, url_prefix="/ds")
-
-if EXAMPLES_API_TYPE["Rooms"]:
-    manifest_url = DS_CONFIG["rooms_manifest_url"]
-elif EXAMPLES_API_TYPE["Click"]:
-    manifest_url = DS_CONFIG["click_manifest_url"]
-elif EXAMPLES_API_TYPE["Monitor"]:
-    manifest_url = DS_CONFIG["monitor_manifest_url"]
-elif EXAMPLES_API_TYPE["Admin"]:
-    manifest_url = DS_CONFIG["admin_manifest_url"]
-else:
-    manifest_url = DS_CONFIG["esign_manifest_url"]
+manifest_url = DS_CONFIG["example_manifest_url"]
 
 @ds.route("/login", methods=["GET", "POST"])
 def ds_login():
@@ -32,7 +22,7 @@ def ds_login():
 
     app.config["isLoggedIn"] = True
     app.config["quickstart"] = DS_CONFIG["quickstart"]
-    return DSClient.login(session["auth_type"])
+    return DSClient.login(session["auth_type"], session.get("api"))
 
 
 @ds.route("/logout")

@@ -10,22 +10,24 @@ from ..examples.eg018_envelope_custom_field_data import Eg018EnvelopeCustomField
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 18
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # reference (and URL) for this example
 eg018 = Blueprint(eg, __name__)
 
 
 @eg018.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def envelope_custom_field_data():
     """
     1. Get required args
     2. Call the worker method
     3. Show custom field data
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     if "envelope_id" in session:
         # 1. Get required args
@@ -45,7 +47,7 @@ def envelope_custom_field_data():
         )
     else:
         return render_template(
-            "eg018_envelope_custom_field_data.html",
+            "eSignature/eg018_envelope_custom_field_data.html",
             title=example["ExampleName"],
             example=example,
             envelope_ok=False,
@@ -57,14 +59,14 @@ def envelope_custom_field_data():
 
 
 @eg018.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg015_envelope_tab_data.html",
+        "eSignature/eg015_envelope_tab_data.html",
         title=example["ExampleName"],
         example=example,
         envelope_ok="envelope_id" in session,

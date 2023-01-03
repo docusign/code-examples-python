@@ -4,25 +4,28 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, session, request, Blueprint
+
 from ..examples.eg027_permissions_delete import Eg027PermissionsDeleteController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 27
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"
 eg027 = Blueprint(eg, __name__)
 
 @eg027.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def permissions_delete():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render success response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     args = Eg027PermissionsDeleteController.get_args()
     try:
@@ -41,11 +44,11 @@ def permissions_delete():
         return process_error(err)
 
 @eg027.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     args = {
         "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
@@ -54,7 +57,7 @@ def get_view():
     }
     permission_profiles = Eg027PermissionsDeleteController.get_permissions_profiles(args)
     return render_template(
-        "eg027_permissions_delete.html",
+        "eSignature/eg027_permissions_delete.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg027_permissions_delete.py",

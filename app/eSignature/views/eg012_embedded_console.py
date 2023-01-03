@@ -9,15 +9,17 @@ from ..examples.eg012_embedded_console import Eg012EmbeddedConsoleController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 12
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # reference (and url) for this example
 eg012 = Blueprint(eg, __name__)
 
 
 @eg012.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def embedded_console():
     """
     1. Get required args
@@ -40,15 +42,15 @@ def embedded_console():
 
 
 @eg012.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     envelope_id = "envelope_id" in session and session["envelope_id"]
     return render_template(
-        "eg012_embedded_console.html",
+        "eSignature/eg012_embedded_console.html",
         title=example["ExampleName"],
         example=example,
         envelope_ok=envelope_id,

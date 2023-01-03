@@ -16,7 +16,7 @@ def process_error(err):
 
     # Handle error specific for use conditional recipients example (eg34)
     if error_code == "WORKFLOW_UPDATE_RECIPIENTROUTING_NOT_ALLOWED":
-        return render_template("error_eg34.html")
+        return render_template("eSignature/error_eg34.html")
     
     if EXAMPLES_API_TYPE["Monitor"]:
         if ("(403" in str(err)):

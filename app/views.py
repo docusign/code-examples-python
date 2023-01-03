@@ -18,38 +18,15 @@ core = Blueprint("core", __name__)
 
 @core.route("/")
 def index():
-    if EXAMPLES_API_TYPE["Rooms"]:
-        session["manifest"] = get_manifest(DS_CONFIG["rooms_manifest_url"])
-        return render_template(
-            "home_rooms.html", title="Home - Python Rooms API Code Examples", manifest=session["manifest"]
-        )
-    elif EXAMPLES_API_TYPE["Click"]:
-        session["manifest"] = get_manifest(DS_CONFIG["click_manifest_url"])
-        return render_template(
-            "home_click.html", title="Home - Python Click API Code Examples", manifest=session["manifest"]
-        )
-    elif EXAMPLES_API_TYPE["Monitor"]:
-        session["manifest"] = get_manifest(DS_CONFIG["monitor_manifest_url"])
-        return render_template(
-            "home_monitor.html",
-            title="Home - Python Monitor API Code Examples", manifest=session["manifest"]
-        )
-    elif EXAMPLES_API_TYPE["Admin"]:
-        session["manifest"] = get_manifest(DS_CONFIG["admin_manifest_url"])
-        return render_template(
-            "home_admin.html",
-            title="Home - Python Admin API Code Examples", manifest=session["manifest"]
-        )
-    else:
-        session["manifest"] = get_manifest(DS_CONFIG["esign_manifest_url"])
+    session["manifest"] = get_manifest(DS_CONFIG["example_manifest_url"])
 
     if DS_CONFIG["quickstart"] == "true":
         app.config["quickstart"] = False
         return redirect(url_for("eg001.get_view"))
     if "is_cfr" in session and session["is_cfr"] == "enabled":
-        return render_template("cfr_home.html", title="Home - Python Code Examples", manifest=session["manifest"])
+        return render_template("cfr_home.html", title="Home - Python Code Examples", manifest=session["manifest"], crfEnabled="True")
     else:
-        return render_template("home.html", title="Home - Python Code Examples", manifest=session["manifest"])
+        return render_template("home.html", title="Home - Python Code Examples", manifest=session["manifest"], crfEnabled="False")
 
 
 @core.route("/index")

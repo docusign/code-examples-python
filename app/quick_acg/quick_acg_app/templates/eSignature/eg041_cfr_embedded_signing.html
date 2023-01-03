@@ -1,0 +1,45 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% include 'example_info.html' %}
+
+{%  set signer_form_index = 0 %}
+{%  set signer_email_index = 0 %}
+{%  set signer_name_index = 1 %}
+{%  set country_code_index = 2 %}
+{%  set phone_number_index = 3 %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][signer_form_index] %}
+        <p>{{ example['Forms'][signer_form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="signer_email">{{ example['Forms'][signer_form_index]['Inputs'][signer_email_index]['InputName'] }}</label>
+      <input type="email" class="form-control" id="signer_email" name="signer_email"
+             aria-describedby="emailHelp" placeholder="{{ example['Forms'][signer_form_index]['Inputs'][signer_email_index]['InputPlaceholder'] }}" required
+             value="{{ signer_email }}">
+      <small id="emailHelp" class="form-text text-muted">{{ session['manifest']['SupportingTexts']['HelpingTexts']['EmailWontBeShared'] | safe}}</small>
+    </div>
+    <div class="form-group">
+      <label for="signer_name">{{ example['Forms'][signer_form_index]['Inputs'][signer_name_index]['InputName'] }}</label>
+      <input type="text" class="form-control" id="signer_name" placeholder="{{ example['Forms'][signer_form_index]['Inputs'][signer_name_index]['InputPlaceholder'] }}" name="signer_name"
+             value="{{ signer_name }}" required>
+    </div>
+    <div class="form-group">
+      <label for="country_code">{{ example['Forms'][signer_form_index]['Inputs'][country_code_index]['InputName'] }}</label>
+      <input type="tel" class="form-control" id="country_code" name="country_code"
+            aria-describedby="accessHelp" placeholder="{{ example['Forms'][signer_form_index]['Inputs'][country_code_index]['InputPlaceholder'] }}" required>
+      <small id="accessHelp" class="form-text text-muted">The country code for the phone number below.</small>
+    </div>  
+    <div class="form-group">
+        <label for="phone_number">{{ example['Forms'][signer_form_index]['Inputs'][phone_number_index]['InputName'] }}</label>
+        <input type="tel" class="form-control" id="phone_number" name="phone_number"
+               aria-describedby="accessHelp" placeholder="{{ example['Forms'][signer_form_index]['Inputs'][phone_number_index]['InputPlaceholder'] }}" required>
+        <small id="accessHelp" class="form-text text-muted">This phone number will receive a notification. We'll never share your phone number with anyone else.</small>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'submit_button.html' %}
+  </form>
+  
+{% endblock %}
+

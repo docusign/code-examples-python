@@ -10,21 +10,23 @@ from ..examples.eg026_permissions_change_single_setting import Eg026PermissionsC
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 26
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"
 eg026 = Blueprint(eg, __name__)
 
 @eg026.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def permissions_change_single_setting():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render a response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg026PermissionsChangeSingleSettingController.get_args()
@@ -49,11 +51,11 @@ def permissions_change_single_setting():
         return process_error(err)
 
 @eg026.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     args = {
         "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
@@ -62,7 +64,7 @@ def get_view():
     }
     permission_profiles = Eg026PermissionsChangeSingleSettingController.get_permissions_profiles(args)
     return render_template(
-        "eg026_permissions_change_single_setting.html",
+        "eSignature/eg026_permissions_change_single_setting.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg026_permissions_change_single_setting.py",

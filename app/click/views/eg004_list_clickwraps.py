@@ -10,22 +10,24 @@ from ..examples.eg004_list_clickwraps import Eg004ListClickwrapsController
 from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 4
-eg = f"eg00{example_number}"  # Reference (and URL) for this example
-eg004 = Blueprint(eg, __name__)
+api = API_TYPE["CLICK"]
+eg = f"ceg00{example_number}"  # Reference (and URL) for this example
+ceg004 = Blueprint(eg, __name__)
 
 
-@eg004.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
-@authenticate(eg=eg)
+@ceg004.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def clickwrap_list():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg004ListClickwrapsController.get_args()
@@ -45,15 +47,15 @@ def clickwrap_list():
     )
 
 
-@eg004.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
-@authenticate(eg=eg)
+@ceg004.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg004_list_clickwraps.html",
+        "click/eg004_list_clickwraps.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg004_list_clickwraps.py",

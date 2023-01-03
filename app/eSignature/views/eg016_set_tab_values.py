@@ -9,8 +9,10 @@ from ..examples.eg016_set_tab_values import Eg016SetTabValuesController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 16
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # Reference (and URL) for this example
 eg016 = Blueprint(eg, __name__)
 
@@ -20,8 +22,8 @@ eg016 = Blueprint(eg, __name__)
 
 
 @eg016.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def set_tab_values():
     """
     1. Get required arguments
@@ -49,14 +51,14 @@ def set_tab_values():
 
 
 @eg016.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg016_set_tab_values.html",
+        "eSignature/eg016_set_tab_values.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg016_set_tab_values.py",
