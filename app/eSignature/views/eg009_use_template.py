@@ -9,20 +9,22 @@ from ...docusign import ensure_manifest, get_example_by_number
 from ..examples.eg009_use_template import Eg009UseTemplateController
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 9
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg00{example_number}"  # reference (and url) for this example
 eg009 = Blueprint(eg, __name__)
 
 
 @eg009.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
 def use_template():
     """
     1. 1. Get required arguments
     2. Call the worker method
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     if "template_id" in session:
         # 1. Get required arguments
@@ -45,7 +47,7 @@ def use_template():
         )
     else:
         return render_template(
-            "eg009_use_template.html",
+            "eSignature/eg009_use_template.html",
             title=example["ExampleName"],
             example=example,
             template_ok=False,
@@ -57,13 +59,13 @@ def use_template():
 
 
 @eg009.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg009_use_template.html",
+        "eSignature/eg009_use_template.html",
         title=example["ExampleName"],
         example=example,
         template_ok="template_id" in session,

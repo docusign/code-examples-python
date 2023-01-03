@@ -11,22 +11,24 @@ from ...ds_config import DS_CONFIG
 from ..examples.eg005_get_rooms_with_filters import Eg005GetRoomsWithFiltersController
 from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 5
-eg = f"eg00{example_number}"  # reference (and URL) for this example
-eg005 = Blueprint(eg, __name__)
+api = API_TYPE["ROOMS"]
+eg = f"reg00{example_number}"  # reference (and URL) for this example
+reg005 = Blueprint(eg, __name__)
 
 
-@eg005.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg005.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_rooms_with_filters():
     """
     1. Get required arguments
     2. Call the worker method
     3. Show filtered rooms
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg005GetRoomsWithFiltersController.get_args()
@@ -46,9 +48,9 @@ def get_rooms_with_filters():
     )
 
 
-@eg005.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg005.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """
     1. Get required arguments
@@ -56,7 +58,7 @@ def get_view():
     3. Set filtering parameters
     4. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg005GetRoomsWithFiltersController.get_args()
@@ -73,7 +75,7 @@ def get_view():
 
     # 4. Render the response
     return render_template(
-        "eg005_get_rooms_with_filters.html",
+        "rooms/eg005_get_rooms_with_filters.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg005_get_rooms_with_filters.py",

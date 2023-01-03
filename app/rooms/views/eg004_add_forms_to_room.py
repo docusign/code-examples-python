@@ -10,22 +10,24 @@ from ...ds_config import DS_CONFIG
 from ..examples.eg004_add_forms_to_room import Eg004AddFormsToRoomController
 from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 4
-eg = f"eg00{example_number}"  # reference (and URL) for this example
-eg004 = Blueprint(eg, __name__)
+api = API_TYPE["ROOMS"]
+eg = f"reg00{example_number}"  # reference (and URL) for this example
+reg004 = Blueprint(eg, __name__)
 
 
-@eg004.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg004.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def add_form_to_room():
     """
     1. Get required arguments
     2. Call the worker method
     3. Show room document
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg004AddFormsToRoomController.get_args()
@@ -45,9 +47,9 @@ def add_form_to_room():
     )
 
 
-@eg004.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg004.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """
     1. Get required arguments
@@ -55,7 +57,7 @@ def get_view():
     3. Get forms
     4. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg004AddFormsToRoomController.get_args()
@@ -70,7 +72,7 @@ def get_view():
 
     # 4. Render the response
     return render_template(
-        "eg004_add_forms_to_room.html",
+        "rooms/eg004_add_forms_to_room.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg004_add_forms_to_room.py",

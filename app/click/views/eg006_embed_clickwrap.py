@@ -12,15 +12,17 @@ from ..examples.eg002_activate_clickwrap import Eg002ActivateClickwrapController
 from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 6
-eg = f"eg00{example_number}"  # Reference (and URL) for this example
-eg006 = Blueprint(eg, __name__)
+api = API_TYPE["CLICK"]
+eg = f"ceg00{example_number}"  # Reference (and URL) for this example
+ceg006 = Blueprint(eg, __name__)
 
 
-@eg006.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
-@authenticate(eg=eg)
+@ceg006.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def embed_clickwrap():
     """
     1. Get required arguments
@@ -61,9 +63,9 @@ def embed_clickwrap():
     )
 
 
-@eg006.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
-@authenticate(eg=eg)
+@ceg006.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
     example = get_example_by_number(session["manifest"], example_number)

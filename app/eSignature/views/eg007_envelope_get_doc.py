@@ -9,22 +9,24 @@ from ..examples.eg007_envelope_get_doc import Eg007EnvelopeGetDocController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 7
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg00{example_number}"  # reference (and url) for this example
 eg007 = Blueprint(eg, __name__)
 
 
 @eg007.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_envelope_doc():
     """
     1. Get required arguments
     2. Call the worker method
     3. Download envelope document
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     if "envelope_id" in session and "envelope_documents" in session:
         # 1. Get required arguments
@@ -44,7 +46,7 @@ def get_envelope_doc():
         )
     else:
         return render_template(
-            "eg007_envelope_get_doc.html",
+            "eSignature/eg007_envelope_get_doc.html",
             title=example["ExampleName"],
             example=example,
             envelope_ok=False,
@@ -57,11 +59,11 @@ def get_envelope_doc():
 
 
 @eg007.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     documents_ok = "envelope_documents" in session
     document_options = []
@@ -73,7 +75,7 @@ def get_view():
                                , envelope_documents["documents"])
 
     return render_template(
-        "eg007_envelope_get_doc.html",
+        "eSignature/eg007_envelope_get_doc.html",
         title=example["ExampleName"],
         example=example,
         envelope_ok="envelope_id" in session,

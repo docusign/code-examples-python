@@ -6,9 +6,10 @@ import json
 
 from docusign_esign import ApiClient, AccountsApi
 from flask import session, flash, url_for, redirect, render_template, current_app
+from jinja2 import environment
 
 from .ds_client import DSClient
-from ..consts import minimum_buffer_min
+from ..consts import minimum_buffer_min, API_TYPE
 from ..error_handlers import process_error
 
 
@@ -27,6 +28,7 @@ def ds_logout_internal():
     session.pop("envelope_documents", None)
     session.pop("template_id", None)
     session.pop("auth_type", None)
+    session.pop("api", None)
     DSClient.destroy()
 
 
@@ -58,16 +60,28 @@ def get_manifest(manifest_url):
         current_app.logger.info(f"Could not load code examples manifest. Manifest URL: {manifest_url} with error {str(e)}")
         raise Exception(f"Could not load code examples manifest. Manifest URL: {manifest_url} with error {str(e)}")
 
-def get_example_by_number(manifest, number):
-    for group in manifest["Groups"]:
-        for example in group["Examples"]:
-            if example["ExampleNumber"] == number:
-                return example
+def get_example_by_number(manifest, number, apiName):
+    for api in manifest["APIs"]:
+        if api["Name"] == apiName:
+            for group in api["Groups"]:
+                for example in group["Examples"]:
+                    if example["ExampleNumber"] == number:
+                        return example
 
-def authenticate(eg):
+def authenticate(eg, api):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
+            if not (session.get("api") == api or (api == API_TYPE["ESIGNATURE"] and not session.get("api"))):
+                session["api"] = api
+                session["eg"] = url_for(eg + ".get_view")
+
+                if api == API_TYPE["MONITOR"]:
+                    session["auth_type"] = "jwt"
+                    return redirect(url_for("ds.ds_login"))
+                else:
+                    return redirect(url_for("ds.ds_must_authenticate"))
+
             if ds_token_ok(minimum_buffer_min):
                 return func(*args, **kwargs)
             else:
@@ -99,6 +113,11 @@ def ensure_manifest(manifest_url):
         return wrapper
 
     return decorator
+
+def to_json(value):
+    return json.dumps(value)
+
+environment.DEFAULT_FILTERS['to_json'] = to_json
 
 def is_cfr(accessToken, accountId, basePath):
     

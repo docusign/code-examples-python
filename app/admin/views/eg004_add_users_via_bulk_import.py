@@ -12,21 +12,23 @@ from app.error_handlers import process_error
 from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.ds_config import DS_CONFIG
 from ..examples.eg004_add_users_via_bulk_import import Eg004AddUsersViaBulkImportController
+from ...consts import API_TYPE
 
 example_number = 4
-eg = f"eg00{example_number}"  # Reference(and URL) for this example
-eg004 = Blueprint(eg, __name__)
+api = API_TYPE["ADMIN"]
+eg = f"aeg00{example_number}"  # Reference(and URL) for this example
+aeg004 = Blueprint(eg, __name__)
 
 
-@eg004.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
-@authenticate(eg=eg)
+@aeg004.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def add_users_via_bulk_import():
     """
     1. Call the worker method
     2. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     controller = Eg004AddUsersViaBulkImportController()
 
@@ -46,18 +48,18 @@ def add_users_via_bulk_import():
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
-@eg004.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
-@authenticate(eg=eg)
+@aeg004.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """
     Responds with the form for the example
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # Render the response
     return render_template(
-        "eg004_add_users_via_bulk_import.html",
+        "admin/eg004_add_users_via_bulk_import.html",
         title=example["ExampleName"],
         example=example,
         source_file="eg004_add_users_via_bulk_import.py",
@@ -65,8 +67,8 @@ def get_view():
         documentation=DS_CONFIG["documentation"] + eg,
     )
 
-@eg004.route("/eg004examplecsv", methods=["GET"])
-@authenticate(eg=eg)
+@aeg004.route("/eg004examplecsv", methods=["GET"])
+@authenticate(eg=eg, api=api)
 def get_csv():
     """
     1. Creates an example of a CSV file
@@ -85,15 +87,15 @@ def get_csv():
         }
     )
 
-@eg004.route("/eg004check", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
-@authenticate(eg=eg)
+@aeg004.route("/eg004check", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def check_if_request_ready():
     """
     1. Checking if the request is complete
     2. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # Check if request is complete
     try:
@@ -103,7 +105,7 @@ def check_if_request_ready():
 
     if not results:
         return render_template(
-            "eg004_file_state.html",
+            "admin/eg004_file_state.html",
         )
     else:
         return render_template(

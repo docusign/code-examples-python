@@ -9,15 +9,17 @@ from ..examples.eg038_responsive_signing import Eg038ResponsiveSigning
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 38
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # reference (and url) for this example
 eg038 = Blueprint(eg, __name__)
 
 
 @eg038.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def embedded_signing():
     """
     1. Get required arguments
@@ -40,14 +42,14 @@ def embedded_signing():
 
 
 @eg038.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg038_responsive_signing.html",
+        "eSignature/eg038_responsive_signing.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg038_responsive_signing.py",

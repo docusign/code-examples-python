@@ -8,22 +8,24 @@ from ...ds_config import DS_CONFIG
 from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.error_handlers import process_error
 from ..examples.eg007_create_form_group import Eg007CreateFormGroupController
+from ...consts import API_TYPE
 
 example_number = 7
-eg = f"eg00{example_number}"  # Reference (and URL) for this example
-eg007 = Blueprint(eg, __name__)
+api = API_TYPE["ROOMS"]
+eg = f"reg00{example_number}"  # Reference (and URL) for this example
+reg007 = Blueprint(eg, __name__)
 
 
-@eg007.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg007.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def create_form_group():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg007CreateFormGroupController.get_args()
@@ -49,15 +51,15 @@ def create_form_group():
     )
 
 
-@eg007.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg007.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg007_create_form_group.html",
+        "rooms/eg007_create_form_group.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg007_create_form_group.py"

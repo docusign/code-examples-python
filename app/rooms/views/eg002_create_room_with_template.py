@@ -10,22 +10,24 @@ from ...ds_config import DS_CONFIG
 from ..examples.eg002_create_room_with_template import Eg002CreateRoomWithTemplateController
 from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 2
-eg = f"eg00{example_number}"  # reference (and url) for this example
-eg002 = Blueprint(eg, __name__)
+api = API_TYPE["ROOMS"]
+eg = f"reg00{example_number}"  # reference (and url) for this example
+reg002 = Blueprint(eg, __name__)
 
 
-@eg002.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg002.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def create_room_with_template():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg002CreateRoomWithTemplateController.get_args()
@@ -50,16 +52,16 @@ def create_room_with_template():
     )
 
 
-@eg002.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["rooms_manifest_url"])
-@authenticate(eg=eg)
+@reg002.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """
     1. Get required arguments
     2. Get room templates
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg002CreateRoomWithTemplateController.get_args()
@@ -71,7 +73,7 @@ def get_view():
         return process_error(err)
 
     return render_template(
-        "eg002_create_room_with_template.html",
+        "rooms/eg002_create_room_with_template.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg002_create_room_with_template.py",
