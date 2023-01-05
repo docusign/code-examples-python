@@ -142,7 +142,7 @@ const DS_SEARCH = (function () {
 
                     group.Examples.forEach(
                         example => {
-                            if (!example.SkipForLanguages || !example.SkipForLanguages.toLowerCase().includes("c#")) {
+                            if (!example.SkipForLanguages || !example.SkipForLanguages.toLowerCase().includes("python")) {
                                 if (element.Name.toLowerCase() !== API_TYPES.ESIGNATURE.toLowerCase() ||
                                     ((example.CFREnabled == "AllAccounts") ||
                                     ((cfrPart11 == "True") && (example.CFREnabled == "CFROnly")) ||
