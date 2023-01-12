@@ -39,7 +39,7 @@ DS_CONFIG = {
     "monitor_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/monitor/examples/",
     "admin_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/admin/examples/",
     "click_github_url": "https://github.com/docusign/code-examples-python/tree/master/app/click/examples/",
-    "example_manifest_url": "https://raw.githubusercontent.com/annahileta/ManifestsForCodeExamples/main/CodeExamplesManifest.json",
+    "example_manifest_url": "https://raw.githubusercontent.com/docusign/code-examples-csharp/master/manifest/CodeExamplesManifest.json",
     "documentation": "",  # Use an empty string to indicate no documentation path.
     "quickstart": os.environ.get("QUICKSTART_VALUE"),
     "quick_acg": False
