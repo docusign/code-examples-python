@@ -1,4 +1,4 @@
-app/ds_config*
+app/.env
 
 */.DS_Store
 .DS_Store

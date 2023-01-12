@@ -56,12 +56,12 @@ class Eg006EmbedClickwrapController:
         user_agreement_request = UserAgreementRequest(
             client_user_id=args["email"],
             document_data={
-                "fullName": args["fullName"], 
-                "email": args["email"], 
-                "company": args["company"], 
-                "title": args["title"], 
+                "fullName": args["fullName"],
+                "email": args["email"],
+                "company": args["company"],
+                "title": args["title"],
                 "date": args["date"]
-                },
+            },
         )
 
         # Retrieve Agreement Url using SDK
