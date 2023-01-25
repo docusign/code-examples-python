@@ -12,6 +12,7 @@ from flask import (
 )
 
 from app.docusign.ds_client import DSClient
+from app.docusign.utils import is_cfr
 from app.consts import base_uri_suffix
 from app.ds_config import DS_CONFIG
 
@@ -22,7 +23,7 @@ def ds_login():
     if not session.get("auth_type"):
         session["auth_type"] = request.form.get("auth_type")
     app.config["isLoggedIn"] = True
-    return DSClient.login("code_grant")
+    return DSClient.login("code_grant", session.get("api"))
 
 @ds.route("/callback")
 def ds_callback():

@@ -9,23 +9,25 @@ from docusign_admin.client.api_exception import ApiException
 from app.error_handlers import process_error
 from app.docusign import authenticate, ensure_manifest, get_example_by_number
 from app.ds_config import DS_CONFIG
+from ...consts import API_TYPE
 
 from ..examples.eg001_create_a_new_user import Eg001CreateNewUserController
 
 example_number = 1
-eg = f"eg00{example_number}"  # Reference (and URL) for this example
-eg001 = Blueprint(eg, __name__)
+api = API_TYPE["ADMIN"]
+eg = f"aeg00{example_number}"  # Reference (and URL) for this example
+aeg001 = Blueprint(eg, __name__)
 
-@eg001.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
-@authenticate(eg=eg)
+@aeg001.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_user_data():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     controller = Eg001CreateNewUserController()
 
@@ -47,14 +49,14 @@ def get_user_data():
         json=json.dumps(json.dumps(results.to_dict(), default=str))
     )
 
-@eg001.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
-@authenticate(eg=eg)
+@aeg001.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """
     Responds with the form for the example
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     args = Eg001CreateNewUserController.get_args(request)
     
@@ -67,7 +69,7 @@ def get_view():
 
     # Render the response
     return render_template(
-        "eg001_create_a_new_user.html",
+        "admin/eg001_create_a_new_user.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg001_create_a_new_user.py",

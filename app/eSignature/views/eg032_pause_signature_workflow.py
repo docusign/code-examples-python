@@ -8,24 +8,27 @@ from flask import render_template, session, Blueprint
 
 from ..examples.eg032_pause_signature_workflow import Eg032PauseSignatureWorkflowController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
+from ...docusign.utils import is_cfr
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 32
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # Reference (and URL) for this example
 eg032 = Blueprint(eg, __name__)
 
 
 @eg032.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def pause_signature_workflow():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render success response with envelopeId
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg032PauseSignatureWorkflowController.get_args()
@@ -49,17 +52,21 @@ def pause_signature_workflow():
 
 
 @eg032.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
-    if "is_cfr" in session and session["is_cfr"] == "enabled":
-        return render_template("cfr_error.html", title="Error")
+    cfr_status = is_cfr(session["ds_access_token"], session["ds_account_id"], session["ds_base_path"])
+    if cfr_status == "enabled":
+        if DS_CONFIG["quickstart"] == "true":
+            return redirect(url_for("eg041.get_view"))
+        else:
+            return render_template("cfr_error.html", title="Error")
 
     return render_template(
-        "eg032_pause_signature_workflow.html",
+        "eSignature/eg032_pause_signature_workflow.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg032_pause_signature_workflow.py",

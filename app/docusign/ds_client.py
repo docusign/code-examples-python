@@ -9,9 +9,9 @@ from docusign_esign import ApiClient
 from docusign_esign.client.api_exception import ApiException
 
 from ..ds_config import DS_CONFIG, DS_JWT
-from ..api_type import EXAMPLES_API_TYPE
 from ..error_handlers import process_error
 from ..jwt_helpers import get_jwt_token, get_private_key
+from ..consts import API_TYPE
 
 SCOPES = [
     "signature"
@@ -37,23 +37,24 @@ class DSClient:
     ds_app = None
 
     @classmethod
-    def _init(cls, auth_type):
+    def _init(cls, auth_type, api):
         if auth_type == "code_grant":
-            cls._auth_code_grant()
+            cls._auth_code_grant(api)
         elif auth_type == "jwt":
-            cls._jwt_auth()
+            cls._jwt_auth(api)
 
     @classmethod
-    def _auth_code_grant(cls):
+    def _auth_code_grant(cls, api):
         """Authorize with the Authorization Code Grant - OAuth 2.0 flow"""
         oauth = OAuth(app)
 
         use_scopes = []
-        if EXAMPLES_API_TYPE["Rooms"]:
+
+        if api == "Rooms":
             use_scopes.extend(ROOMS_SCOPES)
-        elif EXAMPLES_API_TYPE["Click"]:
+        elif api == "Click":
             use_scopes.extend(CLICK_SCOPES)
-        elif EXAMPLES_API_TYPE["Admin"]:
+        elif api == "Admin":
             use_scopes.extend(ADMIN_SCOPES)
         else:
             use_scopes.extend(SCOPES)
@@ -79,17 +80,17 @@ class DSClient:
         )
 
     @classmethod
-    def _jwt_auth(cls):
+    def _jwt_auth(cls, api):
         """JSON Web Token authorization"""
         api_client = ApiClient()
         api_client.set_base_path(DS_JWT["authorization_server"])
 
         use_scopes = []
-        if EXAMPLES_API_TYPE["Rooms"]:
+        if api == "Rooms":
             use_scopes.extend(ROOMS_SCOPES)
-        elif EXAMPLES_API_TYPE["Click"]:
+        elif api == "Click":
             use_scopes.extend(CLICK_SCOPES)
-        elif EXAMPLES_API_TYPE["Admin"]:
+        elif api == "Admin":
             use_scopes.extend(ADMIN_SCOPES)
         else:
             use_scopes.extend(SCOPES)
@@ -131,11 +132,12 @@ class DSClient:
         cls.ds_app = None
 
     @classmethod
-    def login(cls, auth_type):
+    def login(cls, auth_type, api):
+        cls._init(auth_type, api)
         if auth_type == "code_grant":
-            return cls.get(auth_type).authorize(callback=url_for("ds.ds_callback", _external=True))
+            return cls.get(auth_type, api).authorize(callback=url_for("ds.ds_callback", _external=True))
         elif auth_type == "jwt":
-            return cls._jwt_auth()
+            return cls._jwt_auth(api)
 
     @classmethod
     def get_token(cls, auth_type):
@@ -166,7 +168,7 @@ class DSClient:
         return response
 
     @classmethod
-    def get(cls, auth_type):
+    def get(cls, auth_type, api=API_TYPE["ESIGNATURE"]):
         if not cls.ds_app:
-            cls._init(auth_type)
+            cls._init(auth_type, api)
         return cls.ds_app

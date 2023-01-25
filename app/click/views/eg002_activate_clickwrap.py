@@ -10,22 +10,24 @@ from ..examples.eg002_activate_clickwrap import Eg002ActivateClickwrapController
 from app.docusign import authenticate, get_example_by_number, ensure_manifest
 from app.ds_config import DS_CONFIG
 from app.error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 2
-eg = f"eg00{example_number}"  # Reference (and URL) for this example
-eg002 = Blueprint(eg, __name__)
+api = API_TYPE["CLICK"]
+eg = f"ceg00{example_number}"  # Reference (and URL) for this example
+ceg002 = Blueprint(eg, __name__)
 
 
-@eg002.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
-@authenticate(eg=eg)
+@ceg002.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def activate_clickwrap():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg002ActivateClickwrapController.get_args()
@@ -51,16 +53,16 @@ def activate_clickwrap():
     )
 
 
-@eg002.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["click_manifest_url"])
-@authenticate(eg=eg)
+@ceg002.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     args = Eg002ActivateClickwrapController.get_args()
     return render_template(
-        "eg002_activate_clickwrap.html",
+        "click/eg002_activate_clickwrap.html",
         title=example["ExampleName"],
         example=example,
         clickwraps_data=Eg002ActivateClickwrapController.get_inactive_clickwraps(args),

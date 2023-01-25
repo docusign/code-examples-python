@@ -9,15 +9,17 @@ from ..examples.eg013_add_doc_to_template import Eg013AddDocToTemplateController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 13
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # reference (and url) for this example
 eg013 = Blueprint(eg, __name__)
 
 
 @eg013.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def add_doc_template():
     """
     1. Check the presence of a saved template_id
@@ -25,7 +27,7 @@ def add_doc_template():
     3. Call the worker method
     4. Redirect user to Signing ceremory
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Check the presence of a saved template_id
     if "template_id" in session:
@@ -44,7 +46,7 @@ def add_doc_template():
 
     else:
         return render_template(
-            "eg013_add_doc_to_template.html",
+            "eSignature/eg013_add_doc_to_template.html",
             title=example["ExampleName"],
             template_ok=False,
             source_file="eg013_add_doc_to_template.py",
@@ -55,14 +57,14 @@ def add_doc_template():
 
 
 @eg013.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     return render_template(
-        "eg013_add_doc_to_template.html",
+        "eSignature/eg013_add_doc_to_template.html",
         title=example["ExampleName"],
         example=example,
         template_ok="template_id" in session,

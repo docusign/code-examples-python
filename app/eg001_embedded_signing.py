@@ -8,15 +8,18 @@ from .eSignature.examples.eg041_cfr_embedded_signing import Eg041CFREmbeddedSign
 from .docusign import authenticate, ensure_manifest, get_example_by_number
 from .ds_config import DS_CONFIG
 from .error_handlers import process_error
+from .consts import API_TYPE
+from .docusign.utils import is_cfr
 
 example_number = 1
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg00{example_number}"  # reference (and url) for this example
 eg001 = Blueprint(eg, __name__)
 
 
 @eg001.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def embedded_signing():
     """
     1. Get required arguments
@@ -39,17 +42,19 @@ def embedded_signing():
 
 
 @eg001.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # Check if account is a CFR Part 11 account and redirect accordingly for Quickstart
-    if "is_cfr" in session and session["is_cfr"] == "enabled":
+    cfr_status = is_cfr(session["ds_access_token"], session["ds_account_id"], session["ds_base_path"])
+    if cfr_status == "enabled":
         if DS_CONFIG["quickstart"] == "true":
             return redirect(url_for("eg041.get_view"))
-        return render_template("cfr_error.html", title="Error")
+        else:
+            return render_template("cfr_error.html", title="Error")
 
     return render_template(
         "eg001_embedded_signing.html",

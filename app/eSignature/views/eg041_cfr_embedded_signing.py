@@ -7,15 +7,17 @@ from ..examples.eg041_cfr_embedded_signing import Eg041CFREmbeddedSigningControl
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 41
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"  # reference (and url) for this example
 eg041 = Blueprint(eg, __name__)
 
 
 @eg041.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def embedded_signing():
     """
     1. Get required arguments
@@ -38,11 +40,11 @@ def embedded_signing():
 
 
 @eg041.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     args = {
         "account_id": session["ds_account_id"],  # represent your {ACCOUNT_ID}
@@ -53,7 +55,7 @@ def get_view():
     workflow_id = Eg041CFREmbeddedSigningController.get_workflow(args)
 
     return render_template(
-        "eg041_cfr_embedded_signing.html",
+        "eSignature/eg041_cfr_embedded_signing.html",
         title=example["ExampleName"],
         example=example,
         source_file="eg041_cfr_embedded_signing.py",

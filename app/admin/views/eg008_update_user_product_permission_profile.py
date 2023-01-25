@@ -10,21 +10,23 @@ from app.error_handlers import process_error
 from ..examples.eg008_update_user_product_permission_profile import Eg008UpdateUserProductPermissionProfileController
 from ...ds_config import DS_CONFIG
 from ..utils import check_user_exists_by_email
+from ...consts import API_TYPE
 
 example_number = 8
-eg = f"eg00{example_number}"  # Reference (and URL) for this example
-eg008 = Blueprint(eg, __name__)
+api = API_TYPE["ADMIN"]
+eg = f"aeg00{example_number}"  # Reference (and URL) for this example
+aeg008 = Blueprint(eg, __name__)
 
-@eg008.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
-@authenticate(eg=eg)
+@aeg008.route(f"/{eg}", methods=["POST"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def create_active_clm_esign_user():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     if "clm_email" in session and check_user_exists_by_email(session["clm_email"]):
         controller = Eg008UpdateUserProductPermissionProfileController()
@@ -54,23 +56,23 @@ def create_active_clm_esign_user():
         )
     else:
         template = render_template(
-            f"{eg}_create_active_clm_esign_user.html",
+            f"admin/eg008_create_active_clm_esign_user.html",
             title=example["ExampleName"],
             example=example,
             email_ok=False,
-            source_file=f"{eg}_create_active_clm_esign_user.py",
-            source_url=DS_CONFIG["admin_github_url"] + f"{eg}_create_active_clm_esign_user.py",
+            source_file=f"eg008_create_active_clm_esign_user.py",
+            source_url=DS_CONFIG["admin_github_url"] + f"eg008_create_active_clm_esign_user.py",
             documentation=DS_CONFIG["documentation"] + eg
         )
 
     return template
 
-@eg008.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["admin_manifest_url"])
-@authenticate(eg=eg)
+@aeg008.route(f"/{eg}", methods=["GET"])
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """ Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     if "clm_email" in session and check_user_exists_by_email(session["clm_email"]):
         try:
@@ -97,12 +99,12 @@ def get_view():
             return process_error(err)
 
         template = render_template(
-            f"{eg}_update_user_product_permission_profile.html",
+            f"admin/eg008_update_user_product_permission_profile.html",
             title=example["ExampleName"],
             example=example,
             email_ok="clm_email" in session,
-            source_file=f"{eg}_update_user_product_permission_profile.py",
-            source_url=DS_CONFIG["admin_github_url"] + f"{eg}_update_user_product_permission_profile.py",
+            source_file=f"eg008_update_user_product_permission_profile.py",
+            source_url=DS_CONFIG["admin_github_url"] + f"eg008_update_user_product_permission_profile.py",
             documentation=DS_CONFIG["documentation"] + eg,
             product_list=products_list,
             email=session["clm_email"],
@@ -111,12 +113,12 @@ def get_view():
         )
     else:
         template = render_template(
-            f"{eg}_update_user_product_permission_profile.html",
+            f"admin/eg008_update_user_product_permission_profile.html",
             title=example["ExampleName"],
             example=example,
             email_ok=False,
-            source_file=f"{eg}_update_user_product_permission_profile.py",
-            source_url=DS_CONFIG["admin_github_url"] + f"{eg}_update_user_product_permission_profile.py",
+            source_file=f"eg008_update_user_product_permission_profile.py",
+            source_url=DS_CONFIG["admin_github_url"] + f"eg008_update_user_product_permission_profile.py",
             documentation=DS_CONFIG["documentation"] + eg
         )
 

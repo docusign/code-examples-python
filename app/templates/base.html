@@ -8,6 +8,7 @@
     <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
     <title>{{ title }}</title>
     <!-- Bootstrap core CSS -->
+    <script src="https://kit.fontawesome.com/a2fb399780.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='assets/css.css') }}" rel="stylesheet">
@@ -37,9 +38,6 @@
                  data-busy="href">{{ session["manifest"]["SupportingTexts"]["LoginButton"] }} <span class="sr-only">(current)</span></a>
             </li>
           {% endif %}
-          <li class="nav-item active">
-            <a class="nav-link" href="{{ url_for('ds.choose_api') }}">{{ session["manifest"]["SupportingTexts"]["ChangeAPITypeButton"] }} <span class="sr-only">(current)</span></a>
-          </li>
         </ul>
 
         {% if session['ds_user_name'] %}

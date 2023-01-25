@@ -4,25 +4,28 @@ from os import path
 from docusign_esign.client.api_exception import ApiException
 from flask import current_app as app
 from flask import render_template, session, request, Blueprint
+
 from ..examples.eg025_permissions_set_user_group import Eg025PermissionsSetUserGroupController
 from ...docusign import authenticate, ensure_manifest, get_example_by_number
 from ...ds_config import DS_CONFIG
 from ...error_handlers import process_error
+from ...consts import API_TYPE
 
 example_number = 25
+api = API_TYPE["ESIGNATURE"]
 eg = f"eg0{example_number}"
 eg025 = Blueprint(eg, __name__)
 
 @eg025.route(f"/{eg}", methods=["POST"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def permissions_set_user_group():
     """
     1. Get required arguments
     2. Call the worker method
     3. Render a response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg025PermissionsSetUserGroupController.get_args()
@@ -46,11 +49,11 @@ def permissions_set_user_group():
         return process_error(err)
 
 @eg025.route(f"/{eg}", methods=["GET"])
-@ensure_manifest(manifest_url=DS_CONFIG["esign_manifest_url"])
-@authenticate(eg=eg)
+@ensure_manifest(manifest_url=DS_CONFIG["example_manifest_url"])
+@authenticate(eg=eg, api=api)
 def get_view():
     """Responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     args = {
         "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
@@ -59,7 +62,7 @@ def get_view():
     }
     permission_profiles, groups = Eg025PermissionsSetUserGroupController.get_data(args)
     return render_template(
-        "eg025_permissions_set_user_group.html",
+        "eSignature/eg025_permissions_set_user_group.html",
         title=example["ExampleName"],
         example=example,
         source_file= "eg025_permissions_set_user_group.py",

@@ -1,2 +1,2 @@
-from .views import eg001
-from .views import eg002
+from .views import meg001
+from .views import meg002

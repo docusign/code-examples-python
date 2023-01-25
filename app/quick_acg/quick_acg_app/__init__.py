@@ -4,6 +4,7 @@ from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 
 from app.eg001_embedded_signing import eg001
+from app.eSignature.views import eg041
 from .views import core, ds
 
 session_path = "/tmp/python_recipe_sessions"
@@ -21,6 +22,7 @@ quick_acg_app.register_blueprint(core)
 quick_acg_app.register_blueprint(ds)
 # Register examples
 quick_acg_app.register_blueprint(eg001)
+quick_acg_app.register_blueprint(eg041)
 
 if "DYNO" in os.environ:  # On Heroku?
     import logging
