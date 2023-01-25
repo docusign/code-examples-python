@@ -5,10 +5,19 @@ from docusign_esign.client.api_exception import ApiException
 
 from ..ds_config import DS_CONFIG, DS_JWT
 
+
+CONFIG = {
+    "ds_client_id": DS_JWT["ds_client_id"],
+    "ds_impersonated_user_id": DS_JWT["ds_impersonated_user_id"],
+    "signer_email": DS_CONFIG["signer_email"],
+    "signer_name": DS_CONFIG["signer_name"],
+    "private_key_file": DS_JWT["private_key_file"]
+}
+
 DATA = {
     "signer_client_id": '1000',
-    "return_url": DS_CONFIG["app_url"] + "/ds-return",
-    "ping_url": DS_CONFIG["app_url"] + "/",
+    "return_url": "http://localhost:5000/ds-return",
+    "ping_url": "http://localhost:5000/",
     "private_key_filename": "../config/private.key",
     "base_path": 'https://demo.docusign.net/restapi',
     "oauth_base_path": 'account-d.docusign.com',
@@ -31,7 +40,7 @@ class TestHelper:
     @staticmethod
     def authenticate():
         try:
-            private_key_file = open(os.path.abspath(os.path.join(DS_JWT["private_key_file"])), "r")
+            private_key_file = open(os.path.abspath(os.path.join(CONFIG["private_key_file"])), "r")
             private_key = private_key_file.read()
 
             api_client = ApiClient()
@@ -41,11 +50,11 @@ class TestHelper:
             api_client.set_base_path(DATA["base_path"])
             api_client.set_oauth_host_name(DATA["oauth_base_path"])
             token_response = api_client.request_jwt_user_token(
-                client_id=DS_JWT["ds_client_id"],
-                user_id=DS_JWT["ds_impersonated_user_id"],
+                client_id=CONFIG["ds_client_id"],
+                user_id=CONFIG["ds_impersonated_user_id"],
                 oauth_host_name=DATA["oauth_base_path"],
                 private_key_bytes=private_key,
-                expires_in=4000,
+                expires_in=DATA["expires_in"],
                 scopes=DATA["scopes"]
             )
 
@@ -63,8 +72,8 @@ class TestHelper:
 
             if "consent_required" in body:
                 url_scopes = "+".join(DATA["scopes"])
-                url = f"https://{DS_JWT['authorization_server']}/oauth/auth?response_type=code&" \
-                      f"scope={url_scopes}&client_id={DS_JWT['ds_client_id']}&redirect_uri={DATA['redirect_uri']}"
+                url = f"https://{DATA['oauth_base_path']}/oauth/auth?response_type=code&" \
+                      f"scope={url_scopes}&client_id={CONFIG['ds_client_id']}&redirect_uri={DATA['redirect_uri']}"
 
                 consent_message = f"You should grant access by making the following call: {url}"
                 print(consent_message)
@@ -77,4 +86,3 @@ class TestHelper:
         base64_file_content = base64.b64encode(content_bytes).decode("ascii")
 
         return base64_file_content
-
