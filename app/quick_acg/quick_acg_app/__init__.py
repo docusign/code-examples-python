@@ -4,7 +4,7 @@ from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 
 from app.eg001_embedded_signing import eg001
-from app.eSignature.views import eg041
+from app.eSignature.views.eg041_cfr_embedded_signing import eg041
 from .views import core, ds
 
 session_path = "/tmp/python_recipe_sessions"
