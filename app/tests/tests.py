@@ -11,7 +11,7 @@ from app.eSignature.examples.eg008_create_template import Eg008CreateTemplateCon
 from app.eSignature.examples.eg009_use_template import Eg009UseTemplateController
 from app.eSignature.examples.eg013_add_doc_to_template import Eg013AddDocToTemplateController
 from app.eSignature.examples.eg016_set_tab_values import Eg016SetTabValuesController
-from .test_helper import TestHelper, DATA, DS_CONFIG
+from .test_helper import TestHelper, DATA, CONFIG
 
 
 class Testing(unittest.TestCase):
@@ -27,8 +27,8 @@ class Testing(unittest.TestCase):
 
     def test_embedded_signing_worker(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "signer_client_id": DATA["signer_client_id"],
             "ds_return_url": DATA["return_url"],
         }
@@ -47,8 +47,8 @@ class Testing(unittest.TestCase):
 
     def test_embedded_signing_make_envelope(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "signer_client_id": DATA["signer_client_id"],
             "ds_return_url": DATA["return_url"],
         }
@@ -60,8 +60,8 @@ class Testing(unittest.TestCase):
             status="sent",
             recipients=Recipients(
                 signers=[Signer(
-                    email=DS_CONFIG["signer_email"],
-                    name=DS_CONFIG["signer_name"],
+                    email=CONFIG["signer_email"],
+                    name=CONFIG["signer_name"],
                     recipient_id='1',
                     routing_order='1',
                     client_user_id=DATA["signer_client_id"],
@@ -90,8 +90,8 @@ class Testing(unittest.TestCase):
 
     def test_sign_via_email(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
             "status": "sent"
@@ -111,8 +111,8 @@ class Testing(unittest.TestCase):
 
     def test_sign_via_email_make_envelope(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
             "status": "sent"
@@ -130,8 +130,8 @@ class Testing(unittest.TestCase):
             <h2 style="font-family: "Trebuchet MS", Helvetica, sans-serif;
               margin-top: 0px;margin-bottom: 3.5em;font-size: 1em;
               color: darkblue;">Order Processing Division</h2>
-            <h4>Ordered by {DS_CONFIG["signer_name"]}</h4>
-            <p style="margin-top:0em; margin-bottom:0em;">Email: {DS_CONFIG["signer_email"]}</p>
+            <h4>Ordered by {CONFIG["signer_name"]}</h4>
+            <p style="margin-top:0em; margin-bottom:0em;">Email: {CONFIG["signer_email"]}</p>
             <p style="margin-top:0em; margin-bottom:0em;">Copy to: {DATA["cc_name"]}, {DATA["cc_email"]}</p>
             <p style="margin-top:3em;">
                 Candy bonbon pastry jujubes lollipop wafer biscuit biscuit. Topping brownie sesame snaps sweet roll pie. 
@@ -171,8 +171,8 @@ class Testing(unittest.TestCase):
             ],
             recipients=Recipients(
                 signers=[Signer(
-                    email=DS_CONFIG["signer_email"],
-                    name=DS_CONFIG["signer_name"],
+                    email=CONFIG["signer_email"],
+                    name=CONFIG["signer_name"],
                     recipient_id="1",
                     routing_order="1",
                     tabs=Tabs(sign_here_tabs=[
@@ -203,12 +203,12 @@ class Testing(unittest.TestCase):
                                                                 os.path.abspath(DATA["test_pdf_file"]))
 
         self.assertIsNotNone(envelope)
-        self.assertEquals(envelope, expected)
+        self.assertEqual(envelope, expected)
 
     def test_sign_via_email_html_doc(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"]
         }
@@ -225,8 +225,8 @@ class Testing(unittest.TestCase):
             <h2 style="font-family: "Trebuchet MS", Helvetica, sans-serif;
               margin-top: 0px;margin-bottom: 3.5em;font-size: 1em;
               color: darkblue;">Order Processing Division</h2>
-            <h4>Ordered by {DS_CONFIG["signer_name"]}</h4>
-            <p style="margin-top:0em; margin-bottom:0em;">Email: {DS_CONFIG["signer_email"]}</p>
+            <h4>Ordered by {CONFIG["signer_name"]}</h4>
+            <p style="margin-top:0em; margin-bottom:0em;">Email: {CONFIG["signer_email"]}</p>
             <p style="margin-top:0em; margin-bottom:0em;">Copy to: {DATA["cc_name"]}, {DATA["cc_email"]}</p>
             <p style="margin-top:3em;">
                 Candy bonbon pastry jujubes lollipop wafer biscuit biscuit. Topping brownie sesame snaps sweet roll pie. 
@@ -390,12 +390,12 @@ class Testing(unittest.TestCase):
         template = Eg008CreateTemplateController.make_template_req()
 
         self.assertIsNotNone(template)
-        self.assertEquals(template, expected)
+        self.assertEqual(template, expected)
 
     def test_use_template(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
             "template_id": Testing.TEMPLATE_ID
@@ -414,8 +414,8 @@ class Testing(unittest.TestCase):
 
     def test_use_template_make_envelope(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
             "template_id": Testing.TEMPLATE_ID
@@ -426,8 +426,8 @@ class Testing(unittest.TestCase):
             template_id=Testing.TEMPLATE_ID,
             template_roles=[
                 TemplateRole(
-                    email=DS_CONFIG["signer_email"],
-                    name=DS_CONFIG["signer_name"],
+                    email=CONFIG["signer_email"],
+                    name=CONFIG["signer_name"],
                     role_name="signer"
                 ),
                 TemplateRole(
@@ -441,12 +441,12 @@ class Testing(unittest.TestCase):
         result = Eg009UseTemplateController.make_envelope(envelope_args)
 
         self.assertIsNotNone(result)
-        self.assertEquals(result, expected)
+        self.assertEqual(result, expected)
 
     def test_include_doc_to_template(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
             "template_id": Testing.TEMPLATE_ID,
@@ -470,8 +470,8 @@ class Testing(unittest.TestCase):
 
     def test_include_doc_to_template_make_envelope(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
             "template_id": Testing.TEMPLATE_ID,
@@ -493,8 +493,8 @@ class Testing(unittest.TestCase):
             <h2 style="font-family: "Trebuchet MS", Helvetica, sans-serif;
               margin-top: 0px;margin-bottom: 3.5em;font-size: 1em;
               color: darkblue;">Order Processing Division</h2>
-            <h4>Ordered by {DS_CONFIG["signer_name"]}</h4>
-            <p style="margin-top:0em; margin-bottom:0em;">Email: {DS_CONFIG["signer_email"]}</p>
+            <h4>Ordered by {CONFIG["signer_name"]}</h4>
+            <p style="margin-top:0em; margin-bottom:0em;">Email: {CONFIG["signer_email"]}</p>
             <p style="margin-top:0em; margin-bottom:0em;">Copy to: {DATA["cc_name"]}, {DATA["cc_email"]}</p>
             <p style="margin-top:3em; margin-bottom:0em;">Item: <b>{DATA["item"]}</b>, quantity: <b>{DATA["quantity"]}</b> at market price.</p>
             <p style="margin-top:3em;">
@@ -525,8 +525,8 @@ class Testing(unittest.TestCase):
                                     recipient_id="2"
                                 )],
                                 signers=[Signer(
-                                    email=DS_CONFIG["signer_email"],
-                                    name=DS_CONFIG["signer_name"],
+                                    email=CONFIG["signer_email"],
+                                    name=CONFIG["signer_name"],
                                     role_name="signer",
                                     recipient_id="1",
                                     client_user_id=DATA["signer_client_id"]
@@ -547,8 +547,8 @@ class Testing(unittest.TestCase):
                                     recipient_id="2"
                                 )],
                                 signers=[Signer(
-                                    email=DS_CONFIG["signer_email"],
-                                    name=DS_CONFIG["signer_name"],
+                                    email=CONFIG["signer_email"],
+                                    name=CONFIG["signer_name"],
                                     role_name="signer",
                                     recipient_id="1",
                                     client_user_id=DATA["signer_client_id"],
@@ -577,12 +577,12 @@ class Testing(unittest.TestCase):
         envelope = Eg013AddDocToTemplateController.make_envelope(envelope_args)
 
         self.assertIsNotNone(envelope)
-        self.assertEquals(envelope, expected)
+        self.assertEqual(envelope, expected)
 
     def test_include_doc_to_template_html_doc(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "cc_email": DATA["cc_email"],
             "cc_name": DATA["cc_name"],
             "item": DATA["item"],
@@ -601,8 +601,8 @@ class Testing(unittest.TestCase):
             <h2 style="font-family: "Trebuchet MS", Helvetica, sans-serif;
               margin-top: 0px;margin-bottom: 3.5em;font-size: 1em;
               color: darkblue;">Order Processing Division</h2>
-            <h4>Ordered by {DS_CONFIG["signer_name"]}</h4>
-            <p style="margin-top:0em; margin-bottom:0em;">Email: {DS_CONFIG["signer_email"]}</p>
+            <h4>Ordered by {CONFIG["signer_name"]}</h4>
+            <p style="margin-top:0em; margin-bottom:0em;">Email: {CONFIG["signer_email"]}</p>
             <p style="margin-top:0em; margin-bottom:0em;">Copy to: {DATA["cc_name"]}, {DATA["cc_email"]}</p>
             <p style="margin-top:3em; margin-bottom:0em;">Item: <b>{DATA["item"]}</b>, quantity: <b>{DATA["quantity"]}</b> at market price.</p>
             <p style="margin-top:3em;">
@@ -617,12 +617,12 @@ class Testing(unittest.TestCase):
         document = Eg013AddDocToTemplateController.create_document1(envelope_args)
 
         self.assertIsNotNone(document)
-        self.assertEquals(document, expected)
+        self.assertEqual(document, expected)
 
     def test_set_tab_values(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "signer_client_id": DATA["signer_client_id"],
             "ds_return_url": DATA["return_url"]
         }
@@ -641,8 +641,8 @@ class Testing(unittest.TestCase):
 
     def test_set_tab_values_make_envelope(self):
         envelope_args = {
-            "signer_email": DS_CONFIG["signer_email"],
-            "signer_name": DS_CONFIG["signer_name"],
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
             "signer_client_id": DATA["signer_client_id"],
             "ds_return_url": DATA["return_url"]
         }
@@ -657,8 +657,8 @@ class Testing(unittest.TestCase):
             )],
             recipients=Recipients(
                 signers=[Signer(
-                    email=DS_CONFIG["signer_email"],
-                    name=DS_CONFIG["signer_name"],
+                    email=CONFIG["signer_email"],
+                    name=CONFIG["signer_name"],
                     recipient_id="1",
                     routing_order="1",
                     client_user_id=DATA["signer_client_id"],
@@ -674,7 +674,7 @@ class Testing(unittest.TestCase):
                                 anchor_string="/legal/", anchor_units="pixels",
                                 anchor_y_offset="-9", anchor_x_offset="5",
                                 font="helvetica", font_size="size11",
-                                bold="true", value=DS_CONFIG["signer_name"],
+                                bold="true", value=CONFIG["signer_name"],
                                 locked="false", tab_id="legal_name",
                                 tab_label="Legal name"
                             ),
@@ -682,7 +682,7 @@ class Testing(unittest.TestCase):
                                 anchor_string="/familiar/", anchor_units="pixels",
                                 anchor_y_offset="-9", anchor_x_offset="5",
                                 font="helvetica", font_size="size11",
-                                bold="true", value=DS_CONFIG["signer_name"],
+                                bold="true", value=CONFIG["signer_name"],
                                 locked="false", tab_id="familar_name",
                                 tab_label="Familiar name"
                             ),
@@ -717,7 +717,7 @@ class Testing(unittest.TestCase):
         envelope = Eg016SetTabValuesController.make_envelope(envelope_args)
 
         self.assertIsNotNone(envelope)
-        self.assertEquals(envelope, expected)
+        self.assertEqual(envelope, expected)
 
 
 if __name__ == '__main__':

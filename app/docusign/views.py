@@ -20,6 +20,8 @@ def ds_login():
     if not session.get("auth_type"):
         session["auth_type"] = request.form.get("auth_type")
 
+    session["manifest"] = get_manifest(manifest_url)
+
     app.config["isLoggedIn"] = True
     app.config["quickstart"] = DS_CONFIG["quickstart"]
     return DSClient.login(session["auth_type"], session.get("api"))
