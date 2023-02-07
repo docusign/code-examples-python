@@ -86,11 +86,12 @@ class Eg006CreateExternalFormFillSessionController:
 
         # Step 2. Create an external form fill session
         form_fill_session_api = ExternalFormFillSessionsApi(api_client)
-        response = form_fill_session_api.create_external_form_fill_session(
+        results = form_fill_session_api.create_external_form_fill_session(
             body=ExternalFormFillSessionForCreate(
                 room_id=args['room_id'],
-                form_id=args['form_id']
+                form_id=args['form_id'],
+                x_frame_allowed_url="https://iframetester.com"
             ),
             account_id=args["account_id"]
         )
-        return response
+        return {"redirect_url": "https://iframetester.com/?url=" + results.url}

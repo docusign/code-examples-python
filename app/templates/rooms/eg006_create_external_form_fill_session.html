@@ -24,7 +24,7 @@
                 <button type="submit" class="btn btn-docu">Get forms</button>
          </form>
     {% elif room_name and forms %}
-        <form class="eg" action="eg006" method="post" data-busy="form">
+        <form class="eg" action="reg006" method="post" data-busy="form">
             <label for="room_name">{{ example['Forms'][form_index]['Inputs'][room_id_index]['InputName'] }}</label>
             <input type="text" class="form-control" id="room_name" name="room_name" value="{{ room_name }}" readonly><br/>
             <input type="hidden" class="form-control" name="room_id" value="{{ room_id }}" readonly>
