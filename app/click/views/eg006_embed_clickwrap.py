@@ -29,7 +29,7 @@ def embed_clickwrap():
     2. Call the worker method
     3. Render the response
     """
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     # 1. Get required arguments
     args = Eg006EmbedClickwrapController.get_args()
@@ -55,7 +55,7 @@ def embed_clickwrap():
 
     # 3. Render the response
     return render_template(
-        "eg006_done.html",
+        "click/eg006_done.html",
         title=example["ExampleName"],
         message=f"""See the embedded clickwrap in the dialog box.""",
         json=json.dumps(json.dumps(results.to_dict(), default=str)),
@@ -68,11 +68,11 @@ def embed_clickwrap():
 @authenticate(eg=eg, api=api)
 def get_view():
     """responds with the form for the example"""
-    example = get_example_by_number(session["manifest"], example_number)
+    example = get_example_by_number(session["manifest"], example_number, api)
 
     args = Eg006EmbedClickwrapController.get_args()
     return render_template(
-        "eg006_embed_clickwrap.html",
+        "click/eg006_embed_clickwrap.html",
         title=example["ExampleName"],
         example=example,
         clickwraps_data=Eg006EmbedClickwrapController.get_active_clickwraps(args),
