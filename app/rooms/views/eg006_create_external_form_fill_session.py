@@ -38,7 +38,14 @@ def create_external_form_fill_session():
     except ApiException as err:
         return process_error(err)
     
-    return redirect(results["redirect_url"])
+    #return results["redirect_url"]
+
+    return render_template(
+        "example_rooms_6_done.html",
+        title=example["ExampleName"],
+        json=json.dumps(json.dumps(results.to_dict(), default=str)),
+        url = results.url
+    )
 
 
 @reg006.route(f"/{eg}", methods=["GET"])
