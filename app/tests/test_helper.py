@@ -2,38 +2,9 @@ import os
 import base64
 from docusign_esign import ApiClient
 from docusign_esign.client.api_exception import ApiException
+from .test_config import get_configuration
 
-from ..ds_config import DS_CONFIG, DS_JWT
-
-
-CONFIG = {
-    "ds_client_id": DS_JWT["ds_client_id"],
-    "ds_impersonated_user_id": DS_JWT["ds_impersonated_user_id"],
-    "signer_email": DS_CONFIG["signer_email"],
-    "signer_name": DS_CONFIG["signer_name"],
-    "private_key_file": DS_JWT["private_key_file"]
-}
-
-DATA = {
-    "signer_client_id": '1000',
-    "return_url": "http://localhost:5000/ds-return",
-    "ping_url": "http://localhost:5000/",
-    "private_key_filename": "../config/private.key",
-    "base_path": 'https://demo.docusign.net/restapi',
-    "oauth_base_path": 'account-d.docusign.com',
-    "redirect_uri": 'https://www.docusign.com/api',
-    "scopes": ["signature", "impersonation"],
-    "expires_in": 3600,
-    "test_pdf_file": './app/tests/docs/World_Wide_Corp_lorem.pdf',
-    "test_docx_file": './app/tests/docs/World_Wide_Corp_Battle_Plan_Trafalgar.docx',
-    "test_template_pdf_file": './app/tests/docs/World_Wide_Corp_fields.pdf',
-    "test_template_docx_file": './app/tests/docs/World_Wide_Corp_salary.docx',
-    "template_name": 'Example Signer and CC template',
-    "cc_name": 'Test Name',
-    "cc_email": 'test@mail.com',
-    "item": 'Item',
-    "quantity": '5'
-}
+CONFIG = get_configuration()
 
 
 class TestHelper:
@@ -44,18 +15,18 @@ class TestHelper:
             private_key = private_key_file.read()
 
             api_client = ApiClient()
-            api_client.host = DATA["base_path"]
+            api_client.host = CONFIG["base_path"]
 
             api_client = ApiClient()
-            api_client.set_base_path(DATA["base_path"])
-            api_client.set_oauth_host_name(DATA["oauth_base_path"])
+            api_client.set_base_path(CONFIG["base_path"])
+            api_client.set_oauth_host_name(CONFIG["oauth_base_path"])
             token_response = api_client.request_jwt_user_token(
                 client_id=CONFIG["ds_client_id"],
                 user_id=CONFIG["ds_impersonated_user_id"],
-                oauth_host_name=DATA["oauth_base_path"],
+                oauth_host_name=CONFIG["oauth_base_path"],
                 private_key_bytes=private_key,
-                expires_in=DATA["expires_in"],
-                scopes=DATA["scopes"]
+                expires_in=CONFIG["expires_in"],
+                scopes=CONFIG["scopes"]
             )
 
             access_token = token_response.access_token
@@ -71,13 +42,15 @@ class TestHelper:
             body = err.body.decode('utf8')
 
             if "consent_required" in body:
-                url_scopes = "+".join(DATA["scopes"])
-                url = f"https://{DATA['oauth_base_path']}/oauth/auth?response_type=code&" \
-                      f"scope={url_scopes}&client_id={CONFIG['ds_client_id']}&redirect_uri={DATA['redirect_uri']}"
+                url_scopes = "+".join(CONFIG["scopes"])
+                url = f"https://{CONFIG['oauth_base_path']}/oauth/auth?response_type=code&" \
+                      f"scope={url_scopes}&client_id={CONFIG['ds_client_id']}&redirect_uri={CONFIG['redirect_uri']}"
 
                 consent_message = f"You should grant access by making the following call: {url}"
                 print(consent_message)
                 raise Exception(f"You should grant access by making the following call: {url}")
+
+            raise err
 
     @staticmethod
     def read_as_base64(path):

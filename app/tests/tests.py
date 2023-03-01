@@ -11,7 +11,7 @@ from app.eSignature.examples.eg008_create_template import Eg008CreateTemplateCon
 from app.eSignature.examples.eg009_use_template import Eg009UseTemplateController
 from app.eSignature.examples.eg013_add_doc_to_template import Eg013AddDocToTemplateController
 from app.eSignature.examples.eg016_set_tab_values import Eg016SetTabValuesController
-from .test_helper import TestHelper, DATA, CONFIG
+from .test_helper import TestHelper, CONFIG
 
 
 class Testing(unittest.TestCase):
@@ -29,8 +29,9 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "signer_client_id": DATA["signer_client_id"],
-            "ds_return_url": DATA["return_url"],
+            "signer_client_id": CONFIG["signer_client_id"],
+            "ds_return_url": CONFIG["return_url"],
+            "doc_pdf": os.path.abspath(CONFIG["test_pdf_file"]),
         }
         args = {
             "account_id": self.account_id,
@@ -49,11 +50,12 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "signer_client_id": DATA["signer_client_id"],
-            "ds_return_url": DATA["return_url"],
+            "signer_client_id": CONFIG["signer_client_id"],
+            "ds_return_url": CONFIG["return_url"],
+            "doc_pdf": os.path.abspath(CONFIG["test_pdf_file"])
         }
 
-        base64_file_content = TestHelper.read_as_base64(DATA["test_pdf_file"])
+        base64_file_content = TestHelper.read_as_base64(CONFIG["test_pdf_file"])
 
         envelope = EnvelopeDefinition(
             email_subject="Please sign this document sent from the Python SDK",
@@ -64,7 +66,7 @@ class Testing(unittest.TestCase):
                     name=CONFIG["signer_name"],
                     recipient_id='1',
                     routing_order='1',
-                    client_user_id=DATA["signer_client_id"],
+                    client_user_id=CONFIG["signer_client_id"],
                     tabs=Tabs(
                         sign_here_tabs=[SignHere(
                             anchor_string="/sn1/",
@@ -92,8 +94,8 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "cc_email": DATA["cc_email"],
-            "cc_name": DATA["cc_name"],
+            "cc_email": CONFIG["cc_email"],
+            "cc_name": CONFIG["cc_name"],
             "status": "sent"
         }
         args = {
@@ -103,8 +105,8 @@ class Testing(unittest.TestCase):
             "envelope_args": envelope_args
         }
 
-        results = Eg002SigningViaEmailController.worker(args, os.path.abspath(DATA["test_docx_file"]),
-                                                        os.path.abspath(DATA["test_pdf_file"]))
+        results = Eg002SigningViaEmailController.worker(args, os.path.abspath(CONFIG["test_docx_file"]),
+                                                        os.path.abspath(CONFIG["test_pdf_file"]))
 
         self.assertIsNotNone(results)
         self.assertIsNotNone(results["envelope_id"])
@@ -113,8 +115,8 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "cc_email": DATA["cc_email"],
-            "cc_name": DATA["cc_name"],
+            "cc_email": CONFIG["cc_email"],
+            "cc_name": CONFIG["cc_name"],
             "status": "sent"
         }
 
@@ -132,7 +134,7 @@ class Testing(unittest.TestCase):
               color: darkblue;">Order Processing Division</h2>
             <h4>Ordered by {CONFIG["signer_name"]}</h4>
             <p style="margin-top:0em; margin-bottom:0em;">Email: {CONFIG["signer_email"]}</p>
-            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {DATA["cc_name"]}, {DATA["cc_email"]}</p>
+            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {CONFIG["cc_name"]}, {CONFIG["cc_email"]}</p>
             <p style="margin-top:3em;">
                 Candy bonbon pastry jujubes lollipop wafer biscuit biscuit. Topping brownie sesame snaps sweet roll pie. 
                 Croissant danish biscuit soufflé caramels jujubes jelly. Dragée danish caramels lemon drops dragée. 
@@ -157,13 +159,13 @@ class Testing(unittest.TestCase):
                     document_id="1"
                 ),
                 Document(
-                    document_base64=TestHelper.read_as_base64(os.path.abspath(DATA["test_docx_file"])),
+                    document_base64=TestHelper.read_as_base64(os.path.abspath(CONFIG["test_docx_file"])),
                     name="Battle Plan",
                     file_extension="docx",
                     document_id="2"
                 ),
                 Document(
-                    document_base64=TestHelper.read_as_base64(os.path.abspath(DATA["test_pdf_file"])),
+                    document_base64=TestHelper.read_as_base64(os.path.abspath(CONFIG["test_pdf_file"])),
                     name="Lorem Ipsum",
                     file_extension="pdf",
                     document_id="3"
@@ -191,16 +193,16 @@ class Testing(unittest.TestCase):
                     ])
                 )],
                 carbon_copies=[CarbonCopy(
-                    email=DATA["cc_email"],
-                    name=DATA["cc_name"],
+                    email=CONFIG["cc_email"],
+                    name=CONFIG["cc_name"],
                     recipient_id="2",
                     routing_order="2"
                 )]
             )
         )
 
-        envelope = Eg002SigningViaEmailController.make_envelope(envelope_args, os.path.abspath(DATA["test_docx_file"]),
-                                                                os.path.abspath(DATA["test_pdf_file"]))
+        envelope = Eg002SigningViaEmailController.make_envelope(envelope_args, os.path.abspath(CONFIG["test_docx_file"]),
+                                                                os.path.abspath(CONFIG["test_pdf_file"]))
 
         self.assertIsNotNone(envelope)
         self.assertEqual(envelope, expected)
@@ -209,8 +211,8 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "cc_email": DATA["cc_email"],
-            "cc_name": DATA["cc_name"]
+            "cc_email": CONFIG["cc_email"],
+            "cc_name": CONFIG["cc_name"]
         }
 
         expected = f"""
@@ -227,7 +229,7 @@ class Testing(unittest.TestCase):
               color: darkblue;">Order Processing Division</h2>
             <h4>Ordered by {CONFIG["signer_name"]}</h4>
             <p style="margin-top:0em; margin-bottom:0em;">Email: {CONFIG["signer_email"]}</p>
-            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {DATA["cc_name"]}, {DATA["cc_email"]}</p>
+            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {CONFIG["cc_name"]}, {CONFIG["cc_email"]}</p>
             <p style="margin-top:3em;">
                 Candy bonbon pastry jujubes lollipop wafer biscuit biscuit. Topping brownie sesame snaps sweet roll pie. 
                 Croissant danish biscuit soufflé caramels jujubes jelly. Dragée danish caramels lemon drops dragée. 
@@ -265,7 +267,7 @@ class Testing(unittest.TestCase):
     def test_create_template_make_template(self):
         expected = EnvelopeTemplate(
             documents=[Document(
-                document_base64=TestHelper.read_as_base64(DATA["test_template_pdf_file"]),
+                document_base64=TestHelper.read_as_base64(CONFIG["test_template_pdf_file"]),
                 name="Lorem Ipsum",
                 file_extension="pdf",
                 document_id=1
@@ -382,7 +384,7 @@ class Testing(unittest.TestCase):
                 )]
             ),
             description="Example template created via the API",
-            name=DATA["template_name"],
+            name=CONFIG["template_name"],
             shared="false",
             status="created"
         )
@@ -396,8 +398,8 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "cc_email": DATA["cc_email"],
-            "cc_name": DATA["cc_name"],
+            "cc_email": CONFIG["cc_email"],
+            "cc_name": CONFIG["cc_name"],
             "template_id": Testing.TEMPLATE_ID
         }
         args = {
@@ -416,8 +418,8 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "cc_email": DATA["cc_email"],
-            "cc_name": DATA["cc_name"],
+            "cc_email": CONFIG["cc_email"],
+            "cc_name": CONFIG["cc_name"],
             "template_id": Testing.TEMPLATE_ID
         }
 
@@ -431,8 +433,8 @@ class Testing(unittest.TestCase):
                     role_name="signer"
                 ),
                 TemplateRole(
-                    email=DATA["cc_email"],
-                    name=DATA["cc_name"],
+                    email=CONFIG["cc_email"],
+                    name=CONFIG["cc_name"],
                     role_name="cc"
                 )
             ]
@@ -447,13 +449,13 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "cc_email": DATA["cc_email"],
-            "cc_name": DATA["cc_name"],
+            "cc_email": CONFIG["cc_email"],
+            "cc_name": CONFIG["cc_name"],
             "template_id": Testing.TEMPLATE_ID,
-            "signer_client_id": DATA["signer_client_id"],
-            "item": DATA["item"],
-            "quantity": DATA["quantity"],
-            "ds_return_url": DATA["return_url"]
+            "signer_client_id": CONFIG["signer_client_id"],
+            "item": CONFIG["item"],
+            "quantity": CONFIG["quantity"],
+            "ds_return_url": CONFIG["return_url"]
         }
         args = {
             "account_id": self.account_id,
@@ -472,13 +474,13 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "cc_email": DATA["cc_email"],
-            "cc_name": DATA["cc_name"],
+            "cc_email": CONFIG["cc_email"],
+            "cc_name": CONFIG["cc_name"],
             "template_id": Testing.TEMPLATE_ID,
-            "signer_client_id": DATA["signer_client_id"],
-            "item": DATA["item"],
-            "quantity": DATA["quantity"],
-            "ds_return_url": DATA["return_url"]
+            "signer_client_id": CONFIG["signer_client_id"],
+            "item": CONFIG["item"],
+            "quantity": CONFIG["quantity"],
+            "ds_return_url": CONFIG["return_url"]
         }
 
         html_doc = f"""
@@ -495,8 +497,8 @@ class Testing(unittest.TestCase):
               color: darkblue;">Order Processing Division</h2>
             <h4>Ordered by {CONFIG["signer_name"]}</h4>
             <p style="margin-top:0em; margin-bottom:0em;">Email: {CONFIG["signer_email"]}</p>
-            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {DATA["cc_name"]}, {DATA["cc_email"]}</p>
-            <p style="margin-top:3em; margin-bottom:0em;">Item: <b>{DATA["item"]}</b>, quantity: <b>{DATA["quantity"]}</b> at market price.</p>
+            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {CONFIG["cc_name"]}, {CONFIG["cc_email"]}</p>
+            <p style="margin-top:3em; margin-bottom:0em;">Item: <b>{CONFIG["item"]}</b>, quantity: <b>{CONFIG["quantity"]}</b> at market price.</p>
             <p style="margin-top:3em;">
       Candy bonbon pastry jujubes lollipop wafer biscuit biscuit. Topping brownie sesame snaps sweet roll pie. Croissant danish biscuit soufflé caramels jujubes jelly. Dragée danish caramels lemon drops dragée. Gummi bears cupcake biscuit tiramisu sugar plum pastry. Dragée gummies applicake pudding liquorice. Donut jujubes oat cake jelly-o. Dessert bear claw chocolate cake gummies lollipop sugar plum ice cream gummies cheesecake.
             </p>
@@ -519,8 +521,8 @@ class Testing(unittest.TestCase):
                             sequence="2",
                             recipients=Recipients(
                                 carbon_copies=[CarbonCopy(
-                                    email=DATA["cc_email"],
-                                    name=DATA["cc_name"],
+                                    email=CONFIG["cc_email"],
+                                    name=CONFIG["cc_name"],
                                     role_name="cc",
                                     recipient_id="2"
                                 )],
@@ -529,7 +531,7 @@ class Testing(unittest.TestCase):
                                     name=CONFIG["signer_name"],
                                     role_name="signer",
                                     recipient_id="1",
-                                    client_user_id=DATA["signer_client_id"]
+                                    client_user_id=CONFIG["signer_client_id"]
                                 )]
                             ))
                     ]
@@ -541,8 +543,8 @@ class Testing(unittest.TestCase):
                             sequence="1",
                             recipients=Recipients(
                                 carbon_copies=[CarbonCopy(
-                                    email=DATA["cc_email"],
-                                    name=DATA["cc_name"],
+                                    email=CONFIG["cc_email"],
+                                    name=CONFIG["cc_name"],
                                     role_name="cc",
                                     recipient_id="2"
                                 )],
@@ -551,7 +553,7 @@ class Testing(unittest.TestCase):
                                     name=CONFIG["signer_name"],
                                     role_name="signer",
                                     recipient_id="1",
-                                    client_user_id=DATA["signer_client_id"],
+                                    client_user_id=CONFIG["signer_client_id"],
                                     tabs=Tabs(
                                         sign_here_tabs=[SignHere(
                                             anchor_string="**signature_1**",
@@ -583,10 +585,10 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "cc_email": DATA["cc_email"],
-            "cc_name": DATA["cc_name"],
-            "item": DATA["item"],
-            "quantity": DATA["quantity"]
+            "cc_email": CONFIG["cc_email"],
+            "cc_name": CONFIG["cc_name"],
+            "item": CONFIG["item"],
+            "quantity": CONFIG["quantity"]
         }
 
         expected = f"""
@@ -603,8 +605,8 @@ class Testing(unittest.TestCase):
               color: darkblue;">Order Processing Division</h2>
             <h4>Ordered by {CONFIG["signer_name"]}</h4>
             <p style="margin-top:0em; margin-bottom:0em;">Email: {CONFIG["signer_email"]}</p>
-            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {DATA["cc_name"]}, {DATA["cc_email"]}</p>
-            <p style="margin-top:3em; margin-bottom:0em;">Item: <b>{DATA["item"]}</b>, quantity: <b>{DATA["quantity"]}</b> at market price.</p>
+            <p style="margin-top:0em; margin-bottom:0em;">Copy to: {CONFIG["cc_name"]}, {CONFIG["cc_email"]}</p>
+            <p style="margin-top:3em; margin-bottom:0em;">Item: <b>{CONFIG["item"]}</b>, quantity: <b>{CONFIG["quantity"]}</b> at market price.</p>
             <p style="margin-top:3em;">
       Candy bonbon pastry jujubes lollipop wafer biscuit biscuit. Topping brownie sesame snaps sweet roll pie. Croissant danish biscuit soufflé caramels jujubes jelly. Dragée danish caramels lemon drops dragée. Gummi bears cupcake biscuit tiramisu sugar plum pastry. Dragée gummies applicake pudding liquorice. Donut jujubes oat cake jelly-o. Dessert bear claw chocolate cake gummies lollipop sugar plum ice cream gummies cheesecake.
             </p>
@@ -623,8 +625,8 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "signer_client_id": DATA["signer_client_id"],
-            "ds_return_url": DATA["return_url"]
+            "signer_client_id": CONFIG["signer_client_id"],
+            "ds_return_url": CONFIG["return_url"]
         }
         args = {
             "account_id": self.account_id,
@@ -643,14 +645,14 @@ class Testing(unittest.TestCase):
         envelope_args = {
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
-            "signer_client_id": DATA["signer_client_id"],
-            "ds_return_url": DATA["return_url"]
+            "signer_client_id": CONFIG["signer_client_id"],
+            "ds_return_url": CONFIG["return_url"]
         }
 
         expected = EnvelopeDefinition(
             email_subject="Please sign this document sent from the Python SDK",
             documents=[Document(
-                document_base64=TestHelper.read_as_base64(DATA["test_template_docx_file"]),
+                document_base64=TestHelper.read_as_base64(CONFIG["test_template_docx_file"]),
                 name="Lorem Ipsum",
                 file_extension="docx",
                 document_id=1
@@ -661,7 +663,7 @@ class Testing(unittest.TestCase):
                     name=CONFIG["signer_name"],
                     recipient_id="1",
                     routing_order="1",
-                    client_user_id=DATA["signer_client_id"],
+                    client_user_id=CONFIG["signer_client_id"],
                     tabs=Tabs(
                         sign_here_tabs=[SignHere(
                             anchor_string="/sn1/",

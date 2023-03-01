@@ -88,12 +88,12 @@ For a list of code examples that use the Admin API, see the [How-to guides overv
 1. In your command-line environment, switch to the folder:  
    `cd <Quickstart folder>` or `cd code-examples-python`
 1. To install dependencies, run: `pip3 install -r requirements.txt`  (or pipenv can be used)
-1. To configure the launcher for [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/) authentication, create a copy of the file `app/.env.example` and save the copy as `app/.env`.
-   1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions > Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in .env as your `CLIENT_ID`.
-   1. Generate a secret key, if you don’t already have one. Under **Authentication**, select **+ ADD SECRET KEY**. Copy the secret key and save it in .env as your `CLIENT_SECRET`.
+1. To configure the launcher for [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/) authentication, create a copy of the file app/ds_config_sample.py and save the copy as app/ds_config.py.
+   1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions > Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in ds_config.py as your `ds_client_id`.
+   1. Generate a secret key, if you don’t already have one. Under **Authentication**, select **+ ADD SECRET KEY**. Copy the secret key and save it in ds_config.py as your `ds_client_secret`.
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:3000/ds/callback. Select **SAVE**.   
-   1. Set a name and email address for the signer. In .env, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
-**Note:** Protect your personal information. Please make sure that .env will not be stored in your source code repository.
+   1. Set a name and email address for the signer. In ds_config.py, save an email address as `signer_email` and a name as `signer_name`.  
+**Note:** Protect your personal information. Please make sure that ds_config.py will not be stored in your source code repository.
 1. Run the launcher:`python run.py`  
    **Note:** You will need to alias the python command to run Python 3 or use `python3 run.py`
 1. Open a browser to http://localhost:3000
@@ -101,18 +101,18 @@ For a list of code examples that use the Admin API, see the [How-to guides overv
 ### Installation steps for JWT Grant authentication
 
 **Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip step 4 as it was automatically performed for you.  
-Also, in order to select JSON Web Token authentication in the launcher, in app/.env, change the `QUICKSTART_VALUE` setting to `"false"`.
+Also, in order to select JSON Web Token authentication in the launcher, in app/ds_config.py, change the `quickstart` setting to `"false"`.
 
 1. Extract the Quickstart ZIP file or download or clone the code-examples-python repository.
 1. In your command-line environment, switch to the folder: `cd <Quickstart folder>` or `cd code-examples-python`
 1. To install dependencies, run: `pip3 install -r requirements.txt`  (or pipenv can be used)
-1. To configure the launcher for [JWT Grant](https://developers.docusign.com/platform/auth/jwt/) authentication, create a copy of the file `app/.env.example` and save the copy as `app/.env`.
-   1. Add your User ID. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **My Account Information**, copy the **User ID** GUID and save it in .env as your `USER_ID`.
-   1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions > Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in .env as your `CLIENT_ID`.
+1. To configure the launcher for [JWT Grant](https://developers.docusign.com/platform/auth/jwt/) authentication, create a copy of the file app/ds_config_sample.py and save the copy as app/ds_config.py.
+   1. Add your User ID. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **My Account Information**, copy the **User ID** GUID and save it in ds_config.py as your `ds_impersonated_user_id`.
+   1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions > Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in ds_config.py as your `ds_client_id`.
    1. Generate an RSA key pair, if you don’t already have one. Under **Authentication**, select **+ GENERATE RSA**. Copy the private key, and save it in a new file named app/private.key.   
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:3000/ds/callback. Select **SAVE**.   
-   1. Set a name and email address for the signer. In .env, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
-**Note:** Protect your personal information. Please make sure that your .env and private.key files will not be stored in your source code repository.  
+   1. Set a name and email address for the signer. In ds_config.py, save an email address as `signer_email` and a name as `signer_name`.  
+**Note:** Protect your personal information. Please make sure that your ds_config.py and private.key files will not be stored in your source code repository.  
 1. Run the launcher:`python run.py`  
    **Note:** You will need to alias the python command to run Python 3 or use `python3 run.py`   
 1. Open a browser to http://localhost:3000
@@ -143,7 +143,7 @@ Follow the instructions below if you downloaded the JWT grant remote signing exa
 
 To use the payments code example, create a test payment gateway on the [Payments](https://admindemo.docusign.com/authenticate?goTo=payments) page in your developer account. See [Configure a payment gateway](./PAYMENTS_INSTALLATION.md) for details.
 
-Once you've created a payment gateway, save the **Gateway Account ID** GUID and **Getaway Account Name and Display Name** to .env.
+Once you've created a payment gateway, save the **Gateway Account ID** GUID to ds_config.py.
 
 
 ## License and additional information  
