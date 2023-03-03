@@ -23,10 +23,10 @@ class Eg027PermissionsDeleteController:
         """
         
         # Step 2. Construct your API headers
-        # ds-snippet-start eSign27Step2
+        # ds-snippet-start:eSign27Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
         account_api = AccountsApi(api_client)
-        # ds-snippet-end eSign27Step2
+        # ds-snippet-end:eSign27Step2
         
         # Step 3. Call the eSignature REST API
         account_api.delete_permission_profile(
