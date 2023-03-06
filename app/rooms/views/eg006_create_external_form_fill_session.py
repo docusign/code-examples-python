@@ -4,7 +4,7 @@ from os import path
 import json
 
 from docusign_rooms.client.api_exception import ApiException
-from flask import render_template, Blueprint, session
+from flask import render_template, redirect, Blueprint, session
 
 from ...ds_config import DS_CONFIG
 from ..examples.eg006_create_external_form_fill_session import Eg006CreateExternalFormFillSessionController
@@ -37,15 +37,14 @@ def create_external_form_fill_session():
         results = Eg006CreateExternalFormFillSessionController.worker(args)
     except ApiException as err:
         return process_error(err)
+    
+    #return results["redirect_url"]
 
-    # 3. Show URL for a new external form fill session
     return render_template(
-        "example_done.html",
+        "example_rooms_6_done.html",
         title=example["ExampleName"],
-        message="Results from the Forms::CreateExternalFormFillSession:",
         json=json.dumps(json.dumps(results.to_dict(), default=str)),
-        link=results.url,
-        link_text="Please fill the form"
+        url = results.url
     )
 
 
@@ -101,7 +100,7 @@ def get_forms():
         room = Eg006CreateExternalFormFillSessionController.get_room(args)
     except ApiException as err:
         return process_error(err)
-
+    
     # 4. Render the response
     return render_template(
         "rooms/eg006_create_external_form_fill_session.html",

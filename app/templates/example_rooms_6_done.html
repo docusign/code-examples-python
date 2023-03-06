@@ -1,0 +1,24 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h2>{{ title }}</h2>
+<p>{{ message | safe }}</p>
+
+<p> Results from the ExternalFormFillSessions::CreateExternalFormFillSession: </p>
+<p><code>{{json}}</code></p>
+
+<iframe width="1000" height="800" src = "{{url}}" >
+
+</iframe>
+
+
+{% if changed_settings %}
+    <ul>
+        {% for k, v in changed_settings.items() %}
+            <li><b>{{ k }}:</b> {{ v }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<p><a href="/">Continue</a></p>
+  
+{% endblock %}

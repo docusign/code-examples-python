@@ -18,6 +18,7 @@ class Eg006CreateExternalFormFillSessionController:
             "access_token": session["ds_access_token"],  # Represents your {ACCESS_TOKEN}
             "room_id": request.form.get("room_id"),
             "form_id": request.form.get("form_id"),
+            "x_frame_allowed_url": "http://localhost:3000"
         }
 
     @staticmethod
@@ -86,11 +87,12 @@ class Eg006CreateExternalFormFillSessionController:
 
         # Step 2. Create an external form fill session
         form_fill_session_api = ExternalFormFillSessionsApi(api_client)
-        response = form_fill_session_api.create_external_form_fill_session(
+        results = form_fill_session_api.create_external_form_fill_session(
             body=ExternalFormFillSessionForCreate(
                 room_id=args['room_id'],
-                form_id=args['form_id']
+                form_id=args['form_id'],
+                x_frame_allowed_url = args['x_frame_allowed_url']
             ),
             account_id=args["account_id"]
         )
-        return response
+        return results
