@@ -84,15 +84,17 @@ class Eg006CreateExternalFormFillSessionController:
         """
         # Step 1. Create an API client with headers
         api_client = create_rooms_api_client(access_token=args["access_token"])
+        
+        request_body=ExternalFormFillSessionForCreate(
+                room_id=args['room_id'],
+                form_id=args['form_id'],
+                x_frame_allowed_url = args['x_frame_allowed_url']
+            )
 
         # Step 2. Create an external form fill session
         form_fill_session_api = ExternalFormFillSessionsApi(api_client)
         results = form_fill_session_api.create_external_form_fill_session(
-            body=ExternalFormFillSessionForCreate(
-                room_id=args['room_id'],
-                form_id=args['form_id'],
-                x_frame_allowed_url = args['x_frame_allowed_url']
-            ),
+            body=request_body,
             account_id=args["account_id"]
         )
         return results
