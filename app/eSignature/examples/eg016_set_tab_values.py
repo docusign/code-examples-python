@@ -2,7 +2,7 @@ import base64
 from os import path
 
 from docusign_esign import EnvelopesApi, EnvelopeDefinition, Document, Signer, SignHere, Tabs, Recipients, \
-    CustomFields, TextCustomField, Text, RecipientViewRequest
+    Numerical, LocalePolicyTab, CustomFields, TextCustomField, Text, RecipientViewRequest
 from flask import current_app as app, session, url_for, request
 
 from ...consts import demo_docs_path, authentication_method, signer_client_id, pattern
@@ -128,32 +128,43 @@ class Eg016SetTabValuesController:
             bold="true", value=args["signer_name"],
             locked="false", tab_id="familar_name",
             tab_label="Familiar name")
+        
+        locale_policy_tab = LocalePolicyTab(
+            culture_name="en-US",
+            currency_code="usd",
+            currency_positive_format="csym_1_comma_234_comma_567_period_89",
+            currency_negative_format="minus_csym_1_comma_234_comma_567_period_89",
+            use_long_currency_format="true"
+        )
 
-        salary = 123000
-
-        text_salary = Text(
-            anchor_string="/salary/",
-            anchor_units="pixels",
-            anchor_y_offset="-9",
-            anchor_x_offset="5",
+        numerical_salary = Numerical(
+            page_number="1",
+            document_id="1",
+            x_position="210",
+            y_position="235",
+            validation_type="Currency",
             font="helvetica",
             font_size="size11",
             bold="true",
-            value="${:.2f}".format(salary),
-            locked="true",
+            locked="false",
+            height="23",
             tab_id="salary",
-            tab_label="Salary")
+            tab_label="Salary",
+            numerical_value="123000",
+            locale_policy=locale_policy_tab
+
+        )
 
         salary_custom_field = TextCustomField(
             name="salary",
             required="false",
             show="true",  # Yes, include in the CoC
-            value=str(salary)
+            value=str(123000)
         )
         cf = CustomFields(text_custom_fields=[salary_custom_field])
         # Add the tabs model (including the SignHere tab) to the signer
         # The Tabs object wants arrays of the different field/tab types
-        signer.tabs = Tabs(sign_here_tabs=[sign_here], text_tabs=[text_legal, text_familar, text_salary])
+        signer.tabs = Tabs(sign_here_tabs=[sign_here], text_tabs=[text_legal, text_familar], numerical_tabs=[numerical_salary])
 
         # Create the top level envelope definition and populate it
         envelope_definition = EnvelopeDefinition(

@@ -15,7 +15,7 @@ authentication_method = "None"  # How is this application authenticating
 minimum_buffer_min = 3
 
 # Template name for create template example
-template_name = "Example Signer and CC template"
+template_name = "Example Signer and CC template v2"
 
 # Name of static doc file
 doc_file = "World_Wide_Corp_fields.pdf"

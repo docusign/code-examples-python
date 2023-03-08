@@ -2,7 +2,7 @@ import base64
 from os import path
 
 from docusign_esign import Document, Signer, CarbonCopy, SignHere, Tabs, Recipients, \
-    TemplatesApi, Checkbox, List, ListItem, Number, Radio, RadioGroup, Text, EnvelopeTemplate
+    TemplatesApi, Checkbox, List, ListItem, Numerical, Radio, RadioGroup, Text, EnvelopeTemplate
 from flask import session
 
 from ...consts import demo_docs_path, doc_file, template_name
@@ -132,15 +132,17 @@ class Eg008CreateTemplateController:
                 ListItem(text="Violet", value="violet")
             ]
         )
-        number1 = Number(
+        numerical = Numerical(
             document_id="1",
+            validation_type="Currency",
             page_number="1",
             x_position="163",
             y_position="260",
             font="helvetica",
             font_size="size14",
-            tab_label="numbersOnly",
+            tab_label="numericalCurrency",
             width="84",
+            height="23",
             required="false"
         )
         radio_group = RadioGroup(
@@ -179,7 +181,7 @@ class Eg008CreateTemplateController:
             sign_here_tabs=[sign_here],
             checkbox_tabs=[check1, check2, check3, check4],
             list_tabs=[list1],
-            number_tabs=[number1],
+            numerical_tabs=[numerical],
             radio_group_tabs=[radio_group],
             text_tabs=[text]
         )

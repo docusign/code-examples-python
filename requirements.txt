@@ -4,7 +4,7 @@ cffi==1.14.3
 chardet==3.0.4
 Click
 cryptography==3.3.2
-docusign-esign==3.16.0
+docusign-esign==3.20.0
 docusign-rooms==1.1.0
 docusign-monitor==1.1.0
 docusign-click==1.2.2
