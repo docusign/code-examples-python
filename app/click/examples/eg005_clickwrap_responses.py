@@ -21,16 +21,20 @@ class Eg005ClickwrapResponsesController:
         2. Get clickwrap responses using SDK
         """
         # Step 1. Create an API client with headers
+        #ds-snippet-start:Click5Step2
         api_client = create_click_api_client(
             access_token=args["access_token"]
         )
+        #ds-snippet-end:Click5Step2
 
         # Step 2. Get clickwrap responses using SDK
+        #ds-snippet-start:Click5Step3
         accounts_api = AccountsApi(api_client)
         response = accounts_api.get_clickwrap_agreements(
             account_id=args["account_id"],
             clickwrap_id=args["clickwrap_id"],
             status="agreed"
         )
+        #ds-snippet-end:Click5Step3
 
         return response
