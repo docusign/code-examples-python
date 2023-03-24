@@ -39,18 +39,22 @@ class Eg029BrandsApplyToEnvelopeController:
         3. Apply the brand to the envelope using SDK
         """
 
-        # Step 2. Construct your API headers
+        # Construct your API headers
+        #ds-snippet-start:eSign29Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign29Step2
 
-        # Step 3. Construct your request body
+        # Construct your request body
+        #ds-snippet-start:eSign29Step4
         envelope_api = EnvelopesApi(api_client)
         envelope_definition = cls.make_envelope(args["envelope_args"])
 
-        # Step 4. Call the eSignature REST API
+        # Call the eSignature REST API
         response = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
-
+        #ds-snippet-end:eSign29Step4
         return response
 
+    #ds-snippet-start:eSign29Step3
     @classmethod
     def make_envelope(cls, args):
         """
@@ -94,6 +98,7 @@ class Eg029BrandsApplyToEnvelopeController:
         )
 
         return envelope_definition
+    #ds-snippet-end:eSign29Step3
 
     @staticmethod
     def get_brands(args):
