@@ -23,6 +23,7 @@ class Eg016SetTabValuesController:
             "signer_name": signer_name,
             "signer_client_id": signer_client_id,
             "ds_return_url": url_for("ds.ds_return", _external=True),
+            "doc_file": path.join(demo_docs_path, DS_CONFIG["doc_salary_docx"])
         }
         args = {
             "account_id": session["ds_account_id"],
@@ -87,7 +88,7 @@ class Eg016SetTabValuesController:
         #
         # The envelope has one recipient:
         # recipient 1 - signer
-        with open(path.join(demo_docs_path, DS_CONFIG["doc_salary_docx"]), "rb") as file:
+        with open(args["doc_file"], "rb") as file:
             content_bytes = file.read()
         base64_file_content = base64.b64encode(content_bytes).decode("ascii")
 

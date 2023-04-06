@@ -18,7 +18,11 @@ class Eg008CreateTemplateController:
         return {
             "account_id": session["ds_account_id"],
             "base_path": session["ds_base_path"],
-            "access_token": session["ds_access_token"]
+            "access_token": session["ds_access_token"],
+            "template_args": {
+                "doc_file": path.join(demo_docs_path, doc_file),
+                "template_name": template_name
+            }
         }
 
     @classmethod
@@ -44,7 +48,7 @@ class Eg008CreateTemplateController:
 
             # Template not found -- so create it
             # 2. create the template
-            template_req_object = cls.make_template_req()
+            template_req_object = cls.make_template_req(args["template_args"])
             res = templates_api.create_template(account_id=args["account_id"], envelope_template=template_req_object)
             template_id = res.template_id
             results_template_name = res.name
@@ -58,7 +62,7 @@ class Eg008CreateTemplateController:
         }
 
     @classmethod
-    def make_template_req(cls):
+    def make_template_req(cls, args):
         """Creates template req object"""
 
         # document 1 (pdf)
@@ -66,7 +70,7 @@ class Eg008CreateTemplateController:
         # The template has two recipient roles.
         # recipient 1 - signer
         # recipient 2 - cc
-        with open(path.join(demo_docs_path, doc_file), "rb") as file:
+        with open(args["doc_file"], "rb") as file:
             content_bytes = file.read()
         base64_file_content = base64.b64encode(content_bytes).decode("ascii")
 
@@ -191,7 +195,7 @@ class Eg008CreateTemplateController:
             documents=[document], email_subject="Please sign this document",
             recipients=Recipients(signers=[signer], carbon_copies=[cc]),
             description="Example template created via the API",
-            name=template_name,
+            name=args["template_name"],
             shared="false",
             status="created"
         )

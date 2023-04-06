@@ -14,6 +14,13 @@ def get_configuration():
         "oauth_base_path": 'account-d.docusign.com',
         "redirect_uri": 'https://www.docusign.com/api',
         "scopes": ["signature", "impersonation"],
+        "click_scopes": ["click.manage", "click.send"],
+        "rooms_scopes": ["dtr.rooms.read", "dtr.rooms.write", "dtr.documents.read",
+                         "dtr.documents.write", "dtr.profile.read", "dtr.profile.write",
+                         "dtr.company.read", "dtr.company.write", "room_forms"],
+        "admin_scopes": ["organization_read", "group_read", "permission_read",
+                         "user_read", "user_write", "account_read",
+                         "domain_read", "identity_provider_read"],
         "expires_in": 3600,
         "test_pdf_file": './app/tests/docs/World_Wide_Corp_lorem.pdf',
         "test_docx_file": './app/tests/docs/World_Wide_Corp_Battle_Plan_Trafalgar.docx',
@@ -22,8 +29,17 @@ def get_configuration():
         "template_name": 'Example Signer and CC template',
         "cc_name": 'Test Name',
         "cc_email": 'test@mail.com',
+        "signer2_name": 'Test signer2',
+        "signer2_email": 'test.signer2@mail.com',
+        "cc2_name": 'Test cc2',
+        "cc2_email": 'test.cc2@mail.com',
         "item": 'Item',
-        "quantity": '5'
+        "quantity": '5',
+        "permission_profile_name": "Test_Profile",
+        "brand_name": "Test_Brand",
+        "default_language": "en",
+        "clickwrap_name": "Test_Clickwrap",
+        "clickwrap_version_number": "1"
     }
 
     if os.environ.get("CLIENT_ID") is not None:

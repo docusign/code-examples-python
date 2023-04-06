@@ -1,5 +1,6 @@
 import os
 import base64
+from enum import Enum
 from docusign_esign import ApiClient
 from docusign_esign.client.api_exception import ApiException
 from .test_config import get_configuration
@@ -7,9 +8,17 @@ from .test_config import get_configuration
 CONFIG = get_configuration()
 
 
+class ApiType(Enum):
+    ESIGN = "esignature"
+    CLICK = "click"
+    ROOMS = "rooms"
+    MONITOR = "monitor"
+    ADMIN = "admin"
+
+
 class TestHelper:
     @staticmethod
-    def authenticate():
+    def authenticate(api_type=None):
         try:
             private_key_file = open(os.path.abspath(os.path.join(CONFIG["private_key_file"])), "r")
             private_key = private_key_file.read()
@@ -20,13 +29,27 @@ class TestHelper:
             api_client = ApiClient()
             api_client.set_base_path(CONFIG["base_path"])
             api_client.set_oauth_host_name(CONFIG["oauth_base_path"])
+
+            scopes = CONFIG["scopes"]
+
+            if api_type is not None:
+                if ApiType.ROOMS.value in api_type:
+                    scopes.extend(CONFIG["rooms_scopes"])
+                if ApiType.CLICK.value in api_type:
+                    scopes.extend(CONFIG["click_scopes"])
+                if ApiType.ADMIN.value in api_type:
+                    scopes.extend(CONFIG["admin_scopes"])
+
+                # remove duplicate scopes
+                scopes = list(set(scopes))
+
             token_response = api_client.request_jwt_user_token(
                 client_id=CONFIG["ds_client_id"],
                 user_id=CONFIG["ds_impersonated_user_id"],
                 oauth_host_name=CONFIG["oauth_base_path"],
                 private_key_bytes=private_key,
                 expires_in=CONFIG["expires_in"],
-                scopes=CONFIG["scopes"]
+                scopes=scopes
             )
 
             access_token = token_response.access_token

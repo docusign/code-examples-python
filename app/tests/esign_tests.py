@@ -1,9 +1,11 @@
+import datetime
 import unittest
 import base64
 import os
 from docusign_esign import Document, Signer, EnvelopeDefinition, SignHere, Tabs, \
-    Recipients, CarbonCopy, EnvelopeTemplate, Checkbox, List, ListItem, Text, Radio, RadioGroup, Number, TemplateRole, \
-    CompositeTemplate, ServerTemplate, InlineTemplate, CustomFields, TextCustomField
+    Recipients, CarbonCopy, EnvelopeTemplate, Checkbox, List, ListItem, Text, Radio, RadioGroup, TemplateRole, \
+    CompositeTemplate, ServerTemplate, InlineTemplate, CustomFields, TextCustomField, BulkSendingList, \
+    BulkSendingCopyRecipient, BulkSendingCopy, Numerical, LocalePolicyTab
 
 from app.eSignature.examples.eg001_embedded_signing import Eg001EmbeddedSigningController
 from app.eSignature.examples.eg002_signing_via_email import Eg002SigningViaEmailController
@@ -11,11 +13,17 @@ from app.eSignature.examples.eg008_create_template import Eg008CreateTemplateCon
 from app.eSignature.examples.eg009_use_template import Eg009UseTemplateController
 from app.eSignature.examples.eg013_add_doc_to_template import Eg013AddDocToTemplateController
 from app.eSignature.examples.eg016_set_tab_values import Eg016SetTabValuesController
+from app.eSignature.examples.eg024_permissions_creating import Eg024PermissionsCreatingController
+from app.eSignature.examples.eg028_brand_creating import Eg028BrandCreatingController
+from app.eSignature.examples.eg029_brands_apply_to_envelope import Eg029BrandsApplyToEnvelopeController
+from app.eSignature.examples.eg031_bulk_send import Eg031BulkSendController
 from .test_helper import TestHelper, CONFIG
+from ..consts import settings
 
 
 class Testing(unittest.TestCase):
     TEMPLATE_ID = ""
+    BRAND_ID = ""
 
     @classmethod
     def setUpClass(cls):
@@ -253,7 +261,10 @@ class Testing(unittest.TestCase):
             "account_id": self.account_id,
             "base_path": self.base_path,
             "access_token": self.access_token,
-
+            "template_args": {
+                "doc_file": os.path.abspath(CONFIG["test_template_pdf_file"]),
+                "template_name": CONFIG["template_name"]
+            }
         }
 
         result = Eg008CreateTemplateController.worker(args)
@@ -265,6 +276,11 @@ class Testing(unittest.TestCase):
         self.assertIsNotNone(result["created_new_template"])
 
     def test_create_template_make_template(self):
+        template_args = {
+            "doc_file": os.path.abspath(CONFIG["test_template_pdf_file"]),
+            "template_name": CONFIG["template_name"]
+        }
+        
         expected = EnvelopeTemplate(
             documents=[Document(
                 document_base64=TestHelper.read_as_base64(CONFIG["test_template_pdf_file"]),
@@ -334,15 +350,17 @@ class Testing(unittest.TestCase):
                                 ListItem(text="Violet", value="violet")
                             ]
                         )],
-                        number_tabs=[Number(
+                        numerical_tabs=[Numerical(
                             document_id="1",
+                            validation_type="Currency",
                             page_number="1",
                             x_position="163",
                             y_position="260",
                             font="helvetica",
                             font_size="size14",
-                            tab_label="numbersOnly",
+                            tab_label="numericalCurrency",
                             width="84",
+                            height="23",
                             required="false"
                         )],
                         radio_group_tabs=[RadioGroup(
@@ -389,7 +407,7 @@ class Testing(unittest.TestCase):
             status="created"
         )
 
-        template = Eg008CreateTemplateController.make_template_req()
+        template = Eg008CreateTemplateController.make_template_req(template_args)
 
         self.assertIsNotNone(template)
         self.assertEqual(template, expected)
@@ -626,7 +644,8 @@ class Testing(unittest.TestCase):
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
             "signer_client_id": CONFIG["signer_client_id"],
-            "ds_return_url": CONFIG["return_url"]
+            "ds_return_url": CONFIG["return_url"],
+            "doc_file": os.path.abspath(CONFIG["test_template_docx_file"])
         }
         args = {
             "account_id": self.account_id,
@@ -646,7 +665,8 @@ class Testing(unittest.TestCase):
             "signer_email": CONFIG["signer_email"],
             "signer_name": CONFIG["signer_name"],
             "signer_client_id": CONFIG["signer_client_id"],
-            "ds_return_url": CONFIG["return_url"]
+            "ds_return_url": CONFIG["return_url"],
+            "doc_file": os.path.abspath(CONFIG["test_template_docx_file"])
         }
 
         expected = EnvelopeDefinition(
@@ -687,21 +707,30 @@ class Testing(unittest.TestCase):
                                 bold="true", value=CONFIG["signer_name"],
                                 locked="false", tab_id="familar_name",
                                 tab_label="Familiar name"
-                            ),
-                            Text(
-                                anchor_string="/salary/",
-                                anchor_units="pixels",
-                                anchor_y_offset="-9",
-                                anchor_x_offset="5",
-                                font="helvetica",
-                                font_size="size11",
-                                bold="true",
-                                value="${:.2f}".format(123000),
-                                locked="true",
-                                tab_id="salary",
-                                tab_label="Salary"
                             )
-                        ]
+                        ],
+                        numerical_tabs=[Numerical(
+                            page_number="1",
+                            document_id="1",
+                            x_position="210",
+                            y_position="235",
+                            validation_type="Currency",
+                            font="helvetica",
+                            font_size="size11",
+                            bold="true",
+                            locked="false",
+                            height="23",
+                            tab_id="salary",
+                            tab_label="Salary",
+                            numerical_value="123000",
+                            locale_policy=LocalePolicyTab(
+                                culture_name="en-US",
+                                currency_code="usd",
+                                currency_positive_format="csym_1_comma_234_comma_567_period_89",
+                                currency_negative_format="minus_csym_1_comma_234_comma_567_period_89",
+                                use_long_currency_format="true"
+                            )
+                        )]
                     )
                 )]
             ),
@@ -720,6 +749,221 @@ class Testing(unittest.TestCase):
 
         self.assertIsNotNone(envelope)
         self.assertEqual(envelope, expected)
+
+    def test_create_permission_profile(self):
+        args = {
+            "account_id": self.account_id,
+            "base_path": self.base_path,
+            "access_token": self.access_token,
+            "permission_profile_name": f"{CONFIG['permission_profile_name']}_{int(datetime.datetime.utcnow().timestamp())}",
+            "settings": settings
+        }
+
+        results = Eg024PermissionsCreatingController.worker(args)
+
+        self.assertIsNotNone(results)
+
+    def test_create_brand(self):
+        args = {
+            "account_id": self.account_id,
+            "base_path": self.base_path,
+            "access_token": self.access_token,
+            "brand_name": f"{CONFIG['brand_name']}_{int(datetime.datetime.utcnow().timestamp())}",
+            "default_language": CONFIG['default_language']
+        }
+
+        result = Eg028BrandCreatingController.worker(args)
+
+        self.assertIsNotNone(result)
+
+    def test_apply_brand_to_envelope(self):
+        envelope_args = {
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
+            "brand_id": Testing.BRAND_ID,
+            "doc_pdf": os.path.abspath(CONFIG["test_pdf_file"])
+        }
+        args = {
+            "account_id": self.account_id,
+            "base_path": self.base_path,
+            "access_token": self.access_token,
+            "envelope_args": envelope_args
+        }
+
+        result = Eg029BrandsApplyToEnvelopeController.worker(args)
+
+        self.assertIsNotNone(result)
+
+    def test_apply_brand_to_envelope_make_envelope(self):
+        envelope_args = {
+            "signer_email": CONFIG["signer_email"],
+            "signer_name": CONFIG["signer_name"],
+            "brand_id": Testing.BRAND_ID,
+            "doc_pdf": os.path.abspath(CONFIG["test_pdf_file"])
+        }
+
+        result = Eg029BrandsApplyToEnvelopeController.make_envelope(envelope_args)
+
+        self.assertIsNotNone(result)
+
+    def test_apply_brand_to_envelope_get_brands(self):
+        args = {
+            "account_id": self.account_id,
+            "base_path": self.base_path,
+            "access_token": self.access_token
+        }
+
+        result = Eg029BrandsApplyToEnvelopeController.get_brands(args)
+
+        self.assertIsNotNone(result)
+
+    def test_bulk_send(self):
+        args = {
+            "account_id": self.account_id,
+            "base_path": self.base_path,
+            "access_token": self.access_token,
+            "doc_pdf": os.path.abspath(CONFIG["test_pdf_file"]),
+            "signers": [
+                {
+                    "signer_name": CONFIG["signer_name"],
+                    "signer_email": CONFIG["signer_email"],
+                    "cc_email": CONFIG["cc_email"],
+                    "cc_name": CONFIG["cc_name"]
+                },
+                {
+                    "signer_name": CONFIG["signer2_name"],
+                    "signer_email": CONFIG["signer2_email"],
+                    "cc_email": CONFIG["cc2_email"],
+                    "cc_name": CONFIG["cc2_name"]
+                }
+            ]
+        }
+
+        result = Eg031BulkSendController.worker(args)
+
+        self.assertIsNotNone(result)
+
+    def test_bulk_send_create_bulk_sending_list(self):
+        args = [
+            {
+                "signer_name": CONFIG["signer_name"],
+                "signer_email": CONFIG["signer_email"],
+                "cc_email": CONFIG["cc_email"],
+                "cc_name": CONFIG["cc_name"]
+            },
+            {
+                "signer_name": CONFIG["signer2_name"],
+                "signer_email": CONFIG["signer2_email"],
+                "cc_email": CONFIG["cc2_email"],
+                "cc_name": CONFIG["cc2_name"]
+            }
+        ]
+
+        expected = BulkSendingList(
+            name="sample",
+            bulk_copies=[
+                BulkSendingCopy(
+                    recipients=[
+                        BulkSendingCopyRecipient(
+                            role_name="signer",
+                            tabs=[],
+                            name=CONFIG["signer_name"],
+                            email=CONFIG["signer_email"]
+                        ),
+                        BulkSendingCopyRecipient(
+                            role_name="cc",
+                            tabs=[],
+                            name=CONFIG["cc_name"],
+                            email=CONFIG["cc_email"]
+                        )
+                    ],
+                    custom_fields=[]
+                ),
+                BulkSendingCopy(
+                    recipients=[
+                        BulkSendingCopyRecipient(
+                            role_name="signer",
+                            tabs=[],
+                            name=CONFIG["signer2_name"],
+                            email=CONFIG["signer2_email"]
+                        ),
+                        BulkSendingCopyRecipient(
+                            role_name="cc",
+                            tabs=[],
+                            name=CONFIG["cc2_name"],
+                            email=CONFIG["cc2_email"]
+                        )
+                    ],
+                    custom_fields=[]
+                )
+            ]
+        )
+
+        results = Eg031BulkSendController.create_bulk_sending_list(args)
+
+        self.assertIsNotNone(results)
+        self.assertEqual(results, expected)
+
+    def test_bulk_send_make_draft_envelope(self):
+        args = os.path.abspath(CONFIG["test_pdf_file"])
+
+        base64_file_content = TestHelper.read_as_base64(CONFIG["test_pdf_file"])
+
+        expected = EnvelopeDefinition(
+            email_subject="Please Sign",
+            status="created",
+            envelope_id_stamping="true",
+            recipients=Recipients(
+                signers=[
+                    Signer(
+                        name="Multi Bulk Recipient::signer",
+                        email="multiBulkRecipients-signer@docusign.com",
+                        role_name="signer",
+                        note="",
+                        routing_order="1",
+                        status="created",
+                        delivery_method="email",
+                        recipient_id="2",
+                        recipient_type="signer",
+                        tabs=Tabs(
+                            sign_here_tabs=[
+                                SignHere(
+                                    anchor_string="/sn1/",
+                                    anchor_units="pixels",
+                                    anchor_y_offset="10",
+                                    anchor_x_offset="20",
+                                    tab_label="RecipentTab"
+                                )
+                            ]
+                        )
+                    )
+                ],
+                carbon_copies=[
+                    Signer(
+                        name="Multi Bulk Recipient::cc",
+                        email="multiBulkRecipients-cc@docusign.com",
+                        role_name="cc",
+                        note="",
+                        routing_order="2",
+                        status="created",
+                        delivery_method="email",
+                        recipient_id="1",
+                        recipient_type="signer"
+                    )
+                ]
+            ),
+            documents=[Document(
+                document_base64=base64_file_content,
+                name="lorem",
+                file_extension="pdf",
+                document_id=2
+            )]
+        )
+
+        results = Eg031BulkSendController.make_draft_envelope(args)
+
+        self.assertIsNotNone(results)
+        self.assertEqual(results, expected)
 
 
 if __name__ == '__main__':

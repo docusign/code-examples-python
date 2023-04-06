@@ -30,6 +30,7 @@ class Eg031BulkSendController:
             "account_id": session["ds_account_id"],  # Represents your {ACCOUNT_ID}
             "base_path": session["ds_base_path"],
             "access_token": session["ds_access_token"],  # Represents your {ACCESS_TOKEN}
+            "doc_pdf": path.join(demo_docs_path, DS_CONFIG["doc_pdf"]),
             "signers": [
                 {
                     "signer_name": signer_name_1,
@@ -78,7 +79,7 @@ class Eg031BulkSendController:
         # Create an envelope
         # Step 4-1 start
         envelope_api = EnvelopesApi(api_client)
-        envelope_definition = cls.make_draft_envelope()
+        envelope_definition = cls.make_draft_envelope(args["doc_pdf"])
         envelope = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
         envelope_id = envelope.envelope_id
         # Step 4-1 end
@@ -158,13 +159,13 @@ class Eg031BulkSendController:
 
     # Step 4-2 start
     @classmethod
-    def make_draft_envelope(cls):
+    def make_draft_envelope(cls, doc_pdf):
         """
             Creates the envelope
         """
 
         # Open the example file
-        with open(path.join(demo_docs_path, DS_CONFIG["doc_pdf"]), "rb") as file:
+        with open(doc_pdf, "rb") as file:
             content_bytes = file.read()
         base64_file_content = base64.b64encode(content_bytes).decode("ascii")
 
