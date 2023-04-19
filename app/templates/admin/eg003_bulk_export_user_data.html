@@ -3,10 +3,6 @@
 {% include 'example_info.html' %}
 
 <form class="eg" action="" method="post" data-busy="form">
-    {% if 'FormName' in example['Forms'][form_index] %}
-        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
-    {% endif %}
-
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     {% include 'continue_button.html' %}
 </form>

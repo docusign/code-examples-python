@@ -6,11 +6,6 @@
 {%  set file_index = 0 %}
 
 <form class="eg" action="" method="post" data-busy="form" enctype="multipart/form-data">
-    {% if 'FormName' in example['Forms'][form_index] %}
-        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
-    {% endif %}
-
-    <label>{{ example['Forms'][form_index]['Inputs'][file_index]['InputName'] }}</label>
     <div class="form-group">
         <input type="file" name="csv_file" required>
     </div>
