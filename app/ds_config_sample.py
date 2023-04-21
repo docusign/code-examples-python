@@ -26,6 +26,7 @@ DS_CONFIG = {
     "doc_pdf": "World_Wide_Corp_lorem.pdf",
     "doc_terms_pdf": "Term_Of_Service.pdf",
     "doc_txt": "Welcome.txt",
+    "doc_offer_letter": "Offer_Letter_Demo.docx",
     # Payment gateway information is optional
     "gateway_account_id": "{DS_PAYMENT_GATEWAY_ID}",
     "gateway_name": "stripe",
