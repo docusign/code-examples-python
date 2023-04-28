@@ -1,0 +1,35 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% include 'example_info.html' %}
+
+{%  set form_index = 0 %}
+{%  set email_index = 0 %}
+{%  set username_index = 1 %}
+{%  set activation_index = 2 %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+    <div class="form-group">
+      <label for="email">{{ example['Forms'][form_index]['Inputs'][email_index]['InputName'] }}</label>
+      <input type="email" class="form-control" id="email" name="email"
+             aria-describedby="emailHelp" placeholder="{{ example['Forms'][form_index]['Inputs'][email_index]['InputPlaceholder'] }}" required>
+    </div>
+    <div class="form-group">
+      <label for="user_name">{{ example['Forms'][form_index]['Inputs'][username_index]['InputName'] }}</label>
+      <input type="text" class="form-control" id="user_name" placeholder="{{ example['Forms'][form_index]['Inputs'][username_index]['InputPlaceholder'] }}" name="user_name"
+             required>
+    </div>
+    <div class="form-group">
+      <label for="activation">{{ example['Forms'][form_index]['Inputs'][activation_index]['InputName'] }}</label>
+      <input type="text" class="form-control" id="activation" name="activation"
+             placeholder="{{ example['Forms'][form_index]['Inputs'][activation_index]['InputPlaceholder'] }}" required>
+      <small id="activationHelp" class="form-text text-muted">{{ session['manifest']['SupportingTexts']['HelpingTexts']['SaveAgentActivationCode'] | safe}}</small>
+    </div>
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    {% include 'submit_button.html' %}
+</form>
+
+{% endblock %}

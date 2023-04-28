@@ -101,6 +101,21 @@ def authenticate(eg, api):
 
     return decorator
 
+def authenticate_agent(eg):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            session["eg"] = url_for(eg + ".list_envelopes")
+
+            if ds_token_ok(minimum_buffer_min):
+                return func(*args, **kwargs)
+            else:
+                return redirect(url_for("ds.ds_must_authenticate"))
+
+        return wrapper
+
+    return decorator
+
 def ensure_manifest(manifest_url):
     def decorator(func):
         @wraps(func)
