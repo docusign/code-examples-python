@@ -138,6 +138,7 @@ class Eg037SMSDeliveryController:
             name=args["signer_name"],
             recipient_id="1",
             routing_order="1",
+            delivery_method="SMS",
             phone_number=signerPhoneNumber
         )
 
@@ -152,6 +153,7 @@ class Eg037SMSDeliveryController:
             name=args["cc_name"],
             recipient_id="2",
             routing_order="2",
+            delivery_method="SMS",
             phone_number=ccPhoneNumber
         )
 
