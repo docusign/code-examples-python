@@ -30,10 +30,13 @@ class Eg001CreateClickwrapController:
         5. Create a clickwrap using SDK
         """
         # Step 1. Create an API client with headers
+        #ds-snippet-start:Click1Step2
         api_client = create_click_api_client(
             access_token=args["access_token"]
         )
+        #ds-snippet-end:Click1Step2
 
+        #ds-snippet-start:Click1Step3
         # Step 2. Create a display settings model
         display_settings = DisplaySettings(
             consent_button_text="I Agree",
@@ -67,12 +70,15 @@ class Eg001CreateClickwrapController:
             name=args.get("clickwrap_name"),
             require_reacceptance=True
         )
+        #ds-snippet-end:Click1Step3
 
         # Step 5. Create a clickwrap using SDK
+        #ds-snippet-start:Click1Step4
         accounts_api = AccountsApi(api_client)
         response = accounts_api.create_clickwrap(
             clickwrap_request=clickwrap_request,
             account_id=args["account_id"]
         )
+        #ds-snippet-end:Click1Step4
 
         return response
