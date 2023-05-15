@@ -13,6 +13,7 @@ class Eg043SharedAccessController:
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
         users_api = UsersApi(api_client)
 
+        # check if agent already exists
         try:
             users = users_api.list(args["account_id"], email=args["email"], status="Active")
             if int(users.result_set_size) > 0:
@@ -23,9 +24,10 @@ class Eg043SharedAccessController:
             error_body = json.loads(error_body_json)
             error_code = error_body and "errorCode" in error_body and error_body["errorCode"]
 
-            if error_code != "USER_NOT_FOUND":
+            if error_code not in ["USER_NOT_FOUND", "USER_LACKS_MEMBERSHIP"]:
                 raise err
 
+        # create new agent
         new_users = users_api.create(args["account_id"], new_users_definition=cls.new_users_definition(args))
         return new_users.new_users[0]
 
@@ -34,6 +36,7 @@ class Eg043SharedAccessController:
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
         accounts_api = AccountsApi(api_client)
 
+        # check if authorization with manage permission already exists
         authorizations = accounts_api.get_agent_user_authorizations(
             args["account_id"],
             args["agent_user_id"],
@@ -42,6 +45,7 @@ class Eg043SharedAccessController:
         if int(authorizations.result_set_size) > 0:
             return
 
+        # create authorization
         return accounts_api.create_user_authorization(
             args["account_id"],
             args["user_id"],
