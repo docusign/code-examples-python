@@ -142,3 +142,7 @@ def is_cfr(accessToken, accountId, basePath):
     
     return account_details.status21_cfr_part11
 
+def get_user_info(access_token, base_path, oauth_host_name):
+    api_client = create_api_client(base_path, access_token)
+    api_client.set_oauth_host_name(oauth_host_name)
+    return api_client.get_user_info(access_token)
