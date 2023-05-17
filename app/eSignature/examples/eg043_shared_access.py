@@ -24,7 +24,8 @@ class Eg043SharedAccessController:
             error_body = json.loads(error_body_json)
             error_code = error_body and "errorCode" in error_body and error_body["errorCode"]
 
-            if error_code not in ["USER_NOT_FOUND", "USER_LACKS_MEMBERSHIP"]:
+            user_not_found_error_codes = ["USER_NOT_FOUND", "USER_LACKS_MEMBERSHIP"]
+            if error_code not in user_not_found_error_codes:
                 raise err
 
         # create new agent
