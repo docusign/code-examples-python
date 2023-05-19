@@ -101,6 +101,21 @@ def authenticate(eg, api):
 
     return decorator
 
+def authenticate_agent(eg):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            session["eg"] = url_for(eg + ".list_envelopes")
+
+            if ds_token_ok(minimum_buffer_min):
+                return func(*args, **kwargs)
+            else:
+                return redirect(url_for("ds.ds_must_authenticate"))
+
+        return wrapper
+
+    return decorator
+
 def ensure_manifest(manifest_url):
     def decorator(func):
         @wraps(func)
@@ -127,3 +142,7 @@ def is_cfr(accessToken, accountId, basePath):
     
     return account_details.status21_cfr_part11
 
+def get_user_info(access_token, base_path, oauth_host_name):
+    api_client = create_api_client(base_path, access_token)
+    api_client.set_oauth_host_name(oauth_host_name)
+    return api_client.get_user_info(access_token)
