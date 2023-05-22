@@ -33,16 +33,13 @@ class Eg009AssignFormToFormGroupController:
 
         # GET Form Groups via FormGroupsAPI
 
-        # Step 4 start
-
+        #ds-snippet-start:Rooms9Step4
         form_groups_api = FormGroupsApi(api_client)
         response = form_groups_api.get_form_groups(
             account_id=args["account_id"]
         )  # type: FormGroupSummaryList
-
+        #ds-snippet-end:Rooms9Step4
         return response.form_groups
-
-        # Step 4 end
 
     @staticmethod
     def get_forms(args):
@@ -55,9 +52,7 @@ class Eg009AssignFormToFormGroupController:
         # Create an API client with headers
         api_client = create_rooms_api_client(access_token=args["access_token"])
 
-        # Step 3 start
-
-        # Get first form library id
+        #ds-snippet-start:Rooms9Step3
         form_libraries_api = FormLibrariesApi(api_client)
         form_libraries = form_libraries_api.get_form_libraries(
             account_id=args["account_id"]
@@ -69,7 +64,7 @@ class Eg009AssignFormToFormGroupController:
         form_library_forms = form_libraries_api.get_form_library_forms(
             form_library_id=first_form_library_id, account_id=args["account_id"]
         )   # type: FormSummaryList
-        # Step 3 end
+        #ds-snippet-end:Rooms9Step3
         
         return form_library_forms.forms
 
@@ -81,32 +76,26 @@ class Eg009AssignFormToFormGroupController:
         3. Assign form to a form group via FormGroups API
         """
 
-        # Step 2 start
-
         # Create an API client with headers
+        #ds-snippet-start:Rooms9Step2
         api_client = create_rooms_api_client(access_token=args["access_token"])
-
-        # Step 2 end
+        #ds-snippet-end:Rooms9Step2
         
         form_groups_api = FormGroupsApi(api_client)
 
-        # Step 5 start
-
         # Create FormGroupFormToAssign Object
+        #ds-snippet-start:Rooms9Step5
         form_group_to_assign = FormGroupFormToAssign(
             form_id=args["form_id"], is_required=True
         )
-
-        # Step 5 end
-
-        # Step 6 start
+        #ds-snippet-end:Rooms9Step5
 
         # Assign form to a form group via FormGroups API
+        #ds-snippet-start:Rooms9Step6
         response = form_groups_api.assign_form_group_form(
             form_group_id=args["form_group_id"], account_id=args["account_id"],
             body=form_group_to_assign
         )   # type: FormGroupFormToAssign
-
-        # Step 6 end
+        #ds-snippet-end:Rooms9Step6
 
         return response
