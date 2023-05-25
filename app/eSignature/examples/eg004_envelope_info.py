@@ -24,10 +24,11 @@ class Eg004EnvelopeInfoController:
         """
 
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign4Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
         envelope_api = EnvelopesApi(api_client)
-        # 1. Call the envelope get method
+        # Call the envelope get method
         results = envelope_api.get_envelope(account_id=args["account_id"], envelope_id=args["envelope_id"])
-
+        #ds-snippet-end:eSign4Step2
         return results
