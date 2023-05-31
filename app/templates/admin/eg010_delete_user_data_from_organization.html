@@ -1,0 +1,22 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% include 'example_info.html' %}
+
+{%  set form_index = 0 %}
+{%  set email_index = 0 %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <div class="form-group">
+        <label for="email">{{ example['Forms'][form_index]['Inputs'][email_index]['InputName'] }}</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="{{ example['Forms'][form_index]['Inputs'][email_index]['InputPlaceholder'] }}" required>
+        <small id="email_help" class="form-text text-muted">{{ session['manifest']['SupportingTexts']['HelpingTexts']['EmailAddressOfUserToDelete'] | safe}}</small>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'continue_button.html' %}
+</form>
+  
+{% endblock %}

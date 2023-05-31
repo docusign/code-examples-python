@@ -1,0 +1,24 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% include 'example_info.html' %}
+
+{%  set form_index = 0 %}
+{%  set user_id_index = 0 %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <div class="form-group">
+        <label for="user_id">{{ example['Forms'][form_index]['Inputs'][user_id_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="user_id" name="user_id"
+               placeholder="{{ example['Forms'][form_index]['Inputs'][user_id_index]['InputPlaceholder'] }}" required
+               pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}">
+        <small id="user_id_help" class="form-text text-muted">{{ session['manifest']['SupportingTexts']['HelpingTexts']['UserIDOfUserToDelete'] | safe}}</small>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'continue_button.html' %}
+</form>
+  
+{% endblock %}

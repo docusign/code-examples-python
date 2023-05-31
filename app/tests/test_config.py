@@ -20,7 +20,7 @@ def get_configuration():
                          "dtr.company.read", "dtr.company.write", "room_forms"],
         "admin_scopes": ["organization_read", "group_read", "permission_read",
                          "user_read", "user_write", "account_read",
-                         "domain_read", "identity_provider_read"],
+                         "domain_read", "identity_provider_read", "user_data_redact"],
         "expires_in": 3600,
         "test_pdf_file": './app/tests/docs/World_Wide_Corp_lorem.pdf',
         "test_docx_file": './app/tests/docs/World_Wide_Corp_Battle_Plan_Trafalgar.docx',
