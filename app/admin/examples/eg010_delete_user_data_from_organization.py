@@ -39,18 +39,19 @@ class Eg010DeleteUserDataFromOrganizationController:
         )
         # Step 2 end
 
-        # Step 3 start
         users_api = UsersApi(api_client=api_client)
         results = users_api.get_user_ds_profiles_by_email(organization_id=org_id, email=email)
         user = results.users[0]
-        # Step 3 end
 
-        # Step 4 start
+        # Step 3 start
         organizations_api = OrganizationsApi(api_client=api_client)
         user_data_redaction_request = IndividualUserDataRedactionRequest(
             user_id=user.id,
             memberships=[MembershipDataRedactionRequest(account_id=user.memberships[0].account_id)]
         )
+        # Step 3 end
+        
+        # Step 4 start
         results = organizations_api.redact_individual_user_data(org_id, user_data_redaction_request)
         # Step 4 end
 

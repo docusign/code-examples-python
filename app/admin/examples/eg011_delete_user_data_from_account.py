@@ -37,7 +37,10 @@ class Eg011DeleteUserDataFromAccountController:
         # Step 3 start
         accounts_api = AccountsApi(api_client=api_client)
         membership_redaction_request = IndividualMembershipDataRedactionRequest(user_id=user_id)
-        results = accounts_api.redact_individual_membership_data(account_id, membership_redaction_request)
         # Step 3 end
+
+        # Step 4 start
+        results = accounts_api.redact_individual_membership_data(account_id, membership_redaction_request)
+        # Step 4 end
 
         return results
