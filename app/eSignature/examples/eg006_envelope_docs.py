@@ -23,12 +23,15 @@ class Eg006EnvelopeDocsController:
         1. Call the EnvelopeDocuments::list method
         """
 
-        # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign6Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign6Step2
 
+        #ds-snippet-start:eSign6Step3
         envelope_api = EnvelopesApi(api_client)
-        # 1. Call the EnvelopeDocuments::list method
+        # Call the EnvelopeDocuments::list method
         results = envelope_api.list_documents(account_id=args["account_id"], envelope_id=args["envelope_id"])
+        #ds-snippet-end:eSign6Step3
 
         return results
 
