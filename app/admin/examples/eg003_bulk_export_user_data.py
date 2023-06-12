@@ -27,14 +27,14 @@ class Eg003BulkExportUserDataController:
         export_api = BulkExportsApi(api_client=api_client)
 
         # Create a user list export request
-        # Step 3 start
+        #ds-snippet-start:Admin3Step3
         response = export_api.create_user_list_export(
             organization_id,
             {
                 "type": "organization_memberships_export"
             }
         )
-        # Step 3 end
+        #ds-snippet-end:Admin3Step3
 
         # Save user_list_export_id in a client session
         session['user_list_export_id'] = response.id
@@ -57,22 +57,22 @@ class Eg003BulkExportUserDataController:
 
         organization_id = get_organization_id()
 
-        # Step 2 start
+        #ds-snippet-start:Admin3Step2
         api_client = create_admin_api_client(
             access_token=session["ds_access_token"]
         )
 
         # Create the export API object
         export_api = BulkExportsApi(api_client=api_client)
-        # Step 2 end
+        #ds-snippet-end:Admin3Step2
 
         # Getting the user list export response
-        # Step 4 start
+        #ds-snippet-start:Admin3Step4
         response = export_api.get_user_list_export(
             organization_id,
             session['user_list_export_id']
         )
-        # Step 4 end
+        #ds-snippet-end:Admin3Step4
 
         # Trying to get the user list export id
         try: 
@@ -81,7 +81,7 @@ class Eg003BulkExportUserDataController:
             return None 
 
         # Create the API client object
-        # Step 5 start
+        #ds-snippet-start:Admin3Step5
         api_client = ApiClient()
 
         # Add headers to the API client object and the desired URL
@@ -93,7 +93,7 @@ class Eg003BulkExportUserDataController:
 
         # Getting a response containing a csv file
         response = api_client.request("GET", url, headers=headers)
-        # Step 5 end
+        #ds-snippet-end:Admin3Step5
 
         # Returns the csv file
         return response.data.decode("UTF8")
