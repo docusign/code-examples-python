@@ -28,15 +28,15 @@ class Eg005AuditUsersController:
         org_id = args["organization_id"]
 
         # Create an API client with headers
-        # Step 2 start
+        # ds-snippet-start:Admin5Step2
         api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
         api_client.set_default_header(
             header_name="Authorization",
             header_value=f"Bearer {access_token}"
         )
-        # Step 2 end
+        # ds-snippet-end:Admin5Step2
 
-        #Step 3 start
+        # ds-snippet-start:Admin5Step3
         today = datetime.datetime.now()
         ten_days_ago = today - (datetime.timedelta(days = 10))
         last_modified_since = ten_days_ago.strftime('%Y-%m-%d')
@@ -46,23 +46,23 @@ class Eg005AuditUsersController:
             organization_id=org_id,
             account_id=account_id, 
             last_modified_since=last_modified_since)
-        # Step 3 end
+        # ds-snippet-end:Admin5Step3
 
-        # Step 4 start
+        # ds-snippet-start:Admin5Step4
         modified_users = users.users
         emails = []
         for user in modified_users:
             dict_user = user.to_dict()
             emails.append(dict_user["email"])
-        # Step 4 end
+        # ds-snippet-end:Admin5Step4
 
-        # Step 5 start
+        # ds-snippet-start:Admin5Step5
         profile_list = []
         for email in emails:
             profile = users_api.get_user_profiles(organization_id=org_id, email=email)
             profile_list.append(profile.to_dict())
 
         results = {"Modified users": profile_list}
-        # Step 5 end
+        # ds-snippet-end:Admin5Step5
 
         return results
