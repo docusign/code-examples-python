@@ -41,11 +41,11 @@ class Eg001CreateNewUserController:
             header_value=f"Bearer {access_token}"
         )
         
-        # Step 3 start
+        #ds-snippet-start:Admin1Step3
         accounts_api = AccountsApi(api_client=api_client)
         profiles = accounts_api.list_permissions(account_id=account_id)
         profiles_list = profiles.to_dict()["permission_profiles"]
-        # Step 3 end
+        #ds-snippet-end:Admin1Step3
         return profiles_list
 
     @staticmethod
@@ -62,12 +62,12 @@ class Eg001CreateNewUserController:
             header_value=f"Bearer {access_token}"
         )
         
-        # Step 4 start
+        #ds-snippet-start:Admin1Step4
         groups_api = GroupsApi(api_client)
         groups = groups_api.list_groups(account_id=account_id)
         groups_dict = groups.to_dict()
         groups_list = groups_dict["groups"]
-        # Step 4 end        
+        #ds-snippet-end:Admin1Step4       
         return groups_list
 
     @staticmethod
@@ -93,16 +93,16 @@ class Eg001CreateNewUserController:
                 profile_name = profile["permission_profile_name"]
 
         # Create the API client object 
-        # Step 2 start
+        #ds-snippet-start:Admin1Step2
         api_client = create_admin_api_client(
             access_token=session["ds_access_token"]
         )
         # Create the user API request object
         user_api = UsersApi(api_client=api_client)
-        # Step 2 end
+        #ds-snippet-end:Admin1Step2
 
         # Create a request body for the create_user method 
-        # Step 5 start
+        #ds-snippet-start:Admin1Step5
         request_body = {
             "user_name": args["user_name"],
             "first_name": args['first_name'],
@@ -123,13 +123,13 @@ class Eg001CreateNewUserController:
                 }
             ]
         }
-        # Step 5 end
+        #ds-snippet-end:Admin1Step5
 
         # Creates a user using a method from the user API
-        # Step 6 start
+        #ds-snippet-start:Admin1Step6
         response = user_api.create_user(
             args["organization_id"],
             request_body
         )
-        # Step 6 end
+        #ds-snippet-end:Admin1Step6
         return response
