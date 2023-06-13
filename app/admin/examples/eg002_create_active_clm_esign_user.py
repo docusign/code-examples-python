@@ -35,11 +35,11 @@ class Eg002CreateActiveClmEsignUserController:
             header_name="Authorization",
             header_value=f"Bearer {access_token}"
         )
-        # Step 3 start
+        #ds-snippet-start:Admin2Step3
         product_permission_profiles_api = ProductPermissionProfilesApi(api_client=api_client)
         profiles = product_permission_profiles_api.get_product_permission_profiles(organization_id=org_id, account_id=session["ds_account_id"])
         profiles_list = profiles.to_dict()["product_permission_profiles"]
-        # Step 3 end
+        #ds-snippet-end:Admin2Step3
         return profiles_list
 
     @staticmethod
@@ -57,10 +57,10 @@ class Eg002CreateActiveClmEsignUserController:
             header_value=f"Bearer {access_token}"
         )
 
-        # Step 4 start
+        #ds-snippet-start:Admin2Step4
         ds_groups_api = DSGroupsApi(api_client)
         ds_groups = ds_groups_api.get_ds_groups(organization_id=org_id, account_id=session["ds_account_id"])
-        # Step 4 end
+        #ds-snippet-end:Admin2Step4
         return ds_groups
 
     @staticmethod
@@ -77,13 +77,13 @@ class Eg002CreateActiveClmEsignUserController:
         esign_permission_profile_name = args["esign_permission_profile_name"]
 
         # Create an API client with headers
-        # Step 2 start        
+        #ds-snippet-start:Admin2Step2      
         api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
         api_client.set_default_header(
             header_name="Authorization",
             header_value=f"Bearer {access_token}"
         )
-        # Step 2 end
+        #ds-snippet-end:Admin2Step2
 
         profiles_list = self.get_permission_profiles(args)
 
@@ -99,16 +99,16 @@ class Eg002CreateActiveClmEsignUserController:
                     if permission_profile["permission_profile_name"] == esign_permission_profile_name:
                         esign_permission_profile_id = permission_profile["permission_profile_id"]
 
-        # Step 5 start
+        #ds-snippet-start:Admin2Step5
         clm_product_permission_profile = ProductPermissionProfileRequest(product_id=clm_product_id, permission_profile_id=clm_permission_profile_id)
         esign_product_permission_profile = ProductPermissionProfileRequest(product_id=esign_product_id, permission_profile_id=esign_permission_profile_id)
         ds_group_request = DSGroupRequest(ds_group_id=args["group_id"])
         new_user = NewMultiProductUserAddRequest(product_permission_profiles=[esign_product_permission_profile, clm_product_permission_profile], ds_groups=[ds_group_request], user_name=args["user_name"], first_name=args["first_name"], last_name=args["last_name"], email=args["email"], auto_activate_memberships=True)
-        # Step 5 end
+        #ds-snippet-end:Admin2Step5
 
-        # Step 6 start
+        #ds-snippet-start:Admin2Step6
         users_api = UsersApi(api_client)
         response = users_api.add_or_update_user(organization_id=org_id, account_id=session["ds_account_id"], request=new_user)
-        # Step 6 end
+        #ds-snippet-end:Admin2Step6
 
         return response.to_dict()
