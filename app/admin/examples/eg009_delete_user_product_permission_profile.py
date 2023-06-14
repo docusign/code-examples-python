@@ -29,7 +29,7 @@ class Eg009DeleteUserProductPermissionProfileController:
             header_name="Authorization",
             header_value=f"Bearer {session['ds_access_token']}"
         )
-        # Step 3 start
+        #ds-snippet-start:Admin9Step3
         product_permission_profiles_api = ProductPermissionProfilesApi(api_client=api_client)
         profiles = product_permission_profiles_api.get_user_product_permission_profiles_by_email(
             organization_id=get_organization_id(),
@@ -37,7 +37,7 @@ class Eg009DeleteUserProductPermissionProfileController:
             email=session["clm_email"]
         )
         profiles_list = profiles.to_dict()["product_permission_profiles"]
-        # Step 3 end
+        #ds-snippet-end:Admin9Step3
         return profiles_list
 
     @staticmethod
@@ -54,28 +54,28 @@ class Eg009DeleteUserProductPermissionProfileController:
         product_id = args["product_id"]
 
         # Create an API client with headers
-        # Step 2 start        
+        #ds-snippet-start:Admin9Step2        
         api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
         api_client.set_default_header(
             header_name="Authorization",
             header_value=f"Bearer {access_token}"
         )
-        # Step 2 end
+        #ds-snippet-end:Admin9Step2
 
-        # Step 4 start
+        #ds-snippet-start:Admin9Step4
         user_product_profile_delete_request = UserProductProfileDeleteRequest(
             user_email=email,
             product_ids=[product_id]
         )
-        # Step 4 end
+        #ds-snippet-end:Admin9Step4
 
-        # Step 5 start
+        #ds-snippet-start:Admin9Step5
         product_permission_profiles_api = ProductPermissionProfilesApi(api_client=api_client)
         response = product_permission_profiles_api.remove_user_product_permission(
             organization_id=org_id,
             account_id=account_id,
             user_product_permission_profiles_request=user_product_profile_delete_request
         )
-        # Step 5 end
+        #ds-snippet-end:Admin9Step5
 
         return response.to_dict()
