@@ -28,20 +28,20 @@ class Eg007GetUserProfileByUserIdController:
         user_id = args["user_id"]
 
         # Create an API client with headers
-        # Step 2 start
+        #ds-snippet-start:Admin7Step2
         api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
         api_client.set_default_header(
             header_name="Authorization",
             header_value=f"Bearer {access_token}"
         )
-        # Step 2 end
+        #ds-snippet-end:Admin7Step2
 
-        # Step 3 start
+        #ds-snippet-start:Admin7Step3
         users_api = UsersApi(api_client=api_client)
 
         results = users_api.get_user_ds_profile(
             organization_id=org_id,
             user_id=user_id)
-        # Step 3 end
+        #ds-snippet-end:Admin7Step3
 
         return results
