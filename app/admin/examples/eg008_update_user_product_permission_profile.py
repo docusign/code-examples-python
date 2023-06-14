@@ -55,15 +55,15 @@ class Eg008UpdateUserProductPermissionProfileController:
         product_id = args["product_id"]
 
         # Create an API client with headers
-        # Step 2 start        
+        #ds-snippet-start:Admin8Step2
         api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
         api_client.set_default_header(
             header_name="Authorization",
             header_value=f"Bearer {access_token}"
         )
-        # Step 2 end
+        #ds-snippet-end:Admin8Step2
 
-        # Step 3 start
+        #ds-snippet-start:Admin8Step3
         product_permission_profile = ProductPermissionProfileRequest(
             permission_profile_id=permission_profile_id,
             product_id=product_id
@@ -72,15 +72,15 @@ class Eg008UpdateUserProductPermissionProfileController:
             email=clm_email,
             product_permission_profiles=[product_permission_profile]
         )
-        # Step 3 end
+        #ds-snippet-end:Admin8Step3
 
-        # Step 4 start
+        #ds-snippet-start:Admin8Step4
         product_permission_profiles_api = ProductPermissionProfilesApi(api_client=api_client)
         response = product_permission_profiles_api.add_user_product_permission_profiles_by_email(
             organization_id=org_id,
             account_id=account_id,
             user_product_permission_profiles_request=user_product_permission_profile_request
         )
-        # Step 4 end
+        #ds-snippet-end:Admin8Step4
 
         return response.to_dict()
