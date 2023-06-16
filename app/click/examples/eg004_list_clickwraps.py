@@ -16,18 +16,22 @@ class Eg004ListClickwrapsController:
     @staticmethod
     def worker(args):
         """
-        1. Create an API client with headers
-        2. Get a list of all clickwraps
+        Create an API client with headers
+        Get a list of all elastic templates
         """
-        # Step 1. Create an API client with headers
+        # Create an API client with headers
+        #ds-snippet-start:Click4Step2
         api_client = create_click_api_client(
             access_token=args["access_token"]
         )
+        #ds-snippet-end
 
-        # Step 2. Get a list of all clickwraps
+        # Get a list of all elastic templates
+        #ds-snippet-start:Click4Step3
         accounts_api = AccountsApi(api_client)
         response = accounts_api.get_clickwraps(
             account_id=args["account_id"]
         )
+        #ds-snippet-end
 
         return response
