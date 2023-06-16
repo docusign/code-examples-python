@@ -30,12 +30,15 @@ class Eg003CrateNewClickwrapVersionController:
         4. Create a clickwrap request model
         5. Create a new clickwrap version using SDK
         """
-        # Step 1. Create an API client with headers
+        # Create an API client with headers
+        #ds-snippet-start:Click3Step2
         api_client = create_click_api_client(
             access_token=args["access_token"]
         )
+        #ds-snippet-end
 
-        # Step 2. Create a display settings model
+        # Create a display settings model
+        #ds-snippet-start:Click3Step3
         display_settings = DisplaySettings(
             consent_button_text="I Agree",
             display_name=f"{args.get('clickwrap_name')} v2",
@@ -54,7 +57,7 @@ class Eg003CrateNewClickwrapVersionController:
             doc_docx_bytes = file.read()
         doc_b64 = base64.b64encode(doc_docx_bytes).decode("ascii")
 
-        # Step 3. Create a document model.
+        # Create a document model.
         document = Document(  # Create the DocuSign document object
             document_base64=doc_b64,
             document_name="Terms of Service", # Can be different from actual file name
@@ -62,7 +65,7 @@ class Eg003CrateNewClickwrapVersionController:
             order=0
         )
 
-        # Step 4. Create a clickwrap request model
+        # Create a clickwrap request model
         clickwrap_request = ClickwrapRequest(
             display_settings=display_settings,
             documents=[document, ],
@@ -70,13 +73,16 @@ class Eg003CrateNewClickwrapVersionController:
             require_reacceptance=True,
             status="active"
         )
+        #ds-snippet-end
 
-        # Step 5. Create a new clickwrap version using SDK
+        # Create a new clickwrap version using SDK
+        #ds-snippet-start:Click3Step4
         accounts_api = AccountsApi(api_client)
         response = accounts_api.create_clickwrap_version(
             account_id=args["account_id"],
             clickwrap_id=args["clickwrap_id"],
             clickwrap_request=clickwrap_request,
         )
+        #ds-snippet-end
 
         return response
