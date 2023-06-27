@@ -45,7 +45,6 @@ app.register_blueprint(rooms_views.reg008)
 app.register_blueprint(rooms_views.reg009)
 
 app.register_blueprint(monitor_views.meg001)
-app.register_blueprint(monitor_views.meg002)
 
 app.register_blueprint(admin_views.aeg001)
 app.register_blueprint(admin_views.aeg002)

@@ -4,10 +4,10 @@ cffi==1.15.1
 chardet==5.1.0
 Click
 cryptography==39.0.0
-docusign-esign==3.22.0
-docusign-rooms==1.1.0
-docusign-monitor==1.1.0
-docusign-click==1.2.2
+docusign-esign==3.23.0
+docusign-rooms==1.3.0
+docusign-monitor==1.2.0
+docusign-click==1.4.0
 docusign-admin==1.3.0
 Flask==1.1.1
 Flask-OAuthlib==0.9.6

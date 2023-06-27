@@ -34,7 +34,6 @@ class Eg001GetMonitoringDataController:
         result = dataset_api.get_stream(
             data_set_name="monitor",
             version="2.0")._data
-
         # Step 3 end
 
         return result
