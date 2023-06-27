@@ -30,11 +30,9 @@ class Eg001CreateClickwrapController:
         5. Create a clickwrap using SDK
         """
         # Step 1. Create an API client with headers
-        #ds-snippet-start:Click1Step2
         api_client = create_click_api_client(
             access_token=args["access_token"]
         )
-        #ds-snippet-end:Click1Step2
 
         #ds-snippet-start:Click1Step3
         # Step 2. Create a display settings model

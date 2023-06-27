@@ -48,17 +48,23 @@ class Eg002ActivateClickwrapController:
         )
 
         # Step 2. Create a clickwrap request model
+        #ds-snippet-start:Click2Step3
         clickwrap_request = ClickwrapRequest(status="active")
+        #ds-snippet-end:Click2Step3
 
         # Step 3. Update a clickwrap using SDK
+        #ds-snippet-start:Click2Step4
         accounts_api = AccountsApi(api_client)
+        #ds-snippet-end:Click2Step4
         clickwrap = ast.literal_eval(args["clickwrap"])
         print(type(clickwrap))
+        #ds-snippet-start:Click2Step4
         response = accounts_api.update_clickwrap_version(
             account_id=args["account_id"],
             clickwrap_id=clickwrap["clickwrap_id"],
             version_id=clickwrap["version_number"],
             clickwrap_request=clickwrap_request,
         )
+        #ds-snippet-end:Click2Step4
 
         return response
