@@ -28,11 +28,11 @@ class Eg036DelayedRoutingController:
         envelope_args = args["envelope_args"]
         envelope_definition = cls.make_envelope(envelope_args, DS_CONFIG["doc_docx"], DS_CONFIG["doc_pdf"])
 
-        # Step 3 start
+        #ds-snippet-start:eSign36Step3
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
-        # Step 3 end
+        #ds-snippet-end:eSign36Step3
 
         envelope_id = results.envelope_id
 
@@ -46,7 +46,6 @@ class Eg036DelayedRoutingController:
         The recipients' field tags are placed using <b>anchor</b> strings.
         """
 
-        # Step 2 start
         # document 1 (PDF)  has sign here anchor tag /sn1/
         #
         # The envelope has two recipients.
@@ -56,6 +55,7 @@ class Eg036DelayedRoutingController:
         # After it is signed, there will be a delay before it is sent to the second signer.
 
         # create the envelope definition
+        #ds-snippet-start:eSign36Step2
         env = EnvelopeDefinition(
             email_subject="Please sign this document"
         )
@@ -137,6 +137,6 @@ class Eg036DelayedRoutingController:
         # Request that the envelope be sent by setting |status| to "sent".
         # To request that the envelope be created as a draft, set to "created"
         env.status = args["status"]
-        # Step 2 end
+        #ds-snippet-end:eSign36Step2
 
         return env
