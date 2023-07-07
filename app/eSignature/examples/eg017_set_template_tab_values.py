@@ -42,20 +42,28 @@ class Eg017SetTemplateTabValuesController:
         4. Obtain the recipient_view_url for the embedded signing
         """
         envelope_args = args["envelope_args"]
-        # 1. Create the envelope request object
+        # Create the envelope request object
+        #ds-snippet-start:eSign17Step4
         envelope_definition = cls.make_envelope(envelope_args)
+        #ds-snippet-end:eSign17Step4
 
-        # 2. call Envelopes::create API method
+        # Call Envelopes::create API method
         # Exceptions will be caught by the calling function
+        
+        #ds-snippet-start:eSign17Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign17Step2
 
+        #ds-snippet-start:eSign17Step5
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
 
         envelope_id = results.envelope_id
+        #ds-snippet-end:eSign17Step5
         app.logger.info(f"Envelope was created. EnvelopeId {envelope_id}")
 
-        # 3. Create the Recipient View request object
+        # Create the Recipient View request object
+        #ds-snippet-start:eSign17Step6
         recipient_view_request = RecipientViewRequest(
             authentication_method=authentication_method,
             client_user_id=envelope_args["signer_client_id"],
@@ -63,7 +71,7 @@ class Eg017SetTemplateTabValuesController:
             return_url=envelope_args["ds_return_url"],
             user_name=envelope_args["signer_name"], email=envelope_args["signer_email"]
         )
-        # 4. Obtain the recipient_view_url for the embedded signing
+        # Obtain the recipient_view_url for the embedded signing
         # Exceptions will be caught by the calling function
         results = envelopes_api.create_recipient_view(
             account_id=args["account_id"],
@@ -71,6 +79,7 @@ class Eg017SetTemplateTabValuesController:
             recipient_view_request=recipient_view_request
         )
         return {"envelope_id": envelope_id, "redirect_url": results.url}
+        #ds-snippet-end:eSign17Step6
 
     @classmethod
     def make_envelope(cls, args):
@@ -83,6 +92,7 @@ class Eg017SetTemplateTabValuesController:
 
         # Set the values for the fields in the template
         # List item
+        #ds-snippet-start:eSign17Step3
         list1 = List(
             value="green", document_id="1",
             page_number="1", tab_label="list")
@@ -161,3 +171,4 @@ class Eg017SetTemplateTabValuesController:
         )
 
         return envelope_definition
+    #ds-snippet-end:eSign17Step3
