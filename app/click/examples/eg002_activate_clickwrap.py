@@ -43,9 +43,11 @@ class Eg002ActivateClickwrapController:
         3. Update a clickwrap using SDK
         """
         # Step 1. Create an API client with headers
+        #ds-snippet-start:Click2Step2
         api_client = create_click_api_client(
             access_token=args["access_token"]
         )
+        #ds-snippet-end:Click2Step2
 
         # Step 2. Create a clickwrap request model
         #ds-snippet-start:Click2Step3
