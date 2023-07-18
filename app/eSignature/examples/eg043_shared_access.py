@@ -10,8 +10,12 @@ from ...docusign import create_api_client
 class Eg043SharedAccessController:
     @classmethod
     def create_agent(cls, args):
+        #ds-snippet-start:eSign43Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign43Step2
+        #ds-snippet-start:eSign43Step3
         users_api = UsersApi(api_client)
+        #ds-snippet-end:eSign43Step3
 
         # check if agent already exists
         try:
@@ -29,9 +33,12 @@ class Eg043SharedAccessController:
                 raise err
 
         # create new agent
+        #ds-snippet-start:eSign43Step3
         new_users = users_api.create(args["account_id"], new_users_definition=cls.new_users_definition(args))
         return new_users.new_users[0]
+        #ds-snippet-end:eSign43Step3
 
+    #ds-snippet-start:eSign43Step4
     @classmethod
     def create_authorization(cls, args):
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
@@ -52,7 +59,9 @@ class Eg043SharedAccessController:
             args["user_id"],
             user_authorization_create_request=cls.user_authorization_request(args)
         )
+        #ds-snippet-end:eSign43Step4
 
+    #ds-snippet-start:eSign43Step3
     @classmethod
     def new_users_definition(cls, args):
         agent = UserInformation(
@@ -61,6 +70,7 @@ class Eg043SharedAccessController:
             activation_access_code=args["activation"]
         )
         return NewUsersDefinition(new_users=[agent])
+    #ds-snippet-end:eSign43Step3
 
     @classmethod
     def user_authorization_request(cls, args):
@@ -72,6 +82,7 @@ class Eg043SharedAccessController:
             permission="manage"
         )
 
+    #ds-snippet-start:eSign43Step5
     @classmethod
     def get_envelopes(cls, args):
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
@@ -80,3 +91,4 @@ class Eg043SharedAccessController:
 
         from_date = (datetime.utcnow() - timedelta(days=10)).isoformat()
         return envelopes_api.list_status_changes(account_id=args["account_id"], from_date=from_date)
+    #ds-snippet-end:eSign43Step5
