@@ -34,6 +34,7 @@ class Eg012EmbeddedConsoleController:
         # with the NDSE. It is usually the case that the
         # user will never "finish" with the NDSE.
         # Assume that control will not be passed back to your app.
+        #ds-snippet-start:eSign12Step2
         view_request = ConsoleViewRequest(return_url=args["ds_return_url"])
         if args["starting_view"] == "envelope" and args["envelope_id"]:
             view_request.envelope_id = args["envelope_id"]
@@ -45,4 +46,5 @@ class Eg012EmbeddedConsoleController:
         envelope_api = EnvelopesApi(api_client)
         results = envelope_api.create_console_view(account_id=args["account_id"], console_view_request=view_request)
         url = results.url
+        #ds-snippet-end:eSign12Step2
         return {"redirect_url": url}

@@ -31,28 +31,28 @@ class Eg010DeleteUserDataFromOrganizationController:
         email = args["email"]
 
         # Create an API client with headers
-        # Step 2 start
+        #ds-snippet-start:Admin10Step2
         api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
         api_client.set_default_header(
             header_name="Authorization",
             header_value=f"Bearer {access_token}"
         )
-        # Step 2 end
+        #ds-snippet-end:Admin10Step2
 
         users_api = UsersApi(api_client=api_client)
         results = users_api.get_user_ds_profiles_by_email(organization_id=org_id, email=email)
         user = results.users[0]
 
-        # Step 3 start
+        #ds-snippet-start:Admin10Step3
         organizations_api = OrganizationsApi(api_client=api_client)
         user_data_redaction_request = IndividualUserDataRedactionRequest(
             user_id=user.id,
             memberships=[MembershipDataRedactionRequest(account_id=user.memberships[0].account_id)]
         )
-        # Step 3 end
+        #ds-snippet-end:Admin10Step3
         
-        # Step 4 start
+        #ds-snippet-start:Admin10Step4
         results = organizations_api.redact_individual_user_data(org_id, user_data_redaction_request)
-        # Step 4 end
+        #ds-snippet-end:Admin10Step4
 
         return results

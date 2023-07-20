@@ -27,9 +27,11 @@ class Eg006EmbedClickwrapController:
         2. Get a list of active clickwraps
         """
         # Step 1. Create an API client with headers
+        #ds-snippet-start:Click6Step2
         api_client = create_click_api_client(
             access_token=args["access_token"]
         )
+        #ds-snippet-end:Click6Step2
         
         # Step 2. Get a list of active clickwraps
         accounts_api = AccountsApi(api_client)
@@ -53,6 +55,7 @@ class Eg006EmbedClickwrapController:
         )
         
         # Create a user agreement request model
+        #ds-snippet-start:Click6Step3
         user_agreement_request = UserAgreementRequest(
             client_user_id=args["email"],
             document_data={
@@ -63,8 +66,10 @@ class Eg006EmbedClickwrapController:
                 "date": args["date"]
             },
         )
+        #ds-snippet-end:Click6Step3
 
-        # Retrieve Agreement Url using SDK
+        # Retrieve Agreement URL using SDK
+        #ds-snippet-start:Click6Step4
         accounts_api = AccountsApi(api_client)
         clickwrap = ast.literal_eval(args["clickwrap"])
         print(type(clickwrap))
@@ -73,5 +78,6 @@ class Eg006EmbedClickwrapController:
             clickwrap_id=clickwrap["clickwrap_id"],
             user_agreement_request=user_agreement_request,
         )
+        #ds-snippet-end:Click6Step4
 
         return response
