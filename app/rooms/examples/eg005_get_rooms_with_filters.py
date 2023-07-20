@@ -23,11 +23,15 @@ class Eg005GetRoomsWithFiltersController:
         2. Get rooms with filter
         """
         # Step 1. Create an API client with headers
+        #ds-snippet-start:Rooms5Step2
         api_client = create_rooms_api_client(access_token=args["access_token"])
+        #ds-snippet-end:Rooms5Step2
 
         # Step 2. Get room templates
+        #ds-snippet-start:Rooms5Step4
         rooms_api = RoomsApi(api_client)
         rooms = rooms_api.get_rooms(account_id=args["account_id"])
+        #ds-snippet-end:Rooms5Step4
         return rooms.rooms
 
     @staticmethod
@@ -43,7 +47,9 @@ class Eg005GetRoomsWithFiltersController:
         rooms_api = RoomsApi(api_client)
         response = rooms_api.get_rooms(
             account_id=args["account_id"],
+            #ds-snippet-start:Rooms5Step3
             field_data_changed_start_date=datetime.strptime(args['start_date'], "%Y-%m-%d"),
             field_data_changed_end_date=datetime.strptime(args['end_date'], "%Y-%m-%d"),
+            #ds-snippet-end:Rooms5Step3
         )
         return response
