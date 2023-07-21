@@ -29,9 +29,12 @@ class Eg026PermissionsChangeSingleSettingController:
         """
 
         # Step 2. Construct your API headers
+        #ds-snippet-start:eSign26Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign26Step2
 
         # Step 3. Construct your request body
+        #ds-snippet-start:eSign26Step3
         permission_profile = PermissionProfile(
             settings=args["settings"]
         )
@@ -40,13 +43,16 @@ class Eg026PermissionsChangeSingleSettingController:
             account_id=args["account_id"],
             permission_profile_id=args["permission_profile_id"]
         ).settings.to_dict()
+        #ds-snippet-end:eSign26Step3
         # Step 4. Call the eSignature REST API
+        #ds-snippet-start:eSign26Step4
         response = account_api.update_permission_profile(
             account_id=args["account_id"],
             permission_profile_id=args["permission_profile_id"],
             permission_profile=permission_profile
         )
         new_settings = response.settings.to_dict()
+        #ds-snippet-end:eSign26Step4
         changed_settings = {}
 
         # Save only changed settings
