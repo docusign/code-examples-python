@@ -56,16 +56,20 @@ class Eg034UseConditionalRecipientsController:
         envelope_args = args["envelope_args"]
         # 1. Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args)
+        #ds-snippet-start:eSign34Step2
         api_client = create_api_client(
             base_path=args["base_path"], access_token=args["access_token"]
         )
+        #ds-snippet-end:eSign34Step2
         # 2. Call Envelopes::create API method
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign34Step4
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(
             account_id=args["account_id"],
             envelope_definition=envelope_definition
         )
+        #ds-snippet-end:eSign34Step4
 
         return {"envelope_id": results.envelope_id}
 
@@ -84,6 +88,7 @@ class Eg034UseConditionalRecipientsController:
         # If signer1 doesn't check the checkbox the envelope will be sent to the signer_2a
         # If signer1 check the checkbox the envelope will be sent to the signer_2b
 
+        #ds-snippet-start:eSign34Step3
         # Create the envelope definition
         env = EnvelopeDefinition(email_subject="ApproveIfChecked")
 
@@ -247,3 +252,4 @@ class Eg034UseConditionalRecipientsController:
         # To request that the envelope be created as a draft, set to "created"
         env.status = args["status"]
         return env
+        #ds-snippet-end:eSign34Step3
