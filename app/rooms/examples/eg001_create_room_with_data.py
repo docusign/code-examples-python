@@ -23,9 +23,11 @@ class Eg001CreateRoomWithDateController:
         4. Post the room using SDK
         """
         # Step 1. Create an API client with headers
+        #ds-snippet-start:Rooms1Step2
         api_client = create_rooms_api_client(
             access_token=args["access_token"]
         )
+        #ds-snippet-end:Rooms1Step2
 
         # Step 2. Get Default Admin role id
         roles_api = RolesApi(api_client)
@@ -33,6 +35,7 @@ class Eg001CreateRoomWithDateController:
         role_id = [role.role_id for role in roles.roles if role.is_default_for_admin][0]
 
         # Step 3. Create RoomForCreate object
+        #ds-snippet-start:Rooms1Step3
         room = RoomForCreate(
             name=args["room_name"],
             role_id=role_id,
@@ -49,11 +52,14 @@ class Eg001CreateRoomWithDateController:
                 }
             )
         )
+        #ds-snippet-end:Rooms1Step3
 
         # Step 4. Post the room using SDK
+        #ds-snippet-start:Rooms1Step4
         rooms_api = RoomsApi(api_client)
         response = rooms_api.create_room(
             body=room,
             account_id=args["account_id"]
         )
+        #ds-snippet-end:Rooms2Step4
         return response
