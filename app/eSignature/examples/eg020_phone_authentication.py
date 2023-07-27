@@ -103,7 +103,7 @@ class Eg020PhoneAuthenticationController:
         #ds-snippet-end:eSign20Step4
         
         # Call the eSignature REST API
-        #ds-snippet-start:eSign20Step4
+        #ds-snippet-start:eSign20Step5
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
         #ds-snippet-end:eSign20Step5
