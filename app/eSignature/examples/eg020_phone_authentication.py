@@ -44,12 +44,12 @@ class Eg020PhoneAuthenticationController:
         2. Create an envelope definition object
         """
         # Construct your API headers
-        # Step 2 start
+        #ds-snippet-start:eSign20Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
-        # Step 2 end
+        #ds-snippet-end:eSign20Step2
 
         # Construct your envelope
-        # Step 4 start
+        #ds-snippet-start:eSign20Step4
         envelope_definition = EnvelopeDefinition(
             email_subject="Please sign this document set"
         )
@@ -100,13 +100,13 @@ class Eg020PhoneAuthenticationController:
 
         # Tabs are set per recipient
         envelope_definition.recipients = Recipients(signers=[signer1])
-        # Step 4 end
+        #ds-snippet-end:eSign20Step4
         
         # Call the eSignature REST API
-        # Step 5 start
+        #ds-snippet-start:eSign20Step4
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
-        # Step 5 end
+        #ds-snippet-end:eSign20Step5
 
         return results
 
@@ -115,7 +115,7 @@ class Eg020PhoneAuthenticationController:
         """Retrieve the workflow id"""
         try:
             api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
-            # Step 3 start
+            #ds-snippet-start:eSign20Step3
             workflow_details = AccountsApi(api_client)
             workflow_response = workflow_details.get_account_identity_verification(account_id=args["account_id"])
 
@@ -125,7 +125,7 @@ class Eg020PhoneAuthenticationController:
                 for workflow in workflow_response.identity_verification:
                     if workflow.default_name == "Phone Authentication":
                         session['workflow_id'] = workflow.workflow_id
-            # Step 3 end
+            #ds-snippet-end:eSign20Step3
                 return session['workflow_id']
 
             else:
