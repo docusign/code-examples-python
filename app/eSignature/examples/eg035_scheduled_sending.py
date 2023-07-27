@@ -30,9 +30,11 @@ class Eg035ScheduledSendingController:
         envelope_definition = cls.make_envelope(envelope_args, DS_CONFIG["doc_docx"], DS_CONFIG["doc_pdf"])
 
         # Step 3 start
+        #ds-snippet-start:eSign35Step3
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
+        #ds-snippet-end:eSign35Step3
         # Step 3 end
 
         envelope_id = results.envelope_id
@@ -51,6 +53,7 @@ class Eg035ScheduledSendingController:
         """
 
         # Step 2 start
+        #ds-snippet-start:eSign35Step2
         # document 1 (PDF)  has sign here anchor tag /sn1/
         #
         # The envelope has one recipient.
@@ -116,6 +119,7 @@ class Eg035ScheduledSendingController:
         # Request that the envelope be sent by setting |status| to "sent".
         # To request that the envelope be created as a draft, set to "created"
         env.status = args["status"]
+        #ds-snippet-end:eSign35Step2
         # Step 2 end
 
         return env
