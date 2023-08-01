@@ -22,7 +22,9 @@ class Eg004AddFormsToRoomController:
         2. Get rooms
         """
         # Step 1. Create an API client with headers
+        #ds-snippet-start:Rooms4Step2
         api_client = create_rooms_api_client(access_token=args["access_token"])
+        #ds-snippet-end:Rooms4Step2
 
         # Step 2. Get rooms
         rooms_api = RoomsApi(api_client)
@@ -40,15 +42,19 @@ class Eg004AddFormsToRoomController:
         api_client = create_rooms_api_client(access_token=args["access_token"])
 
         # Step 2. Get first form library id
+        #ds-snippet-start:Rooms4Step3
         form_libraries_api = FormLibrariesApi(api_client)
         form_libraries = form_libraries_api.get_form_libraries(account_id=args["account_id"])
         first_form_library_id = form_libraries.forms_library_summaries[0].forms_library_id
+        #ds-snippet-end:Rooms4Step3
 
         # Step 3. Get forms
+        #ds-snippet-start:Rooms4Step2
         form_library_forms = form_libraries_api.get_form_library_forms(
             form_library_id=first_form_library_id,
             account_id=args["account_id"]
         )
+        #ds-snippet-end:Rooms4Step3
         return form_library_forms.forms
 
     @staticmethod
@@ -61,10 +67,12 @@ class Eg004AddFormsToRoomController:
         api_client = create_rooms_api_client(access_token=args["access_token"])
 
         # Step 2. Add the form to the room
+        #ds-snippet-start:Rooms4Step4
         rooms_api = RoomsApi(api_client)
         response = rooms_api.add_form_to_room(
             room_id=args['room_id'],
             body=FormForAdd(form_id=args['form_id']),
             account_id=args["account_id"]
         )
+        #ds-snippet-end:Rooms4Step4
         return response
