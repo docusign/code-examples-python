@@ -20,17 +20,14 @@ class Eg007CreateFormGroupController:
         2. Create FormGroupForCreate object
         3. POST the form using SDK
         """
-
         # Create an API with headers
         #ds-snippet-start:Rooms7Step2
         api_client = create_rooms_api_client(access_token=args["access_token"])
         #ds-snippet-end:Rooms7Step2
-
         # Create FormGroupForCreate object
         #ds-snippet-start:Rooms7Step3
         form = FormGroupForCreate(name=args["form_group_name"])
         #ds-snippet-end:Rooms7Step3
-
         # Post the form object using SDK
         #ds-snippet-start:Rooms7Step4
         form_groups_api = FormGroupsApi(api_client)
