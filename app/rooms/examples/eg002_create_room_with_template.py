@@ -25,8 +25,10 @@ class Eg002CreateRoomWithTemplateController:
         api_client = create_rooms_api_client(access_token=args["access_token"])
 
         # Step 2. Get room templates
+        #ds-snippet-start:Rooms2Step3
         room_templates_api = RoomTemplatesApi(api_client)
         templates = room_templates_api.get_room_templates(account_id=args["account_id"])
+        #ds-snippet-end:Rooms2Step3
         return templates.room_templates
 
     @staticmethod
@@ -38,9 +40,12 @@ class Eg002CreateRoomWithTemplateController:
         4. Post the room using SDK
         """
         # Step 1. Create an API client with headers
+        #ds-snippet-start:Rooms2Step2
         api_client = create_rooms_api_client(access_token=args["access_token"])
+        #ds-snippet-end:Rooms2Step2
 
         # Step 2. Get Default Admin role id
+        #ds-snippet-start:Rooms2Step4
         roles_api = RolesApi(api_client)
         roles = roles_api.get_roles(account_id=args["account_id"])
         role_id = [role.role_id for role in roles.roles if role.is_default_for_admin][0]
@@ -59,11 +64,14 @@ class Eg002CreateRoomWithTemplateController:
                 }
             )
         )
+        #ds-snippet-end:Rooms2Step4
 
         # Step 4. Create the room using a POST API call.
+        #ds-snippet-start:Rooms2Step5
         rooms_api = RoomsApi(api_client)
         response = rooms_api.create_room(
             body=room,
             account_id=args["account_id"],
         )
+        #ds-snippet-end:Rooms2Step5
         return response

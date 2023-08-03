@@ -17,22 +17,17 @@ class Eg001GetMonitoringDataController:
         """
         1. Create an API client with headers
         2. Get your monitor data via SDK
-        """
-
-        
-
+        """        
         # Create an API client with headers
         #ds-snippet-start:Monitor1Step2
         api_client = create_monitor_api_client(
             access_token=args["access_token"]
         )
         #ds-snippet-end:Monitor1Step2 
-
         #ds-snippet-start:Monitor1Step3
         dataset_api = DataSetApi(api_client=api_client)
         result = dataset_api.get_stream(
             data_set_name="monitor",
             version="2.0")._data
         #ds-snippet-end:Monitor1Step3
-
         return result
