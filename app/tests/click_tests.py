@@ -31,10 +31,11 @@ class ClickTesting(unittest.TestCase):
         args = {
             "account_id": self.account_id,
             "base_path": self.base_path,
-            "access_token": self.access_token
+            "access_token": self.access_token,
+            "statuses": ["inactive", "draft"]
         }
         results = Eg002ActivateClickwrapController.get_inactive_clickwraps(args)
-        clickwrap = results.clickwraps[0]
+        clickwrap = results["clickwraps"][0]
 
         clickwrap_args = f"{{\"clickwrap_id\": \"{clickwrap.clickwrap_id}\",\"version_number\": \"{clickwrap.version_number}\"}}"
         args["clickwrap"] = clickwrap_args
@@ -48,7 +49,8 @@ class ClickTesting(unittest.TestCase):
         args = {
             "account_id": self.account_id,
             "base_path": self.base_path,
-            "access_token": self.access_token
+            "access_token": self.access_token,
+            "statuses": ["inactive", "draft"]
         }
 
         results = Eg002ActivateClickwrapController.get_inactive_clickwraps(args)

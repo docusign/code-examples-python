@@ -13,6 +13,7 @@ class Eg002ActivateClickwrapController:
             "account_id": session.get("ds_account_id"),  # Represents your {ACCOUNT_ID}
             "access_token": session.get("ds_access_token"),  # Represents your {ACCESS_TOKEN}
             "clickwrap": request.form.get("clickwrap"),
+            "statuses": ["inactive", "draft"]
         }
         
     @staticmethod
@@ -28,12 +29,16 @@ class Eg002ActivateClickwrapController:
         
         # Step 2. Get a list of inactive clickwraps
         accounts_api = AccountsApi(api_client)
-        response = accounts_api.get_clickwraps(
-            account_id=args["account_id"],
-            status="inactive"
-        )
-        
-        return response
+        clickwraps = []
+
+        for status in args["statuses"]:
+            response = accounts_api.get_clickwraps(
+                account_id=args["account_id"],
+                status=status
+            )
+            clickwraps += response.clickwraps
+
+        return {"clickwraps": clickwraps}
 
     @staticmethod
     def worker(args):
