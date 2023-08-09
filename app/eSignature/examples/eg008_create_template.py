@@ -48,8 +48,10 @@ class Eg008CreateTemplateController:
 
             # Template not found -- so create it
             # 2. create the template
+            #ds-snippet-start:eSign8Step3
             template_req_object = cls.make_template_req(args["template_args"])
             res = templates_api.create_template(account_id=args["account_id"], envelope_template=template_req_object)
+            #ds-snippet-end:eSign8Step3
             template_id = res.template_id
             results_template_name = res.name
             created_new_template = True
@@ -62,6 +64,7 @@ class Eg008CreateTemplateController:
         }
 
     @classmethod
+    #ds-snippet-start:eSign8Step2
     def make_template_req(cls, args):
         """Creates template req object"""
 
@@ -201,3 +204,4 @@ class Eg008CreateTemplateController:
         )
 
         return template_request
+    #ds-snippet-end:eSign8Step2
