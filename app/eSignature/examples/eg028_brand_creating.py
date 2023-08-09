@@ -23,15 +23,21 @@ class Eg028BrandCreatingController:
         """
 
         # Step 2. Construct your API headers
+        #ds-snippet-start:eSign28Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign28Step2
 
         # Step 3. Construct your request body
+        #ds-snippet-start:eSign28Step3
         brand = Brand(
             brand_name=args["brand_name"],
             default_brand_language=args["default_language"],
         )
+        #ds-snippet-end:eSign28Step3
 
         # Step 4. Call the eSignature REST API
+        #ds-snippet-start:eSign28Step4
         account_api = AccountsApi(api_client)
         response = account_api.create_brand(account_id=args["account_id"], brand=brand)
+        #ds-snippet-end:eSign28Step4
         return response
