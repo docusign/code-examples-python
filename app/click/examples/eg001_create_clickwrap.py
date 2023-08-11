@@ -29,13 +29,15 @@ class Eg001CreateClickwrapController:
         4. Create a clickwrap request model
         5. Create a clickwrap using SDK
         """
-        # Step 1. Create an API client with headers
+        # Create an API client with headers
+        #ds-snippet-start:Click1Step2
         api_client = create_click_api_client(
             access_token=args["access_token"]
         )
-
+        #ds-snippet-end
+        
         #ds-snippet-start:Click1Step3
-        # Step 2. Create a display settings model
+        # Create a display settings model
         display_settings = DisplaySettings(
             consent_button_text="I Agree",
             display_name="Terms of Service",
@@ -53,7 +55,7 @@ class Eg001CreateClickwrapController:
             doc_docx_bytes = file.read()
         doc_b64 = base64.b64encode(doc_docx_bytes).decode("ascii")
 
-        # Step 3. Create a document model.
+        # Create a document model.
         document = Document(  # Create the DocuSign document object
             document_base64=doc_b64,
             document_name="Terms of Service",  # Can be different from actual file name
@@ -61,7 +63,7 @@ class Eg001CreateClickwrapController:
             order=0
         )
 
-        # Step 4. Create a clickwrap request model
+        # Create a clickwrap request model
         clickwrap_request = ClickwrapRequest(
             display_settings=display_settings,
             documents=[document, ],
@@ -70,7 +72,7 @@ class Eg001CreateClickwrapController:
         )
         #ds-snippet-end:Click1Step3
 
-        # Step 5. Create a clickwrap using SDK
+        # Create a clickwrap using SDK
         #ds-snippet-start:Click1Step4
         accounts_api = AccountsApi(api_client)
         response = accounts_api.create_clickwrap(
