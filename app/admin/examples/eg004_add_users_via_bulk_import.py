@@ -8,6 +8,18 @@ from app.ds_config import DS_CONFIG
 
 
 class Eg004AddUsersViaBulkImportController:
+    @staticmethod
+    def get_example_csv():
+        """
+        Creates an example of a CSV file, such as that needs to be sent to the Docusign server
+        """
+
+        # Returns an example of a CSV file
+        return (
+            "AccountID,UserName,UserEmail,PermissionSet\n"
+            f"{session['ds_account_id']},Example User1,exampleuser1@example.com,DS Admin\n"
+            f"{session['ds_account_id']},Example User2,exampleuser2@example.com,DS Admin\n"
+        )
 
     @staticmethod
     def worker(self, request):
@@ -35,7 +47,16 @@ class Eg004AddUsersViaBulkImportController:
         uploaded_file = request.files['csv_file']
         csv_folder_path = path.abspath(path.join(path.dirname(path.realpath(__file__)), "csv"))
         csv_file_path = path.join(csv_folder_path, "uploaded_file.csv")
-        uploaded_file.save(csv_file_path)
+
+        if uploaded_file and not uploaded_file.filename == '':
+            uploaded_file.save(csv_file_path)
+        else:
+            content = Eg004AddUsersViaBulkImportController.get_example_csv()
+
+            modified_content = content.replace("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", session["ds_account_id"])
+
+            with open(csv_file_path, "w") as file:
+                file.write(modified_content)
 
         # Creating an import API object
         import_api = BulkImportsApi(api_client=api_client)
@@ -56,19 +77,6 @@ class Eg004AddUsersViaBulkImportController:
         session['import_data_id'] = response.id
         
         return response
-
-    @staticmethod
-    def get_example_csv():
-        """
-        Creates an example of a CSV file, such as that needs to be sent to the Docusign server
-        """
-
-        # Returns an example of a CSV file
-        return (
-            "AccountID,UserName,UserEmail,PermissionSet\n"
-            f"{session['ds_account_id']},Example User1,exampleuser1@example.com,DS Admin\n"
-            f"{session['ds_account_id']},Example User2,exampleuser2@example.com,DS Admin\n"
-        )
 
     @staticmethod
     def check_status():

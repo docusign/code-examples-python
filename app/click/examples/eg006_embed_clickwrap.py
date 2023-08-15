@@ -17,7 +17,8 @@ class Eg006EmbedClickwrapController:
             "email": request.form.get("email"),
             "company": request.form.get("company"),
             "title": request.form.get("title"),
-            "date": request.form.get("date"),            
+            "date": request.form.get("date"), 
+            "statuses": ["inactive", "draft"]           
         }     
 
     @staticmethod

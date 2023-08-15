@@ -43,7 +43,7 @@ def clickwrap_list():
         "example_done.html",
         title=example["ExampleName"],
         message="Results from the ClickWraps::getClickwraps method:",
-        json=json.dumps(json.dumps(results.to_dict(), default=str))
+        json=json.dumps(json.dumps(results, default=str))
     )
 
 

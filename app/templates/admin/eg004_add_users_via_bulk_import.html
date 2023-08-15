@@ -7,7 +7,7 @@
 
 <form class="eg" action="" method="post" data-busy="form" enctype="multipart/form-data">
     <div class="form-group">
-        <input type="file" name="csv_file" required>
+        <input type="file" name="csv_file" id="csv_file">
     </div>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <button type="submit" class="btn btn-docu mt-4 mb-4">Continue</button>

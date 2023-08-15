@@ -4,8 +4,7 @@
 
 {%  set form_index = 0 %}
 {%  set product_index = 0 %}
-{%  set esign_permission_index = 1 %}
-{%  set clm_permission_index = 2 %}
+{%  set permission_index = 1 %}
 {%  set redirect_to2_index = 0 %}
 
 {% if email_ok %}
@@ -29,7 +28,7 @@
 
         {% if esign_permission_profiles_list %}
         <div class="form-group" id="esign-profiles" style="display: none">
-            <label for="esign_permission_profile">{{ example['Forms'][form_index]['Inputs'][esign_permission_index]['InputName'] }}</label>
+            <label for="esign_permission_profile">{{ example['Forms'][form_index]['Inputs'][permission_index]['InputName'] }}</label>
             <select class="form-control" id="esign_permission_profile" name="esign_permission_profile">
                 {% for profile in esign_permission_profiles_list %}
                     <option value="{{profile.permission_profile_id}}">{{profile.permission_profile_name}}</option>
@@ -43,7 +42,7 @@
 
         {% if clm_permission_profiles_list %}
         <div class="form-group" id="clm-profiles">
-            <label for="clm_permission_profile">{{ example['Forms'][form_index]['Inputs'][clm_permission_index]['InputName'] }}</label>
+            <label for="clm_permission_profile">{{ example['Forms'][form_index]['Inputs'][permission_index]['InputName'] }}</label>
             <select class="form-control" id="clm_permission_profile" name="clm_permission_profile">
                 {% for profile in clm_permission_profiles_list %}
                     <option value="{{profile.permission_profile_id}}">{{profile.permission_profile_name}}</option>
