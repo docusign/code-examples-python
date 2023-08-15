@@ -20,7 +20,7 @@ core = Blueprint("core", __name__)
 def index():
     session["manifest"] = get_manifest(DS_CONFIG["example_manifest_url"])
 
-    if DS_CONFIG["quickstart"] == "true":
+    if DS_CONFIG["quickstart"] == "true" and ("quickstart" not in app.config or ( "quickstart" in app.config and app.config["quickstart"] == True)):
         app.config["quickstart"] = False
         return redirect(url_for("eg001.get_view"))
     if "is_cfr" in session and session["is_cfr"] == "enabled":
