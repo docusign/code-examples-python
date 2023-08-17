@@ -3,6 +3,7 @@
 {% include 'example_info.html' %}
 
 {%  set recipient_form_index = 0 %}
+{%  set option_index = 0 %}
 {%  set country_code_index = 0 %}
 {%  set phone_number_index = 1 %}
 {%  set signer_name_index = 2 %}
@@ -15,6 +16,11 @@
         <p>{{ example['Forms'][recipient_form_index]['FormName'] | safe }}</p>
     {% endif %}
 
+    <div class="form-group">
+      <label for="option">{{ example['Forms'][recipient_form_index]['Inputs'][option_index]['InputName'] }}</label><br>
+      <input type="radio" name="option" id="option1" value="SMS"> SMS &nbsp;</input>
+      <input type="radio" name="option" id="option2" value="Whatsapp"> Whatsapp </input><br>
+    </div> 
     <div class="form-group">
       <label for="country_code">{{ example['Forms'][recipient_form_index]['Inputs'][country_code_index]['InputName'] }}</label>
       <input type="tel" class="form-control" id="country_code" name="country_code"

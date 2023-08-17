@@ -33,6 +33,7 @@ class Eg037SMSDeliveryController:
         cc_country_code = request.form.get("country_code")
         phone_number = request.form.get("phone_number")
         country_code = request.form.get("country_code")
+        option = request.form["option"]
         envelope_args = {
             "signer_name": signer_name,
             "status": "sent",
@@ -40,7 +41,8 @@ class Eg037SMSDeliveryController:
             "country_code": country_code,
             "phone_number": phone_number,
             "cc_country_code" :cc_country_code,
-            "cc_phone_number": cc_phone_number
+            "cc_phone_number": cc_phone_number,
+            "option": option
         }
         args = {
             "account_id": session["ds_account_id"],
@@ -91,7 +93,6 @@ class Eg037SMSDeliveryController:
         The envelope will be sent first to the signer via SMS.
         After it is signed, a copy is sent to the cc recipient via SMS.
         """
-
         # Create the envelope definition
         env = EnvelopeDefinition(
             email_subject="Please sign this document set"
@@ -138,7 +139,7 @@ class Eg037SMSDeliveryController:
             name=args["signer_name"],
             recipient_id="1",
             routing_order="1",
-            delivery_method="SMS",
+            delivery_method=args["option"],
             phone_number=signerPhoneNumber
         )
 
@@ -153,7 +154,7 @@ class Eg037SMSDeliveryController:
             name=args["cc_name"],
             recipient_id="2",
             routing_order="2",
-            delivery_method="SMS",
+            delivery_method=args["option"],
             phone_number=ccPhoneNumber
         )
 
