@@ -14,7 +14,7 @@ resources:
           - azure-pipelines
 
 pr:
-- azure-pipelines-test
+- master
 - releases/*
 
 pool:
@@ -69,7 +69,7 @@ steps:
 
 - script: |
     echo "place ds_config.py"
-    cp $(ds_config.secureFilePath) code-examples-python-private/config/ds_config.py
+    cp $(ds_config.secureFilePath) code-examples-python-private/app/ds_config.py
   displayName: 'place dsconfig.py'
 
 
@@ -82,14 +82,14 @@ steps:
 
 - script: |
     echo "place private.key"
-    cp $(python_private_key.secureFilePath) code-examples-python-private/config/private.key
+    cp $(python_private_key.secureFilePath) code-examples-python-private/app/private.key
   displayName: 'place private.key'
 
 - script: dir $(Build.SourcesDirectory)
 
 - script: dir $(Build.SourcesDirectory)/code-examples-python-private
 
-- script: dir $(Build.SourcesDirectory)/code-examples-python-private/config
+- script: dir $(Build.SourcesDirectory)/code-examples-python-private/app
 
 - task: Docker@2
   displayName: Build python image
