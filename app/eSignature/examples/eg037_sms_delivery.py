@@ -33,7 +33,7 @@ class Eg037SMSDeliveryController:
         cc_country_code = request.form.get("country_code")
         phone_number = request.form.get("phone_number")
         country_code = request.form.get("country_code")
-        option = request.form["option"]
+        delivery_method = request.form["delivery_method"]
         envelope_args = {
             "signer_name": signer_name,
             "status": "sent",
@@ -42,7 +42,7 @@ class Eg037SMSDeliveryController:
             "phone_number": phone_number,
             "cc_country_code" :cc_country_code,
             "cc_phone_number": cc_phone_number,
-            "option": option
+            "delivery_method": delivery_method
         }
         args = {
             "account_id": session["ds_account_id"],
@@ -139,7 +139,7 @@ class Eg037SMSDeliveryController:
             name=args["signer_name"],
             recipient_id="1",
             routing_order="1",
-            delivery_method=args["option"],
+            delivery_method=args["delivery_method"],
             phone_number=signerPhoneNumber
         )
 
@@ -154,7 +154,7 @@ class Eg037SMSDeliveryController:
             name=args["cc_name"],
             recipient_id="2",
             routing_order="2",
-            delivery_method=args["option"],
+            delivery_method=args["delivery_method"],
             phone_number=ccPhoneNumber
         )
 
