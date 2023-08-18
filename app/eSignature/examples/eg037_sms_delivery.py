@@ -59,8 +59,7 @@ class Eg037SMSDeliveryController:
         2. Send the envelope
         """
 
-        # Step 3 start
-
+        #ds-snippet-start:eSign37Step3
         envelope_args = args["envelope_args"]
         # Create the envelope request object
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
@@ -73,11 +72,10 @@ class Eg037SMSDeliveryController:
         envelope_id = results.envelope_id
 
         return {"envelope_id": envelope_id}
+        #ds-snippet-end
 
-        # Step 3 end
 
-    # Step 2 start
-
+    #ds-snippet-start:eSign37Step2
     @classmethod
     def make_envelope(cls, args):
         """
@@ -228,5 +226,4 @@ class Eg037SMSDeliveryController:
             </body>
         </html>
       """
-
-    # Step 2 end
+#ds-snippet-end
