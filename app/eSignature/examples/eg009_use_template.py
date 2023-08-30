@@ -33,6 +33,7 @@ class Eg009UseTemplateController:
         return args
 
     @classmethod
+    #ds-snippet-start:eSign9Step3
     def worker(cls, args):
         """
         1. Create the envelope request object
@@ -50,8 +51,10 @@ class Eg009UseTemplateController:
         results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
         envelope_id = results.envelope_id
         return {"envelope_id": envelope_id}
+    #ds-snippet-end:eSign9Step3
 
     @classmethod
+    #ds-snippet-start:eSign9Step2
     def make_envelope(cls, args):
         """
         Creates envelope
@@ -82,3 +85,4 @@ class Eg009UseTemplateController:
         # Add the TemplateRole objects to the envelope object
         envelope_definition.template_roles = [signer, cc]
         return envelope_definition
+    #ds-snippet-end:eSign9Step2
