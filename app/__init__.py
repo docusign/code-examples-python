@@ -57,6 +57,7 @@ app.register_blueprint(admin_views.aeg008)
 app.register_blueprint(admin_views.aeg009)
 app.register_blueprint(admin_views.aeg010)
 app.register_blueprint(admin_views.aeg011)
+app.register_blueprint(admin_views.aeg012)
 
 app.register_blueprint(click_views.ceg001)
 app.register_blueprint(click_views.ceg002)

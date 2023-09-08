@@ -173,5 +173,5 @@ class Eg002SigningViaEmailController:
             <h3 style="margin-top:3em;">Agreed: <span style="color:white;">**signature_1**/</span></h3>
             </body>
         </html>
-      """
-      #ds-snippet-end:eSign2Step2
+        """
+    #ds-snippet-end:eSign2Step2

@@ -29,7 +29,8 @@ CLICK_SCOPES = [
 
 ADMIN_SCOPES = [
     "signature", "organization_read", "group_read", "permission_read", "user_read", "user_write", 
-    "account_read", "domain_read", "identity_provider_read", "impersonation", "user_data_redact"
+    "account_read", "domain_read", "identity_provider_read", "impersonation", "user_data_redact",
+    "asset_group_account_read", "asset_group_account_clone_write", "asset_group_account_clone_read"
 ]
 
 

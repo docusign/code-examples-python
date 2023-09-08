@@ -154,7 +154,7 @@ class Testing(unittest.TestCase):
             <h3 style="margin-top:3em;">Agreed: <span style="color:white;">**signature_1**/</span></h3>
             </body>
         </html>
-      """
+        """
 
         expected = EnvelopeDefinition(
             email_subject="Please sign this document set",
@@ -249,7 +249,7 @@ class Testing(unittest.TestCase):
             <h3 style="margin-top:3em;">Agreed: <span style="color:white;">**signature_1**/</span></h3>
             </body>
         </html>
-      """
+        """
 
         document = Eg002SigningViaEmailController.create_document1(envelope_args)
 

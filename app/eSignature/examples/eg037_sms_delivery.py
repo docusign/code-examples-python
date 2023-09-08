@@ -74,7 +74,6 @@ class Eg037SMSDeliveryController:
         return {"envelope_id": envelope_id}
         #ds-snippet-end
 
-
     #ds-snippet-start:eSign37Step2
     @classmethod
     def make_envelope(cls, args):
