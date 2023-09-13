@@ -153,8 +153,7 @@ class Eg031BulkSendController:
         )
 
         return bulk_sending_list
-
-
+        
     @classmethod
     def make_draft_envelope(cls, doc_pdf):
         """
