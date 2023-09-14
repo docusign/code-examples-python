@@ -29,9 +29,11 @@ class Eg027PermissionsDeleteController:
         #ds-snippet-end:eSign27Step2
         
         # Step 3. Call the eSignature REST API
+        #ds-snippet-start:eSign27Step3
         account_api.delete_permission_profile(
             account_id=args["account_id"],
             permission_profile_id=args["permission_profile_id"])
+        #ds-snippet-end:eSign27Step3
 
     @staticmethod
     def get_permissions_profiles(args):
