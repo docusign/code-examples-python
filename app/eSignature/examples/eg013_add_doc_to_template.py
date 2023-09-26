@@ -51,19 +51,22 @@ class Eg013AddDocToTemplateController:
         3. Make the recipient view request object
         4. Get the recipient view (embedded signing) url
         """
+        #ds-snippet-start:eSign13Step3
         envelope_args = args["envelope_args"]
-        # 1. Create the envelope request object
+        # Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args)
 
-        # 2. call Envelopes::create API method
+        # Call Envelopes::create API method
         # Exceptions will be caught by the calling function
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
         envelope_api = EnvelopesApi(api_client)
         results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
         envelope_id = results.envelope_id
+        #ds-snippet-end:eSign13Step3
 
-        # 3. Create the Recipient View request object
+        # Create the Recipient View request object
+        #ds-snippet-start:eSign13Step4
         authentication_method = "None"  # How is this application authenticating
         # the signer? See the "authenticationMethod" definition
         # https://goo.gl/qUhGTm
@@ -75,7 +78,7 @@ class Eg013AddDocToTemplateController:
             user_name=envelope_args["signer_name"],
             email=envelope_args["signer_email"]
         )
-        # 4. Obtain the recipient_view_url for the embedded signing
+        # Obtain the recipient_view_url for the embedded signing
         # Exceptions will be caught by the calling function
         results = envelope_api.create_recipient_view(
             account_id=args["account_id"],
@@ -84,8 +87,10 @@ class Eg013AddDocToTemplateController:
         )
 
         return {"envelope_id": envelope_id, "redirect_url": results.url}
+        #ds-snippet-end:eSign13Step4
 
     @classmethod
+    #ds-snippet-start:eSign13Step2
     def make_envelope(cls, args):
         """
         Creates envelope
@@ -98,8 +103,8 @@ class Eg013AddDocToTemplateController:
         2. An additional document which is a custom HTML source document
         """
 
-        # 1. Create Recipients for server template. Note that Recipients object
-        #    is used, not TemplateRole
+        # Create Recipients for server template. Note that Recipients object
+        # is used, not TemplateRole
         #
         # Create a signer recipient for the signer role of the server template
         signer1 = Signer(
@@ -124,7 +129,7 @@ class Eg013AddDocToTemplateController:
             signers=[signer1]
         )
 
-        # 2. create a composite template for the Server template + roles
+        # Create a composite template for the Server template + roles
         comp_template1 = CompositeTemplate(
             composite_template_id="1",
             server_templates=[
@@ -140,8 +145,8 @@ class Eg013AddDocToTemplateController:
         # Next, create the second composite template that will
         # include the new document.
         #
-        # 3. Create the signer recipient for the added document
-        #    starting with the tab definition:
+        # Create the signer recipient for the added document
+        # starting with the tab definition:
         sign_here1 = SignHere(
             anchor_string="**signature_1**",
             anchor_y_offset="10",
@@ -150,7 +155,7 @@ class Eg013AddDocToTemplateController:
         )
         signer1_tabs = Tabs(sign_here_tabs=[sign_here1])
 
-        # 4. Create Signer definition for the added document
+        # Create Signer definition for the added document
         signer1_added_doc = Signer(
             email=args["signer_email"],
             name=args["signer_name"],
@@ -159,11 +164,11 @@ class Eg013AddDocToTemplateController:
             client_user_id=args["signer_client_id"],
             tabs=signer1_tabs
         )
-        # 5. The Recipients object for the added document.
-        #    Using cc1 definition from above.
+        # The Recipients object for the added document.
+        # using cc1 definition from above.
         recipients_added_doc = Recipients(
             carbon_copies=[cc1], signers=[signer1_added_doc])
-        # 6. Create the HTML document that will be added to the envelope
+        # Create the HTML document that will be added to the envelope
         doc1_b64 = base64.b64encode(bytes(cls.create_document1(args), "utf-8")) \
             .decode("ascii")
         doc1 = Document(
@@ -173,7 +178,7 @@ class Eg013AddDocToTemplateController:
             file_extension="html",
             document_id="1"
         )
-        # 6. create a composite template for the added document
+        # Create a composite template for the added document
         comp_template2 = CompositeTemplate(
             composite_template_id="2",
             # Add the recipients via an inlineTemplate
@@ -182,7 +187,7 @@ class Eg013AddDocToTemplateController:
             ],
             document=doc1
         )
-        # 7. create the envelope definition with the composited templates
+        # Create the envelope definition with the composited templates
         envelope_definition = EnvelopeDefinition(
             status="sent",
             composite_templates=[comp_template1, comp_template2]
@@ -216,3 +221,4 @@ class Eg013AddDocToTemplateController:
             </body>
         </html>
       """
+    #ds-snippet-end:eSign13Step2
