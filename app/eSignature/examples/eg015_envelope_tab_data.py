@@ -22,8 +22,11 @@ class Eg015EnvelopeTabDateController:
         """
 
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign15Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign15Step2
+        #ds-snippet-start:eSign15Step3
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.get_form_data(account_id=args["account_id"], envelope_id=args["envelope_id"])
-
+        #ds-snippet-end:eSign15Step3
         return results
