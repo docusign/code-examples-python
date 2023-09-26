@@ -22,8 +22,11 @@ class Eg018EnvelopeCustomFieldDataController:
         """
 
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign18Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign18Step2
+        #ds-snippet-start:eSign18Step3
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.list_custom_fields(account_id=args["account_id"], envelope_id=args["envelope_id"])
-
+        #ds-snippet-end:eSign18Step3
         return results
