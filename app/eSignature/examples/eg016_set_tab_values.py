@@ -42,22 +42,27 @@ class Eg016SetTabValuesController:
         4. Obtain the recipient_view_url for the embedded signing
         """
         envelope_args = args["envelope_args"]
-        # 1. Create the envelope request object
+        # Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args)
 
-        # 2. call Envelopes::create API method
+        # Call Envelopes::create API method
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign16Step2
         api_client = create_api_client(
             base_path=args["base_path"],
             access_token=args["access_token"]
         )
+        #ds-snippet-end:eSign16Step2
 
+        #ds-snippet-start:eSign16Step4
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
 
         envelope_id = results.envelope_id
+        #ds-snippet-end:eSign16Step4
 
-        # 3. Create the RecipientViewRequest object
+        # Create the RecipientViewRequest object
+        #ds-snippet-start:eSign16Step5
         recipient_view_request = RecipientViewRequest(
             authentication_method=authentication_method,
             client_user_id=envelope_args["signer_client_id"],
@@ -65,7 +70,7 @@ class Eg016SetTabValuesController:
             return_url=envelope_args["ds_return_url"],
             user_name=envelope_args["signer_name"], email=envelope_args["signer_email"]
         )
-        # 4. Obtain the recipient view URL for the embedded signing
+        # Obtain the recipient view URL for the embedded signing
         # Exceptions will be caught by the calling function
         results = envelopes_api.create_recipient_view(
             account_id=args["account_id"],
@@ -74,8 +79,10 @@ class Eg016SetTabValuesController:
         )
 
         return {"envelope_id": envelope_id, "redirect_url": results.url}
+        #ds-snippet-end:eSign16Step5
 
     @classmethod
+    #ds-snippet-start:eSign16Step3
     def make_envelope(cls, args):
         """
         Creates envelope
@@ -178,3 +185,4 @@ class Eg016SetTabValuesController:
         )
 
         return envelope_definition
+    #ds-snippet-end:eSign16Step3    
