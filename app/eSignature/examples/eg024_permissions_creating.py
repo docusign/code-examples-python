@@ -26,20 +26,26 @@ class Eg024PermissionsCreatingController:
         3. Create the permission profile using the SDK
         """
 
-        # Step 2. Construct your API request headers
+        # Construct your API request headers
+        #ds-snippet-start:eSign24Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign24Step2
 
-        # Step 3. Construct your request body
+        # Construct your request body
+        #ds-snippet-start:eSign24Step3
         permission_profile = PermissionProfile(
             permission_profile_name=args["permission_profile_name"],
             settings=args["settings"]
         )
+        #ds-snippet-end:eSign24Step3
 
-        # Step 4. Call the eSignature REST API
+        # Call the eSignature REST API
+        #ds-snippet-start:eSign24Step4
         account_api = AccountsApi(api_client)
         response = account_api.create_permission_profile(
             account_id=args["account_id"],
             permission_profile=permission_profile
         )
+        #ds-snippet-end:eSign24Step4
 
         return response
