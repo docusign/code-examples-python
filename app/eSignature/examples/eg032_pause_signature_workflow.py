@@ -43,18 +43,24 @@ class Eg032PauseSignatureWorkflowController:
         """
 
         envelope_args = args["envelope_args"]
-        # 1. Create the envelope request object
+        # Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args)
+
+        #ds-snippet-start:eSign32Step2
         api_client = create_api_client(
             base_path=args["base_path"], access_token=args["access_token"]
         )
-        # 2. Call Envelopes::create API method
+        #ds-snippet-end:eSign32Step2
+
+        # Call Envelopes::create API method
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign32Step4
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(
             account_id=args["account_id"],
             envelope_definition=envelope_definition
         )
+        #ds-snippet-end:eSign32Step4
 
         return {"paused_envelope_id": results.envelope_id}
 
@@ -74,6 +80,7 @@ class Eg032PauseSignatureWorkflowController:
         # After resuming (unpause) the signature workflow will send to the second recipient
 
         # Create the envelope definition
+        #ds-snippet-start:eSign32Step3
         env = EnvelopeDefinition(email_subject="EnvelopeWorkflowTest")
 
         # Read file from a local directory
@@ -150,3 +157,4 @@ class Eg032PauseSignatureWorkflowController:
         # To request that the envelope be created as a draft, set to "created"
         env.status = args["status"]
         return env
+        #ds-snippet-end:eSign32Step3
