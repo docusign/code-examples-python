@@ -24,17 +24,22 @@ class Eg025PermissionsSetUserGroupController:
         Step 4: Update the group
         """
 
-        # Step 2. Construct your API headers
+        # Construct your API headers
+        #ds-snippet-start:eSign25Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
         group_api = GroupsApi(api_client)
+        #ds-snippet-end:eSign25Step2
 
-        # Step 3. Construct your request body
+        # Construct your request body
+        #ds-snippet-start:eSign25Step3
         group = Group(group_id=args["group_id"], permission_profile_id=args["permission_profile_id"])
         group_information = GroupInformation(groups=[group])
+        #ds-snippet-end:eSign25Step3
 
-        # Step 4. Call the eSignature REST API
+        # Call the eSignature REST API
+        #ds-snippet-start:eSign25Step4
         response = group_api.update_groups(account_id=args["account_id"], group_information=group_information)
-
+        #ds-snippet-end:eSign25Step4
         return response
 
     @staticmethod
