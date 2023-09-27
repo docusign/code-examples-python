@@ -25,11 +25,11 @@ class Eg004AddUsersViaBulkImportController:
         organization_id = get_organization_id()
 
         # Create the export API object
-        # Step 2 start
+        #ds-snippet-start:Admin4Step2
         api_client = create_admin_api_client(
             access_token=session["ds_access_token"]
         )
-        # Step 2 end
+        #ds-snippet-end:Admin4Step2
 
         # Getting a CSV file from a form and saving it
         uploaded_file = request.files['csv_file']
@@ -38,6 +38,7 @@ class Eg004AddUsersViaBulkImportController:
         uploaded_file.save(csv_file_path)
 
         # Creating an import API object
+        #ds-snippet-start:Admin4Step3
         import_api = BulkImportsApi(api_client=api_client)
 
         # Setting headers for creating bulk import request
@@ -45,12 +46,11 @@ class Eg004AddUsersViaBulkImportController:
         api_client.set_default_header(header_name, header_value)
 
         # Returns the response from the create_bulk_import_add_users_request method
-        # Step 3 start
         response = import_api.create_bulk_import_add_users_request(
             organization_id,
             csv_file_path
         )
-        # Step 3 end
+        #ds-snippet-end:Admin4Step3
 
         # Save user list import id in a client session
         session['import_data_id'] = response.id
@@ -83,9 +83,9 @@ class Eg004AddUsersViaBulkImportController:
         # Creating an import API object
         import_api = BulkImportsApi(api_client=api_client)
 
-        # Step 4 start
+        #ds-snippet-start:Admin4Step4
         import_results = import_api.get_bulk_user_import_request(organization_id, session['import_data_id'])
-        # Step 4 end
+        #ds-snippet-end:Admin4Step4
 
         if import_results.status == "completed":
             return import_results
