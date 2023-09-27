@@ -39,10 +39,13 @@ class Eg023IDVAuthenticationController:
         1. Create an api client
         2. Create an envelope definition object
         """
-        # Step 1: Construct your API headers
+        # Construct your API headers
+        #ds-snippet-start:eSign23Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign23Step2
 
-        # Step 3: Construct your envelope
+        # Construct your envelope
+        #ds-snippet-start:eSign23Step4
         envelope_definition = EnvelopeDefinition(
             email_subject="Please sign this document set"
         )
@@ -91,11 +94,13 @@ class Eg023IDVAuthenticationController:
 
         # Tabs are set per recipient
         envelope_definition.recipients = Recipients(signers=[signer1])
+        #ds-snippet-end:eSign23Step4
 
-        # Step 4: Call the eSignature REST API
+        # Call the eSignature REST API
+        #ds-snippet-start:eSign23Step5
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
-
+        #ds-snippet-end:eSign23Step5
         return results
 
     @staticmethod
@@ -104,6 +109,7 @@ class Eg023IDVAuthenticationController:
         try:
             api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
+            #ds-snippet-start:eSign23Step3
             workflow_details = AccountsApi(api_client)
             workflow_response = workflow_details.get_account_identity_verification(account_id=args["account_id"])
 
@@ -127,6 +133,7 @@ class Eg023IDVAuthenticationController:
 
             else:
                 return None
+            #ds-snippet-end:eSign23Step3
 
         except ApiException as err:
             return process_error(err)
