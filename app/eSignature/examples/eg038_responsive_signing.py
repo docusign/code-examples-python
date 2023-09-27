@@ -44,8 +44,8 @@ class Eg038ResponsiveSigning:
         }
         return args
 
-    # Step 3 start
     @classmethod
+    #ds-snippet-start:eSign38Step3
     def worker(cls, args):
         """
         1. Create the envelope request object
@@ -54,10 +54,10 @@ class Eg038ResponsiveSigning:
         4. Obtain the recipient_view_url for the embedded signing
         """
         envelope_args = args["envelope_args"]
-        # 1. Create the envelope request object
+        # Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args)
 
-        # 2. call Envelopes::create API method
+        # Call Envelopes::create API method
         # Exceptions will be caught by the calling function
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
@@ -66,7 +66,7 @@ class Eg038ResponsiveSigning:
 
         envelope_id = results.envelope_id
 
-        # 3. Create the Recipient View request object
+        # Create the Recipient View request object
         recipient_view_request = RecipientViewRequest(
             authentication_method=authentication_method,
             client_user_id=envelope_args["signer_client_id"],
@@ -75,7 +75,7 @@ class Eg038ResponsiveSigning:
             user_name=envelope_args["signer_name"],
             email=envelope_args["signer_email"]
         )
-        # 4. Obtain the recipient_view_url for the embedded signing
+        # Obtain the recipient_view_url for the embedded signing
         # Exceptions will be caught by the calling function
         results = envelope_api.create_recipient_view(
             account_id=args["account_id"],
@@ -84,10 +84,10 @@ class Eg038ResponsiveSigning:
         )
 
         return {"envelope_id": envelope_id, "redirect_url": results.url}
-    # Step 3 end
+    #ds-snippet-end:eSign38Step3
 
-    # Step 2 start
     @classmethod
+    #ds-snippet-start:eSign38Step2
     def make_envelope(cls, args):
         """
         Creates envelope
@@ -149,5 +149,4 @@ class Eg038ResponsiveSigning:
             .replace("/sn1/", "<ds-signature data-ds-role=\"Signer\"/>") \
             .replace("/l1q/", "<input data-ds-type=\"number\"/>") \
             .replace("/l2q/", "<input data-ds-type=\"number\"/>")
-
-# Step 2 end
+    #ds-snippet-end:eSign38Step2
