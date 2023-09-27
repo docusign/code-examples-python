@@ -16,7 +16,7 @@ class Eg039InPersonSigner:
         """Get request and session arguments"""
         # More data validation would be a good idea here
         # Strip anything other than characters listed
-        # 1. Parse request arguments
+        # Parse request arguments
         signer_name = pattern.sub("", request.form.get("signer_name"))
         envelope_args = {
             "host_email": session["ds_user_email"],
@@ -41,11 +41,12 @@ class Eg039InPersonSigner:
         3. Create the Recipient View request object
         4. Obtain the recipient_view_url for the embedded signing
         """
+        #ds-snippet-start:eSign39Step3
         envelope_args = args["envelope_args"]
-        # 1. Create the envelope request object
+        # Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args)
 
-        # 2. call Envelopes::create API method
+        # Call Envelopes::create API method
         # Exceptions will be caught by the calling function
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
@@ -53,10 +54,10 @@ class Eg039InPersonSigner:
         results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
 
         envelope_id = results.envelope_id
-        # Step 3 end
+        #ds-snippet-end:eSign39Step3
 
-        # 3. Create the Recipient View request object
-        # Step 4 start
+        # Create the Recipient View request object
+        #ds-snippet-start:eSign39Step4
         recipient_view_request = RecipientViewRequest(
             authentication_method=authentication_method,
             recipient_id="1",
@@ -64,22 +65,21 @@ class Eg039InPersonSigner:
             user_name=envelope_args["host_name"],
             email=envelope_args["host_email"]
         )
-        # Step 4 end
+        #ds-snippet-end:eSign39Step4
         
-        # Step 5 start
-        # 4. Obtain the recipient_view_url for the embedded signing session
+        # Obtain the recipient_view_url for the embedded signing session
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign39Step5
         results = envelope_api.create_recipient_view(
             account_id=args["account_id"],
             envelope_id=envelope_id,
             recipient_view_request=recipient_view_request
         )
-        # Step 5 end
-
         return {"envelope_id": envelope_id, "redirect_url": results.url}
+        #ds-snippet-end:eSign39Step5
 
     @classmethod
-    # Step 2 start
+    #ds-snippet-start:eSign39Step2
     def make_envelope(cls, args):
         """
         Creates envelope
@@ -138,6 +138,4 @@ class Eg039InPersonSigner:
         )
 
         return envelope_definition
-    # Step 2 end
-    
-    # End
+    #ds-snippet-end:eSign39Step2
