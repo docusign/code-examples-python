@@ -23,15 +23,20 @@ class Eg033UnpauseSignatureWorkflowController:
         """
 
         # Create the envelope definition
+        #ds-snippet-start:eSign33Step3
         env = EnvelopeDefinition(workflow=Workflow(workflow_status="in_progress"))
+        #ds-snippet-end:eSign33Step3
 
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign33Step2
         api_client = create_api_client(
             base_path=args["base_path"], access_token=args["access_token"]
         )
+        #ds-snippet-end:eSign33Step2
 
-        # 2. Call Envelopes::update API method
+        # Call Envelopes::update API method
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign33Step4
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.update(
             account_id=args["account_id"],
@@ -39,5 +44,5 @@ class Eg033UnpauseSignatureWorkflowController:
             envelope=env,
             resend_envelope=True
         )
-
+        #ds-snippet-end:eSign33Step4
         return {"envelope_id": results.envelope_id}
