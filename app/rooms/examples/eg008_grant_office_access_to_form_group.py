@@ -29,15 +29,13 @@ class Eg008GrantOfficeAccessToFormGroupController:
 
         api_client = create_rooms_api_client(access_token=args["access_token"])
 
-        # Step 4 start
-
         # GET Form Groups via FormGroupsAPI
+        #ds-snippet-start:Rooms8Step4
         form_groups_api = FormGroupsApi(api_client)
         response = form_groups_api.get_form_groups(account_id=args["account_id"])  # type: FormGroupSummaryList
 
-        # Step 4 end
-
         return response.form_groups
+        #ds-snippet-end:Rooms8Step4        
 
     @staticmethod
     def get_offices(args):
@@ -47,17 +45,17 @@ class Eg008GrantOfficeAccessToFormGroupController:
         """
 
         # Create an API with headers with headers
+        #ds-snippet-start:Rooms8Step2
         api_client = create_rooms_api_client(args["access_token"])
-
-        # Step 3 start
+        #ds-snippet-end:Rooms8Step2
 
         # GET offices via OfficesAPI
+        #ds-snippet-start:Rooms8Step3
         offices_api = OfficesApi(api_client=api_client)
         response = offices_api.get_offices(account_id=args["account_id"])  # type: OfficeSummaryList
 
-        # Step 3 end
-
         return response.office_summaries
+        #ds-snippet-end:Rooms8Step3
 
     @staticmethod
     def worker(args):
@@ -65,22 +63,15 @@ class Eg008GrantOfficeAccessToFormGroupController:
         1. Create an API client with headers
         2. Grant office access to a form group via FormGroups API
         """
-
-        # Step 2 start
-
         # Create an API client with headers
         api_client = create_rooms_api_client(access_token=args["access_token"])
 
-        # Step 2 end
-
-        # Step 5 start
-
         # Grant office access to a form group via FormGroups API
+        #ds-snippet-start:Rooms8Step5
         form_groups_api = FormGroupsApi(api_client)
 
         form_groups_api.grant_office_access_to_form_group(
             form_group_id=args["form_group_id"], office_id=args["office_id"],
             account_id=args["account_id"]
         )
-
-        # Step 5 end
+        #ds-snippet-end:Rooms8Step5
