@@ -8,7 +8,9 @@ from docusign_esign import (
     CarbonCopy,
     EnvelopeDefinition,
     Recipients,
-    DocumentHtmlDefinition
+    DocumentHtmlDefinition,
+    FormulaTab,
+    Tabs
 )
 from flask import session, url_for, request
 
@@ -107,6 +109,60 @@ class Eg038ResponsiveSigning:
             document_id=1  # a label used to reference the doc
         )
 
+        price_1 = 5
+        formula_tab_1 = FormulaTab(
+            font="helvetica",
+            font_size="size11",
+            font_color="black",
+            anchor_string="/l1e/",
+            anchor_y_offset="-8",
+            anchor_units="pixels",
+            anchor_x_offset="105",
+            tab_label="l1e",
+            formula=f"[l1q] * {price_1}",
+            round_decimal_places="0",
+            required="true",
+            locked="true",
+            disable_auto_size="false"
+        )
+
+        price_2 = 150
+        formula_tab_2 = FormulaTab(
+            font="helvetica",
+            font_size="size11",
+            font_color="black",
+            anchor_string="/l2e/",
+            anchor_y_offset="-8",
+            anchor_units="pixels",
+            anchor_x_offset="105",
+            tab_label="l2e",
+            formula=f"[l2q] * {price_2}",
+            round_decimal_places="0",
+            required="true",
+            locked="true",
+            disable_auto_size="false"
+        )
+
+        formula_tab_3 = FormulaTab(
+            font="helvetica",
+            font_size="size11",
+            font_color="black",
+            anchor_string="/l3t/",
+            anchor_y_offset="-8",
+            anchor_units="pixels",
+            anchor_x_offset="105",
+            tab_label="l3t",
+            formula="[l1e] + [l2e]",
+            round_decimal_places="0",
+            required="true",
+            locked="true",
+            disable_auto_size="false"
+        )
+
+        tabs = Tabs(
+            formula_tabs=[formula_tab_1, formula_tab_2, formula_tab_3]
+        )
+
         # Create the signer recipient model
         signer = Signer(
             # The signer
@@ -116,7 +172,8 @@ class Eg038ResponsiveSigning:
             routing_order="1",
             # Setting the client_user_id marks the signer as embedded
             client_user_id=args["signer_client_id"],
-            role_name="Signer"
+            role_name="Signer",
+            tabs=tabs
         )
 
         cc = CarbonCopy(
@@ -147,6 +204,7 @@ class Eg038ResponsiveSigning:
             .replace("{cc_name}", args["cc_name"]) \
             .replace("{cc_email}", args["cc_email"]) \
             .replace("/sn1/", "<ds-signature data-ds-role=\"Signer\"/>") \
-            .replace("/l1q/", "<input data-ds-type=\"number\"/>") \
-            .replace("/l2q/", "<input data-ds-type=\"number\"/>")
-    #ds-snippet-end:eSign38Step2
+            .replace("/l1q/", "<input data-ds-type=\"number\" name=\"l1q\"/>") \
+            .replace("/l2q/", "<input data-ds-type=\"number\" name=\"l2q\"/>")
+
+#ds-snippet-end:eSign38Step2

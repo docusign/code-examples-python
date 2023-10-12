@@ -173,4 +173,4 @@ class Eg041CFREmbeddedSigningController:
         except ApiException as err:
             return process_error(err)
 
-   #ds-snippet-end:eSign41Step2
+    #ds-snippet-end:eSign41Step2
