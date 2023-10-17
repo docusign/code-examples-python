@@ -65,7 +65,7 @@ class Eg044FocusedViewController:
             return_url=envelope_args["ds_return_url"],
             user_name=envelope_args["signer_name"],
             email=envelope_args["signer_email"],
-            frame_ancestors=["https://localhost:3000", "https://apps-d.docusign.com"],
+            frame_ancestors=["http://localhost:3000", "https://apps-d.docusign.com"],
             message_origins=["https://apps-d.docusign.com"]
         )
         #ds-snippet-end:eSign1Step4
