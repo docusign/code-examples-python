@@ -41,7 +41,7 @@ class Eg044FocusedViewController:
         3. Create the Recipient View request object
         4. Obtain the recipient_view_url for the embedded signing
         """
-        #ds-snippet-start:eSign1Step3
+        #ds-snippet-start:eSign44Step3
         envelope_args = args["envelope_args"]
         # 1. Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args)
@@ -54,10 +54,10 @@ class Eg044FocusedViewController:
         results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
 
         envelope_id = results.envelope_id
-        #ds-snippet-end:eSign1Step3
+        #ds-snippet-end:eSign44Step3
 
         # 3. Create the Recipient View request object
-        #ds-snippet-start:eSign1Step4
+        #ds-snippet-start:eSign44Step4
         recipient_view_request = RecipientViewRequest(
             authentication_method=authentication_method,
             client_user_id=envelope_args["signer_client_id"],
@@ -68,12 +68,12 @@ class Eg044FocusedViewController:
             frame_ancestors=["http://localhost:3000", "https://apps-d.docusign.com"],
             message_origins=["https://apps-d.docusign.com"]
         )
-        #ds-snippet-end:eSign1Step4
+        #ds-snippet-end:eSign44Step4
         
         # 4. Obtain the recipient_view_url for the embedded signing
         # Exceptions will be caught by the calling function
         
-        #ds-snippet-start:eSign1Step5
+        #ds-snippet-start:eSign44Step5
         results = envelope_api.create_recipient_view(
             account_id=args["account_id"],
             envelope_id=envelope_id,
@@ -81,10 +81,10 @@ class Eg044FocusedViewController:
         )
 
         return {"envelope_id": envelope_id, "redirect_url": results.url}
-        #ds-snippet-end:eSign1Step5
+        #ds-snippet-end:eSign44Step5
 
     @classmethod
-    #ds-snippet-start:eSign1Step2
+    #ds-snippet-start:eSign44Step2
     def make_envelope(cls, args):
         """
         Creates envelope
@@ -143,4 +143,4 @@ class Eg044FocusedViewController:
         )
 
         return envelope_definition
-        #ds-snippet-end:eSign1Step2
+        #ds-snippet-end:eSign44Step2
