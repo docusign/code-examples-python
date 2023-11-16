@@ -20,6 +20,15 @@ const DS_SEARCH = (function () {
     return cfr11_data.text();
   }
 
+  function shouldAppendExample(element, example, cfrPart11) {
+    const isEsignature = element.Name.toLowerCase() === API_TYPES.ESIGNATURE.toLowerCase();
+    const isCFREnabledForAll = example.CFREnabled === "AllAccounts";
+    const isCFREnabledForCFROnly = cfrPart11 === "True" && example.CFREnabled === "CFROnly";
+    const isCFREnabledForNonCFR = cfrPart11 !== "True" && example.CFREnabled === "NonCFR";
+
+    return !isEsignature || isCFREnabledForAll || isCFREnabledForCFROnly || isCFREnabledForNonCFR;
+  }
+
   function checkIfExampleMatches(example, matches) {
     const name = example.ExampleName;
     const description = example.ExampleDescription;
@@ -150,10 +159,7 @@ const DS_SEARCH = (function () {
             !example.SkipForLanguages ||
             !example.SkipForLanguages.toLowerCase().includes("python")
           ) {
-            if (element.Name.toLowerCase() !== API_TYPES.ESIGNATURE.toLowerCase() ||
-              ((example.CFREnabled == "AllAccounts") ||
-              ((cfrPart11 == "True") && (example.CFREnabled == "CFROnly")) ||
-              ((cfrPart11 != "True") && (example.CFREnabled == "NonCFR")))) 
+            if (shouldAppendExample(element, example, cfrPart11)) 
             {
               $("#filtered_code_examples").append(
                 "<h4 id=" +
@@ -226,6 +232,7 @@ const DS_SEARCH = (function () {
     findCodeExamplesByKeywords,
     textCouldNotBeFound,
     addCodeExampleToHomepage,
+    shouldAppendExample,
   };
 })();
 
