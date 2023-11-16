@@ -11,6 +11,7 @@ from .rooms import views as rooms_views
 from .click import views as click_views
 from .monitor import views as monitor_views
 from .admin import views as admin_views
+from .connect import views as connect_views
 from .views import core
 
 session_path = "/tmp/python_recipe_sessions"
@@ -109,6 +110,8 @@ app.register_blueprint(esignature_views.eg041)
 app.register_blueprint(esignature_views.eg042)
 app.register_blueprint(esignature_views.eg043)
 app.register_blueprint(esignature_views.eg044)
+
+app.register_blueprint(connect_views.cneg001)
 
 if "DYNO" in os.environ:  # On Heroku?
     import logging

@@ -5,7 +5,8 @@ const DS_SEARCH = (function () {
     CLICK: "click",
     ROOMS: "rooms",
     ADMIN: "admin",
-  };
+    CONNECT: "connect",
+  }
 
   const processJSONData = function () {
     const json_raw = $("#api_json_data").text();
@@ -14,22 +15,25 @@ const DS_SEARCH = (function () {
     return json;
   }
 
-  let processCFR11Value = function () {
-    let json_raw = $("#cfr11_data").text();
-
-    return json_raw;
-}
+  const processCFR11Value = function () {
+    const cfr11_data = $("#cfr11_data");
+    return cfr11_data.text();
+  }
 
   function checkIfExampleMatches(example, matches) {
     const name = example.ExampleName;
     const description = example.ExampleDescription;
-    const pathNames = example.LinksToAPIMethod.map((a) => a.PathName);
+
+    let pathNames = [];
+    if (example.LinksToAPIMethod) {
+      pathNames = example.LinksToAPIMethod.map((a) => a.PathName);
+    }
 
     for (let i = 0; i < matches.length; i++) {
       if (
         name === matches[i].value ||
         description === matches[i].value ||
-        pathNames.indexOf(matches[i].value) > -1
+        pathNames && pathNames.indexOf(matches[i].value) > -1
       ) {
         return true;
       }
@@ -62,6 +66,7 @@ const DS_SEARCH = (function () {
   const findCodeExamplesByKeywords = function(json, pattern) {
     const options = {
       isCaseSensitive: false,
+      minMatchCharLength: pattern.length,
       threshold: -0.0,
       includeMatches: true,
       ignoreLocation: true,
@@ -73,16 +78,16 @@ const DS_SEARCH = (function () {
       ],
     };
 
-    let clearJSON = JSON.stringify(json).replace(/<\/?[^>]+(>|$)/g, "");
-        const fuse = new Fuse(JSON.parse(clearJSON), options);
+    const clearJSON = JSON.stringify(json).replace(/<\/?[^>]+(>|$)/g, "");
+    const fuse = new Fuse(JSON.parse(clearJSON), options);
 
-        var searchResults = fuse.search(JSON.stringify(pattern));
+    const searchResults = fuse.search(JSON.stringify(pattern));
 
-        searchResults.forEach(searchResult => {
-            return clearResultsAfterMatching(searchResult.item, searchResult.matches)
-        });
+    searchResults.forEach((searchResult) =>
+      clearResultsAfterMatching(searchResult.item, searchResult.matches)
+    );
 
-        return searchResults;
+    return searchResults;
   }
 
   const getExamplesByAPIType = function (apiType, codeExamples) {
@@ -126,79 +131,87 @@ const DS_SEARCH = (function () {
         return "meg";
       case API_TYPES.ESIGNATURE:
         return "eg";
+      case API_TYPES.CONNECT:
+        return "cneg";
     }
   }
 
-  let addCodeExampleToHomepage = function (codeExamples) {
+  const addCodeExampleToHomepage = function (codeExamples) {
     var cfrPart11 = processCFR11Value();
 
-    codeExamples.forEach(
-        element => {
-            let linkToCodeExample = getLinkForApiType(element.Name.toLowerCase());
+    codeExamples.forEach((element) => {
+      let linkToCodeExample = getLinkForApiType(element.Name.toLowerCase());
 
-            element.Groups.forEach(
-                group => {
-                    $("#filtered_code_examples").append("<h2>" + group.Name + "</h2>");
+      element.Groups.forEach((group) => {
+        $("#filtered_code_examples").append("<h2>" + group.Name + "</h2>");
 
-                    group.Examples.forEach(
-                        example => {
-                            if (!example.SkipForLanguages || !example.SkipForLanguages.toLowerCase().includes("python")) {
-                                if (element.Name.toLowerCase() !== API_TYPES.ESIGNATURE.toLowerCase() ||
-                                    ((example.CFREnabled == "AllAccounts") ||
-                                    ((cfrPart11 == "True") && (example.CFREnabled == "CFROnly")) ||
-                                        ((cfrPart11 != "True") && (example.CFREnabled == "NonCFR")))) {
-                                    $("#filtered_code_examples").append(
-                                        "<h4 id="
-                                        + "example".concat("0".repeat(3 - example.ExampleNumber.toString().length)).concat(example.ExampleNumber) + ">"
-                                        + "<a href = "
-                                        + linkToCodeExample.concat("0".repeat(3 - example.ExampleNumber.toString().length)).concat(example.ExampleNumber)
-                                        + " >"
-                                        + example.ExampleName
-                                        + "</a ></h4 >"
-                                    );
+        group.Examples.forEach((example) => {
+          if (
+            !example.SkipForLanguages ||
+            !example.SkipForLanguages.toLowerCase().includes("python")
+          ) {
+            if (element.Name.toLowerCase() !== API_TYPES.ESIGNATURE.toLowerCase() ||
+              ((example.CFREnabled == "AllAccounts") ||
+              ((cfrPart11 == "True") && (example.CFREnabled == "CFROnly")) ||
+              ((cfrPart11 != "True") && (example.CFREnabled == "NonCFR")))) 
+            {
+              $("#filtered_code_examples").append(
+                "<h4 id=" +
+                  "example"
+                    .concat(
+                      "0".repeat(3 - example.ExampleNumber.toString().length)
+                    )
+                    .concat(example.ExampleNumber) +
+                  ">" +
+                  "<a href = " +
+                  linkToCodeExample
+                    .concat(
+                      "0".repeat(3 - example.ExampleNumber.toString().length)
+                    )
+                    .concat(example.ExampleNumber) +
+                  " >" +
+                  example.ExampleName +
+                  "</a ></h4 >"
+              );
 
-                                    $("#filtered_code_examples").append("<p>" + example.ExampleDescription + "</p>");
+              $("#filtered_code_examples").append(
+                "<p>" + example.ExampleDescription + "</p>"
+              );
 
-                                    $("#filtered_code_examples").append("<p>");
-
-                                    if (example.LinksToAPIMethod.length == 1) {
-                                        $("#filtered_code_examples").append(processJSONData().SupportingTexts.APIMethodUsed);
-                                    }
-                                    else {
-                                        $("#filtered_code_examples").append(processJSONData().SupportingTexts.APIMethodUsedPlural);
-                                    }
-
-                                    for (let index = 0; index < example.LinksToAPIMethod.length; index++) {
-                                        $("#filtered_code_examples").append(
-                                            " <a target='_blank' href='"
-                                            + example.LinksToAPIMethod[index].Path
-                                            + "'>"
-                                            + example.LinksToAPIMethod[index].PathName
-                                            + "</a>"
-                                        );
-
-                                        if (index + 1 === example.LinksToAPIMethod.length) {
-                                            $("#filtered_code_examples").append("<span></span>");
-                                        }
-                                        else if (index + 1 === example.LinksToAPIMethod.length - 1) {
-                                            $("#filtered_code_examples").append("<span> and </span>");
-                                        }
-                                        else {
-                                            $("#filtered_code_examples").append("<span>, </span>");
-                                        }
-
-                                    }
-
-                                    $("#filtered_code_examples").append("</p> ");
-                                }
-                            }
-                        }
-                    );
+              $("#filtered_code_examples").append("<p>");
+              const links = example.LinksToAPIMethod || [];
+              if (links.length > 0) {
+                if (links.length == 1) {
+                  $("#filtered_code_examples").append(
+                    processJSONData().SupportingTexts.APIMethodUsed
+                  );
+                } else {
+                  $("#filtered_code_examples").append(
+                    processJSONData().SupportingTexts.APIMethodUsedPlural
+                  );
                 }
-            );
-        }
-    );
-}
+
+                links.forEach((link, index) => {
+                  $("#filtered_code_examples").append(`<a target='_blank' href='${link.Path}'>${link.PathName}</a>`);
+
+                  if (index + 1 === links.length) {
+                    $("#filtered_code_examples").append("<span></span>");
+                  } else if (index + 1 === links.length - 1) {
+                    $("#filtered_code_examples").append("<span> and </span>");
+                  } else {
+                    $("#filtered_code_examples").append("<span>, </span>");
+                  }
+                })
+
+              }
+
+              $("#filtered_code_examples").append("</p> ");
+            }
+          }
+        });
+      });
+    });
+  };
 
   const textCouldNotBeFound = function () {
     $("#filtered_code_examples").append(
@@ -207,12 +220,12 @@ const DS_SEARCH = (function () {
   };
 
   return {
-    processJSONData: processJSONData,
-    getEnteredAPIType: getEnteredAPIType,
-    getExamplesByAPIType: getExamplesByAPIType,
-    findCodeExamplesByKeywords: findCodeExamplesByKeywords,
-    textCouldNotBeFound: textCouldNotBeFound,
-    addCodeExampleToHomepage: addCodeExampleToHomepage,
+    processJSONData,
+    getEnteredAPIType,
+    getExamplesByAPIType,
+    findCodeExamplesByKeywords,
+    textCouldNotBeFound,
+    addCodeExampleToHomepage,
   };
 })();
 
@@ -240,26 +253,26 @@ function updateValue(esearchPattern) {
       if (result.length < 1) {
         DS_SEARCH.textCouldNotBeFound();
       } else {
-        result.forEach(x => {
-          var api = json.filter(api => {
-              return api.Name === x.item.Name;
+        result.forEach((x) => {
+          const api = json.filter((api) => {
+            return api.Name === x.item.Name;
           })[0];
 
           x.item.Groups.forEach((group, groupIndex) => {
-              var unfilteredGroup = api.Groups.filter(apiGroup => {
-                  return apiGroup.Name === group.Name;
-              })[0];
+            const unfilteredGroup = api.Groups.filter((apiGroup) => {
+              return apiGroup.Name === group.Name;
+            })[0];
 
-              group.Examples.forEach((example, index) => {
-                  var clearedExample = unfilteredGroup.Examples.filter(apiExample => {
-                      return apiExample.ExampleNumber === example.ExampleNumber;
-                  })[0];
-                  x.item.Groups[groupIndex].Examples[index] = clearedExample;
-              });
+            group.Examples.forEach((example, index) => {
+              const clearedExamples = unfilteredGroup.Examples.filter((apiExample) => {
+                return apiExample.ExampleNumber === example.ExampleNumber;
+              })
+              x.item.Groups[groupIndex].Examples[index] = clearedExamples[0];
+            });
           });
 
           DS_SEARCH.addCodeExampleToHomepage([x.item]);
-      });
+        });
       }
     }
   }

@@ -108,5 +108,6 @@ API_TYPE = {
     "MONITOR": "Monitor",
     "CLICK": "Click",
     "ROOMS": "Rooms",
-    "ADMIN": "Admin"
+    "ADMIN": "Admin",
+    "CONNECT": "Connect"
 }
