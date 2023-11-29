@@ -41,7 +41,7 @@ def get_monitoring_data():
         "example_done.html",
         title=example["ExampleName"],
         message="Results from DataSet:getStream method:",
-        json=json.dumps(json.dumps(results, default=str))
+        json=json.dumps(json.dumps(results, default=str).replace('\\"', '').replace("'", ""))
     )
 
 @meg001.route(f"/{eg}", methods=["GET"])
