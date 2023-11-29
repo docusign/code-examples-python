@@ -18,12 +18,12 @@ class Eg001ValidateWebhookMessageController:
         1. Create an API client with headers
         2. Get your monitor data via SDK
         """        
-        #ds-snippet-start:Connect1Step2
+        #ds-snippet-start:Connect1Step1
         key = bytes(args['secret'], 'utf-8')
         payload = bytes(args['payload'], 'utf-8')
 
         hmac_hash = hmac.new(key, payload, hashlib.sha256)
         result = base64.b64encode(hmac_hash.digest()).decode('utf-8')
-        #ds-snippet-end:Connect1Step2
+        #ds-snippet-end:Connect1Step1
 
         return result
