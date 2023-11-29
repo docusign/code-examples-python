@@ -49,7 +49,7 @@ def get_view():
         title=example["ExampleName"],
         example=example,
         source_file= "eg001_validate_webhook_message.py",
-        source_url=DS_CONFIG["monitor_github_url"] + "eg001_validate_webhook_message.py",
+        source_url=DS_CONFIG["connect_github_url"] + "eg001_validate_webhook_message.py",
         documentation=DS_CONFIG["documentation"] + eg,
     )
 
