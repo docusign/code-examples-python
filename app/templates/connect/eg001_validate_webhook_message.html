@@ -1,0 +1,35 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% if 'ds_user_name' in session %}
+  <div>
+{% else %}
+  <div style="margin:30px 90px 0 90px; padding:15px 15px 0 15px;">
+{% endif %}
+
+{% include 'example_info.html' %}
+
+{%  set form_index = 0 %}
+{%  set secret_index = 0 %}
+{%  set payload_index = 1 %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <div class="form-group" style="display: flex;">
+      <label for="secret" style="width: 50%;">{{ example['Forms'][form_index]['Inputs'][secret_index]['InputName'] }}</label>
+      <input type="text" class="form-control" id="secret" name="secret"
+             placeholder="{{ example['Forms'][form_index]['Inputs'][secret_index]['InputPlaceholder'] }}" required/>
+    </div>
+    <div class="form-group">
+      <label for="payload">{{ example['Forms'][form_index]['Inputs'][payload_index]['InputName'] }}</label>
+      <textarea class="form-control" id="payload" name="payload" rows="6"
+                placeholder="{{ example['Forms'][form_index]['Inputs'][payload_index]['InputPlaceholder'] }}" required></textarea>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'submit_button.html' %}
+  </form>
+  
+</div>
+{% endblock %}
