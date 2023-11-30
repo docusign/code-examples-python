@@ -21,7 +21,7 @@
     {% endfor %}
 {% endif %}
 
-{% if example["LinkToHowTo"].length > 0 %}
+{% if example["LinkToHowTo"] | length > 0 %}
     <a target='_blank' href="{{ example['LinkToHowTo']['Path'] }}">{{ example['LinkToHowTo']['PathName'] }}</a>
 {% endif %}
 
