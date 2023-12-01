@@ -37,7 +37,8 @@ let DS_EG = (function(){
        return JSON.stringify(obj, null, 3)
           .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
           .replace(/</g, '&lt;').replace(/>/g, '&gt;')
-          .replace(jsonLine, library.json.replacer);
+          .replace(jsonLine, library.json.replacer)
+          .replace(/"/g, '').replace(/\\n/g, '&#xA;');
        },
     prettyPrint2: function(obj) {
         var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/mg
