@@ -22,7 +22,9 @@
 {% endif %}
 
 {% if example["LinkToHowTo"] | length > 0%}
-    <p><a target='_blank' href="{{ example['LinkToHowTo'][0]['Path'] }}">{{ example['LinkToHowTo'][0]['PathName'] }}</a></p>
+    <p>
+        Prerequisite: See <a target='_blank' href="{{ example['LinkToHowTo'][0]['Path'] }}">{{ example['LinkToHowTo'][0]['PathName'] }}</a>.
+    </p>
 {% endif %}
 
 <p>
