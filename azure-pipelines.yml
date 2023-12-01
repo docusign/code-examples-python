@@ -1,0 +1,116 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+resources:
+  repositories:
+  - repository: IntegrationTests
+    type: git
+    name: launcher-automation/IntegrationTests
+    ref: azure-pipelines
+    trigger:
+      branches:
+        include:
+          - azure-pipelines
+
+pr:
+- master
+- releases/*
+
+pool:
+  name: launcher-automation-pool
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+- checkout: self
+- checkout: IntegrationTests
+
+- script: dir $(Build.SourcesDirectory)
+
+- task: DownloadSecureFile@1
+  name: python_dockerfile
+  displayName: 'download Dockerfile'
+  inputs:
+    secureFile: 'python.Dockerfile'
+
+- script: |
+    echo "place python.Dockerfile"
+    echo $(python_dockerfile.secureFilePath)
+    cp $(python_Dockerfile.secureFilePath) code-examples-python-private/Dockerfile
+  displayName: 'place Dockerfile'
+
+- script: |
+    allure –-version
+    java --version
+    javac --version
+    mvn --version
+    docker --version
+
+- task: DownloadSecureFile@1
+  name: tests_config_properties
+  displayName: 'download config.properties'
+  inputs:
+    secureFile: 'tests_config.properties'
+
+
+- script: |
+    echo "place config.properties"
+    echo $(tests_config_properties.secureFilePath)
+    cp $(tests_config_properties.secureFilePath) IntegrationTests/src/main/resources/config.properties
+  displayName: 'place config.properties'
+
+- task: DownloadSecureFile@1
+  name: ds_config
+  displayName: 'download ds_config.py'
+  inputs:
+    secureFile: 'ds_config.py'
+
+
+- script: |
+    echo "place ds_config.py"
+    cp $(ds_config.secureFilePath) code-examples-python-private/app/ds_config.py
+  displayName: 'place dsconfig.py'
+
+
+- task: DownloadSecureFile@1
+  name: python_private_key
+  displayName: 'download private.key'
+  inputs:
+    secureFile: 'python_private.key'
+
+
+- script: |
+    echo "place private.key"
+    cp $(python_private_key.secureFilePath) code-examples-python-private/app/private.key
+  displayName: 'place private.key'
+
+- script: dir $(Build.SourcesDirectory)
+
+- script: dir $(Build.SourcesDirectory)/code-examples-python-private
+
+- script: dir $(Build.SourcesDirectory)/code-examples-python-private/app
+
+- task: Docker@2
+  displayName: Build python image
+  inputs:
+    command: build
+    repository: 'launcher-automation-python'
+    dockerfile: '$(Build.SourcesDirectory)/code-examples-python-private/Dockerfile'
+    buildContext: '$(Build.SourcesDirectory)/code-examples-python-private '
+    tags: |
+      latest
+
+- script: |
+    docker run -p 3000:3000 -d launcher-automation-python:latest
+  displayName: 'start python app'
+
+- script: |
+    cd IntegrationTests
+    mvn clean test -DsuiteXmlFile="python_suite.xml"
+  displayName: 'Python app tests'
+
+- script: |
+    docker stop $(docker ps -a -q)
+    docker rm $(docker ps -a -q)
+  displayName: 'stop python app'

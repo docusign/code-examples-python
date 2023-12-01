@@ -47,10 +47,11 @@ class Eg010SendBinaryDocsController:
         <tt>signer_email</tt>, <tt>signer_name</tt>, <tt>cc_email</tt>, <tt>cc_name</tt>
         """
 
-        # Step 1. Make the envelope JSON request body
+        # Make the envelope JSON request body
+        #ds-snippet-start:eSign10Step3
         envelope_json = cls.make_envelope_json(args["envelope_args"])
 
-        # Step 2. Gather documents and their headers
+        # Gather documents and their headers
         # Read files 2 and 3 from a local directory
         # The reads could raise an exception if the file is not available!
         # Note: the fles are not binary encoded!
@@ -72,7 +73,7 @@ class Eg010SendBinaryDocsController:
              "bytes": doc3_pdf_bytes}
         ]
 
-        # Step 3. Create the multipart body
+        # Create the multipart body
         CRLF = b"\r\n"
         boundary = b"multipartboundary_multipartboundary"
         hyphens = b"--"
@@ -99,22 +100,28 @@ class Eg010SendBinaryDocsController:
 
         # Add closing boundary
         req_body = b"".join([req_body, CRLF, hyphens, boundary, hyphens, CRLF])
+        #ds-snippet-end:eSign10Step3
 
-        # Step 2. call Envelopes::create API method
+        # Call Envelopes::create API method
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign10Step2
         headers = {
             "Authorization": "bearer " + args['access_token'],
             "Accept": "application/json",
             "Content-Type": f"multipart/form-data; boundary={boundary.decode('utf-8')}"
         }
-        
+        #ds-snippet-end:eSign10Step2
+
+        #ds-snippet-start:eSign10Step4
         results = requests.post(
             url=f"{args['base_path']}/v2.1/accounts/{args['account_id']}/envelopes",
             headers=headers,
             data=req_body
         )
         return {"status_code": results.status_code, "results": results.json()}
+        #ds-snippet-end:eSign10Step4
 
+    #ds-snippet-start:eSign10Step3
     @classmethod
     def make_envelope_json(cls, args):
         """
@@ -227,3 +234,4 @@ class Eg010SendBinaryDocsController:
             </body>
         </html>
       """
+    #ds-snippet-end:eSign10Step3

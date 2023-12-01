@@ -1,0 +1,31 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% include 'example_info.html' %}
+
+{%  set signer_form_index = 0 %}
+{%  set signer_email_index = 0 %}
+{%  set signer_name_index = 1 %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][signer_form_index] %}
+        <p>{{ example['Forms'][signer_form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="signer_email">{{ example['Forms'][signer_form_index]['Inputs'][signer_email_index]['InputName'] }}</label>
+      <input type="email" class="form-control" id="signer_email" name="signer_email"
+             aria-describedby="emailHelp" placeholder="{{ example['Forms'][signer_form_index]['Inputs'][signer_email_index]['InputPlaceholder'] }}" required
+             value="{{ signer_email }}">
+      <small id="emailHelp" class="form-text text-muted">{{ session['manifest']['SupportingTexts']['HelpingTexts']['EmailWontBeShared'] | safe}}</small>
+    </div>
+    <div class="form-group">
+      <label for="signer_name">{{ example['Forms'][signer_form_index]['Inputs'][signer_name_index]['InputName'] }}</label>
+      <input type="text" class="form-control" id="signer_name" placeholder="{{ example['Forms'][signer_form_index]['Inputs'][signer_name_index]['InputPlaceholder'] }}" name="signer_name"
+             value="{{ signer_name }}" required>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'submit_button.html' %}
+  </form>
+  
+{% endblock %}
+

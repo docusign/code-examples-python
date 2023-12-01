@@ -1,0 +1,49 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% include 'example_info.html' %}
+
+{%  set form_index = 0 %}
+{%  set source_account_id_index = 0 %}
+{%  set target_account_name_index = 1 %}
+{%  set target_account_first_name_index = 2 %}
+{%  set target_account_last_name_index = 3 %}
+{%  set target_account_email_index = 4 %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <div class="form-group">
+        <label for="source_account_id">{{ example['Forms'][form_index]['Inputs'][source_account_id_index]['InputName'] }}</label>
+        <select id="source_account_id" name="source_account_id" class="form-control">
+            {% for account in accounts %}
+                <option value="{{ account.account_id }}"> {{ account.account_name }} </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="target_account_name">{{ example['Forms'][form_index]['Inputs'][target_account_name_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="target_account_name" name="target_account_name"
+               placeholder="{{ example['Forms'][form_index]['Inputs'][target_account_name_index]['InputPlaceholder'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="target_account_first_name">{{ example['Forms'][form_index]['Inputs'][target_account_first_name_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="target_account_first_name" name="target_account_first_name"
+               placeholder="{{ example['Forms'][form_index]['Inputs'][target_account_first_name_index]['InputPlaceholder'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="target_account_last_name">{{ example['Forms'][form_index]['Inputs'][target_account_last_name_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="target_account_last_name" name="target_account_last_name"
+               placeholder="{{ example['Forms'][form_index]['Inputs'][target_account_last_name_index]['InputPlaceholder'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="target_account_email">{{ example['Forms'][form_index]['Inputs'][target_account_email_index]['InputName'] }}</label>
+        <input type="email" class="form-control" id="target_account_email" name="target_account_email"
+               aria-describedby="emailHelp" placeholder="{{ example['Forms'][form_index]['Inputs'][target_account_email_index]['InputPlaceholder'] }}" required>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'continue_button.html' %}
+</form>
+  
+{% endblock %}

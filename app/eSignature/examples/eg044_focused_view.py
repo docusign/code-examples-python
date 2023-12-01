@@ -1,9 +1,8 @@
 import base64
 from os import path
 
-from docusign_esign import AccountsApi, EnvelopesApi, RecipientViewRequest, Document, Signer, EnvelopeDefinition, SignHere, Tabs, \
+from docusign_esign import EnvelopesApi, RecipientViewRequest, Document, Signer, EnvelopeDefinition, SignHere, Tabs, \
     Recipients
-from docusign_esign.client.api_exception import ApiException
 from flask import session, url_for, request
 
 from ...consts import authentication_method, demo_docs_path, pattern, signer_client_id
@@ -11,7 +10,7 @@ from ...docusign import create_api_client
 from ...ds_config import DS_CONFIG
 
 
-class Eg041CFREmbeddedSigningController:
+class Eg044FocusedViewController:
     @staticmethod
     def get_args():
         """Get request and session arguments"""
@@ -20,16 +19,11 @@ class Eg041CFREmbeddedSigningController:
         # 1. Parse request arguments
         signer_email = pattern.sub("", request.form.get("signer_email"))
         signer_name = pattern.sub("", request.form.get("signer_name"))
-        country_code = pattern.sub("", request.form.get("country_code"))
-        phone_number = pattern.sub("", request.form.get("phone_number"))
         envelope_args = {
             "signer_email": signer_email,
             "signer_name": signer_name,
-            "phone_number": phone_number,
-            "country_code": country_code,
             "signer_client_id": signer_client_id,
             "ds_return_url": url_for("ds.ds_return", _external=True),
-            "workflow_id": session['workflow_id']
         }
         args = {
             "account_id": session["ds_account_id"],
@@ -47,46 +41,50 @@ class Eg041CFREmbeddedSigningController:
         3. Create the Recipient View request object
         4. Obtain the recipient_view_url for the embedded signing
         """
+        #ds-snippet-start:eSign44Step3
         envelope_args = args["envelope_args"]
-        # Create the envelope request object
+        # 1. Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args)
 
-        # Call Envelopes::create API method
+        # 2. call Envelopes::create API method
         # Exceptions will be caught by the calling function
-        #ds-snippet-start:eSign41Step4
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
         envelope_api = EnvelopesApi(api_client)
         results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
 
         envelope_id = results.envelope_id
-        #ds-snippet-end:eSign41Step4
+        #ds-snippet-end:eSign44Step3
 
-        # Create the Recipient View request object
-        #ds-snippet-start:eSign41Step5
+        # 3. Create the Recipient View request object
+        #ds-snippet-start:eSign44Step4
         recipient_view_request = RecipientViewRequest(
             authentication_method=authentication_method,
             client_user_id=envelope_args["signer_client_id"],
             recipient_id="1",
             return_url=envelope_args["ds_return_url"],
             user_name=envelope_args["signer_name"],
-            email=envelope_args["signer_email"]
+            email=envelope_args["signer_email"],
+            frame_ancestors=["http://localhost:3000", "https://apps-d.docusign.com"],
+            message_origins=["https://apps-d.docusign.com"]
         )
-        #ds-snippet-end:eSign41Step5
-        # Obtain the recipient_view_url for the embedded signing
+        #ds-snippet-end:eSign44Step4
+        
+        # 4. Obtain the recipient_view_url for the embedded signing
         # Exceptions will be caught by the calling function
-        #ds-snippet-start:eSign41Step6
+        
+        #ds-snippet-start:eSign44Step5
         results = envelope_api.create_recipient_view(
             account_id=args["account_id"],
             envelope_id=envelope_id,
             recipient_view_request=recipient_view_request
         )
-        #ds-snippet-end:eSign41Step6
 
         return {"envelope_id": envelope_id, "redirect_url": results.url}
+        #ds-snippet-end:eSign44Step5
 
-    #ds-snippet-start:eSign41Step3
     @classmethod
+    #ds-snippet-start:eSign44Step2
     def make_envelope(cls, args):
         """
         Creates envelope
@@ -118,7 +116,6 @@ class Eg041CFREmbeddedSigningController:
             name=args["signer_name"],
             recipient_id="1",
             routing_order="1",
-            identity_verification={ "workflowId": session['workflow_id'], "steps": "null", "inputOptions":[{"name":"phone_number_list","valueType":"PhoneNumberList","phoneNumberList":[{"countryCode":args["country_code"],"code":"1","number":args["phone_number"]}]}], "idCheckConfigurationName":""},
             # Setting the client_user_id marks the signer as embedded
             client_user_id=args["signer_client_id"]
         )
@@ -128,7 +125,7 @@ class Eg041CFREmbeddedSigningController:
             # DocuSign SignHere field/tab
             anchor_string="/sn1/",
             anchor_units="pixels",
-            anchor_y_offset="-30",
+            anchor_y_offset="10",
             anchor_x_offset="20"
         )
 
@@ -146,31 +143,4 @@ class Eg041CFREmbeddedSigningController:
         )
 
         return envelope_definition
-    #ds-snippet-end:eSign41Step3
-
-    #ds-snippet-start:eSign41Step2
-    @staticmethod
-    def get_workflow(args):
-        """Retrieve the workflow id"""
-        try:
-            api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
-
-            workflow_details = AccountsApi(api_client)
-            workflow_response = workflow_details.get_account_identity_verification(account_id=args["account_id"])
-
-            # Check that idv authentication is enabled
-            # Find the workflow ID corresponding to the name "Phone Authentication"
-            if workflow_response.identity_verification:
-                for workflow in workflow_response.identity_verification:
-                    if workflow.default_name == "SMS for access & signatures":
-                        session['workflow_id'] = workflow.workflow_id
-
-                return session['workflow_id']
-
-            else:
-                return None
-
-        except ApiException as err:
-            return process_error(err)
-
-    #ds-snippet-end:eSign41Step2
+        #ds-snippet-end:eSign44Step2

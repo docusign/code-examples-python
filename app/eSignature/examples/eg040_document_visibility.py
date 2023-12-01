@@ -24,7 +24,7 @@ class Eg040DocumentVisibility:
         """Get request and session arguments"""
         # More data validation would be a good idea here
         # Strip anything other than characters listed
-        # 1. Parse request arguments
+        # Parse request arguments
         signer1_email = pattern.sub("", request.form.get("signer1_email"))
         signer1_name = pattern.sub("", request.form.get("signer1_name"))
         signer2_email = pattern.sub("", request.form.get("signer2_email"))
@@ -55,26 +55,24 @@ class Eg040DocumentVisibility:
         2. Send the envelope
         """
         envelope_args = args["envelope_args"]
-        # 1. Create the envelope request object
+        # Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args, doc_docx_path, doc_pdf_path)
         
-        # 2. call Envelopes::create API method
+        # Call Envelopes::create API method
         # Exceptions will be caught by the calling function
-        # Step 2 start
+        #ds-snippet-start:eSign40Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
-        # Step 2 end
+        #ds-snippet-end:eSign40Step2
 
-        # Step 4 start
+        #ds-snippet-start:eSign40Step4
         envelope_api = EnvelopesApi(api_client)
-        results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
-        # Step 4 end
-        
+        results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)     
         envelope_id = results.envelope_id
-
+        #ds-snippet-end:eSign40Step4
         return {"envelope_id": envelope_id}
     
     @classmethod
-    # Step 3 start
+    #ds-snippet-start:eSign40Step3
     def make_envelope(cls, args, doc_docx_path, doc_pdf_path):
         """
         Creates envelope
@@ -214,6 +212,4 @@ class Eg040DocumentVisibility:
             </body>
         </html>
         """
-    # Step 3 end
-
-    # End
+    #ds-snippet-end:eSign40Step3

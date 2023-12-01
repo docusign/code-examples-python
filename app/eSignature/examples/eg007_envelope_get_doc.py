@@ -31,10 +31,11 @@ class Eg007EnvelopeGetDocController:
         Call the envelope get method
         """
         # Exceptions will be caught by the calling function
-        # Step 2 start
+        #ds-snippet-start:eSign7Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
-        # Step 2 end        
-        # Step 3 start
+        #ds-snippet-end:eSign7Step2
+
+        #ds-snippet-start:eSign7Step3
         envelope_api = EnvelopesApi(api_client)
         document_id = args["document_id"]
 
@@ -44,8 +45,7 @@ class Eg007EnvelopeGetDocController:
             document_id=document_id,
             envelope_id=args["envelope_id"]
         )
-
-        # Step 3 end
+        #ds-snippet-end:eSign7Step3
         
         doc_item = next(item for item in args["envelope_documents"]["documents"] if item["document_id"] == document_id)
         doc_name = doc_item["name"]

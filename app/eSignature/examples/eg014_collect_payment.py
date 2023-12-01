@@ -50,10 +50,12 @@ class Eg014CollectPaymentController:
 
         # 2. call Envelopes::create API method
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign14Step4
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
         envelope_api = EnvelopesApi(api_client)
         results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
+        #ds-snippet-end:eSign14Step4
 
         envelope_id = results.envelope_id
         # app.logger.info(f"Envelope was created. EnvelopeId {envelope_id}")
@@ -61,6 +63,7 @@ class Eg014CollectPaymentController:
         return {"envelope_id": envelope_id}
 
     @classmethod
+    #ds-snippet-start:eSign14Step3
     def make_envelope(cls, args):
         """
         This function creates the envelope definition for the
@@ -272,3 +275,4 @@ class Eg014CollectPaymentController:
         envelope_definition.status = args["status"]
 
         return envelope_definition
+    #ds-snippet-end:eSign14Step3

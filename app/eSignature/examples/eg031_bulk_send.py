@@ -61,12 +61,12 @@ class Eg031BulkSendController:
         """
 
         # Construct your API headers
-        # Step 2 start
+        #ds-snippet-start:eSign31Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
-        # Step 2 end
+        #ds-snippet-end:eSign31Step2
 
         # Submit a bulk list
-        # Step 3-1 start
+        #ds-snippet-start:eSign31Step3
         bulk_envelopes_api = BulkEnvelopesApi(api_client)
         bulk_sending_list = cls.create_bulk_sending_list(args["signers"])
         bulk_list = bulk_envelopes_api.create_bulk_send_list(
@@ -74,18 +74,18 @@ class Eg031BulkSendController:
             bulk_sending_list=bulk_sending_list
         )
         bulk_list_id = bulk_list.list_id
-        # Step 3-1 end
+        #ds-snippet-end:eSign31Step3
 
         # Create an envelope
-        # Step 4-1 start
+        #ds-snippet-start:eSign31Step4
         envelope_api = EnvelopesApi(api_client)
         envelope_definition = cls.make_draft_envelope(args["doc_pdf"])
         envelope = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
         envelope_id = envelope.envelope_id
-        # Step 4-1 end
+        #ds-snippet-end:eSign31Step4
 
         # Attach your bulk list id to the envelope
-        # Step 5 start
+        #ds-snippet-start:eSign31Step5
         text_custom_fields = TextCustomField(name="mailingListId", required="false", show="false", value=bulk_list_id)
         custom_fields = CustomFields(list_custom_fields=[], text_custom_fields=[text_custom_fields])
         envelope_api.create_custom_fields(
@@ -93,10 +93,10 @@ class Eg031BulkSendController:
             envelope_id=envelope_id,
             custom_fields=custom_fields
         )
-        # Step 5 end
+        #ds-snippet-end:eSign31Step5
 
         # Initiate bulk send
-        # Step 6 start
+        #ds-snippet-start:eSign31Step6
         bulk_send_request = BulkSendRequest(envelope_or_template_id=envelope_id)
         batch = bulk_envelopes_api.create_bulk_send_request(
             account_id=args["account_id"],
@@ -104,18 +104,17 @@ class Eg031BulkSendController:
             bulk_send_request=bulk_send_request
         )
         batch_id = batch.batch_id
-        # Step 6 end
+        #ds-snippet-end:eSign31Step6
 
         # Confirm successful batch send
-        # Step 7 start
+        #ds-snippet-start:eSign31Step7
         response = bulk_envelopes_api.get_bulk_send_batch_status(account_id=args["account_id"],
                                                                  bulk_send_batch_id=batch_id)
-        # Step 7 end
+        #ds-snippet-end:eSign31Step7
         print(response)
 
         return response
 
-    # Step 3-2 start
     @classmethod
     def create_bulk_sending_list(cls, args):
         """
@@ -154,10 +153,7 @@ class Eg031BulkSendController:
         )
 
         return bulk_sending_list
-
-    # Step 3-2 end
-
-    # Step 4-2 start
+        
     @classmethod
     def make_draft_envelope(cls, doc_pdf):
         """
@@ -224,4 +220,3 @@ class Eg031BulkSendController:
         envelope_definition.recipients = Recipients(signers=[signer], carbon_copies=[cc])
 
         return envelope_definition
-    # Step 4-2 end

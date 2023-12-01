@@ -16,11 +16,12 @@ class Eg002SigningViaEmailController:
         2. Send the envelope
         """
 
+        #ds-snippet-start:eSign2Step3
         envelope_args = args["envelope_args"]
-        # 1. Create the envelope request object
+        # Create the envelope request object
         envelope_definition = cls.make_envelope(envelope_args, doc_docx_path, doc_pdf_path)
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
-        # 2. call Envelopes::create API method
+        # Call Envelopes::create API method
         # Exceptions will be caught by the calling function
         envelopes_api = EnvelopesApi(api_client)
         results = envelopes_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
@@ -28,8 +29,10 @@ class Eg002SigningViaEmailController:
         envelope_id = results.envelope_id
 
         return {"envelope_id": envelope_id}
+        #ds-snippet-end:eSign2Step3
 
     @classmethod
+    #ds-snippet-start:eSign2Step2
     def make_envelope(cls, args, doc_docx_path, doc_pdf_path):
         """
         Creates envelope
@@ -170,4 +173,5 @@ class Eg002SigningViaEmailController:
             <h3 style="margin-top:3em;">Agreed: <span style="color:white;">**signature_1**/</span></h3>
             </body>
         </html>
-      """
+        """
+    #ds-snippet-end:eSign2Step2

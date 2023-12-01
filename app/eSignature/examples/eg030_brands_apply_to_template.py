@@ -48,19 +48,25 @@ class Eg030BrandsApplyToTemplateController:
         3. Apply the brand to the envelope using the SDK
         """
 
-        # Step 2. Construct your API headers
+        # Construct your API headers
+        #ds-snippet-start:eSign30Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign30Step2
 
-        # Step 3. Construct your request body
+        # Construct your request body
         envelope_api = EnvelopesApi(api_client)
+        #ds-snippet-start:eSign30Step3
         envelope_definition = cls.make_envelope(args["envelope_args"])
+        #ds-snippet-end:eSign30Step3
 
-        # Step 4. Call the eSignature REST API
+        # Call the eSignature REST API
+        #ds-snippet-start:eSign30Step4
         response = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
-
+        #ds-snippet-end:eSign30Step4
         return response
 
     @classmethod
+    #ds-snippet-start:eSign30Step3
     def make_envelope(cls, args):
         """
         Creates the envelope definition object
@@ -92,6 +98,7 @@ class Eg030BrandsApplyToTemplateController:
             envelope_definition.template_roles = [signer]
 
         return envelope_definition
+    #ds-snippet-end:eSign30Step3
 
     @staticmethod
     def get_data(args):

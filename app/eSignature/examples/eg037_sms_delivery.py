@@ -33,6 +33,7 @@ class Eg037SMSDeliveryController:
         cc_country_code = request.form.get("country_code")
         phone_number = request.form.get("phone_number")
         country_code = request.form.get("country_code")
+        delivery_method = request.form["delivery_method"]
         envelope_args = {
             "signer_name": signer_name,
             "status": "sent",
@@ -40,7 +41,8 @@ class Eg037SMSDeliveryController:
             "country_code": country_code,
             "phone_number": phone_number,
             "cc_country_code" :cc_country_code,
-            "cc_phone_number": cc_phone_number
+            "cc_phone_number": cc_phone_number,
+            "delivery_method": delivery_method
         }
         args = {
             "account_id": session["ds_account_id"],
@@ -57,8 +59,7 @@ class Eg037SMSDeliveryController:
         2. Send the envelope
         """
 
-        # Step 3 start
-
+        #ds-snippet-start:eSign37Step3
         envelope_args = args["envelope_args"]
         # Create the envelope request object
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
@@ -71,11 +72,9 @@ class Eg037SMSDeliveryController:
         envelope_id = results.envelope_id
 
         return {"envelope_id": envelope_id}
+        #ds-snippet-end
 
-        # Step 3 end
-
-    # Step 2 start
-
+    #ds-snippet-start:eSign37Step2
     @classmethod
     def make_envelope(cls, args):
         """
@@ -91,7 +90,6 @@ class Eg037SMSDeliveryController:
         The envelope will be sent first to the signer via SMS.
         After it is signed, a copy is sent to the cc recipient via SMS.
         """
-
         # Create the envelope definition
         env = EnvelopeDefinition(
             email_subject="Please sign this document set"
@@ -138,7 +136,7 @@ class Eg037SMSDeliveryController:
             name=args["signer_name"],
             recipient_id="1",
             routing_order="1",
-            delivery_method="SMS",
+            delivery_method=args["delivery_method"],
             phone_number=signerPhoneNumber
         )
 
@@ -153,7 +151,7 @@ class Eg037SMSDeliveryController:
             name=args["cc_name"],
             recipient_id="2",
             routing_order="2",
-            delivery_method="SMS",
+            delivery_method=args["delivery_method"],
             phone_number=ccPhoneNumber
         )
 
@@ -227,5 +225,4 @@ class Eg037SMSDeliveryController:
             </body>
         </html>
       """
-
-    # Step 2 end
+#ds-snippet-end

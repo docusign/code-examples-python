@@ -23,6 +23,7 @@ class Eg003ListEnvelopesController:
            that have changed in the last 10 days
         """
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign3Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
         envelope_api = EnvelopesApi(api_client)
@@ -37,5 +38,6 @@ class Eg003ListEnvelopesController:
         # 1. Call the envelope status change method to list the envelopes
         from_date = (datetime.utcnow() - timedelta(days=30)).isoformat()
         results = envelope_api.list_status_changes(account_id=args["account_id"], from_date=from_date)
+        #ds-snippet-end:eSign3Step2
 
         return results

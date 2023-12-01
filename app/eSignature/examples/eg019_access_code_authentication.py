@@ -39,10 +39,13 @@ class Eg019AccessCodeAuthenticationController:
         2. Create an envelope definition object
         3. Call the eSignature REST API using the SDK
         """
-        # Step 1: Construct your API headers
+        # Construct your API headers
+        #ds-snippet-start:eSign19Step2
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
+        #ds-snippet-end:eSign19Step2
 
-        # Step 2: Construct your envelope
+        # Construct your envelope
+        #ds-snippet-start:eSign19Step3
         envelope_definition = EnvelopeDefinition(
             email_subject="Please sign this document set"
         )
@@ -91,8 +94,11 @@ class Eg019AccessCodeAuthenticationController:
 
         # Tabs are set per recipient
         envelope_definition.recipients = Recipients(signers=[signer1])
-        # Step 3: Call the eSignature REST API
+        #ds-snippet-end:eSign19Step3
+
+        # Call the eSignature REST API
+        #ds-snippet-start:eSign19Step4
         envelope_api = EnvelopesApi(api_client)
         results = envelope_api.create_envelope(account_id=args["account_id"], envelope_definition=envelope_definition)
-
+        #ds-snippet-end:eSign19Step4
         return results
