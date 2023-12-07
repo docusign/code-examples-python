@@ -21,12 +21,6 @@
     {% endfor %}
 {% endif %}
 
-{% if example["LinkToHowTo"] | length > 0%}
-    <p>
-        Prerequisite: See <a target='_blank' href="{{ example['LinkToHowTo'][0]['Path'] }}">{{ example['LinkToHowTo'][0]['PathName'] }}</a>.
-    </p>
-{% endif %}
-
 <p>
     View source file <a target="_blank" href="{{ source_url | safe }}">{{ source_file }}</a> on GitHub.
 </p>
