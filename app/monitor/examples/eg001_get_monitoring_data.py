@@ -1,5 +1,5 @@
 from docusign_monitor import DataSetApi
-from flask import session, json
+from flask import session
 
 from app.monitor.utils import create_monitor_api_client
 
@@ -17,7 +17,7 @@ class Eg001GetMonitoringDataController:
         """
         1. Create an API client with headers
         2. Get your monitor data via SDK
-        """        
+        """
         # Create an API client with headers
         #ds-snippet-start:Monitor1Step2
         api_client = create_monitor_api_client(
@@ -26,8 +26,26 @@ class Eg001GetMonitoringDataController:
         #ds-snippet-end:Monitor1Step2 
         #ds-snippet-start:Monitor1Step3
         dataset_api = DataSetApi(api_client=api_client)
-        result = dataset_api.get_stream(
-            data_set_name="monitor",
-            version="2.0")._data
+
+        cursor_value = ''
+        limit = 100
+        function_results = []
+        complete = False
+
+        while not complete:
+            cursored_results = dataset_api.get_stream(
+                data_set_name="monitor",
+                version="2.0",
+                limit=limit,
+                cursor=cursor_value
+            )
+            end_cursor = cursored_results.end_cursor
+
+            if end_cursor == cursor_value:
+                complete = True
+            else:
+                cursor_value = end_cursor
+                function_results.append(cursored_results.data)
+
         #ds-snippet-end:Monitor1Step3
-        return result
+        return function_results
