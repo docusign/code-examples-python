@@ -45,7 +45,7 @@ class Eg004AddFormsToRoomController:
         #ds-snippet-start:Rooms4Step3
         form_libraries_api = FormLibrariesApi(api_client)
         form_libraries = form_libraries_api.get_form_libraries(account_id=args["account_id"])
-        first_form_library_id = form_libraries.forms_library_summaries[0].forms_library_id
+        first_form_library_id = form_libraries.forms_library_summaries[10].forms_library_id
         #ds-snippet-end:Rooms4Step3
 
         # Step 3. Get forms
