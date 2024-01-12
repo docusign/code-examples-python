@@ -4,14 +4,11 @@
 # https://aka.ms/yaml
 resources:
   repositories:
-  - repository: IntegrationTests
-    type: git
-    name: launcher-automation/IntegrationTests
-    ref: azure-pipelines
-    trigger:
-      branches:
-        include:
-          - azure-pipelines
+  - repository: launcher-automation
+    type: github
+    name: docusign/launcher-automation
+    ref: main
+    endpoint: launcherAutomationServiceConnection
 
 pr:
 - master
@@ -24,7 +21,7 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 - checkout: self
-- checkout: IntegrationTests
+- checkout: launcher-automation
 
 - script: dir $(Build.SourcesDirectory)
 
@@ -57,7 +54,7 @@ steps:
 - script: |
     echo "place config.properties"
     echo $(tests_config_properties.secureFilePath)
-    cp $(tests_config_properties.secureFilePath) IntegrationTests/src/main/resources/config.properties
+    cp $(tests_config_properties.secureFilePath) launcher-automation/src/main/resources/config.properties
   displayName: 'place config.properties'
 
 - task: DownloadSecureFile@1
@@ -72,12 +69,24 @@ steps:
     cp $(ds_config.secureFilePath) code-examples-python-private/app/ds_config.py
   displayName: 'place dsconfig.py'
 
+- task: DownloadSecureFile@1
+  name: run_py
+  displayName: 'download python.run.py'
+  inputs:
+    secureFile: 'python.run.py'
+
+
+- script: |
+    echo "place ds_config.py"
+    cp $(run_py.secureFilePath) code-examples-python-private/run.py
+  displayName: 'place run.py'
+
 
 - task: DownloadSecureFile@1
   name: python_private_key
   displayName: 'download private.key'
   inputs:
-    secureFile: 'python_private.key'
+    secureFile: 'private.key'
 
 
 - script: |
@@ -106,7 +115,7 @@ steps:
   displayName: 'start python app'
 
 - script: |
-    cd IntegrationTests
+    cd launcher-automation
     mvn clean test -DsuiteXmlFile="python_suite.xml"
   displayName: 'Python app tests'
 
