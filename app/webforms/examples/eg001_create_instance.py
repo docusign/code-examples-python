@@ -32,12 +32,13 @@ class Eg001CreateInstance:
 
     @classmethod
     def create_web_form_instance(cls, form_id, args):
+        #ds-snippet-start:WebForms1Step2
         api_client = ApiClient()
         api_client.host = args["base_path"]
         api_client.set_default_header(header_name="Authorization", header_value=f"Bearer {args['access_token']}")
+        #ds-snippet-end:WebForms1Step2
 
-        webforms_api = FormInstanceManagementApi(api_client)
-
+        #ds-snippet-start:WebForms1Step4
         web_form_values = {
             "PhoneNumber": "555-555-5555",
             "Yes": ["Yes"],
@@ -49,8 +50,12 @@ class Eg001CreateInstance:
             form_values=web_form_values,
             expiration_offset=3600
         )
+        #ds-snippet-end:WebForms1Step4
 
+        #ds-snippet-start:WebForms1Step5
+        webforms_api = FormInstanceManagementApi(api_client)
         web_form = webforms_api.create_instance(args["account_id"], form_id, web_form_req_object)
+        #ds-snippet-end:WebForms1Step5
 
         return web_form
 
@@ -60,8 +65,10 @@ class Eg001CreateInstance:
         api_client.host = args["base_path"]
         api_client.set_default_header(header_name="Authorization", header_value=f"Bearer {args['access_token']}")
 
+        #ds-snippet-start:WebForms1Step3
         webforms_api = FormManagementApi(api_client)
         web_forms = webforms_api.list_forms(args["account_id"], search=args["form_name"])
+        #ds-snippet-end:WebForms1Step3
 
         return web_forms
 
