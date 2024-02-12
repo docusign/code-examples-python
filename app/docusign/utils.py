@@ -3,6 +3,7 @@ from functools import wraps
 import requests
 import urllib
 import json
+import re
 
 from docusign_esign import ApiClient, AccountsApi
 from flask import session, flash, url_for, redirect, render_template, current_app
@@ -146,3 +147,12 @@ def get_user_info(access_token, base_path, oauth_host_name):
     api_client = create_api_client(base_path, access_token)
     api_client.set_oauth_host_name(oauth_host_name)
     return api_client.get_user_info(access_token)
+
+def replace_template_id(file_path, template_id):
+    with open(file_path, 'r') as file:
+        content = file.read()
+
+    content = re.sub('template-id', template_id, content)
+
+    with open(file_path, 'w') as file:
+        file.write(content)

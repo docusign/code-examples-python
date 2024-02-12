@@ -33,6 +33,10 @@ ADMIN_SCOPES = [
     "asset_group_account_read", "asset_group_account_clone_write", "asset_group_account_clone_read"
 ]
 
+WEBFORMS_SCOPES = [
+    "signature", "webforms_read", "webforms_instance_read", "webforms_instance_write"
+]
+
 
 class DSClient:
     ds_app = None
@@ -57,6 +61,8 @@ class DSClient:
             use_scopes.extend(CLICK_SCOPES)
         elif api == "Admin":
             use_scopes.extend(ADMIN_SCOPES)
+        elif api == "WebForms":
+            use_scopes.extend(WEBFORMS_SCOPES)
         else:
             use_scopes.extend(SCOPES)
         # remove duplicate scopes
@@ -93,6 +99,8 @@ class DSClient:
             use_scopes.extend(CLICK_SCOPES)
         elif api == "Admin":
             use_scopes.extend(ADMIN_SCOPES)
+        elif api == "WebForms":
+            use_scopes.extend(WEBFORMS_SCOPES)
         else:
             use_scopes.extend(SCOPES)
         # remove duplicate scopes

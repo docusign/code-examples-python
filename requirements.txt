@@ -9,6 +9,7 @@ docusign-rooms==1.3.0
 docusign-monitor==1.2.0
 docusign-click==1.4.0
 docusign-admin==1.4.0
+docusign-webforms==1.0.2rc12
 Flask==1.1.1
 Flask-OAuthlib==0.9.6
 Flask-Session
