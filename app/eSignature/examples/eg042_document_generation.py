@@ -50,62 +50,61 @@ class Eg042DocumentGenerationController:
         account_id = args["account_id"]
         envelope_args = args["envelope_args"]
 
-        # Step 2a start
+        #ds-snippet-start:eSign42Step2
         template_data = cls.make_template()
         template = templates_api.create_template(account_id, envelope_template=template_data)
         template_id = template.template_id
-
-        # Step 2a end
+        #ds-snippet-end:eSign42Step2
 
         # Update template document
-        # Step 3a start
+        #ds-snippet-start:eSign42Step3
         document_id = '1'
         templates_api.update_document(
             account_id, document_id, template_id,
             envelope_definition=cls.template_document(envelope_args)
         )
-        # Step 3a end
+        #ds-snippet-end:eSign42Step3
 
         # Update recipient tabs
-        # Step 4a start
+        #ds-snippet-start:eSign42Step4
         recipient_id = '1'
         templates_api.create_tabs(
             account_id, recipient_id, template_id,
             template_tabs=cls.recipient_tabs()
         )
-        # Step 4a end
+        #ds-snippet-end:eSign42Step4
 
         # Create draft envelope
-        # Step 5a start
+        #ds-snippet-start:eSign42Step5
         envelope_definition = cls.make_envelope(template_id, envelope_args)
         envelope = envelopes_api.create_envelope(account_id, envelope_definition=envelope_definition)
         envelope_id = envelope.envelope_id
-        # Step 5a end
+        #ds-snippet-end:eSign42Step5
 
         # Get the document id
-        # Step 6 start
+        #ds-snippet-start:eSign42Step6
         doc_gen_form_fields_response = envelopes_api.get_envelope_doc_gen_form_fields(account_id, envelope_id)
         document_id_guid = doc_gen_form_fields_response.doc_gen_form_fields[0].document_id
-        # Step 6 end
+        #ds-snippet-end:eSign42Step6
 
         # Merge the data fields
-        # Step 7a start
+        #ds-snippet-start:eSign42Step7
         form_fields = cls.form_fields(envelope_args, document_id_guid)
         envelopes_api.update_envelope_doc_gen_form_fields(
             account_id,
             envelope_id,
             doc_gen_form_field_request=form_fields
         )
-        # Step 7a end
+        #ds-snippet-end:eSign42Step7
 
         # Send the envelope
-        # Step 8 start
+        #ds-snippet-start:eSign42Step8
         send_envelope_req = Envelope(status="sent")
         envelope = envelopes_api.update(account_id, envelope_id, envelope=send_envelope_req)
-        # Step 8 end
+        #ds-snippet-end:eSign42Step8
         return envelope
 
-    # Step 2b start
+    #ds-snippet-start:eSign42Step2
     @classmethod
     def make_template(cls):
         # Create recipient
@@ -128,10 +127,10 @@ class Eg042DocumentGenerationController:
             status="created"
         )
         return template_request
-    
-    # Step 2b end
 
-    # Step 3b start
+    #ds-snippet-end:eSign42Step2
+
+    #ds-snippet-start:eSign42Step3
     @classmethod
     def template_document(cls, args):
         with open(args["doc_file"], "rb") as file:
@@ -152,9 +151,9 @@ class Eg042DocumentGenerationController:
             documents=[document]
         )
         return envelope_definition
-    # Step 3b end
+    #ds-snippet-end:eSign42Step3
 
-    # Step 4b start
+    #ds-snippet-start:eSign42Step4
     @classmethod
     def recipient_tabs(cls):
         # Create tabs
@@ -174,9 +173,9 @@ class Eg042DocumentGenerationController:
             date_signed_tabs=[date_signed]
         )
         return tabs
-    # Step 4b end
+    #ds-snippet-end:eSign42Step4
 
-    # Step 5b start
+    #ds-snippet-start:eSign42Step5
     @classmethod
     def make_envelope(cls, template_id, args):
         # Create the signer model
@@ -193,9 +192,9 @@ class Eg042DocumentGenerationController:
             template_id=template_id
         )
         return envelope_definition
-    # Step 5b end
+    #ds-snippet-end:eSign42Step5
 
-    # Step 7b start
+    #ds-snippet-start:eSign42Step7
     @classmethod
     def form_fields(cls, args, document_id_guid):
         doc_gen_form_field_request = DocGenFormFieldRequest(
@@ -228,4 +227,4 @@ class Eg042DocumentGenerationController:
             ]
         )
         return doc_gen_form_field_request
-    # Step 7b end
+    #ds-snippet-end:eSign42Step7
