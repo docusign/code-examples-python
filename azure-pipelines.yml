@@ -61,7 +61,7 @@ steps:
   name: ds_config
   displayName: 'download ds_config.py'
   inputs:
-    secureFile: 'ds_config.py'
+    secureFile: 'python.ds_config.py'
 
 
 - script: |
