@@ -36,7 +36,7 @@ class Eg003ListEnvelopesController:
         # Here we set the from_date to filter envelopes for the last month
         # Use ISO 8601 date format
         # 1. Call the envelope status change method to list the envelopes
-        from_date = (datetime.utcnow() - timedelta(days=30)).isoformat()
+        from_date = (datetime.utcnow() - timedelta(days=30)).strftime('%Y-%m-%d')
         results = envelope_api.list_status_changes(account_id=args["account_id"], from_date=from_date)
         #ds-snippet-end:eSign3Step2
 
