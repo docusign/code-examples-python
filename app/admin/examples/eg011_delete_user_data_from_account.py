@@ -26,21 +26,21 @@ class Eg011DeleteUserDataFromAccountController:
         user_id = args["user_id"]
 
         # Create an API client with headers
-        # Step 2 start
+        #ds-snippet-start:Admin11Step2
         api_client = ApiClient(host=DS_CONFIG["admin_api_client_host"])
         api_client.set_default_header(
             header_name="Authorization",
             header_value=f"Bearer {access_token}"
         )
-        # Step 2 end
+        #ds-snippet-end:Admin11Step2
 
-        # Step 3 start
+        #ds-snippet-start:Admin11Step3
         accounts_api = AccountsApi(api_client=api_client)
         membership_redaction_request = IndividualMembershipDataRedactionRequest(user_id=user_id)
-        # Step 3 end
+        #ds-snippet-end:Admin11Step3
 
-        # Step 4 start
+        #ds-snippet-start:Admin11Step4
         results = accounts_api.redact_individual_membership_data(account_id, membership_redaction_request)
-        # Step 4 end
+        #ds-snippet-end:Admin11Step4
 
         return results
