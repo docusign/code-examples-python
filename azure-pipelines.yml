@@ -61,7 +61,7 @@ steps:
   name: ds_config
   displayName: 'download ds_config.py'
   inputs:
-    secureFile: 'ds_config.py'
+    secureFile: 'python.ds_config.py'
 
 
 - script: |
@@ -123,3 +123,12 @@ steps:
     docker stop $(docker ps -a -q)
     docker rm $(docker ps -a -q)
   displayName: 'stop python app'
+
+- script: |
+    allure generate --clean --output $(Build.SourcesDirectory)/python-allure-output '$(Build.SourcesDirectory)/launcher-automation/target/allure-results'
+  displayName: generate allure html reports
+
+- task: PublishAllureReport@1
+  displayName: 'Publish Allure Report'
+  inputs:
+    reportDir: '$(Build.SourcesDirectory)/python-allure-output'
