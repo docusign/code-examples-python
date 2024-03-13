@@ -43,15 +43,16 @@ class Eg011EmbeddedSendingController:
         draft mode and returning a URL for the sender"s view
         """
 
-        # Step 1. Create the envelope with "created" (draft) status
+        # Step 2. Create the envelope with "created" (draft) status
         args["envelope_args"]["status"] = "created"
         # Using worker from example 002
         results = Eg002SigningViaEmailController.worker(args, doc_docx_path, doc_pdf_path)
         envelope_id = results["envelope_id"]
 
-        # Step 2. Create the sender view
+        # Step 3. Create the sender view
         view_request = ReturnUrlRequest(return_url=args["ds_return_url"])
         # Exceptions will be caught by the calling function
+        #ds-snippet-start:eSign11Step3
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
         envelope_api = EnvelopesApi(api_client)
@@ -65,5 +66,6 @@ class Eg011EmbeddedSendingController:
         url = results.url
         if args["starting_view"] == "recipient":
             url = url.replace("send=1", "send=0")
+        #ds-snippet-end:eSign13Step3
 
         return {"envelope_id": envelope_id, "redirect_url": url}
