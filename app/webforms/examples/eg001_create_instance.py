@@ -2,7 +2,7 @@ import base64
 
 from docusign_webforms import ApiClient, FormInstanceManagementApi, FormManagementApi, CreateInstanceRequestBody
 from docusign_esign import Document, Signer, SignHere, Tabs, Recipients, TemplatesApi, Checkbox, DateSigned, \
-     Text, EnvelopeTemplate
+    Text, EnvelopeTemplate
 
 from ...docusign import create_api_client
 
