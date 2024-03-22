@@ -82,6 +82,7 @@ class Eg040DocumentVisibility:
         """
         env = EnvelopeDefinition(
             email_subject = "Please sign this document set",
+            enforce_signer_visibility = "true",
         )
 
         doc1_b64 = base64.b64encode(bytes(cls.create_document1(args), "utf-8")).decode("ascii")
