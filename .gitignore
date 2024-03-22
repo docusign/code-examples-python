@@ -123,3 +123,6 @@ private.key
 # Current flask session
 
 flask_session/
+
+# Workflow ID file
+WORKFLOW_ID.txt

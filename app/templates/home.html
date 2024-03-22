@@ -45,7 +45,7 @@
                     {% for example in group["Examples"] -%}
                         {% if not example["SkipForLanguages"] or "python" not in example["SkipForLanguages"] %}
                             {% if example.CFREnabled != "CFROnly" %}
-                                {% set api_prefix = "a" if api["Name"] == "Admin" else "c" if api["Name"] == "Click" else "r" if api["Name"] == "Rooms" else "m" if api["Name"] == "Monitor" else "cn" if api["Name"] == "Connect" else "w" if api["Name"] == "WebForms" else "" %}
+                                {% set api_prefix = "a" if api["Name"] == "Admin" else "c" if api["Name"] == "Click" else "r" if api["Name"] == "Rooms" else "m" if api["Name"] == "Monitor" else "cn" if api["Name"] == "Connect" else "ms" if api["Name"] == "Maestro" else "w" if api["Name"] == "WebForms" else "" %}
                                 <h4
                                     id="{{ api_prefix + 'example' + '0' * (3 - example['ExampleNumber'] | string() | length ) + example['ExampleNumber'] | string() }}"
                                 >

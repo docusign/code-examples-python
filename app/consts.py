@@ -29,6 +29,8 @@ web_form_config_file = "web-form-config.json"
 # Base uri for callback function
 base_uri_suffix = "/restapi"
 
+# Workflow name
+workflow_name = "Example workflow - send invite to signer"
 
 # Default languages for brand
 languages = {
@@ -114,5 +116,6 @@ API_TYPE = {
     "ROOMS": "Rooms",
     "ADMIN": "Admin",
     "CONNECT": "Connect",
+    "MAESTRO": "Maestro",
     "WEBFORMS": "WebForms"
 }

@@ -33,6 +33,10 @@ ADMIN_SCOPES = [
     "asset_group_account_read", "asset_group_account_clone_write", "asset_group_account_clone_read"
 ]
 
+MAESTRO_SCOPES = [
+    "signature", "aow_manage"
+]
+
 WEBFORMS_SCOPES = [
     "signature", "webforms_read", "webforms_instance_read", "webforms_instance_write"
 ]
@@ -61,6 +65,8 @@ class DSClient:
             use_scopes.extend(CLICK_SCOPES)
         elif api == "Admin":
             use_scopes.extend(ADMIN_SCOPES)
+        elif api == "Maestro":
+            use_scopes.extend(MAESTRO_SCOPES)
         elif api == "WebForms":
             use_scopes.extend(WEBFORMS_SCOPES)
         else:
@@ -99,6 +105,8 @@ class DSClient:
             use_scopes.extend(CLICK_SCOPES)
         elif api == "Admin":
             use_scopes.extend(ADMIN_SCOPES)
+        elif api == "Maestro":
+            use_scopes.extend(MAESTRO_SCOPES)
         elif api == "WebForms":
             use_scopes.extend(WEBFORMS_SCOPES)
         else:
