@@ -29,6 +29,7 @@ DS_CONFIG = {
     "doc_terms_pdf": "Term_Of_Service.pdf",
     "doc_txt": "Welcome.txt",
     "doc_offer_letter": "Offer_Letter_Demo.docx",
+    "doc_dynamic_table": "Offer_Letter_Dynamic_Table.docx",
     # Payment gateway information is optional
     "gateway_account_id": "{DS_PAYMENT_GATEWAY_ID}",
     "gateway_name": "stripe",

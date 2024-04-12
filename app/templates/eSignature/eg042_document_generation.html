@@ -9,6 +9,7 @@
 {%  set job_title_index = 3 %}
 {%  set salary_index = 4 %}
 {%  set start_date_index = 5 %}
+{%  set rsus_index = 6 %}
 
 <form class="eg" action="" method="post" data-busy="form">
     {% if 'FormName' in example['Forms'][form_index] %}
@@ -36,14 +37,18 @@
       <label for="job_title">{{ example['Forms'][form_index]['Inputs'][job_title_index]['InputName'] }}</label>
       <select class="form-control" id="job_title" name="job_title">
           <option value="Software Engineer">Software Engineer</option>
-          <option value="Product Manager">Product Manager</option>
-          <option value="Sales Representative">Sales Representative</option>
+          <option value="Account Executive">Account Executive</option>
       </select>
     </div>
     <div class="form-group">
       <label for="salary">{{ example['Forms'][form_index]['Inputs'][salary_index]['InputName'] }}</label>
       <input type="text" class="form-control" id="salary" placeholder="{{ example['Forms'][form_index]['Inputs'][salary_index]['InputPlaceholder'] }}" name="salary"
              required />
+    </div>
+    <div class="form-group">
+      <label for="rsus">{{ example['Forms'][form_index]['Inputs'][rsus_index]['InputName'] }}</label>
+      <input type="number" class="form-control" id="rsus" placeholder="{{ example['Forms'][form_index]['Inputs'][rsus_index]['InputPlaceholder'] }}" name="rsus"
+             min="0" required />
     </div>
     <div class="form-group">
       <label for="start_date">{{ example['Forms'][form_index]['Inputs'][start_date_index]['InputName'] }}</label>
