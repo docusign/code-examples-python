@@ -37,7 +37,7 @@
                  data-busy="href">{{ session["manifest"]["SupportingTexts"]["LoginButton"] }} <span class="sr-only">(current)</span></a>
             </li>
           {% endif %}
-
+        </ul>
         {% if session['ds_user_name'] %}
           <span class="navbar-text">
             Welcome {{ session['ds_user_name'] }}
@@ -64,8 +64,6 @@
         <div class="rect5"></div>
         </div>
       </section>
-
-      <p id="download-continue" class="feedback"><a href="/">Continue</a></p>
 
       {% if 'ds_user_name' in session %}
         <div class="container">
