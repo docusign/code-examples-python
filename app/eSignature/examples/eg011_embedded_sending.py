@@ -75,6 +75,40 @@ class Eg011EmbeddedSendingController:
         url = sender_view.url
 
         return url
+    
+    @classmethod
+    def make_envelope_view_request(cls, args):
+        view_request = EnvelopeViewRequest(
+            return_url=args["ds_return_url"],
+            view_access="envelope",
+            settings=EnvelopeViewSettings(
+                starting_screen=args["starting_view"],
+                send_button_action="send",
+                show_back_button="false",
+                back_button_action="previousPage",
+                show_header_actions="false",
+                show_discard_action="false",
+                lock_token="",
+                recipient_settings=EnvelopeViewRecipientSettings(
+                    show_edit_recipients="false",
+                    show_contacts_list="false"
+                ),
+                document_settings=EnvelopeViewDocumentSettings(
+                    show_edit_documents="false",
+                    show_edit_document_visibility="false",
+                    show_edit_pages="false"
+                ),
+                tagger_settings=EnvelopeViewTaggerSettings(
+                    palette_sections="default",
+                    palette_default="custom"
+                ),
+                template_settings=EnvelopeViewTemplateSettings(
+                    show_matching_templates_prompt="true"
+                )
+            )
+        )
+
+        return view_request
     #ds-snippet-end:eSign11Step3
     
     @classmethod
@@ -199,40 +233,6 @@ class Eg011EmbeddedSendingController:
         env.status = args["status"]
 
         return env
-    
-    @classmethod
-    def make_envelope_view_request(cls, args):
-        view_request = EnvelopeViewRequest(
-            return_url=args["ds_return_url"],
-            view_access="envelope",
-            settings=EnvelopeViewSettings(
-                starting_screen=args["starting_view"],
-                send_button_action="send",
-                show_back_button="false",
-                back_button_action="previousPage",
-                show_header_actions="false",
-                show_discard_action="false",
-                lock_token="",
-                recipient_settings=EnvelopeViewRecipientSettings(
-                    show_edit_recipients="false",
-                    show_contacts_list="false"
-                ),
-                document_settings=EnvelopeViewDocumentSettings(
-                    show_edit_documents="false",
-                    show_edit_document_visibility="false",
-                    show_edit_pages="false"
-                ),
-                tagger_settings=EnvelopeViewTaggerSettings(
-                    palette_sections="default",
-                    palette_default="custom"
-                ),
-                template_settings=EnvelopeViewTemplateSettings(
-                    show_matching_templates_prompt="true"
-                )
-            )
-        )
-
-        return view_request
 
     @classmethod
     def create_document1(cls, args):
