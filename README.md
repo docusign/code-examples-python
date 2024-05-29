@@ -109,7 +109,7 @@ For a list of code examples that use the Web Forms API, see the [How-to guides o
 
 ### Installation steps with docker
 1. `docker image build -t docusign .`
-1.  `docker run --name docusign_python -p 3000:3000 -d docusign`
+1. `docker run --name docusign_python -p 3000:3000 -d docusign`
 
 ### Installation steps for JWT Grant authentication
 
