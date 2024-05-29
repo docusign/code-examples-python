@@ -12,7 +12,6 @@ if os.environ.get("DEBUG", False) == "True":
     app.config['SESSION_TYPE'] = 'filesystem'
     sess = Session()
     sess.init_app(app)
-    port = int(os.environ.get("PORT", port))
     app.run(host=host, port=port, debug=True)
 else:
     app.config['SESSION_TYPE'] = 'filesystem'
