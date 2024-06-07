@@ -108,8 +108,13 @@ For a list of code examples that use the Web Forms API, see the [How-to guides o
 1. Open a browser to http://localhost:3000
 
 ### Installation steps with docker
+
+**Note**: Running the launcher with docker will use Python 3.11
+
+1. Open the Docker application
 1. `docker image build -t docusign .`
 1. `docker run --name docusign_python -p 3000:3000 -d docusign`
+1. Open a browser to http://localhost:3000
 
 ### Installation steps for JWT Grant authentication
 
