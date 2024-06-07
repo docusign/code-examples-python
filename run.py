@@ -2,17 +2,20 @@
 from app import app
 from flask_session import Session
 import os
+import sys
+
+host = "0.0.0.0" if "--docker" in sys.argv else "localhost"
+port = int(os.environ.get("PORT", 3000))
 
 if os.environ.get("DEBUG", False) == "True":
     app.config["DEBUG"] = True
     app.config['SESSION_TYPE'] = 'filesystem'
     sess = Session()
     sess.init_app(app)
-    port = int(os.environ.get("PORT", 3000))
-    app.run(host="localhost", port=3000, debug=True)
+    app.run(host=host, port=port, debug=True)
 else:
     app.config['SESSION_TYPE'] = 'filesystem'
     sess = Session()
     sess.init_app(app)
-    app.run(host="localhost", port=3000, extra_files="api_type.py")
+    app.run(host=host, port=port, extra_files="api_type.py")
 
