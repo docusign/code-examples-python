@@ -107,6 +107,15 @@ For a list of code examples that use the Web Forms API, see the [How-to guides o
    **Note:** You will need to alias the python command to run Python 3 or use `python3 run.py`
 1. Open a browser to http://localhost:3000
 
+### Installation steps with docker
+
+**Note**: Running the launcher with docker will use Python 3.11
+
+1. Open the Docker application
+1. `docker image build -t docusign .`
+1. `docker run --name docusign_python -p 3000:3000 -d docusign`
+1. Open a browser to http://localhost:3000
+
 ### Installation steps for JWT Grant authentication
 
 **Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the Docusign Developer Center, skip step 4 as it was automatically performed for you.  
