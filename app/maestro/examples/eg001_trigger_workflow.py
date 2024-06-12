@@ -68,6 +68,7 @@ class Eg001TriggerWorkflowController:
         workflow_trigger_api = WorkflowTriggerApi(api_client)
         trigger_response = workflow_trigger_api.trigger_workflow(
             args["account_id"],
+            args["workflow_id"],
             trigger_payload,
             mtid=mtid, mtsec=mtsec
         )

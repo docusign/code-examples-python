@@ -16,7 +16,7 @@ DS_CONFIG = {
     "rooms_api_client_host": "https://demo.rooms.docusign.com/restapi",
     "monitor_api_client_host": "https://lens-d.docusign.net",
     "admin_api_client_host": "https://api-d.docusign.net/management",
-    "maestro_api_client_host": "https://demo.services.docusign.net/",
+    "maestro_api_client_host": "https://apps-d.docusign.com/api/maestro",
     "webforms_api_client_host": "https://apps-d.docusign.com/api/webforms/v1.1",
     "allow_silent_authentication": True,  # a user can be silently authenticated if they have an
     # active login session on another tab of the same browser
