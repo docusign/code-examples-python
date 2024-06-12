@@ -31,6 +31,13 @@ def idv_authentication():
 
     # 1. Get required data
     args = Eg023IDVAuthenticationController.get_args()
+
+    if args["envelope_args"]["signer_email"] == DS_CONFIG["signer_email"]:
+        return render_template(
+            "error.html",
+            error_code=400,
+            error_message=session["manifest"]["SupportingTexts"]["IdenticalEmailsNotAllowedErrorMessage"]
+        )
     try:
         # 2: Call the worker method for idv authentication
         results = Eg023IDVAuthenticationController.worker(args)
