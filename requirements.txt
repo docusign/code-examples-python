@@ -10,7 +10,7 @@ docusign-monitor==1.2.0
 docusign-click==1.4.0
 docusign-admin==1.4.1
 docusign-webforms==1.0.2rc12
-docusign-maestro==1.0.0rc1
+docusign-maestro==2.0.0rc1
 Flask==2.3.3
 Flask-OAuthlib==0.9.6
 Flask-Session==0.8.0
