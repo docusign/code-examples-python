@@ -1,0 +1,11 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+<h4>{{ title }}</h4>
+<p>{{ message.format(consent_url) | safe }}</p>
+
+<form class="eg" action="mseg001publish" method="post" data-busy="form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  {% include 'submit_button.html' %}
+</form>
+
+{% endblock %}

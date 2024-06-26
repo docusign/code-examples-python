@@ -18,7 +18,9 @@ body {
 
 .jumbotron {
 
-  background: #000 !important;
+  background-image: url(/static/assets/banner-code.png) !important;
+  background-position: right;
+  min-height: 500px;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   padding-left: 30px !important;

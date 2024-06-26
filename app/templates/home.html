@@ -2,25 +2,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    {% if not 'ds_user_name' in session %}
-  <!-- IF not signed in -->
   <div>
     <div class="jumbotron jumbotron-fluid"> <table>
+    </br>
       <tbody>
       <tr>
       <td>
         <h1 class="display-4">Python Launcher</h1>
       <p class="Xlead">{{ session['manifest']['SupportingTexts']['HomePageText'] }}</p>
       </td>
+    </tr>
+    <tr>
       <td>
-          <img src="/static/assets/banner-code.png" />
       </td>
     </tr>
     </tbody>
     </table>
   </div>
-    {% endif %}
 
     <!--  Future: add a table of contents or navigation pane
           Eg, see https://stackoverflow.com/questions/21868610/make-column-fixed-position-in-bootstrap
@@ -45,7 +43,7 @@
                     {% for example in group["Examples"] -%}
                         {% if not example["SkipForLanguages"] or "python" not in example["SkipForLanguages"] %}
                             {% if example.CFREnabled != "CFROnly" %}
-                                {% set api_prefix = "a" if api["Name"] == "Admin" else "c" if api["Name"] == "Click" else "r" if api["Name"] == "Rooms" else "m" if api["Name"] == "Monitor" else "cn" if api["Name"] == "Connect" else "w" if api["Name"] == "WebForms" else "" %}
+                                {% set api_prefix = "a" if api["Name"] == "Admin" else "c" if api["Name"] == "Click" else "r" if api["Name"] == "Rooms" else "m" if api["Name"] == "Monitor" else "cn" if api["Name"] == "Connect" else "ms" if api["Name"] == "Maestro" else "w" if api["Name"] == "WebForms" else "" %}
                                 <h4
                                     id="{{ api_prefix + 'example' + '0' * (3 - example['ExampleNumber'] | string() | length ) + example['ExampleNumber'] | string() }}"
                                 >

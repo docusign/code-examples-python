@@ -6,6 +6,7 @@ const DS_SEARCH = (function () {
     ROOMS: "rooms",
     ADMIN: "admin",
     CONNECT: "connect",
+    MAESTRO: "maestro",
     WEBFORMS: "webforms"
   }
 
@@ -143,6 +144,8 @@ const DS_SEARCH = (function () {
         return "eg";
       case API_TYPES.CONNECT:
         return "cneg";
+      case API_TYPES.MAESTRO:
+        return "mseg";
       case API_TYPES.WEBFORMS:
         return "weg";
     }

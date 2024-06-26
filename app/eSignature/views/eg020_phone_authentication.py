@@ -32,6 +32,13 @@ def phone_authentication():
 
     # 1. Get required arguments
     args = Eg020PhoneAuthenticationController.get_args()
+    if args["envelope_args"]["signer_email"] == DS_CONFIG["signer_email"]:
+        return render_template(
+            "error.html",
+            error_code=400,
+            error_message=session["manifest"]["SupportingTexts"]["IdenticalEmailsNotAllowedErrorMessage"]
+        )
+
     try:
         # Step 2: Call the worker method for authenticating with phone
         results = Eg020PhoneAuthenticationController.worker(args)

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.png') }}">
     <title>{{ title }}</title>
     <!-- Bootstrap core CSS -->
     <script src="https://kit.fontawesome.com/a2fb399780.js" crossorigin="anonymous"></script>
@@ -70,7 +70,7 @@
       <p id="download-continue" class="feedback"><a href="/">c</a></p>
 
       {% if 'ds_user_name' in session %}
-        <div class="container">
+        <div class="container-full-bg">
            <section id="content" style="padding-top:30px;">
       {%  else  %}
         <div class="container-full-bg">

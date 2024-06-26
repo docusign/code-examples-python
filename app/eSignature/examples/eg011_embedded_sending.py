@@ -1,8 +1,9 @@
 import base64
 from os import path
 
-from docusign_esign import EnvelopesApi, ReturnUrlRequest, EnvelopesApi, EnvelopeDefinition, \
-    Document, Signer, CarbonCopy, SignHere, Tabs, Recipients
+from docusign_esign import EnvelopesApi, EnvelopesApi, EnvelopeDefinition, \
+    Document, Signer, CarbonCopy, SignHere, Tabs, Recipients, EnvelopeViewRequest, EnvelopeViewSettings, \
+    EnvelopeViewRecipientSettings, EnvelopeViewDocumentSettings, EnvelopeViewTaggerSettings, EnvelopeViewTemplateSettings
 from flask import url_for, session, request
 
 from ...consts import pattern, demo_docs_path
@@ -36,6 +37,7 @@ class Eg011EmbeddedSendingController:
             "access_token": session["ds_access_token"],
             "envelope_args": envelope_args,
             "ds_return_url": url_for("ds.ds_return", _external=True),
+            "starting_view": starting_view,
         }
         return args
 
@@ -58,7 +60,7 @@ class Eg011EmbeddedSendingController:
     @classmethod
     #ds-snippet-start:eSign11Step3
     def create_sender_view(cls, args, envelope_id):
-        view_request = ReturnUrlRequest(return_url=args["ds_return_url"])
+        view_request = cls.make_envelope_view_request(args)
         # Exceptions will be caught by the calling function
         api_client = create_api_client(base_path=args["base_path"], access_token=args["access_token"])
 
@@ -66,15 +68,47 @@ class Eg011EmbeddedSendingController:
         sender_view = envelope_api.create_sender_view(
             account_id=args["account_id"],
             envelope_id=envelope_id,
-            return_url_request=view_request
+            envelope_view_request=view_request
         )
 
         # Switch to Recipient and Documents view if requested by the user
         url = sender_view.url
-        if args["starting_view"] == "recipient":
-            url = url.replace("send=1", "send=0")
 
         return url
+    
+    @classmethod
+    def make_envelope_view_request(cls, args):
+        view_request = EnvelopeViewRequest(
+            return_url=args["ds_return_url"],
+            view_access="envelope",
+            settings=EnvelopeViewSettings(
+                starting_screen=args["starting_view"],
+                send_button_action="send",
+                show_back_button="false",
+                back_button_action="previousPage",
+                show_header_actions="false",
+                show_discard_action="false",
+                lock_token="",
+                recipient_settings=EnvelopeViewRecipientSettings(
+                    show_edit_recipients="false",
+                    show_contacts_list="false"
+                ),
+                document_settings=EnvelopeViewDocumentSettings(
+                    show_edit_documents="false",
+                    show_edit_document_visibility="false",
+                    show_edit_pages="false"
+                ),
+                tagger_settings=EnvelopeViewTaggerSettings(
+                    palette_sections="default",
+                    palette_default="custom"
+                ),
+                template_settings=EnvelopeViewTemplateSettings(
+                    show_matching_templates_prompt="true"
+                )
+            )
+        )
+
+        return view_request
     #ds-snippet-end:eSign11Step3
     
     @classmethod

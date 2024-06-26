@@ -100,6 +100,21 @@ steps:
 
 - script: dir $(Build.SourcesDirectory)/code-examples-python-private/app
 
+- script: |
+    echo "Checking for running Docker containers..."
+    containers=$(docker ps -q)
+    if [ ! -z "$containers" ]; then
+      echo "Stopping running Docker containers..."
+      docker stop $(docker ps -q)
+    else
+      echo "No Docker containers are running."
+    fi
+  displayName: "check for running containers"
+
+- script: |
+    docker system prune -a --force
+  displayName: "cleanup docker files"
+
 - task: Docker@2
   displayName: Build python image
   inputs:

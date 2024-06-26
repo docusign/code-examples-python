@@ -1,0 +1,38 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% include 'example_info.html' %}
+
+{%  set form_index = 0 %}
+{%  set workflow_id_index = 0 %}
+{%  set instance_id_index = 1 %}
+{%  set redirect_to8_index = 0 %}
+
+{% if workflow_id and instance_id %}
+  <form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+      <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="workflow_id">{{ example['Forms'][form_index]['Inputs'][workflow_id_index]['InputName'] }}</label>
+      <input type="text" class="form-control" id="workflow_id" name="workflow_id"
+             value="{{ workflow_id }}" required readonly>
+    </div>
+    <div class="form-group">
+      <label for="instance_id">{{ example['Forms'][form_index]['Inputs'][instance_id_index]['InputName'] }}</label>
+      <input type="text" class="form-control" id="instance_id" name="instance_id"
+             value="{{ instance_id }}" required readonly>
+    </div>
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'submit_button.html' %}
+  </form>
+{% else %}
+  {{ example['RedirectsToOtherCodeExamples'][redirect_to8_index]['RedirectText'].format('href="mseg001"') | safe }}
+     
+  <form class="eg" action="mseg001" method="get">
+    {% include 'continue_button.html' %}
+  </form>
+{% endif %}
+
+{% endblock %}

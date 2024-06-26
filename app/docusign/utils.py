@@ -1,7 +1,7 @@
 from datetime import timedelta, datetime
 from functools import wraps
 import requests
-import urllib
+from urllib.parse import urlparse, parse_qs
 import json
 import re
 
@@ -147,6 +147,16 @@ def get_user_info(access_token, base_path, oauth_host_name):
     api_client = create_api_client(base_path, access_token)
     api_client.set_oauth_host_name(oauth_host_name)
     return api_client.get_user_info(access_token)
+
+def get_parameter_value_from_url(url, param_name):
+    parsed_url = urlparse(url)
+    query_params = parse_qs(parsed_url.query)
+
+    # Access the parameter value (returns a list)
+    param_value_list = query_params.get(param_name, [])
+
+    # If the parameter exists, return the first value; otherwise, return None
+    return param_value_list[0] if param_value_list else None
 
 def replace_template_id(file_path, template_id):
     with open(file_path, 'r') as file:

@@ -16,6 +16,7 @@ DS_CONFIG = {
     "rooms_api_client_host": "https://demo.rooms.docusign.com/restapi",
     "monitor_api_client_host": "https://lens-d.docusign.net",
     "admin_api_client_host": "https://api-d.docusign.net/management",
+    "maestro_api_client_host": "https://apps-d.docusign.com/api/maestro",
     "webforms_api_client_host": "https://apps-d.docusign.com/api/webforms/v1.1",
     "allow_silent_authentication": True,  # a user can be silently authenticated if they have an
     # active login session on another tab of the same browser
@@ -28,6 +29,7 @@ DS_CONFIG = {
     "doc_terms_pdf": "Term_Of_Service.pdf",
     "doc_txt": "Welcome.txt",
     "doc_offer_letter": "Offer_Letter_Demo.docx",
+    "doc_dynamic_table": "Offer_Letter_Dynamic_Table.docx",
     # Payment gateway information is optional
     "gateway_account_id": "{DS_PAYMENT_GATEWAY_ID}",
     "gateway_name": "stripe",

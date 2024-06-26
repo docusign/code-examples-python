@@ -3,7 +3,7 @@ from flask import session, request
 from os import path
 from docusign_esign import EnvelopesApi, TemplatesApi, EnvelopeDefinition, Document, Signer, SignHere, \
     DateSigned, Tabs, Recipients, DocGenFormField, EnvelopeTemplate, TemplateRole, DocGenFormFields, \
-    DocGenFormFieldRequest, Envelope
+    DocGenFormFieldRequest, Envelope, DocGenFormFieldRowValue
 
 from ...consts import demo_docs_path, pattern
 from ...ds_config import DS_CONFIG
@@ -20,8 +20,9 @@ class Eg042DocumentGenerationController:
             "manager_name": pattern.sub("", request.form.get("manager_name")),
             "job_title": pattern.sub("", request.form.get("job_title")),
             "salary": pattern.sub("", request.form.get("salary")),
+            "rsus": pattern.sub("", request.form.get("rsus")),
             "start_date": pattern.sub("", request.form.get("start_date")),
-            "doc_file": path.join(demo_docs_path, DS_CONFIG["doc_offer_letter"])
+            "doc_file": path.join(demo_docs_path, DS_CONFIG["doc_dynamic_table"])
         }
         args = {
             "account_id": session["ds_account_id"],
@@ -164,7 +165,7 @@ class Eg042DocumentGenerationController:
             anchor_y_offset="-22"
         )
         date_signed = DateSigned(
-            anchor_string="Date",
+            anchor_string="Date Signed",
             anchor_units="pixels",
             anchor_y_offset="-22"
         )
@@ -197,6 +198,7 @@ class Eg042DocumentGenerationController:
     #ds-snippet-start:eSign42Step7
     @classmethod
     def form_fields(cls, args, document_id_guid):
+        bonus_value = "20%"
         doc_gen_form_field_request = DocGenFormFieldRequest(
             doc_gen_form_fields=[
                 DocGenFormFields(
@@ -215,12 +217,50 @@ class Eg042DocumentGenerationController:
                             value=args["job_title"]
                         ),
                         DocGenFormField(
-                            name="Salary",
-                            value=args["salary"]
-                        ),
-                        DocGenFormField(
                             name="Start_Date",
                             value=args["start_date"]
+                        ),
+                        DocGenFormField(
+                            name="Compensation_Package",
+                            type="TableRow",
+                            row_values=[
+                                DocGenFormFieldRowValue(
+                                    doc_gen_form_field_list=[
+                                        DocGenFormField(
+                                            name="Compensation_Component",
+                                            value="Salary"
+                                        ),
+                                        DocGenFormField(
+                                            name="Details",
+                                            value=f"${args['salary']}"
+                                        )
+                                    ]
+                                ),
+                                DocGenFormFieldRowValue(
+                                    doc_gen_form_field_list=[
+                                        DocGenFormField(
+                                            name="Compensation_Component",
+                                            value="Bonus"
+                                        ),
+                                        DocGenFormField(
+                                            name="Details",
+                                            value=bonus_value
+                                        )
+                                    ]
+                                ),
+                                DocGenFormFieldRowValue(
+                                    doc_gen_form_field_list=[
+                                        DocGenFormField(
+                                            name="Compensation_Component",
+                                            value="RSUs"
+                                        ),
+                                        DocGenFormField(
+                                            name="Details",
+                                            value=args["rsus"]
+                                        )
+                                    ]
+                                )
+                            ]
                         )
                     ]
                 )

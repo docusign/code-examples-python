@@ -7,7 +7,7 @@
 <p>Error information:</p>
 
 {% if error_code %}
-  <p>{{ error_code }}: {{ error_message }}</p>
+  <p>{{ error_code }}: {{ error_message | safe }}</p>
 {% else %}
   <p><pre>{{ err }}</pre></p>
 {% endif %}
