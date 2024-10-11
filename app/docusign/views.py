@@ -86,7 +86,14 @@ def ds_callback():
 
     # Save the redirect eg if present
     redirect_url = session.pop("eg", None)
-    resp = DSClient.get_token(session["auth_type"])
+    try:
+        resp = DSClient.get_token(session["auth_type"])
+    except Exception as err:
+        if session.get("pkce_failed", False):
+            raise err
+
+        session["pkce_failed"] = True
+        return redirect(url_for("ds.ds_login"))
 
     # app.logger.info("Authenticated with DocuSign.")
     session["ds_access_token"] = resp["access_token"]
