@@ -22,7 +22,7 @@ doc_file = "World_Wide_Corp_fields.pdf"
 # Name of static pdf file
 pdf_file = "World_Wide_Corp_lorem.pdf"
 
-web_form_template_file = "World_Wide_Corp_Form.pdf"
+web_form_template_file = "World_Wide_Corp_Web_Form.pdf"
 
 web_form_config_file = "web-form-config.json"
 
