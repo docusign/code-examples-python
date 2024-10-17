@@ -98,5 +98,5 @@ def get_web_form_create_view():
         "webforms/eg001_web_form_create.html",
         title=example["ExampleName"],
         example=example,
-        description=additional_page_data["ResultsPageText"]
+        description=additional_page_data["ResultsPageText"].format("app/static/demo_documents")
     )
