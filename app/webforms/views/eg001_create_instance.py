@@ -55,11 +55,16 @@ def create_web_form_instance():
     except Exception as error:
         return process_error(error)
 
+    example = get_example_by_number(session["manifest"], example_number, api)
+    additional_page_data = next((p for p in example["AdditionalPage"] if p["Name"] == "webforms_heading"),
+                                None)
+
     return render_template(
         "webforms/eg001_web_form_embed.html",
         form_url=results.form_url,
         instance_token=results.instance_token,
-        integration_key=DS_CONFIG["ds_client_id"]
+        integration_key=DS_CONFIG["ds_client_id"],
+        webforms_heading=additional_page_data["ResultsPageText"]
     )
 
 
