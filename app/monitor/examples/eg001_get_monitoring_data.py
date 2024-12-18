@@ -27,8 +27,8 @@ class Eg001GetMonitoringDataController:
         #ds-snippet-start:Monitor1Step3
         dataset_api = DataSetApi(api_client=api_client)
 
-        cursor_value = ''
-        limit = 100
+        cursor_value = '2024-01-01T00:00:00Z'
+        limit = 2000
         function_results = []
         complete = False
 
