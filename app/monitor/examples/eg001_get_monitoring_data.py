@@ -1,5 +1,6 @@
 from docusign_monitor import DataSetApi
 from flask import session
+from datetime import datetime, timedelta, timezone
 
 from app.monitor.utils import create_monitor_api_client
 
@@ -25,9 +26,10 @@ class Eg001GetMonitoringDataController:
         )
         #ds-snippet-end:Monitor1Step2 
         #ds-snippet-start:Monitor1Step3
+        cursor_date = datetime.now(timezone.utc).replace(year=datetime.now(timezone.utc).year - 1)
         dataset_api = DataSetApi(api_client=api_client)
 
-        cursor_value = ''
+        cursor_value = cursor_date.strftime('%Y-%m-%dT00:00:00Z')
         limit = 2000
         function_results = []
         complete = False
