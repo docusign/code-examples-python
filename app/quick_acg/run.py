@@ -4,6 +4,7 @@ from flask_session import Session
 import os
 
 quick_acg_app.config["QUICK_ACG"] = True
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 if os.environ.get("DEBUG", False) == "True":
     quick_acg_app.config["DEBUG"] = True
