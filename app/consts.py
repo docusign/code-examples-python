@@ -116,6 +116,5 @@ API_TYPE = {
     "ROOMS": "Rooms",
     "ADMIN": "Admin",
     "CONNECT": "Connect",
-    "MAESTRO": "Maestro",
     "WEBFORMS": "WebForms"
 }
