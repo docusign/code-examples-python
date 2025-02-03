@@ -2,14 +2,14 @@ from os import path
 import sys
 import subprocess
 
+# pip install DocuSign SDK
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'docusign_esign'])
+
 from docusign_esign import ApiClient
 from docusign_esign.client.api_exception import ApiException
 from app.jwt_helpers import get_jwt_token, get_private_key
 from app.eSignature.examples.eg002_signing_via_email import Eg002SigningViaEmailController
 from app.jwt_config import DS_JWT
-
-# pip install DocuSign SDK
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'docusign_esign'])
 
 SCOPES = [
     "signature", "impersonation"
