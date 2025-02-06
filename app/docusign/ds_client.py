@@ -42,6 +42,10 @@ WEBFORMS_SCOPES = [
     "signature", "webforms_read", "webforms_instance_read", "webforms_instance_write"
 ]
 
+NOTARY_SCOPES = [
+    "signature", "organization_read", "notary_read", "notary_write"
+]
+
 
 class DSClient:
     ds_app = None
@@ -71,6 +75,8 @@ class DSClient:
             use_scopes.extend(ADMIN_SCOPES)
         elif api == "WebForms":
             use_scopes.extend(WEBFORMS_SCOPES)
+        elif api == "Notary":
+            use_scopes.extend(NOTARY_SCOPES)
         else:
             use_scopes.extend(SCOPES)
         # remove duplicate scopes
@@ -107,6 +113,8 @@ class DSClient:
             use_scopes.extend(ADMIN_SCOPES)
         elif api == "WebForms":
             use_scopes.extend(WEBFORMS_SCOPES)
+        elif api == "Notary":
+            use_scopes.extend(NOTARY_SCOPES)
         else:
             use_scopes.extend(SCOPES)
         # remove duplicate scopes
@@ -130,6 +138,8 @@ class DSClient:
             use_scopes.extend(ADMIN_SCOPES)
         elif api == "WebForms":
             use_scopes.extend(WEBFORMS_SCOPES)
+        elif api == "Notary":
+            use_scopes.extend(NOTARY_SCOPES)
         else:
             use_scopes.extend(SCOPES)
         # remove duplicate scopes
