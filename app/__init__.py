@@ -14,6 +14,7 @@ from .admin import views as admin_views
 from .connect import views as connect_views
 from .webforms import views as webforms_views
 from .notary import views as notary_views
+from .connected_fields import views as connected_fields_views
 from .views import core
 
 session_path = "/tmp/python_recipe_sessions"
@@ -119,6 +120,8 @@ app.register_blueprint(connect_views.cneg001)
 app.register_blueprint(webforms_views.weg001)
 
 app.register_blueprint(notary_views.neg004)
+
+app.register_blueprint(connected_fields_views.feg001)
 
 if "DYNO" in os.environ:  # On Heroku?
     import logging
