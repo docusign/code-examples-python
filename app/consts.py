@@ -117,5 +117,6 @@ API_TYPE = {
     "ADMIN": "Admin",
     "CONNECT": "Connect",
     "WEBFORMS": "WebForms",
-    "NOTARY": "Notary"
+    "NOTARY": "Notary",
+    "CONNECTED_FIELDS": "ConnectedFields"
 }

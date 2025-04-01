@@ -46,6 +46,10 @@ NOTARY_SCOPES = [
     "signature", "organization_read", "notary_read", "notary_write"
 ]
 
+CONNECTED_FIELDS = [
+    "signature", "adm_store_unified_repo_read"
+]
+
 
 class DSClient:
     ds_app = None
@@ -77,6 +81,8 @@ class DSClient:
             use_scopes.extend(WEBFORMS_SCOPES)
         elif api == "Notary":
             use_scopes.extend(NOTARY_SCOPES)
+        elif api == "ConnectedFields":
+            use_scopes.extend(CONNECTED_FIELDS)
         else:
             use_scopes.extend(SCOPES)
         # remove duplicate scopes
@@ -115,6 +121,8 @@ class DSClient:
             use_scopes.extend(WEBFORMS_SCOPES)
         elif api == "Notary":
             use_scopes.extend(NOTARY_SCOPES)
+        elif api == "ConnectedFields":
+            use_scopes.extend(CONNECTED_FIELDS)
         else:
             use_scopes.extend(SCOPES)
         # remove duplicate scopes
