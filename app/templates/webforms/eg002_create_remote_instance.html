@@ -1,0 +1,10 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% include 'example_info.html' %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'continue_button.html' %}
+</form>
+  
+{% endblock %}

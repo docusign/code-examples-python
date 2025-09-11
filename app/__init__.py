@@ -118,6 +118,7 @@ app.register_blueprint(esignature_views.eg044)
 app.register_blueprint(connect_views.cneg001)
 
 app.register_blueprint(webforms_views.weg001)
+app.register_blueprint(webforms_views.weg002)
 
 app.register_blueprint(notary_views.neg004)
 

@@ -1,10 +1,10 @@
 # ds_config.py
 #
-# DocuSign configuration settings
+# Docusign configuration settings
 
 DS_CONFIG = {
-    "ds_client_id": "{INTEGRATION_KEY_AUTH_CODE}",  # The app's DocuSign integration key
-    "ds_client_secret": "{SECRET_KEY}",  # The app's DocuSign integration key's secret
+    "ds_client_id": "{INTEGRATION_KEY_AUTH_CODE}",  # The app's Docusign integration key
+    "ds_client_secret": "{SECRET_KEY}",  # The app's Docusign integration key's secret
     "organization_id": "{ORGANIZATION_ID}", # A GUID value that identifies the organization
     "signer_email": "{SIGNER_EMAIL}",
     "signer_name": "{SIGNER_NAME}",
@@ -16,10 +16,10 @@ DS_CONFIG = {
     "rooms_api_client_host": "https://demo.rooms.docusign.com/restapi",
     "monitor_api_client_host": "https://lens-d.docusign.net",
     "admin_api_client_host": "https://api-d.docusign.net/management",
-    "webforms_api_client_host": "https://apps-d.docusign.com/api/webforms/v1.1",
+    "webforms_api_client_host": "https://apps-d.docusign.com/api/webforms",
     "allow_silent_authentication": True,  # a user can be silently authenticated if they have an
     # active login session on another tab of the same browser
-    "target_account_id": None,  # Set if you want a specific DocuSign AccountId,
+    "target_account_id": None,  # Set if you want a specific Docusign AccountId,
     # If None, the user's default account will be used.
     "demo_doc_path": "demo_documents",
     "doc_salary_docx": "World_Wide_Corp_salary.docx",
