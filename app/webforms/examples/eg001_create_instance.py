@@ -48,7 +48,7 @@ class Eg001CreateInstance:
         web_form_req_object = CreateInstanceRequestBody(
             client_user_id=args["client_user_id"],
             form_values=web_form_values,
-            expiration_offset=3600
+            expiration_offset=24
         )
         #ds-snippet-end:WebForms1Step4
 
