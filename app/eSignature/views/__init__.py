@@ -41,3 +41,4 @@ from .eg041_cfr_embedded_signing import eg041
 from .eg042_document_generation import eg042
 from .eg043_shared_access import eg043
 from .eg044_focused_view import eg044
+from .eg045_delete_restore_envelope import eg045

@@ -1,0 +1,24 @@
+<!-- extend base layout --> {% extends "base.html" %}  {% block content %}
+
+{% include 'example_info.html' %}
+
+{%  set form_index = 0 %}
+{%  set envelope_id_index = 0 %}
+
+<form class="eg" action="" method="post" data-busy="form">
+    {% if 'FormName' in example['Forms'][form_index] %}
+        <p>{{ example['Forms'][form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="envelope_id">{{ example['Forms'][form_index]['Inputs'][envelope_id_index]['InputName'] }}</label>
+      <input type="text" class="form-control" id="envelope_id" name="envelope_id"
+             aria-describedby="envelope_id_help" placeholder="{{ example['Forms'][form_index]['Inputs'][envelope_id_index]['InputPlaceholder'] }}" required
+             value="{{ envelope_id }}" />
+      <small id="envelope_id_help" class="form-text text-muted">{{ session['manifest']['SupportingTexts']['HelpingTexts']['DefaultEnvelopeId'] | safe}}</small>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% include 'submit_button.html' %}
+  </form>
+  
+{% endblock %}

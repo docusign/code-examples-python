@@ -1,1 +1,1 @@
-<button type="submit" class="btn btn-docu">{{ session['manifest']['SupportingTexts']['SubmitButton'] }}</button>
+<button type="submit" class="btn btn-docu">{{ submit_button_text if submit_button_text else session['manifest']['SupportingTexts']['SubmitButton'] }}</button>

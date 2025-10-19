@@ -5,8 +5,8 @@
     <p><a target='_blank' href='{{ documentation | safe }}'>Documentation</a> about this example.</p>
 {% endif %}
 
-{% if "Note" in example %}
-    <p>{{ example["Note"] | safe }}</p>
+{% if "Notes" in example %}
+    <p>{{ example["Notes"] | safe }}</p>
 {% endif %}
 
 {% if example["LinksToAPIMethod"] | length > 0 %}
