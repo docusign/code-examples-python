@@ -71,7 +71,7 @@ For a list of code examples that use the Admin API, see the [How-to guides overv
 
 The Web Forms API is available in all developer accounts, but only in certain production account plans. Contact [Docusign Support](https://support.docusign.com/) or your account manager to find out whether the Web Forms API is available for your production account plan.
 
-For more information about the scopes used for obtaining authorization to use the Rooms API, see [Required scopes](https://developers.docusign.com/docs/web-forms-api/plan-integration/authentication/).
+For more information about the scopes used for obtaining authorization to use the Web Forms API, see [Required scopes](https://developers.docusign.com/docs/web-forms-api/plan-integration/authentication/).
 
 For a list of code examples that use the Web Forms API, see the [How-to guides overview](https://developers.docusign.com/docs/web-forms-api/how-to/) on the Docusign Developer Center.
 
@@ -122,7 +122,7 @@ For a list of code examples that use the Web Forms API, see the [How-to guides o
 
 ### Installation steps with docker
 
-**Note**: Running the launcher with docker will use Python 3.11
+**Note**: Running the launcher with docker will use Python 3.13
 
 1. Open the Docker application
 1. `docker image build -t docusign .`
