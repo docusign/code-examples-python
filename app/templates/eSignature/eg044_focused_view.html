@@ -5,6 +5,9 @@
 {%  set signer_form_index = 0 %}
 {%  set signer_email_index = 0 %}
 {%  set signer_name_index = 1 %}
+{%  set phone_form_index = 1 %}
+{%  set country_code_index = 0 %}
+{%  set phone_number_index = 1 %}
 
 <form class="eg" action="" method="post" data-busy="form">
     {% if 'FormName' in example['Forms'][signer_form_index] %}
@@ -23,6 +26,26 @@
       <input type="text" class="form-control" id="signer_name" placeholder="{{ example['Forms'][signer_form_index]['Inputs'][signer_name_index]['InputPlaceholder'] }}" name="signer_name"
              value="{{ signer_name }}" required>
     </div>
+
+    <br/>
+    {% if example['Forms']|length > phone_form_index and 'FormName' in example['Forms'][phone_form_index] %}
+      <p>{{ example['Forms'][phone_form_index]['FormName'] | safe }}</p>
+    {% endif %}
+
+    {% if example['Forms']|length > phone_form_index %}
+      <div class="form-group">
+        <label for="country_code">{{ example['Forms'][phone_form_index]['Inputs'][country_code_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="country_code" name="country_code"
+               placeholder="{{ example['Forms'][phone_form_index]['Inputs'][country_code_index]['InputPlaceholder'] }}">
+      </div>
+
+      <div class="form-group">
+        <label for="phone_number">{{ example['Forms'][phone_form_index]['Inputs'][phone_number_index]['InputName'] }}</label>
+        <input type="text" class="form-control" id="phone_number" name="phone_number"
+               aria-describedby="phoneHelp" placeholder="{{ example['Forms'][phone_form_index]['Inputs'][phone_number_index]['InputPlaceholder'] }}">
+        <small id="phoneHelp" class="form-text text-muted">Provide a phone number to enable phone authentication for the signer</small>
+      </div>
+    {% endif %}
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     {% include 'submit_button.html' %}
   </form>
